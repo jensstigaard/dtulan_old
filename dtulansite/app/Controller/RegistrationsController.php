@@ -1,16 +1,6 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of RegistrationController
- *
- * @author Nigrea
- **/
-
+ App::uses('CakeEmail', 'Network/Email'); 
+ 
 class RegistrationsController extends AppController{
 
     public function index() {
@@ -23,21 +13,36 @@ class RegistrationsController extends AppController{
         if (!$this->Registration->exists()) {
             throw new NotFoundException(__('Invalid user'));
         }
-        $this->set('user', $this->User->read(null, $id));
+        $this->set('registration', $this->Registration->read(null, $id));
+    }
+    
+    public function viewAll (){
+        $this->set('registrations', $this->Registration->find('all'));
     }
 
     public function add() {
         if ($this->request->is('post')) {
-
-			// The studynumber has to be saved as the field id_number in the database
-            $this->request->data['Registration']['id_number'] =  str_replace('s','', $this->request->data['Registration']['study_number']);
-
-			// We also need to set a creation time for the request
+            
             $this->request->data['Registration']['creation_time'] = date('Y-m-d H:i:s');
 
             $this->Registration->create();
             if ($this->Registration->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been registered. An activation mail is sent to your email.'));
+                $this->Session->setFlash(__('The user has been saved'));
+				
+				$msg = "<b>This is an automated activation mail, from the DTU-Lan crew<b> <br />
+						Someone used this mail as there registration mail for the DTU-Lan homepage <br />
+						And registered under the name ".$this->request->data['Registration']['first_name'].
+						" ".$this->request->data['Registration']['last_name'].
+						"If you wish to activate the account now, use the following link, and choose a password: <br />".
+						$this->Html->link('http://dtu-lan.dk/activate/'.$this->request->data['Registration']['id'],'http://dtu-lan.dk/activate/'.$this->request->data['Registration']['id'])
+						;
+				
+				$email = new CakeEmail();
+				$email->from(array('admin@DTU-Lan.dk' => 'DTU-Lan'));
+				$email->to($this->request->data['Registration']['email']);
+				$email->subject('DTU-Lan Activation');
+				$email->send($msg);
+				
                 $this->redirect(array('action' => 'index'));
             } else {
                 $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
@@ -47,37 +52,31 @@ class RegistrationsController extends AppController{
 
     public function edit($id = null) {
         $this->Registration->id = $id;
+        $this->set('registration', $this->Registration->read(null, $id));         
         if (!$this->Registration->exists()) {
             throw new NotFoundException(__('Invalid user'));
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Registration->save($this->request->data)) {
                 $this->Session->setFlash(__('The user has been saved'));
-                $this->redirect(array('action' => 'index'));
+                $this->redirect(array('action' => 'viewAll'));
             } else {
                 $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
             }
         } else {
             $this->request->data = $this->Registration->read(null, $id);
-            unset($this->request->data['User']['password']);
+            //unset($this->request->data['User']['password']);
         }
     }
 
     public function delete($id = null) {
-        if (!$this->request->is('post')) {
-            throw new MethodNotAllowedException();
-        }
         $this->Registration->id = $id;
         if (!$this->Registration->exists()) {
             throw new NotFoundException(__('Invalid user'));
         }
-        if ($this->Registration->delete()) {
-            $this->Session->setFlash(__('User deleted'));
-            $this->redirect(array('action' => 'index'));
-        }
-        $this->Session->setFlash(__('User was not deleted'));
-        $this->redirect(array('action' => 'index'));
+		$this->Registration->delete();
     }
+    
 }
 
 ?>
