@@ -39,7 +39,7 @@ class Registration extends AppModel{
                 'message' => 'This Email has already been taken.'    
             )
         ),
-       'study_number' => array(
+       'id_number' => array(
            'required' => array(
                 'rule' => 'validateStudynumber',
                 'message' => 'Not a valid study number'
@@ -48,7 +48,7 @@ class Registration extends AppModel{
        
        'type' => array(
             'valid' => array(
-                'rule' => array('inList', array('guest', 'student')),
+                'rule' => array('inList', array('g', 's')),
                 'message' => 'Please enter a valid type',
                 'allowEmpty' => false
             )
@@ -58,12 +58,13 @@ class Registration extends AppModel{
    
    function validateStudynumber($check){
        
-       if($this->data['Registration']['type'] == 'student')
+       if($this->data['Registration']['type'] == 's')
        {
-           return preg_match("/^s[0-9]{6}$/", $this -> data['Registration']['study_number']);
+           $this->data['Registration']['id_number'] =  str_replace('s','', $this->data['Registration']['id_number']);
+           return preg_match("/^[0-9]{6}$/", $this -> data['Registration']['id_number']);
        }
        else{
-           $this->data['Registration']['study_number'] = '';
+           $this->data['Registration']['id_number'] = '';
            return true;
        }
        
