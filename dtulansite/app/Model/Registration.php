@@ -64,7 +64,6 @@ class Registration extends AppModel {
 			return true;
 		}
 	}
-
 }
 
 ?>

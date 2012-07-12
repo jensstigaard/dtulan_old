@@ -76,7 +76,6 @@ class RegistrationsController extends AppController{
 		$this->Registration->delete();
     }
     
-    
 }
 
 ?>

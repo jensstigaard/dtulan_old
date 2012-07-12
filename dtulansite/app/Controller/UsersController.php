@@ -11,8 +11,12 @@
  * @author Nigrea
  */
 class UsersController extends AppController{
-
     
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('login');
+	}
+	
     public function index() {
         $this->User->recursive = 0;
         $this->set('users', $this->paginate());
@@ -72,7 +76,44 @@ class UsersController extends AppController{
         $this->redirect(array('action' => 'index'));
     }
     
-    
+    public function activate($id = null) {
+		$this->User->setValidation('activate');
+		
+		$this->Registration->id = $id;
+		if(!$this->Registration->exists()) {
+			throw new NotFoundException(__('Invalid user'));
+		}
+		if($this->request->is('post')) {
+			$registration = $this->Registration->find('first', array('conditions' => array('Registration.id' => $id)));
+		
+		$user = array();
+		$user['User'] = $registration['Registration'];
+		$user['User']['password'] = $this->request->data['password'];
+			
+		if($this->User->save($user) && $this->Registration->delete()) {
+			/*
+			 * Logs user in after successful activation
+			 */
+			$id = $this->User->id;
+			$this->request->data['User'] = array_merge($this->request->data['User'], array('id' => $id));
+			$this->Auth->login($this->request->data['User']);			
+			$this->Session->setFlash(__('User activated'));
+			$this->redirect(array('action' => 'index'));
+		}
+		$this->Session->setFlash(__('User was not activated'));	
+		}
+			
+	}
+	
+	public function login() {
+		if($this->request->is('post')) {
+			if($this->Auth->login()) {
+				$this->Session->setFlash(__('Logged in'));
+				$this->redirect(array('action' => 'index'));
+			}
+			$this->Session->setFlash(__('Invalid login'));
+		}
+		
+	}
 }
-
 ?>
