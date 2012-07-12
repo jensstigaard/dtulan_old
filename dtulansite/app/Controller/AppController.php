@@ -38,18 +38,18 @@ class AppController extends Controller {
 		'Auth' => array(
 			'loginRedirect' => array('controller' => 'pages', 'action' => 'index'),
 			'logoutRedirect' => array('controller' => 'pages', 'action' => 'index'),
+			'authError' => 'Please log in to show page',
 			'authorize' => array('Controller') // Added this line
 		)
 	);
 
 	public function isAuthorized($user) {
-		// Admin can access every action
-		if (isset($user['role']) && $user['role'] === 'admin') {
-			return true;
-		}
-		
-		// Default deny
-		return false;
+		return true;
+	}
+
+	public function beforeFilter() {
+		$this->set('logged_in', $this->Auth->loggedIn());
+		$this->set('current_user', $this->Auth->user);
 	}
 
 }

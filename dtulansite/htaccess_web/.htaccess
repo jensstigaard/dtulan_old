@@ -1,5 +1,10 @@
 <IfModule mod_rewrite.c>
 
+	AuthName "DTU LAN Party"
+	AuthType Basic
+	AuthUserFile /var/www/dtu-lan.dk/.htpasswd
+	require valid-user
+
 	RewriteEngine on
 	RewriteRule    ^$ app/webroot/    [L]
 	RewriteRule    (.*) app/webroot/$1 [L]

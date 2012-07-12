@@ -45,15 +45,14 @@ class PagesController extends AppController {
 	 */
 	public $uses = array();
 	public $helpers = array('Html', 'Form', 'Session');
-	public $components = array('Session');
 
 	public function beforeFilter() {
-		$this->Auth->allow('index', 'view', 'add', 'edit');
+		$this->Auth->allow('index', 'view');
+	}
 
-		if($this->Auth->isAuthorized(@$user)){
-			if(@$user['is_admin']){
-				$this->Auth->allow(array('add','edit','delete'));
-			}
+	public function isAuthorized($user) {
+		if ($user['is_admin'] == 1) {
+			$this->Auth->allow(array('add', 'edit', 'delete'));
 		}
 	}
 
