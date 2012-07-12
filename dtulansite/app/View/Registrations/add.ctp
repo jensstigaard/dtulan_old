@@ -8,7 +8,7 @@
         echo $this->Form->input('last_name');
         echo $this->Form->input('email');
         echo $this->Form->input('gamertag');
-        echo $this->Form->input('type', array( 'options' => array('guest' => 'Guest', 'student' => 'Student')));
+        echo $this->Form->input('type', array( 'options' => array('g' => 'Guest', 's' => 'Student')));
         echo $this->Form->input('id_number', array('label' => 'Study Number', 'type' => 'Text'))
         
     ?>

@@ -1,5 +1,6 @@
 <?php
-    
+ App::uses('CakeEmail', 'Network/Email'); 
+ 
 class RegistrationsController extends AppController{
       
     public function index() {
@@ -26,6 +27,21 @@ class RegistrationsController extends AppController{
             $this->Registration->create();
             if ($this->Registration->save($this->request->data)) {
                 $this->Session->setFlash(__('The user has been saved'));
+				
+				$msg = "<b>This is an automated activation mail, from the DTU-Lan crew<b> <br />
+						Someone used this mail as there registration mail for the DTU-Lan homepage <br />
+						And registered under the name ".$this->request->data['Registration']['first_name'].
+						" ".$this->request->data['Registration']['last_name'].
+						"If you wish to activate the account now, use the following link, and choose a password: <br />".
+						$this->Html->link('http://dtu-lan.dk/activate/'.$this->request->data['Registration']['id'],'http://dtu-lan.dk/activate/'.$this->request->data['Registration']['id'])
+						;
+				
+				$email = new CakeEmail();
+				$email->from(array('admin@DTU-Lan.dk' => 'DTU-Lan'));
+				$email->to($this->request->data['Registration']['email']);
+				$email->subject('DTU-Lan Activation');
+				$email->send('A Simple Test');
+				
                 $this->redirect(array('action' => 'index'));
             } else {
                 $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
@@ -53,19 +69,11 @@ class RegistrationsController extends AppController{
     }
     
     public function delete($id = null) {
-        if (!$this->request->is('post')) {
-            throw new MethodNotAllowedException();
-        }
         $this->Registration->id = $id;
         if (!$this->Registration->exists()) {
             throw new NotFoundException(__('Invalid user'));
         }
-        if ($this->Registration->delete()) {
-            $this->Session->setFlash(__('User deleted'));
-            $this->redirect(array('action' => 'index'));
-        }
-        $this->Session->setFlash(__('User was not deleted'));
-        $this->redirect(array('action' => 'index'));
+		$this->Registration->delete();
     }
     
     
