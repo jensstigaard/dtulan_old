@@ -2,12 +2,12 @@
  App::uses('CakeEmail', 'Network/Email'); 
  
 class RegistrationsController extends AppController{
-      
+
     public function index() {
         $this->Registration->recursive = 0;
         $this->set('registrations', $this->paginate());
     }
-    
+
     public function view($id = null) {
         $this->Registration->id = $id;
         if (!$this->Registration->exists()) {
@@ -19,11 +19,12 @@ class RegistrationsController extends AppController{
     public function viewAll (){
         $this->set('registrations', $this->Registration->find('all'));
     }
-    
+
     public function add() {
         if ($this->request->is('post')) {
             
             $this->request->data['Registration']['creation_time'] = date('Y-m-d H:i:s');
+
             $this->Registration->create();
             if ($this->Registration->save($this->request->data)) {
                 $this->Session->setFlash(__('The user has been saved'));
@@ -40,7 +41,7 @@ class RegistrationsController extends AppController{
 				$email->from(array('admin@DTU-Lan.dk' => 'DTU-Lan'));
 				$email->to($this->request->data['Registration']['email']);
 				$email->subject('DTU-Lan Activation');
-				$email->send('A Simple Test');
+				$email->send($msg);
 				
                 $this->redirect(array('action' => 'index'));
             } else {
@@ -48,7 +49,7 @@ class RegistrationsController extends AppController{
             }
         }
     }
-    
+
     public function edit($id = null) {
         $this->Registration->id = $id;
         $this->set('registration', $this->Registration->read(null, $id));         
@@ -67,7 +68,7 @@ class RegistrationsController extends AppController{
             //unset($this->request->data['User']['password']);
         }
     }
-    
+
     public function delete($id = null) {
         $this->Registration->id = $id;
         if (!$this->Registration->exists()) {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Static content controller.
  *
@@ -18,7 +19,6 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
 App::uses('AppController', 'Controller');
 
 /**
@@ -31,45 +31,77 @@ App::uses('AppController', 'Controller');
  */
 class PagesController extends AppController {
 
-/**
- * Controller name
- *
- * @var string
- */
+	/**
+	 * Controller name
+	 *
+	 * @var string
+	 */
 	public $name = 'Pages';
 
-/**
- * This controller does not use a model
- *
- * @var array
- */
+	/**
+	 * This controller does not use a model
+	 *
+	 * @var array
+	 */
 	public $uses = array();
+	public $helpers = array('Html', 'Form', 'Session');
+	public $components = array('Session');
 
-/**
- * Displays a view
- *
- * @param mixed What page to display
- * @return void
- */
-	public function display() {
-		$path = func_get_args();
+	public function beforeFilter() {
+		$this->Auth->allow('index', 'view', 'add', 'edit');
 
-		$count = count($path);
-		if (!$count) {
-			$this->redirect('/');
+		if($this->Auth->isAuthorized(@$user)){
+			if(@$user['is_admin']){
+				$this->Auth->allow(array('add','edit','delete'));
+			}
 		}
-		$page = $subpage = $title_for_layout = null;
-
-		if (!empty($path[0])) {
-			$page = $path[0];
-		}
-		if (!empty($path[1])) {
-			$subpage = $path[1];
-		}
-		if (!empty($path[$count - 1])) {
-			$title_for_layout = Inflector::humanize($path[$count - 1]);
-		}
-		$this->set(compact('page', 'subpage', 'title_for_layout'));
-		$this->render(implode('/', $path));
 	}
+
+	public function index() {
+		$this->set('pages', $this->Page->find('all'));
+	}
+
+	public function view($id = null) {
+		$this->Page->id = $id;
+
+		if (!$this->Page->exists()) {
+			throw new NotFoundException(__('Page not found'));
+		}
+
+		$this->set('page', $this->Page->read());
+	}
+
+	public function add() {
+		if ($this->request->is('post')) {
+			$this->request->data['Page']['time_created'] = date('Y-m-d H:i:s');
+			if ($this->Page->save($this->request->data)) {
+				$this->Session->setFlash('Your page has been saved.');
+				$this->redirect(array('action' => 'index'));
+			} else {
+				$this->Session->setFlash('Unable to add your page.');
+			}
+		}
+	}
+
+	public function edit($id = null) {
+		$this->Page->id = $id;
+
+		if (!$this->Page->exists()) {
+			throw new NotFoundException(__('Page not found'));
+		}
+
+		// If get-request is set, then read page
+		if ($this->request->is('get')) {
+			$this->request->data = $this->Page->read();
+		} else {
+			// Otherwise - save the page
+			if ($this->Page->save($this->request->data)) {
+				$this->Session->setFlash('Your page has been updated.');
+				$this->redirect(array('action' => 'index'));
+			} else {
+				$this->Session->setFlash('Unable to update your page.');
+			}
+		}
+	}
+
 }
