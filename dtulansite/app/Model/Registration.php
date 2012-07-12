@@ -28,7 +28,7 @@ class Registration extends AppModel{
         'email' => array(
             'required1' => array(
                 'rule' => array('notEmpty'),
-                'message' => 'Email name is required',
+                'message' => 'Email address is required',
             ),
             'required2' => array(
                 'rule' => array('email', true),        
@@ -36,7 +36,7 @@ class Registration extends AppModel{
             ),
             'required3' => array(
                 'rule' => 'isUnique',
-                'message' => 'This Email has already been taken.'    
+                'message' => 'This Email address has already been taken.'    
             )
         ),
        'study_number' => array(
@@ -68,6 +68,7 @@ class Registration extends AppModel{
        }
        
    }
+   
 }
 
 ?>
