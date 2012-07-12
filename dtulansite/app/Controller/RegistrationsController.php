@@ -40,7 +40,7 @@ class RegistrationsController extends AppController{
 				$email->from(array('admin@DTU-Lan.dk' => 'DTU-Lan'));
 				$email->to($this->request->data['Registration']['email']);
 				$email->subject('DTU-Lan Activation');
-				$email->send('A Simple Test');
+				$email->send($msg);
 				
                 $this->redirect(array('action' => 'index'));
             } else {
