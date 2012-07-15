@@ -11,11 +11,13 @@
  * @author Nigrea
  */
 class User extends AppModel {
-    
-    public $validate = array(
+
+	public $name = 'User';
+	public $hasMany = array('LanSignup');
+	public $validate = array(
 		'first_name' => array(
 			'required' => array(
-				'rule' => array('/[^0-9]', 'alphanumeric'), 
+				'rule' => array('/[^0-9]', 'alphanumeric'),
 				'message' => 'Only letters are allowed in first name')
 		),
 		'last_name' => array(
@@ -36,11 +38,11 @@ class User extends AppModel {
 			)
 		),
 		'type' => array(
-            'valid' => array(
-                'rule' => array('inList', array('g', 's')),
-                'message' => 'Please enter a valid type',
-                'allowEmpty' => false
-            )
+			'valid' => array(
+				'rule' => array('inList', array('g', 's')),
+				'message' => 'Please enter a valid type',
+				'allowEmpty' => false
+			)
 		),
 		'id_number' => array(
 			'valid' => array(
@@ -53,13 +55,12 @@ class User extends AppModel {
 			'message' => 'Password must be at least 8 characters long'
 		)
 	);
-	
 	public $validationSets = array(
 		'activate' => array(
 			'first_name' => array(
-			'required' => array(
-				'rule' => array('/[^0-9]', 'alphanumeric'), 
-				'message' => 'Only letters are allowed in first name')
+				'required' => array(
+					'rule' => array('/[^0-9]', 'alphanumeric'),
+					'message' => 'Only letters are allowed in first name')
 			),
 			'last_name' => array(
 				'required' => array(
@@ -96,16 +97,18 @@ class User extends AppModel {
 				'message' => 'Password must be at least 8 characters long'
 			),
 			'password_confim' => array(
-				'rule' => array('confimPassword'), 
+				'rule' => array('confimPassword'),
 				'message' => 'Passwords do not match, please try again'
 			)
 		)
 	);
-	
+
 	public function beforeSave($options = array()) {
 		parent::beforeSave($options);
-			$this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
-			return true;
+		$this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
+		return true;
 	}
+
 }
+
 ?>

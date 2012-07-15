@@ -1,7 +1,9 @@
 <?php
 
 class Lan extends AppModel {
-	
+
+	public $name = 'Lan';
+	public $hasMany = array('LanSignup');
 	public $validate = array(
 		'title' => array(
 			'required' => array(
@@ -23,20 +25,18 @@ class Lan extends AppModel {
 		),
 		'published' => array(
 			'required' => array(
-				'rule' => array('between',0,1),
+				'rule' => array('between', 0, 1),
 				'message' => 'Valid publishing required'
 			)
 		),
 		'sign_up_open' => array(
 			'required' => array(
-				'rule' => array('between',0,1),
+				'rule' => array('between', 0, 1),
 				'message' => 'Valid Sign Up Open required'
 			)
 		)
-		
-		);
-	
-	
+	);
+
 }
 
 ?>
