@@ -12,11 +12,12 @@
  */
 class Pizza extends AppModel {
 
+	public $name = 'Pizza';
 	public $hasMany = 'PizzaPrices';
 	public $belongsTo = array(
 		'PizzaCategory' => array(
 			'className' => 'PizzaCategory',
-			'foreignKey' => 'category_id'
+			'foreignKey' => 'pizza_category_id'
 		)
 	);
 	public $validate = array(

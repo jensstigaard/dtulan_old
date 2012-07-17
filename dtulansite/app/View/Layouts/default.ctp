@@ -44,7 +44,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		<div id="content">
 
 			<div style="text-align:right">
-				<?php if($logged_in): ?>
+				<?php if(@$logged_in): ?>
 				Welcome <?php echo $current_user['first_name'].' '.$current_user['first_name']; ?>.
 				<?php echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout')); ?>
 			<?php else: ?>

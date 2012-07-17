@@ -12,6 +12,7 @@
  */
 class PizzaType extends AppModel {
 
+	public $name = 'PizzaType';
 	public $hasMany = array(
 		'PizzaCategoryType'
 	);

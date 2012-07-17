@@ -12,11 +12,12 @@
  */
 class PizzaCategory extends AppModel {
 
+	public $name = 'PizzaCategory';
 	public $hasMany = array(
 		'Pizza' => array(
 			'className' => 'Pizza',
-			'conditions' => array('Pizza.public' => '1'),
-			'order' => 'Pizza.number ASC'
+//			'conditions' => array('Pizza.available' => '1'),
+//			'order' => 'Pizza.number ASC'
 		),
 		'PizzaCategoryType'
 	);
