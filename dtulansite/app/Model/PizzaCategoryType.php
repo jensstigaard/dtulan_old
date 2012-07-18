@@ -10,8 +10,16 @@
  *
  * @author Jens
  */
-class PizzaCategoryType {
+class PizzaCategoryType extends AppModel {
+
 	public $name = 'PizzaCategoryType';
+	public $hasOne = array(
+		'PizzaCategory' => array(
+		),
+		'PizzaType' => array(
+		)
+	);
+
 }
 
 ?>

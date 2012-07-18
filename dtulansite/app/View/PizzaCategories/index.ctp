@@ -1,25 +1,30 @@
 <h2>Pizzas</h2>
 <table>
-    <tr>
+<!--    <tr>
         <th>Id</th>
         <th>Title</th>
         <th>Description</th>
 		<th>Sorted</th>
 		<th>Available</th>
-    </tr>
-
-
-	<!-- Here's where we loop through our $posts array, printing out post info -->
+    </tr>-->
 
 	<?php foreach ($pizza_categories as $pizza_category): ?>
 		<tr>
-			<td><?php echo $pizza_category['PizzaCategory']['id']; ?></td>
-			<td><?php echo $this->Html->link($pizza_category['PizzaCategory']['title'], array('action' => 'edit', $pizza_category['PizzaCategory']['id']));
-		?></td>
-			<td><?php echo $pizza_category['PizzaCategory']['sorted'] ?></td>
-			<td><?php echo $pizza_category['PizzaCategory']['description'] ?></td>
-			<td><?php echo $pizza_category['PizzaCategory']['available'] ?></td>
+			<th colspan="3"><?php echo $pizza_category['PizzaCategory']['title']; ?><br />
+				<small><?php echo $pizza_category['PizzaCategory']['description'] ?></small>
+			</th>
+			<?php foreach ($pizza_category['PizzaCategoryType'] as $type): ?>
+				<th><?php echo $type['pizza_type_id']; ?></th>
+			<?php endforeach; ?>
 		</tr>
+		<?php foreach ($pizza_category['Pizza'] as $pizza): ?>
+			<tr>
+				<td><?php echo $pizza['number']; ?></td>
+				<td><?php echo $pizza['title']; ?></td>
+				<td><?php echo $pizza['description']; ?></td>
+
+			</tr>
+		<?php endforeach; ?>
 
 	<?php endforeach; ?>
 
