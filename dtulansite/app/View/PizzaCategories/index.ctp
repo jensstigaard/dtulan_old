@@ -14,7 +14,7 @@
 				<small><?php echo $pizza_category['PizzaCategory']['description'] ?></small>
 			</th>
 			<?php foreach ($pizza_category['PizzaCategoryType'] as $type): ?>
-				<th><?php echo $type['pizza_type_id']; ?></th>
+				<th><?php echo $type['PizzaType']['title_short']; ?></th>
 			<?php endforeach; ?>
 		</tr>
 		<?php foreach ($pizza_category['Pizza'] as $pizza): ?>
@@ -22,7 +22,9 @@
 				<td><?php echo $pizza['number']; ?></td>
 				<td><?php echo $pizza['title']; ?></td>
 				<td><?php echo $pizza['description']; ?></td>
-
+				<?php foreach ($pizza_prices[$pizza['id']] as $price): ?>
+					<td><?php echo $price; ?></td>
+				<?php endforeach; ?>
 			</tr>
 		<?php endforeach; ?>
 
