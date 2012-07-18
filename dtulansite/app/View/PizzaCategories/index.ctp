@@ -23,23 +23,18 @@
 				<td><?php echo $pizza['title']; ?></td>
 				<td><?php echo $pizza['description']; ?></td>
 				<?php
-				foreach ($pizza_category['PizzaCategoryType'] as $type):
-					$price = 0;
-					if (isset($pizza_prices[$type['PizzaType']['id']][$pizza['id']])) {
-						$price = $pizza_prices[$type['PizzaType']['id']][$pizza['id']];
-					}
+				foreach ($pizza['Prices'] as $price):
 					?>
 					<td><?php
 			if ($price != 0) {
 				echo $price;
 			}
-			?></td>
-					}
-			<?php endforeach; ?>
+					?></td>
+				<?php endforeach; ?>
 			</tr>
 		<?php endforeach; ?>
 
-<?php endforeach; ?>
+	<?php endforeach; ?>
 
 </table>
 

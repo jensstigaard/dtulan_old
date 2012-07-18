@@ -25,13 +25,23 @@ class PizzaCategoriesController extends AppController {
 		);
 
 		$data_prices = array();
-		foreach($data_category as $category){
-			foreach($category['Pizza'] as $pizza){
-				foreach($pizza['PizzaPrice'] as $price){
+		foreach ($data_category as $category_id => $category) {
+			foreach ($category['Pizza'] as $pizza_id => $pizza) {
+				foreach ($pizza['PizzaPrice'] as $price) {
 					$data_prices[$price['pizza_type_id']][$pizza['id']] = $price['price'];
+				}
+
+				foreach ($category['PizzaCategoryType'] as $type) {
+					$price = 0;
+					if (isset($data_prices[$type['PizzaType']['id']][$pizza['id']])) {
+						$price = $data_prices[$type['PizzaType']['id']][$pizza['id']];
+					}
+					$data_category[$category_id]['Pizza'][$pizza_id]['Prices'][] = $price;
 				}
 			}
 		}
+
+
 
 
 		$this->set('pizza_categories', $data_category);
