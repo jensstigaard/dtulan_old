@@ -12,15 +12,31 @@
  */
 class UsersController extends AppController {
 
+	public $name = 'Users';
+	// Pass settings in $components array
+	public $components = array(
+		'Auth' => array(
+			'authenticate' => array(
+				'Form' => array(
+					'fields' => array('username' => 'email')
+				)
+			)
+		)
+	);
+
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('index', 'login', 'add', 'activate');
+		$this->Auth->allow('login', 'add', 'activate');
 	}
 
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		$this->Auth->deny('activate', 'add', 'login');
+		if (in_array($this->action, array('index', 'logout'))) {
+			return true;
+		} elseif (in_array($this->action, array('activate', 'add', 'login'))) {
+			return false;
+		}
 	}
 
 	public function index() {
@@ -146,7 +162,7 @@ class UsersController extends AppController {
 	public function login() {
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
-				$this->Session->setFlash(__('Logged in'));
+				$this->Session->setFlash(__('You are now logged in'));
 				$this->redirect($this->Auth->redirect());
 			} else {
 				$this->Session->setFlash(__('Your username/password combination was incorrect'));

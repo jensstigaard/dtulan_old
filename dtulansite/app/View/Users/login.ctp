@@ -1,6 +1,6 @@
 <!-- app/View/Users/add.ctp -->
 <div class="users form">
-<?php echo $this->Form->create('User'); ?>
+<?php echo $this->Form->create(); ?>
     <fieldset>
         <legend><?php echo __('Login'); ?></legend>
     <?php

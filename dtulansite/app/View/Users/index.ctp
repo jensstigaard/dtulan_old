@@ -31,6 +31,7 @@
 
 </table>
 
+<!--Users:
 <pre>
-	<?php print_r($users); ?>
-</pre>
+	<?php // print_r($users); ?>
+</pre>-->

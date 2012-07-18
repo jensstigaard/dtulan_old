@@ -36,10 +36,15 @@ class AppController extends Controller {
 	public $components = array(
 		'Session',
 		'Auth' => array(
+//			'loginAction' => array(
+//				'controller' => 'users',
+//				'action' => 'login',
+//				'plugin' => 'users'
+//			),
 			'loginRedirect' => array('controller' => 'pages', 'action' => 'index'),
 			'logoutRedirect' => array('controller' => 'pages', 'action' => 'index'),
 			'authError' => 'Please log in to show page',
-			'authorize' => array('Controller') // Added this line
+			'authorize' => array('Controller'), // Added this line
 		)
 	);
 
@@ -49,7 +54,7 @@ class AppController extends Controller {
 
 	public function beforeFilter() {
 		$this->set('logged_in', $this->Auth->loggedIn());
-		$this->set('current_user', $this->Auth->user);
+		$this->set('current_user', $this->Auth->user());
 	}
 
 }

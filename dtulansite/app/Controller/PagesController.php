@@ -47,13 +47,12 @@ class PagesController extends AppController {
 	public $helpers = array('Html', 'Form', 'Session');
 
 	public function beforeFilter() {
+		parent::beforeFilter();
 		$this->Auth->allow('index', 'view');
 	}
 
 	public function isAuthorized($user) {
-		if ($user['is_admin'] == 1) {
-			$this->Auth->allow(array('add', 'edit', 'delete'));
-		}
+		parent::isAuthorized($user);
 	}
 
 	public function index() {
