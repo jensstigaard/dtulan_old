@@ -28,7 +28,7 @@ class PizzaCategoriesController extends AppController {
 		foreach($data_category as $category){
 			foreach($category['Pizza'] as $pizza){
 				foreach($pizza['PizzaPrice'] as $price){
-					$data_prices[$pizza['id']][$price['pizza_type_id']] = $price['price'];
+					$data_prices[$price['pizza_type_id']][$pizza['id']] = $price['price'];
 				}
 			}
 		}
