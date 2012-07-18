@@ -43,14 +43,17 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 			<div id="content">
 
 				<div style="text-align:right;margin-bottom:5px;">
-					<?php if ($logged_in): ?>
+					<div style="margin-bottom:2px;">
+						<?php if ($logged_in): ?>
 						Welcome <?php echo $current_user['name']; ?>.
+						<?php echo $this->Html->link('Profile', array('controller' => 'users', 'action' => 'profile')); ?> |
 						<?php echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout')); ?>
 					<?php else: ?>
 						<?php echo $this->Html->link('Login', array('controller' => 'users', 'action' => 'login')); ?>
-					<?php endif; ?>
-						| <?php echo $this->Html->link('Users', array('controller' => 'users', 'action' => 'index')); ?>
+					<?php endif; ?></div>
+						<div><?php echo $this->Html->link('Users', array('controller' => 'users', 'action' => 'index')); ?>
 						| <?php echo $this->Html->link('Pages', array('controller' => 'pages', 'action' => 'index')); ?>
+						</div>
 
 				</div>
 

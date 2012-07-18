@@ -32,7 +32,7 @@ class UsersController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if (in_array($this->action, array('index', 'logout'))) {
+		if (in_array($this->action, array('index', 'profile', 'logout'))) {
 			return true;
 		} elseif (in_array($this->action, array('activate', 'add', 'login'))) {
 			return false;
@@ -44,12 +44,13 @@ class UsersController extends AppController {
 		$this->set('users', $this->paginate());
 	}
 
-	public function view($id = null) {
-		$this->User->id = $id;
+	public function profile() {
+		$user = $this->Auth->user();
+		$this->User->id = $user['id'];
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
-		$this->set('user', $this->User->read(null, $id));
+		$this->set('user', $this->User->read());
 	}
 
 	public function add() {
@@ -136,7 +137,7 @@ class UsersController extends AppController {
 			throw new NotFoundException(__('Invalid user'));
 		}
 
-		$user = $this->User->findById($id);
+		$user = $this->User->read();
 
 		if ($user['User']['activated'] != 0) {
 			throw new NotFoundException(__('Invalid user'));
