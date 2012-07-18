@@ -40,6 +40,6 @@
 
 <pre>
 	<?php
-	print_r($pizza_categories);
+	//print_r($pizza_categories);
 	?>
 </pre>

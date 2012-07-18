@@ -14,7 +14,8 @@ class PizzaCategoryType extends AppModel {
 
 	public $name = 'PizzaCategoryType';
 	public $belongsTo = array(
-		'PizzaCategory', 'PizzaType'
+		//'PizzaCategory',
+		'PizzaType'
 	);
 
 }

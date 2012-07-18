@@ -10,10 +10,12 @@
  *
  * @author Jens
  */
-class LanSignups extends AppModel {
+class LanSignup extends AppModel {
+
 	public $belongsTo = array(
-        'User', 'Lan'
-    );
+		'User', 'Lan'
+	);
+
 }
 
 ?>
