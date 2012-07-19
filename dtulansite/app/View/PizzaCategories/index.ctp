@@ -1,3 +1,7 @@
+<div style="float:right;">
+	<?php echo $this->Html->link('New pizza', array('action' => 'add')); ?>
+</div>
+
 <h2>Pizzas</h2>
 <p>You'll see the list of available pizzas below</p>
 <table>

@@ -1,14 +1,9 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of UsersController
  *
- * @author Nigrea
+ * @author Nigrea, Jens & Casper
  */
 class UsersController extends AppController {
 
