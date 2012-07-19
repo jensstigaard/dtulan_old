@@ -21,6 +21,7 @@ class UsersController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
+
 		$this->Auth->allow('login', 'add', 'activate');
 	}
 
@@ -40,7 +41,7 @@ class UsersController extends AppController {
 	}
 
 	public function profile($id = null) {
-		if($id == null){
+		if ($id == null) {
 			$user = $this->Auth->user();
 			$id = $user['id'];
 		}
@@ -49,6 +50,8 @@ class UsersController extends AppController {
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
+		$this->User->recursive = 2;
+
 		$this->set('user', $this->User->read());
 	}
 
@@ -163,6 +166,7 @@ class UsersController extends AppController {
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 				$this->Session->setFlash(__('You are now logged in'));
+
 				$this->redirect($this->Auth->redirect());
 			} else {
 				$this->Session->setFlash(__('Your username/password combination was incorrect'));

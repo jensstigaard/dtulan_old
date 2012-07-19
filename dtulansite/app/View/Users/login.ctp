@@ -1,4 +1,3 @@
-<!-- app/View/Users/add.ctp -->
 <div class="users form">
 <?php echo $this->Form->create(); ?>
     <fieldset>

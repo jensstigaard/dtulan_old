@@ -53,10 +53,12 @@ class LansController extends AppController {
 
 	public function edit($id = null) {
 		$this->Lan->id = $id;
-        $this->set('lan', $this->Lan->read(null, $id));         
         if (!$this->Lan->exists()) {
             throw new NotFoundException(__('Invalid Lan'));
         }
+
+		$this->set('lan', $this->Lan->read(null, $id));
+
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Lan->save($this->request->data)) {
                 $this->Session->setFlash(__('The user has been saved'));
@@ -66,8 +68,14 @@ class LansController extends AppController {
             }
         } else {
             $this->request->data = $this->Lan->read(null, $id);
-            //unset($this->request->data['User']['password']);
         }
+	}
+
+	public function view($id = null){
+		$this->Lan->id = $id;
+
+		$this->Lan->recursive = 2;
+		$this->set('lan', $this->Lan->read());
 	}
 
 }

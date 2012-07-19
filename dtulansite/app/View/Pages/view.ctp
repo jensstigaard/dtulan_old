@@ -1,5 +1,7 @@
-<h2><?php echo h($page['Page']['title']); ?></h2>
+<div class="form">
+	<h2><?php echo h($page['Page']['title']); ?></h2>
 
-<p><small>Created: <?php echo $page['Page']['time_created']; ?></small></p>
+	<p><small>Created: <?php echo $page['Page']['time_created']; ?></small></p>
 
-<p><?php echo h($page['Page']['text']); ?></p>
+	<p><?php echo h($page['Page']['text']); ?></p>
+</div>

@@ -1,1 +1,0 @@
-<?php echo $this->Html->link('New registration', 'add'); ?>

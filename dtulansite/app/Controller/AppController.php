@@ -53,8 +53,10 @@ class AppController extends Controller {
 	}
 
 	public function beforeFilter() {
+		$current_user = $this->Auth->user();
 		$this->set('logged_in', $this->Auth->loggedIn());
-		$this->set('current_user', $this->Auth->user());
+		$this->set('is_admin', isset($current_user['Admin']['user_id']));
+		$this->set('current_user', $current_user);
 	}
 
 }
