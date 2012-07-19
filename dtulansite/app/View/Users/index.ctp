@@ -18,7 +18,7 @@
 
 	<?php foreach ($users as $user): ?>
 		<tr>
-			<td><?php echo $this->Html->link($user['User']['name'], array('action' => 'edit', $user['User']['id'])); ?></td>
+			<td><?php echo $this->Html->link($user['User']['name'], array('action' => 'profile', $user['User']['id'])); ?></td>
 			<td><?php echo $user['User']['email']; ?></td>
 			<td><?php echo $user['User']['gamertag']; ?></td>
 			<td><?php echo $user['User']['type']; ?></td>

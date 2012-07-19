@@ -39,9 +39,13 @@ class UsersController extends AppController {
 		$this->set('users', $this->paginate());
 	}
 
-	public function profile() {
-		$user = $this->Auth->user();
-		$this->User->id = $user['id'];
+	public function profile($id = null) {
+		if($id == null){
+			$user = $this->Auth->user();
+			$id = $user['id'];
+		}
+
+		$this->User->id = $id;
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
