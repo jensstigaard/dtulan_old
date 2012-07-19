@@ -51,8 +51,11 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 					<?php else: ?>
 						<?php echo $this->Html->link('Login', array('controller' => 'users', 'action' => 'login')); ?>
 					<?php endif; ?></div>
-						<div><?php echo $this->Html->link('Users', array('controller' => 'users', 'action' => 'index')); ?>
-						| <?php echo $this->Html->link('Pages', array('controller' => 'pages', 'action' => 'index')); ?>
+						<div>
+							<?php echo $this->Html->link('Users', array('controller' => 'users', 'action' => 'index')); ?> |
+							<?php echo $this->Html->link('Pages', array('controller' => 'pages', 'action' => 'index')); ?> |
+							<?php echo $this->Html->link('Pizzas', array('controller' => 'pizzas', 'action' => 'index')); ?>
+
 						</div>
 
 				</div>

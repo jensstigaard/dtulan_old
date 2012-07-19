@@ -1,13 +1,6 @@
 <h2>Pizzas</h2>
+<p>You'll see the list of available pizzas below</p>
 <table>
-<!--    <tr>
-        <th>Id</th>
-        <th>Title</th>
-        <th>Description</th>
-		<th>Sorted</th>
-		<th>Available</th>
-    </tr>-->
-
 	<?php foreach ($pizza_categories as $pizza_category): ?>
 		<tr>
 			<th colspan="3"><?php echo $pizza_category['PizzaCategory']['title']; ?><br />
@@ -38,8 +31,8 @@
 
 </table>
 
-<pre>
-	<?php
-	//print_r($pizza_categories);
-	?>
-</pre>
+<!--<pre>-->
+<?php
+//print_r($pizza_categories);
+?>
+<!--</pre>-->
