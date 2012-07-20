@@ -8,10 +8,11 @@
 
 div.menu{
 	float:right;
+	margin:0 10px;
 }
 
 div.menu > ul{
-	margin: 5px 0;
+	margin: 2px 0;
 }
 
 div.menu > ul > li.menuItemTop{
@@ -26,8 +27,13 @@ div.menu > ul li a{
 	display: block;
 	padding: 5px 15px 7px;
 	text-decoration: none;
-	color: #fff;
+	color: #ddd;
 }
+
+div.menu > ul li a:hover{
+	color:#fff;
+}
+
 
 div.menu > ul > li {
 	margin: 0 10px;
