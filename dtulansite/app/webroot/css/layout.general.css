@@ -65,7 +65,8 @@ p {
 /** Header **/
 #header{
 	padding: 5px;
-	background: #003d4c url('../img/icon.png') no-repeat left;
+	background: #003d4c;
+/* url('../img/icon.png') no-repeat left*/
 	height:30px;
 }
 

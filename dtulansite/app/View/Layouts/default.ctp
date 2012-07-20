@@ -9,7 +9,6 @@
 		<?php
 		echo $this->Html->meta('icon');
 
-//		echo $this->Html->css('cake.generic');
 		echo $this->Html->css(array(
 			'layout.general',
 			'layout.menu',
@@ -18,6 +17,8 @@
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
+
+		echo $this->Js->writeBuffer(array('cache'=>TRUE));
 		?>
 	</head>
 	<body>

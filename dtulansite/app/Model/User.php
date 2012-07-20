@@ -15,6 +15,8 @@ class User extends AppModel {
 	public $name = 'User';
 	public $hasOne = array('Admin');
 	public $hasMany = array('LanSignup', 'Order');
+	public $helpers = array('Js');
+
 	public $validate = array(
 		'name' => array(
 			'required' => array(

@@ -12,6 +12,12 @@
  */
 class Page extends AppModel {
 
+	public $belongsTo = array('LatestUpdateBy' => array(
+		'className' => 'user'
+	), 'CreatedBy' => array(
+		'className' => 'user'
+	));
+
 	public $hasMany = array('Underpage' => array(
 			'className'  => 'Page',
 			'foreignKey' => 'parent_id',
@@ -27,7 +33,7 @@ class Page extends AppModel {
 			)
 		),
 		'command' => array(
-			'rule' => '/^(0|1)$/',
+			'rule' => array('inList', array('text', 'uri')),
 			'message' => 'Invalid command'
 		)
 	);

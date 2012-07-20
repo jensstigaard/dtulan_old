@@ -41,8 +41,8 @@ class AppController extends Controller {
 //				'action' => 'login',
 //				'plugin' => 'users'
 //			),
-			'loginRedirect' => array('controller' => 'pages', 'action' => 'index'),
-			'logoutRedirect' => array('controller' => 'pages', 'action' => 'index'),
+			'loginRedirect' => array('controller' => 'pages', 'action' => 'view', 1),
+			'logoutRedirect' => array('controller' => 'pages', 'action' => 'view', 1),
 			'authError' => 'Please log in to show page',
 			'authorize' => array('Controller'), // Added this line
 		)

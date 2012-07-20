@@ -21,6 +21,9 @@
 		</ul>
 
 	<?php else: ?>
-		<ul><li><?php echo $this->Html->link('Login', array('controller' => 'users', 'action' => 'login')); ?></li></ul>
+		<ul>
+			<li><?php echo $this->Html->link('Login', array('controller' => 'users', 'action' => 'login')); ?></li>
+			<li><?php echo $this->Html->link('Register user', array('controller' => 'users', 'action' => 'add')); ?></li>
+		</ul>
 	<?php endif; ?>
 </div>

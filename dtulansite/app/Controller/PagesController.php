@@ -43,12 +43,12 @@ class PagesController extends AppController {
 	 *
 	 * @var array
 	 */
-	public $uses = array();
+	
 	public $helpers = array('Html', 'Form');
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('index', 'view', 'menu', 'menuItem');
+		$this->Auth->allow('view', 'menu', 'menuItem');
 	}
 
 	public function isAuthorized($user) {
@@ -81,6 +81,14 @@ class PagesController extends AppController {
 				$this->Session->setFlash('Unable to add your page.');
 			}
 		}
+
+		$opt = $this->Page->find('list', array('conditions' => array('parent_id' => 0)));
+		$opt[0] = '[Top level]';
+		ksort($opt);
+
+		$this->set('parents', $opt);
+
+		$this->request->data['Page']['created_by_id'] = $this->request->data['Page']['latest_update_by_id'] = $this->Auth->user('id');
 	}
 
 	public function edit($id = null) {
@@ -102,6 +110,13 @@ class PagesController extends AppController {
 				$this->Session->setFlash('Unable to update your page.');
 			}
 		}
+
+		$opt = $this->Page->find('list', array('conditions' => array('id <>' => $id, 'parent_id' => 0)));
+		$opt[0] = '[Top level]';
+		ksort($opt);
+
+		$this->set('parents', $opt);
+		$this->request->data['Page']['latest_update_by_id'] = $this->Auth->user('id');
 	}
 
 	public function menu() {

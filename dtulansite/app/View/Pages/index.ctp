@@ -25,15 +25,12 @@
 							'Delete', array('action' => 'delete', $page['Page']['id']), array('confirm' => 'Are you sure?'));
 					?>
 				</td>
-				<td>
-					<?php echo $page['Page']['time_created']; ?>
-				</td>
-
-				<td>
-					<?php echo $page['Page']['time_latest_update']; ?>
-				</td>
+				<td><?php echo $page['Page']['time_created']; ?><br /><small>(<?php echo $page['CreatedBy']['name']; ?>)</small></td>
+				<td><?php echo $page['Page']['time_latest_update']; ?><br /><small>(<?php echo $page['LatestUpdateBy']['name']; ?>)</small></td>
 			</tr>
 		<?php endforeach; ?>
 
 	</table>
+
+	<?php // pr($pages); ?>
 </div>
