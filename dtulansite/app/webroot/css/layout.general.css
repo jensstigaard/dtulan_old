@@ -64,18 +64,19 @@ p {
 
 /** Header **/
 #header{
-/*	padding: 10px 20px;*/
+	padding: 5px;
+	background: #003d4c url('../img/icon.png') no-repeat left;
+	height:30px;
 }
 
 #header h1 {
-	background: #003d4c url('../img/icon.png') no-repeat left;
+	float:left;
 	color: #fff;
 	padding: 0px 30px;
 }
 
 #header h1 a {
 	color: #fff;
-	background: #003d4c;
 	font-weight: normal;
 	text-decoration: none;
 }
@@ -85,6 +86,7 @@ p {
 	background: #003d4c;
 	text-decoration: underline;
 }
+
 
 
 /** Layout **/

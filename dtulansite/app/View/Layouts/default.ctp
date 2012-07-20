@@ -10,7 +10,10 @@
 		echo $this->Html->meta('icon');
 
 //		echo $this->Html->css('cake.generic');
-		echo $this->Html->css(array('layout.general', 'cake.errors'));
+		echo $this->Html->css(array(
+			'layout.general',
+			'layout.menu',
+			'cake.errors'));
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
@@ -21,6 +24,9 @@
 		<div id="container">
 			<div id="header">
 				<h1><?php echo $this->Html->link('DTU LAN site', '../'); ?></h1>
+				<div class="menu">
+					<?php echo $this->element('menu'); ?>
+				</div>
 			</div>
 			<div id="content">
 
@@ -43,7 +49,7 @@
 
 			<?php // echo $this->element('sql_dump'); ?>
 
-<!--		<pre><?php // print_r($current_user);         ?></pre>-->
+<!--		<pre><?php // print_r($current_user);          ?></pre>-->
 		</div>
 	</body>
 </html>

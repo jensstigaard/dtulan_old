@@ -48,7 +48,7 @@ class PagesController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('index', 'view');
+		$this->Auth->allow('index', 'view', 'menu', 'menuItem');
 	}
 
 	public function isAuthorized($user) {
@@ -102,6 +102,42 @@ class PagesController extends AppController {
 				$this->Session->setFlash('Unable to update your page.');
 			}
 		}
+	}
+
+	public function menu() {
+		return $this->Page->find('all', array('conditions' => array(
+						'Page.parent_id' => 0
+					)
+						)
+		);
+	}
+
+	public function menuItem($id = null) {
+		$this->Page->id = $id;
+		$this->Page->recursive = 0;
+
+		if (!$this->Page->exists()) {
+			throw new NotFoundException(__('Page not found with id #%u', $id));
+		}
+
+		$page = $this->Page->read();
+		$item = array();
+		$item['title'] = $page['Page']['title'];
+
+		switch ($page['Page']['command']) {
+			case 'uri':
+				$item['url'] = $page['Page']['command_value'];
+				break;
+			default:
+				$item['url'] = array(
+					'controller' => 'pages',
+					'action' => 'view',
+					$page['Page']['id']
+				);
+				break;
+		}
+
+		$this->set('item', $item);
 	}
 
 }

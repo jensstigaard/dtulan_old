@@ -12,6 +12,13 @@
  */
 class Page extends AppModel {
 
+	public $hasMany = array('Underpage' => array(
+			'className'  => 'Page',
+			'foreignKey' => 'parent_id',
+			'order'      => 'Underpage.sorted ASC',
+
+		)
+	);
 	public $validate = array(
 		'title' => array(
 			'required' => array(
