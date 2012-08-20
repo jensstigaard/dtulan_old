@@ -12,17 +12,16 @@
  */
 class Page extends AppModel {
 
-	public $belongsTo = array('LatestUpdateBy' => array(
-		'className' => 'user'
-	), 'CreatedBy' => array(
-		'className' => 'user'
-	));
-
+	public $belongsTo = array(
+		'LatestUpdateBy' => array(
+			'className' => 'user'
+		), 'CreatedBy' => array(
+			'className' => 'user'
+			));
 	public $hasMany = array('Underpage' => array(
-			'className'  => 'Page',
+			'className' => 'Page',
 			'foreignKey' => 'parent_id',
-			'order'      => 'Underpage.sorted ASC',
-
+			'order' => 'Underpage.sorted ASC',
 		)
 	);
 	public $validate = array(

@@ -1,6 +1,8 @@
 <div class="form">
 	<div style="float:right;">
+		<?php if($logged_in && $is_admin): ?>
 		<?php echo $this->Html->link('New pizza', array('action' => 'add')); ?>
+		<?php endif; ?>
 	</div>
 
 	<h2>Pizzas</h2>
@@ -25,7 +27,7 @@
 						?>
 						<td><?php
 			if ($price != 0) {
-				echo $price;
+				echo'<span>'.$price.'</span>,-';
 			}
 						?></td>
 					<?php endforeach; ?>

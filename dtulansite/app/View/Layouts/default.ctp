@@ -14,6 +14,11 @@
 			'layout.menu',
 			'cake.errors'));
 
+		if($logged_in && $is_admin){
+			echo $this->Html->css(array(
+			'layout.admin'));
+		}
+
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');

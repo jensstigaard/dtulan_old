@@ -10,13 +10,12 @@
 			<li><?php echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout')); ?></li>
 			<?php if ($is_admin): ?>
 			</ul>
+			<h2>Admin</h2>
 			<ul>
-				<li><?php echo $this->Html->link('Admin panel', array('controller' => 'admin', 'action' => 'panel')); ?></li>
-				<li><?php echo $this->Html->link('Lans', array('controller' => 'lans', 'action' => 'index')); ?></li>
-				<li><?php echo $this->Html->link('LAN signups', array('controller' => 'lansignups', 'action' => 'index')); ?></li>
+				<li><?php echo $this->Html->link('LANS', array('controller' => 'lans', 'action' => 'index')); ?></li>
 				<li><?php echo $this->Html->link('Users', array('controller' => 'users', 'action' => 'index')); ?></li>
 				<li><?php echo $this->Html->link('Pages', array('controller' => 'pages', 'action' => 'index')); ?></li>
-				<li><?php echo $this->Html->link('Pizzas', array('controller' => 'pizzas', 'action' => 'index')); ?></li>
+				<li><?php echo $this->Html->link('Pizzas', array('controller' => 'pizzacategories', 'action' => 'index')); ?></li>
 			<?php endif; ?>
 		</ul>
 

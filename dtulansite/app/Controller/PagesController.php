@@ -43,8 +43,8 @@ class PagesController extends AppController {
 	 *
 	 * @var array
 	 */
-	
-	public $helpers = array('Html', 'Form');
+
+	public $helpers = array('Html', 'Form', 'Js', 'Fck');
 
 	public function beforeFilter() {
 		parent::beforeFilter();

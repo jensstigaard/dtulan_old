@@ -5,12 +5,32 @@
         <legend><?php echo __('New page'); ?></legend>
 		<?php
 		echo $this->Form->input('title');
-
-		echo $this->Form->input('parent_id');
-
-		$options = array('text' => 'text', 'uri' => 'uri');
-		echo $this->Form->input('command', array('options' => $options, 'id' => 'command'));
 		?>
+
+		<table>
+			<tr>
+				<td>
+					<?php
+					echo $this->Form->input('command', array(
+						'options' => array(
+							'text' => 'text',
+							'uri' => 'uri'
+						),
+						'id' => 'command'
+					));
+					?>
+				</td>
+				<td>
+					<?php echo $this->Form->input('parent_id'); ?>
+				</td>
+				<td>
+					<strong>Public page:</strong>
+					<?php echo $this->Form->input('public', array('label' => '')); ?>
+				</td>
+			</tr>
+		</table>
+
+
 		<div id="command_value">
 			<?php echo $this->Form->input('command_value', array('label' => 'Link to page')); ?>
 		</div>

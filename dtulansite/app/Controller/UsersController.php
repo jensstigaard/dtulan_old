@@ -13,9 +13,12 @@ class UsersController extends AppController {
 		'Auth' => array(
 			'authenticate' => array(
 				'Form' => array(
-					'fields' => array('username' => 'email')
+					'fields' => array('username' => 'email'),
+					'scope' => array(
+						'activated' => 1
+					)
 				)
-			)
+			),
 		)
 	);
 
@@ -28,7 +31,7 @@ class UsersController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if (in_array($this->action, array('index', 'profile', 'logout'))) {
+		if (in_array($this->action, array('index', 'profile', 'editPersonalData', 'logout'))) {
 			return true;
 		} elseif (in_array($this->action, array('activate', 'add', 'login'))) {
 			return false;
@@ -50,9 +53,29 @@ class UsersController extends AppController {
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
-		$this->User->recursive = 2;
 
-		$this->set('user', $this->User->read());
+		$user = $this->User->read();
+
+		$this->set('user', $user);
+
+		$lan_ids = array();
+		foreach($user['Lan'] as $lan){
+			$lan_ids[] = $lan['id'];
+		}
+
+		$next_lan = $this->User->Lan->find('first', array(
+			'conditions' => array(
+				'Lan.time_end >' => date('Y-m-d H:i:s'),
+				'NOT' => array(
+					'Lan.id' => $lan_ids
+				)
+			),
+			'order' => array('Lan.time_end ASC'),
+			'recursive' => 0
+				)
+		);
+
+		$this->set('next_lan', $next_lan);
 	}
 
 	public function add() {
@@ -111,6 +134,25 @@ class UsersController extends AppController {
 		} else {
 			$this->request->data = $this->User->read(null, $id);
 			unset($this->request->data['User']['password']);
+		}
+	}
+
+	public function editPersonalData() {
+		$user = $this->Auth->user();
+		$this->User->id = $user['id'];
+
+		if (!$this->User->exists()) {
+			throw new NotFoundException(__('Invalid user'));
+		}
+		if ($this->request->is('post') || $this->request->is('put')) {
+			if ($this->User->save($this->request->data)) {
+				$this->Session->setFlash(__('Your data has been saved'));
+				$this->redirect(array('action' => 'index'));
+			} else {
+				$this->Session->setFlash(__('The data could not be saved. Please try again.'));
+			}
+		} else {
+			$this->request->data = $this->User->read();
 		}
 	}
 

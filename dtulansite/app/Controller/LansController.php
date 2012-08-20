@@ -74,7 +74,24 @@ class LansController extends AppController {
 	public function view($id = null){
 		$this->Lan->id = $id;
 
-		$this->Lan->recursive = 2;
+		$this->Lan->recursive = 0;
+		$this->set('lan', $this->Lan->read());
+		$this->set('users', $this->Lan->User->find('all'));
+	}
+
+
+	public function lookup($id = null){
+		$this->Lan->id = $id;
+
+		if(!$this->Lan->exists()){
+			throw new NotFoundException('Lan not found');
+		}
+
+		$this->Lan->recursive = -1;
+		//$this->set('lan', $this->Lan->read());
+
+		$this->Lan->Behaviors->attach('Containable');
+		$this->Lan->contain(array('LanSignup' => array('User')));
 		$this->set('lan', $this->Lan->read());
 	}
 

@@ -5,6 +5,7 @@
 		<tr>
 			<th>Id</th>
 			<th>Title</th>
+			<th>Public</th>
 			<th>Actions</th>
 			<th>Created</th>
 			<th>Latest update</th>
@@ -17,6 +18,9 @@
 				<td><?php echo $page['Page']['id']; ?></td>
 				<td>
 					<?php echo $this->Html->link($page['Page']['title'], array('action' => 'view', $page['Page']['id'])); ?>
+				</td>
+				<td>
+					<?php echo $page['Page']['public'] ? 'Yes' : 'No'; ?>
 				</td>
 				<td>
 					<?php echo $this->Html->link('Edit', array('action' => 'edit', $page['Page']['id'])); ?> |

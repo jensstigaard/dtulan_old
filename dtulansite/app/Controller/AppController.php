@@ -36,11 +36,6 @@ class AppController extends Controller {
 	public $components = array(
 		'Session',
 		'Auth' => array(
-//			'loginAction' => array(
-//				'controller' => 'users',
-//				'action' => 'login',
-//				'plugin' => 'users'
-//			),
 			'loginRedirect' => array('controller' => 'pages', 'action' => 'view', 1),
 			'logoutRedirect' => array('controller' => 'pages', 'action' => 'view', 1),
 			'authError' => 'Please log in to show page',

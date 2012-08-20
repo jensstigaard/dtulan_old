@@ -19,7 +19,7 @@
 
 		<?php foreach ($lans as $lan): ?>
 			<tr>
-				<td><?php echo $lan['Lan']['title']; ?></td>
+				<td><?php echo $this->Html->link($lan['Lan']['title'], array('action' => 'view', $lan['Lan']['id'])); ?></td>
 				<td><?php echo $lan['Lan']['max_participants']; ?></td>
 				<td><?php echo $lan['Lan']['max_guests_per_student']; ?></td>
 				<td><?php echo $lan['Lan']['time_start']; ?></td>
@@ -27,8 +27,7 @@
 				<td><?php echo $lan['Lan']['published'] == '0' ? 'No' : 'Yes'; ?></td>
 				<td><?php echo $lan['Lan']['sign_up_open'] == '0' ? 'No' : 'Yes'; ?></td>
 				<td>
-					<?php echo $this->Html->link('Edit', array('action' => 'edit', $lan['Lan']['id'])); ?> |
-					<?php echo $this->Html->link('List signups', array('action' => 'view', $lan['Lan']['id'])); ?>
+					<?php echo $this->Html->link('Edit', array('action' => 'edit', $lan['Lan']['id'])); ?>
 				</td>
 
 			</tr>
