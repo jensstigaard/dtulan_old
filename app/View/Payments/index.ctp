@@ -1,6 +1,6 @@
 <div class="form">
 	<div style="float:right;">
-		<?php echo $this->Html->link('New LAN', array('action' => 'add')); ?>
+		<?php echo $this->Html->link('New Payment', array('action' => 'add')); ?>
 	</div>
 
 	<h2>Payments</h2>
@@ -27,5 +27,4 @@
 
 	</table>
 	<?php pr($payments); ?>
-	<?php echo $payments[0]['User']['name']; ?>	
 </div>
