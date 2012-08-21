@@ -10,13 +10,17 @@ class PaymentsController extends AppController {
 
 	public function add() {
 		if ($this->request->is('post')) {
-			if ($this->Lan->save($this->request->data)) {
-				$this->Session->setFlash('Your Lan has been saved.');
+			if ($this->Payment->save($this->request->data)) {
+				$this->Session->setFlash('Your payment has been saved.');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Unable to add your lan.');
+				$this->Session->setFlash('Unable to add your payment.');
 			}
 		}
+		
+		$opt = $this->Payment->User->find('list', array('order' => 'name'));
+
+		$this->set('users', $opt);
 	}
 
 	public function edit($id = null) {
