@@ -6,9 +6,8 @@
  * @author superkatten
  */
 class Payment extends AppModel {
-	public $belongsTo = array('User');
+	public $belongsTo = array('User', 'Crew');
 
-	public $hasOne = array('Crew');
 }
 
 ?>

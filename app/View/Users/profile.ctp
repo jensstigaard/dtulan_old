@@ -44,13 +44,39 @@
 	<div>
 		<h3>LANs:</h3>
 		<table>
-			<th>Title</th>
+			<tr>
+				<th>Title</th>
+			</tr>
 			<?php foreach ($user['Lan'] as $lan): ?>
 				<tr>
 					<td><?php echo $lan['title']; ?></td>
 		<!--				<td></td>-->
 				</tr>
 			<?php endforeach; ?>
+		</table>
+	</div>
+
+	<div>
+		<h3>Payments:</h3>
+		<table>
+			<tr>
+				<th>Amount</th>
+				<th>Time</th>
+			</tr>
+			<?php $total_balance = 0; ?>
+			<?php foreach ($user['Payment'] as $payment): ?>
+				<tr>
+					<td><?php echo $payment['amount']; ?></td>
+						<td><?php echo $payment['time']; ?></td>
+				</tr>
+				<?php $total_balance += $payment['amount']; 
+				?>
+				
+			<?php endforeach; ?>
+				<tr>
+					<td>Total payments: <?php echo $total_balance; ?></td>
+					<td><?php echo count($user['Payment']); ?></td>
+				</tr>
 		</table>
 	</div>
 
