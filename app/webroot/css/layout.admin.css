@@ -1,0 +1,30 @@
+/*
+    Document   : layout.admin.css
+    Created on : 07-08-2012, 17:03:29
+    Author     : Jens
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.admin_menu{
+	list-style: none;
+}
+
+.admin_menu > li{
+	float:left;
+	margin: 0;
+}
+
+.admin_menu > li > a{
+	font-size: 13pt;
+	display:block;
+	width:100px;
+	text-align: center;
+	background: #DDD;
+	padding:5px;
+	margin:0 5px;
+}
+
+.admin_menu > li > a:hover{
+	background: #CCC;
+}
