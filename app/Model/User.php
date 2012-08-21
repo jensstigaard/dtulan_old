@@ -14,7 +14,7 @@ class User extends AppModel {
 
 	public $name = 'User';
 	public $hasOne = array('Admin');
-	public $hasMany = array('Payment','Order');
+	public $hasMany = array('Payment', 'Order', 'Crew');
 	public $hasAndBelongsToMany = array(
 		'Lan' => array(
 			'className' => 'Lan',
