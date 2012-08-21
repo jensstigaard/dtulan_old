@@ -16,6 +16,7 @@
 				<li><?php echo $this->Html->link('Users', array('controller' => 'users', 'action' => 'index')); ?></li>
 				<li><?php echo $this->Html->link('Pages', array('controller' => 'pages', 'action' => 'index')); ?></li>
 				<li><?php echo $this->Html->link('Pizzas', array('controller' => 'pizzacategories', 'action' => 'index')); ?></li>
+				<li><?php echo $this->Html->link('Payments', array('controller' => 'payments', 'action' => 'index')); ?></li>
 			<?php endif; ?>
 		</ul>
 
