@@ -6,22 +6,22 @@
 			<li>Start time: <?php echo $this->Time->format('l F jS Y H:i', $lan['Lan']['time_start']); ?></li>
 			<li>End time: <?php echo $this->Time->format('l F jS Y H:i', $lan['Lan']['time_end']); ?></li>
 		</ul>
-
-		<div class="lan_days">
-			<?php
-			echo $this->Form->input('LanDayUser.lan_day', array(
-				'label' => 'Select days attending',
-				'type' => 'select',
-				'multiple' => 'checkbox',
-				'options' => $lan_days
-					)
-			);
-
-//			echo $this->Form->hidden('lan_id', array('value' => $lan['Lan']['id']));
+		<br /><hr />
+		<h2>Select attending days</h2>
+		<?php
+		$x = 0;
+		foreach ($lan_days as $day_id => $day_value):
 			?>
-		</div>
-    </fieldset>
+			<div>
+				<?php
+				echo $this->Form->checkbox('LanSignupDay.' . $x . '.lan_day_id', array('value' => $day_id));
+				echo $day_value;
+				$x++;
+				?>
+			</div>
+		<?php endforeach; ?>
+	</fieldset>
 	<?php echo $this->Form->end(__('Submit')); ?>
 
-<?php pr($user); ?>
+	<?php // pr($user);  ?>
 </div>

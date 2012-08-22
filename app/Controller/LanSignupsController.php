@@ -54,9 +54,17 @@ class LanSignupsController extends AppController {
 			$this->request->data['LanSignup']['lan_id'] = $id;
 			$this->request->data['LanSignup']['user_id'] = $user['User']['id'];
 
-			if ($this->LanSignup->save($this->request->data)) {
+			foreach($this->request->data['LanSignupDay'] as $day_id => $day_value){
+				if($day_value['lan_day_id'] == 0){
+					unset($this->request->data['LanSignupDay'][$day_id]);
+				}
+			}
+
+			debug($this->request->data);
+
+			if ($this->LanSignup->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your signup has been saved.');
-				$this->redirect(array('controller' => 'users', 'action' => 'profile'));
+//				$this->redirect(array('controller' => 'users', 'action' => 'profile'));
 			} else {
 				$this->Session->setFlash('Unable to add your signup.');
 			}

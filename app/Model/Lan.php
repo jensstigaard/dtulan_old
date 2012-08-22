@@ -34,9 +34,42 @@ class Lan extends AppModel {
 				'rule' => array('between', 0, 1),
 				'message' => 'Valid Sign Up Open required'
 			)
+		),
+		'time_start' => array(
+			'bigger than end' => array(
+				'rule' => 'validateDates',
+				'message' => 'Invalid start-/end-time',
+			)
 		)
+
+
 	);
 
+	public function validateDates($check){
+		if($check['time_start'] >= $this->data['Lan']['time_end']){
+			$this->invalidate('time_end', 'Invalid start-/end-time');
+			return false;
+		}
+		return true;
+	}
+
+	public function getLanDays($start, $end){
+		App::uses('CakeTime', 'Utility');
+
+		$date_start = $start['year'].'-'.$start['month'].'-'.$start['day'];
+		$date_end = $end['year'].'-'.$end['month'].'-'.$end['day'];
+
+		$days = array();
+
+		$date_current = $date_start;
+		while($date_current <= $date_end){
+			$days[] = array('date' => $date_current);
+
+			$date_current = CakeTime::format('Y-m-d', strtotime('+1 day', strtotime($date_current)));
+		}
+
+		return $days;
+	}
 }
 
 ?>

@@ -17,7 +17,7 @@
 
 	<?php if ($user['User']['id'] == $current_user['id'] && $next_lan): ?>
 		<div class="message">
-			<p style="margin:0;">You are not signed up for <?php echo $next_lan['Lan']['title']; ?>! Sign up now!</p>
+			<p style="margin:0;">You are not signed up for <?php echo $next_lan['Lan']['title']; ?>! <?php echo $this->Html->link('Sign up now!', array('controller'=>'lan_signups', 'action'=>'add', $next_lan['Lan']['id'])); ?></p>
 		</div>
 	<?php endif; ?>
 
@@ -50,10 +50,10 @@
 			</tr>
 			<?php foreach ($user['LanSignup'] as $lan_signup): ?>
 				<tr>
-					<td><?php echo $lan_signup['Lan']['title']; ?></td>
+					<td><?php echo $this->Html->link($lan_signup['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan_signup['Lan']['id'])); ?></td>
 					<td>
 						<?php foreach($lan_signup['LanSignupDay'] as $day): ?>
-							<?php echo $day['LanDay']['date']; ?>,
+							<?php echo $this->Time->format('l F jS Y', $day['LanDay']['date']); ?>,
 						<?php endforeach; ?>
 					</td>
 				</tr>

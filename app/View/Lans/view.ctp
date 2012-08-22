@@ -8,16 +8,16 @@
 		<li>Sign up open: <?php echo $lan['Lan']['sign_up_open'] ? 'Yes' : 'No'; ?></li>
 	</ul>
 
-	<h2>Signups for this LAN (<?php echo count($lan['User']); ?>)</h2>
+	<h2>Signups for this LAN (<?php echo count($lan['LanSignup']); ?>)</h2>
 	<?php // echo $this->Html->link('User lookup', array('action' => 'lookup')); ?>
 	<table>
 		<tr>
 			<th>Name</th>
-			<th>Paid</th>
+			<th>Showed up</th>
 		</tr>
-		<?php foreach ($lan['User'] as $user): ?>
+		<?php foreach ($lan['LanSignup'] as $user): ?>
 			<tr>
-				<td><?php echo $this->Html->link($user['name'], array('controller'=>'users','action' => 'profile', $user['id'])); ?></td>
+				<td><?php echo $this->Html->link($user['User']['name'], array('controller'=>'users','action' => 'profile', $user['User']['id'])); ?></td>
 				<td></td>
 			</tr>
 		<?php endforeach; ?>

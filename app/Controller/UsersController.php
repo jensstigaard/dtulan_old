@@ -64,12 +64,12 @@ class UsersController extends AppController {
 			$lan_ids[] = $lan['lan_id'];
 		}
 
-		$next_lan = $this->User->LanSignup->find('first', array(
+		$next_lan = ClassRegistry::init('Lan')->find('first', array(
 			'conditions' => array(
 				'Lan.sign_up_open' => 1,
 				'Lan.time_end >' => date('Y-m-d H:i:s'),
 				'NOT' => array(
-					'LanSignup.lan_id' => $lan_ids
+					'Lan.id' => $lan_ids
 				)
 			),
 			'order' => array('Lan.time_end ASC'),
@@ -77,7 +77,7 @@ class UsersController extends AppController {
 				)
 		);
 
-		$this->set('next_lan', $next_lan);
+		$this->set(compact('next_lan'));
 	}
 
 	public function add() {
