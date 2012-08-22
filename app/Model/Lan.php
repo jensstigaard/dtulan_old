@@ -3,16 +3,7 @@
 class Lan extends AppModel {
 
 	public $name = 'Lan';
-
-	//public $hasMany = array('LanSignup');
-
-	public $hasAndBelongsToMany = array(
-		'User' => array(
-			'className' => 'User',
-			'joinTable' => 'lans_signups'
-			)
-		);
-
+	public $hasMany = array('LanSignup', 'LanDay');
 	public $validate = array(
 		'title' => array(
 			'required' => array(

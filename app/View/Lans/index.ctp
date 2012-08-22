@@ -21,7 +21,7 @@
 		<?php foreach ($lans as $lan): ?>
 			<tr>
 				<td><?php echo $this->Html->link($lan['Lan']['title'], array('action' => 'view', $lan['Lan']['id'])); ?></td>
-				<td><?php echo count($lan['User']); ?></td>
+				<td><?php echo count($lan['LanSignup']); ?></td>
 				<td><?php echo $lan['Lan']['max_participants']; ?></td>
 				<td><?php echo $lan['Lan']['max_guests_per_student']; ?></td>
 				<td><?php echo $lan['Lan']['time_start']; ?></td>

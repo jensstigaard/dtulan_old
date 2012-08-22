@@ -54,20 +54,22 @@ class UsersController extends AppController {
 			throw new NotFoundException(__('Invalid user'));
 		}
 
+		$this->User->recursive = 3;
 		$user = $this->User->read();
 
 		$this->set('user', $user);
 
 		$lan_ids = array();
-		foreach($user['Lan'] as $lan){
-			$lan_ids[] = $lan['id'];
+		foreach($user['LanSignup'] as $lan){
+			$lan_ids[] = $lan['lan_id'];
 		}
 
-		$next_lan = $this->User->Lan->find('first', array(
+		$next_lan = $this->User->LanSignup->find('first', array(
 			'conditions' => array(
+				'Lan.sign_up_open' => 1,
 				'Lan.time_end >' => date('Y-m-d H:i:s'),
 				'NOT' => array(
-					'Lan.id' => $lan_ids
+					'LanSignup.lan_id' => $lan_ids
 				)
 			),
 			'order' => array('Lan.time_end ASC'),

@@ -46,11 +46,16 @@
 		<table>
 			<tr>
 				<th>Title</th>
+				<th>Days attending</th>
 			</tr>
-			<?php foreach ($user['Lan'] as $lan): ?>
+			<?php foreach ($user['LanSignup'] as $lan_signup): ?>
 				<tr>
-					<td><?php echo $lan['title']; ?></td>
-		<!--				<td></td>-->
+					<td><?php echo $lan_signup['Lan']['title']; ?></td>
+					<td>
+						<?php foreach($lan_signup['LanSignupDay'] as $day): ?>
+							<?php echo $day['LanDay']['date']; ?>,
+						<?php endforeach; ?>
+					</td>
 				</tr>
 			<?php endforeach; ?>
 		</table>
@@ -69,9 +74,9 @@
 					<td><?php echo $payment['amount']; ?></td>
 						<td><?php echo $payment['time']; ?></td>
 				</tr>
-				<?php $total_balance += $payment['amount']; 
+				<?php $total_balance += $payment['amount'];
 				?>
-				
+
 			<?php endforeach; ?>
 				<tr>
 					<td>Total payments: <?php echo $total_balance; ?></td>
@@ -80,6 +85,6 @@
 		</table>
 	</div>
 
-	<?php pr($user); ?>
+	<?php // pr($user); ?>
 	<?php // pr($next_lan); ?>
 </div>

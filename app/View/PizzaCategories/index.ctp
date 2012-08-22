@@ -1,15 +1,48 @@
+<?php
+$isOrderable = true;
+echo $this->Html->css('pizzas', null, array('inline' => false));
+
+if ($isOrderable) {
+	echo $this->Html->script(array('jquery', 'pizzas_orderable'), FALSE);
+}
+?>
+
 <div class="form">
 	<div style="float:right;">
-		<?php if($logged_in && $is_admin): ?>
-		<?php echo $this->Html->link('New pizza', array('action' => 'add')); ?>
+		<?php if ($logged_in && $is_admin): ?>
+			<?php echo $this->Html->link('New pizza', array('action' => 'add')); ?>
 		<?php endif; ?>
 	</div>
 
 	<h2>Pizzas</h2>
 	<p>You'll see the list of available pizzas below</p>
-	<table>
-		<?php foreach ($pizza_categories as $pizza_category): ?>
-			<tr>
+	<?php if ($logged_in): ?>
+		<div class="pizza_order">
+			<h1>Your order</h1>
+			<?php echo $this->Form->create('Pizza_order'); ?>
+			<table>
+				<tr>
+					<th colspan="2"></th>
+					<th>Pizza</th>
+					<th colspan="2">Price</th>
+					<th></th>
+				</tr>
+				<tr>
+					<td colspan="6"></td>
+				</tr>
+				<tr>
+					<td style="text-align:right;" colspan="3">Total:</td>
+					<td style="width:50px;" class="pizza_order_total">0</td>
+					<td>DKK</td>
+					<td></td>
+				</tr>
+			</table>
+			<?php echo $this->Form->end('Submit order'); ?>
+		</div>
+	<?php endif; ?>
+	<?php foreach ($pizza_categories as $pizza_category): ?>
+		<table class="pizza_list">
+			<tr class="pizza_category">
 				<th colspan="3"><?php echo $pizza_category['PizzaCategory']['title']; ?><br />
 					<small><?php echo $pizza_category['PizzaCategory']['description'] ?></small>
 				</th>
@@ -18,29 +51,24 @@
 				<?php endforeach; ?>
 			</tr>
 			<?php foreach ($pizza_category['Pizza'] as $pizza): ?>
-				<tr>
-					<td><?php echo $pizza['number']; ?></td>
-					<td><?php echo $pizza['title']; ?></td>
-					<td><?php echo $pizza['description']; ?></td>
+				<tr class="pizza_item">
+					<td class="number"><?php echo $pizza['number']; ?></td>
+					<td class="title"><?php echo $pizza['title']; ?></td>
+					<td class="desc"><?php echo $pizza['description']; ?></td>
 					<?php
-					foreach ($pizza['Prices'] as $price):
+					foreach ($pizza['Prices'] as $price_type_id => $price_info):
 						?>
-						<td><?php
-			if ($price != 0) {
-				echo'<span>'.$price.'</span>,-';
+						<td class="price"><?php
+			if ($price_info['price'] != 0) {
+				echo'<span>' . $price_info['price'] . '</span>,- ';
+				echo'<span class="hidden price_id">' . $price_info['id'] . '</span>';
 			}
 						?></td>
 					<?php endforeach; ?>
 				</tr>
 			<?php endforeach; ?>
-
-		<?php endforeach; ?>
-
-	</table>
-
-<!--<pre>-->
-	<?php
-//print_r($pizza_categories);
-	?>
-	<!--</pre>-->
+		</table>
+	<?php endforeach; ?>
+	<div style="clear:both;"></div>
+	<?php pr($pizza_categories); ?>
 </div>

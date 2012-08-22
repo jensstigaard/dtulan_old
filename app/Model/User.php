@@ -14,13 +14,7 @@ class User extends AppModel {
 
 	public $name = 'User';
 	public $hasOne = array('Admin');
-	public $hasMany = array('Payment', 'Order', 'Crew');
-	public $hasAndBelongsToMany = array(
-		'Lan' => array(
-			'className' => 'Lan',
-			'joinTable' => 'lans_signups'
-		)
-	);
+	public $hasMany = array('Payment', 'Order', 'Crew', 'LanSignup');
 	public $helpers = array('Js');
 	public $validate = array(
 		'name' => array(
