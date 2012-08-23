@@ -43,14 +43,16 @@ class PizzaCategoriesController extends AppController {
 						$id = $data_prices[$type['PizzaType']['id']][$pizza['id']]['pizza_price_id'];
 					}
 					$data_category[$category_id]['Pizza'][$pizza_id]['Prices'][$type['PizzaType']['id']]['price'] = $price;
-					$data_category[$category_id]['Pizza'][$pizza_id]['Prices'][$type['PizzaType']['id']]['id'] = $id;
+
+					if (isset($id) && $id > 0) {
+						$data_category[$category_id]['Pizza'][$pizza_id]['Prices'][$type['PizzaType']['id']]['id'] = $id;
+					}
 				}
 			}
 		}
 
 		$this->set('pizza_categories', $data_category);
 		$this->set('isOrderable', $this->Auth->loggedIn());
-//		$this->set('pizza_prices', $data_prices);
 	}
 
 }

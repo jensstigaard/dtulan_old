@@ -26,3 +26,17 @@ table.pizza_list tr.pizza_category th{
 table.pizza_list tr.pizza_item td .hidden{
 	display: none;
 }
+
+table.pizza_list tr.pizza_item td a{
+	visibility: hidden;
+	opacity: .6;
+}
+
+table.pizza_list tr.pizza_item:hover td a{
+	visibility: visible;
+}
+
+table.pizza_list tr.pizza_item td a:hover{
+	opacity: 1;
+}
+

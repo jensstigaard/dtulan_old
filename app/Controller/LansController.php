@@ -62,7 +62,6 @@ class LansController extends AppController {
 		}
 
 		if ($this->request->is('post') || $this->request->is('put')) {
-
 			if ($this->Lan->save($this->request->data)) {
 				$this->Session->setFlash(__('The LAN has been saved'));
 //				$this->redirect(array('action' => 'index'));

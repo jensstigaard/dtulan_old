@@ -46,10 +46,13 @@ if ($isOrderable) {
 				<?php foreach ($pizza_category['PizzaCategoryType'] as $type): ?>
 					<th><?php echo $type['PizzaType']['title_short']; ?></th>
 				<?php endforeach; ?>
+				<?php if ($is_admin): ?>
+					<th><small>Admin</small></th>
+				<?php endif; ?>
 			</tr>
 			<?php if (!count($pizza_category['Pizza'])): ?>
 				<tr>
-					<td colspan="6">
+					<td colspan="7">
 						No pizzas in this category
 					</td>
 				</tr>
@@ -70,13 +73,19 @@ if ($isOrderable) {
 					}
 								?></td>
 							<?php endforeach; ?>
+							<?php if ($is_admin): ?>
+								<td><?php echo $this->Html->image('16x16_GIF/reply.gif', array(
+									'alt' => 'Edit pizza',
+									'title' => 'Edit pizza',
+									'url' => array('controller' => 'pizzas', 'action' => 'edit', $pizza['id']))); ?></td>
+							<?php endif; ?>
 						</tr>
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php endif; ?>
-			<?php if ($logged_in && $is_admin): ?>
+			<?php if ($is_admin): ?>
 				<tr>
-					<td colspan="6">
+					<td colspan="7">
 						<?php echo $this->Html->link('New pizza in this category', array('controller' => 'pizzas', 'action' => 'add', $pizza_category['PizzaCategory']['id'])); ?>
 					</td>
 				</tr>
@@ -84,5 +93,5 @@ if ($isOrderable) {
 		</table>
 	<?php endforeach; ?>
 	<div style="clear:both;"></div>
-	<?php // pr($pizza_categories); ?>
+	<?php pr($pizza_categories); ?>
 </div>

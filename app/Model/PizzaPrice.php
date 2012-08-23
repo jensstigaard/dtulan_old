@@ -15,6 +15,14 @@ class PizzaPrice extends AppModel {
 	public $name = 'PizzaPrice';
 	public $belongsTo = array('Pizza', 'PizzaType');
 
+	public $validate = array(
+//		'price' => array(
+//			'required' => array(
+//				'rule' => '/^[0-9]$/',
+//				'message' => 'Invalid price'
+//			)
+//		)
+	);
 }
 
 ?>

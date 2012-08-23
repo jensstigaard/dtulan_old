@@ -36,7 +36,7 @@ $(document).ready(
 		$pizza_order_total = $last_row.find('.pizza_order_total');
 
 
-		$link = $('<a href="#">+</a>').click(
+		$link = $('<a href="#"><img src="img/16x16_GIF/action_add.gif" alt="" /></a>').click(
 			function(event) {
 				event.preventDefault();
 
