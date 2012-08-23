@@ -60,11 +60,9 @@ class LanSignupsController extends AppController {
 				}
 			}
 
-			debug($this->request->data);
-
 			if ($this->LanSignup->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your signup has been saved.');
-//				$this->redirect(array('controller' => 'users', 'action' => 'profile'));
+				$this->redirect(array('controller' => 'users', 'action' => 'profile'));
 			} else {
 				$this->Session->setFlash('Unable to add your signup.');
 			}

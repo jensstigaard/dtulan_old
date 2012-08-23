@@ -65,9 +65,13 @@
 					<tr>
 						<td><?php echo $this->Html->link($lan_signup['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan_signup['Lan']['id'])); ?></td>
 						<td>
-							<?php foreach ($lan_signup['LanSignupDay'] as $day): ?>
-								<?php echo $this->Time->nice($day['LanDay']['date']); ?>,
-							<?php endforeach; ?>
+							<ul>
+
+
+								<?php foreach ($lan_signup['LanSignupDay'] as $day): ?>
+									<li><?php echo $this->Time->format('D M jS', $day['LanDay']['date']); ?></li>
+								<?php endforeach; ?>
+								</ul>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -82,27 +86,27 @@
 				<th>Time</th>
 				<th>Amount</th>
 			</tr>
-			<?php if(!count($user['Payment'])): ?>
-			<tr>
-				<td colspan="2">
-					No payments registered
-				</td>
-			</tr>
-			<?php else: ?>
-			<?php $total_balance = 0; ?>
-			<?php foreach ($user['Payment'] as $payment): ?>
+			<?php if (!count($user['Payment'])): ?>
 				<tr>
-					<td><?php echo $this->Time->nice($payment['time']); ?></td>
-					<td><?php echo $payment['amount']; ?></td>
+					<td colspan="2">
+						No payments registered
+					</td>
 				</tr>
-				<?php $total_balance += $payment['amount'];
-				?>
+			<?php else: ?>
+				<?php $total_balance = 0; ?>
+				<?php foreach ($user['Payment'] as $payment): ?>
+					<tr>
+						<td><?php echo $this->Time->nice($payment['time']); ?></td>
+						<td><?php echo $payment['amount']; ?></td>
+					</tr>
+					<?php $total_balance += $payment['amount'];
+					?>
 
-			<?php endforeach; ?>
-			<tr>
-				<td>Total payments: <?php echo $total_balance; ?></td>
-				<td><?php echo count($user['Payment']); ?></td>
-			</tr>
+				<?php endforeach; ?>
+				<tr>
+					<td>Total payments: <?php echo $total_balance; ?></td>
+					<td><?php echo count($user['Payment']); ?></td>
+				</tr>
 			<?php endif; ?>
 		</table>
 	</div>

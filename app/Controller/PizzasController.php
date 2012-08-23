@@ -33,7 +33,7 @@ class PizzasController extends AppController {
 			debug($this->request->data);
 //
 //			if ($this->Pizza->save($this->request->data)) {
-//				$this->Session->setFlash('Your payment has been saved.');
+//				$this->Session->setFlash('Your pizza has been saved.');
 //				$this->redirect(array('controller' => 'pizza_categories', 'action' => 'index'));
 //			} else {
 //				$this->Session->setFlash('Unable to add your pizza.');
