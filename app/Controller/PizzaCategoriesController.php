@@ -49,6 +49,7 @@ class PizzaCategoriesController extends AppController {
 		}
 
 		$this->set('pizza_categories', $data_category);
+		$this->set('isOrderable', $this->Auth->loggedIn());
 //		$this->set('pizza_prices', $data_prices);
 	}
 

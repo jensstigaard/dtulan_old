@@ -14,9 +14,9 @@ class Pizza extends AppModel {
 
 	public $name = 'Pizza';
 	public $hasMany = 'PizzaPrice';
-//	public $belongsTo = array(
-//		'PizzaCategory'
-//	);
+	public $belongsTo = array(
+		'PizzaCategory'
+	);
 	public $validate = array(
 		'title' => array(
 			'required' => array(

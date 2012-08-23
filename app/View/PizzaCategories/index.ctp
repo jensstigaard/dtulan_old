@@ -1,5 +1,4 @@
 <?php
-$isOrderable = true;
 echo $this->Html->css('pizzas', null, array('inline' => false));
 
 if ($isOrderable) {
@@ -10,7 +9,7 @@ if ($isOrderable) {
 <div class="form">
 	<div style="float:right;">
 		<?php if ($logged_in && $is_admin): ?>
-			<?php echo $this->Html->link('New pizza', array('action' => 'add')); ?>
+			<?php echo $this->Html->link('New pizza category', array('action' => 'add')); ?>
 		<?php endif; ?>
 	</div>
 
@@ -48,25 +47,42 @@ if ($isOrderable) {
 					<th><?php echo $type['PizzaType']['title_short']; ?></th>
 				<?php endforeach; ?>
 			</tr>
-			<?php foreach ($pizza_category['Pizza'] as $pizza): ?>
-				<tr class="pizza_item">
-					<td class="number"><?php echo $pizza['number']; ?></td>
-					<td class="title"><?php echo $pizza['title']; ?></td>
-					<td class="desc"><?php echo $pizza['description']; ?></td>
-					<?php
-					foreach ($pizza['Prices'] as $price_type_id => $price_info):
-						?>
-						<td class="price"><?php
-			if ($price_info['price'] != 0) {
-				echo'<span>' . $price_info['price'] . '</span>,- ';
-				echo'<span class="hidden price_id">' . $price_info['id'] . '</span>';
-			}
-						?></td>
-					<?php endforeach; ?>
+			<?php if (!count($pizza_category['Pizza'])): ?>
+				<tr>
+					<td colspan="6">
+						No pizzas in this category
+					</td>
 				</tr>
-			<?php endforeach; ?>
+			<?php else: ?>
+				<?php foreach ($pizza_category['Pizza'] as $pizza): ?>
+					<?php if ($pizza['available'] || $isAdmin): ?>
+						<tr class="pizza_item">
+							<td class="number"><?php echo $pizza['number']; ?></td>
+							<td class="title"><?php echo $pizza['title']; ?></td>
+							<td class="desc"><?php echo $pizza['description']; ?></td>
+							<?php
+							foreach ($pizza['Prices'] as $price_type_id => $price_info):
+								?>
+								<td class="price"><?php
+					if ($price_info['price'] != 0) {
+						echo'<span>' . $price_info['price'] . '</span>,- ';
+						echo'<span class="hidden price_id">' . $price_info['id'] . '</span>';
+					}
+								?></td>
+							<?php endforeach; ?>
+						</tr>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			<?php endif; ?>
+			<?php if ($logged_in && $is_admin): ?>
+				<tr>
+					<td colspan="6">
+						<?php echo $this->Html->link('New pizza in this category', array('controller' => 'pizzas', 'action' => 'add', $pizza_category['PizzaCategory']['id'])); ?>
+					</td>
+				</tr>
+			<?php endif; ?>
 		</table>
 	<?php endforeach; ?>
 	<div style="clear:both;"></div>
-	<?php pr($pizza_categories); ?>
+	<?php // pr($pizza_categories); ?>
 </div>
