@@ -3,8 +3,8 @@
     <fieldset>
         <legend><?php echo __('Signup for ' . $lan['Lan']['title']); ?></legend>
 		<ul>
-			<li>Start time: <?php echo $this->Time->format('l F jS Y H:i', $lan['Lan']['time_start']); ?></li>
-			<li>End time: <?php echo $this->Time->format('l F jS Y H:i', $lan['Lan']['time_end']); ?></li>
+			<li>Start time: <?php echo $this->Time->nice($lan['Lan']['time_start']); ?></li>
+			<li>End time: <?php echo $this->Time->nice($lan['Lan']['time_end']); ?></li>
 		</ul>
 		<br /><hr />
 		<h2>Select attending days</h2>

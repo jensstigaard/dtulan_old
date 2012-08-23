@@ -29,7 +29,11 @@ $(document).ready(
 
 		$pizza_order = $(".pizza_order");
 
-		$pizza_order_total = $(".pizza_order").find('.pizza_order_total');
+		$table = $pizza_order.find('table');
+
+		$last_row = $table.find('tr:last-child');
+
+		$pizza_order_total = $last_row.find('.pizza_order_total');
 
 
 		$link = $('<a href="#">+</a>').click(
@@ -116,6 +120,33 @@ $(document).ready(
 			event.preventDefault();
 			clearOrder();
 		});
+
+
+
+		$delete_icon = $('<a href="#">' +
+			'<img src="img/16x16_GIF/action_remove.gif" alt="" />' +
+			'</a>').click(function(event){
+			event.preventDefault();
+
+			$row = $(this).closest('tr');
+
+			console.log($row);
+
+			var price_id	= $row.find('td:first-child').attr('class');
+			var price_value = $row.find('td:nth-child(4)').text()/$row.find('td:first-child').text();
+
+			decreaseTotal(price_value);
+			order_list[price_id].amount--;
+
+			if(order_list[price_id].amount>0){
+				$row.find('td:first-child').text(order_list[price_id].amount);
+				$row.find('td:nth-child(4)').text(price_value * order_list[price_id].amount);
+			}
+			else{
+				delete order_list[price_id];
+				removePizzaFromOrderList(price_id);
+			}
+		});
 	});
 
 
@@ -146,46 +177,23 @@ function addPizzaToOrderList(pizza){
 	}
 
 	if(order_list[pizza.price_id].amount == 1){
-		$row = $('<tr></tr>').addClass('pizza_order_item pizza_order_' + pizza.price_id).attr('title', pizza.desc);
+		$row = $('<tr></tr>').addClass('pizza_order_item pizza_order_row_'+pizza.price_id).attr('title', pizza.desc);
 
-		$('<td>' + order_list[pizza.price_id].amount + '</td>' +
+		$('<td class="'+pizza.price_id+'">' + order_list[pizza.price_id].amount + '</td>' +
 			'<td>x</td>' +
 			'<td>' + pizza.title +' <small>('+ pizza.type_value +')</small></td>' +
 			'<td>' + (pizza.price_value * order_list[pizza.price_id].amount) +'</td>' +
 			'<td>DKK</td>'  +
-			'<td></td>'  +
-			'').appendTo($row);
+			'<td></td>'
+			).appendTo($row);
 
-		var $link = $('<a href="#">' +
-			'<img src="img/16x16_GIF/action_remove.gif" alt="" />' +
-			'</a>').click(function(event){
-			event.preventDefault();
+		$delete_icon.clone(true, true).appendTo($row.find('td:last-child'));
 
-			decreaseTotal(pizza.price_value);
-			order_list[pizza.price_id].amount--;
-
-			if(order_list[pizza.price_id].amount>0){
-				$row.find('td:nth-child(1)').text(order_list[pizza.price_id].amount);
-				$row.find('td:nth-child(4)').text(pizza.price_value * order_list[pizza.price_id].amount);
-			}
-			else{
-				delete order_list[pizza.price_id];
-				removePizzaFromOrderList(pizza.price_id);
-
-				if(orderListSize() == 0)
-					$pizza_order.stop(true, true).hide('fadeout');
-			}
-		}).appendTo($row.find('td:last-child'));
-
-		$table = $pizza_order.find('table tr:last-child').before($row);
-
-		$link.appendTo($row.find('td:last-child'));
-
-		$link.addClass('remove_pizza');
+		$last_row.before($row);
 	}
 	else if(order_list[pizza.price_id].amount<=5){
-		$pizza_order.find("tr.pizza_order_" + pizza.price_id + " td:first-child").text(order_list[pizza.price_id].amount);
-		$pizza_order.find("tr.pizza_order_" + pizza.price_id + " td:nth-child(4)").text((pizza.price_value * order_list[pizza.price_id].amount));
+		$table.find("tr.pizza_order_row_" + pizza.price_id + " td:first-child").text(order_list[pizza.price_id].amount);
+		$table.find("tr.pizza_order_row_" + pizza.price_id + " td:nth-child(4)").text((pizza.price_value * order_list[pizza.price_id].amount));
 
 		if(order_list[pizza.price_id].amount<5)
 			updatePizzaOrderRow(pizza.price_id);
@@ -222,7 +230,7 @@ function clearOrder(){
 
 
 function removePizzaFromOrderList(pizza_price_id){
-	$pizza_order.find(".pizza_order_" + pizza_price_id).remove();
+	$table.find(".pizza_order_row_" + pizza_price_id).remove();
 }
 
 function decreaseTotal(price){

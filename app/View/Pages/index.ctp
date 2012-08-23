@@ -33,8 +33,8 @@
 							'Delete', array('action' => 'delete', $page['Page']['id']), array('confirm' => 'Are you sure?'));
 					?>
 				</td>
-				<td><?php echo $page['Page']['time_created']; ?><br /><small>(<?php echo $page['CreatedBy']['name']; ?>)</small></td>
-				<td><?php echo $page['Page']['time_latest_update']; ?><br /><small>(<?php echo $page['LatestUpdateBy']['name']; ?>)</small></td>
+				<td><?php echo $this->Time->nice($page['Page']['time_created']); ?><br /><small>(<?php echo $page['CreatedBy']['name']; ?>)</small></td>
+				<td><?php echo $this->Time->nice($page['Page']['time_latest_update']); ?><br /><small>(<?php echo $page['LatestUpdateBy']['name']; ?>)</small></td>
 			</tr>
 		<?php endforeach; ?>
 

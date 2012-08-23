@@ -22,10 +22,8 @@ if ($isOrderable) {
 			<?php echo $this->Form->create('Pizza_order'); ?>
 			<table>
 				<tr>
-					<th colspan="2"></th>
-					<th>Pizza</th>
-					<th colspan="2">Price</th>
-					<th></th>
+					<th colspan="3">Pizza</th>
+					<th colspan="3">Price</th>
 				</tr>
 				<tr>
 					<td colspan="6"></td>

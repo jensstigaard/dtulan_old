@@ -72,7 +72,7 @@ class LanSignupsController extends AppController {
 
 		$lan_days = array();
 		foreach ($lan['LanDay'] as $lan_day) {
-			$lan_days[$lan_day['id']] = CakeTime::format('l F jS Y', $lan_day['date']);
+			$lan_days[$lan_day['id']] = CakeTime::nice($lan_day['date']);
 		}
 
 		$this->set(compact('lan', 'lan_days', 'user'));

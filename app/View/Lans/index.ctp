@@ -24,8 +24,8 @@
 				<td><?php echo count($lan['LanSignup']); ?></td>
 				<td><?php echo $lan['Lan']['max_participants']; ?></td>
 				<td><?php echo $lan['Lan']['max_guests_per_student']; ?></td>
-				<td><?php echo $lan['Lan']['time_start']; ?></td>
-				<td><?php echo $lan['Lan']['time_end']; ?></td>
+				<td><?php echo $this->Time->nice($lan['Lan']['time_start']); ?></td>
+				<td><?php echo $this->Time->nice($lan['Lan']['time_end']); ?></td>
 				<td><strong style="color:<?php echo $lan['Lan']['published'] == '0' ? 'red;">No' : 'green;">Yes'; ?></strong></td>
 							<td><strong style="color:<?php echo $lan['Lan']['sign_up_open'] == '0' ? 'red;">No' : 'green;">Yes'; ?></strong></td>
 				<td>
