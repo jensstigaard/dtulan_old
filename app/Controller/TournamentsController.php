@@ -13,6 +13,24 @@ class TournamentsController extends AppController {
 		
 		$this->set('tournament', $this->Tournament->read());
 	}
+	public function add() {
+		
+		if ($this->request->is('post')) {
+			
+			if ($this->Tournament->save($this->request->data)) {
+				$this->Session->setFlash('Your Tournament has been created.');
+				//$this->redirect(array('action' => 'index'));
+			} else {
+				$this->Session->setFlash('Unable to create your tournament.');
+			}
+		}
+		
+		$this->set('lans', $this->Tournament->Lan->find('list'));
+		$this->set('games', $this->Tournament->Game->find('list'));
+		
+		
+		
+	}
 	
 }
 ?>

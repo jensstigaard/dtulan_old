@@ -7,7 +7,6 @@
 
 
 			<li><?php echo $this->Html->link('Profile', array('controller' => 'users', 'action' => 'profile')); ?></li>
-			<li><?php echo $this->Html->link('Tournament', array('controller' => 'tournaments', 'action' => 'view')); ?></li>
 			<li><?php echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout')); ?></li>
 			<?php if ($is_admin): ?>
 			</ul>
@@ -18,6 +17,7 @@
 				<li><?php echo $this->Html->link('Pages', array('controller' => 'pages', 'action' => 'index')); ?></li>
 				<li><?php echo $this->Html->link('Pizzas', array('controller' => 'pizzacategories', 'action' => 'index')); ?></li>
 				<li><?php echo $this->Html->link('Payments', array('controller' => 'payments', 'action' => 'index')); ?></li>
+				<li><?php echo $this->Html->link('Tournaments', array('controller' => 'tournaments', 'action' => 'add')); ?></li>
 			<?php endif; ?>
 		</ul>
 
