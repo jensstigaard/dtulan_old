@@ -7,6 +7,7 @@
 
 
 			<li><?php echo $this->Html->link('Profile', array('controller' => 'users', 'action' => 'profile')); ?></li>
+			<li><?php echo $this->Html->link('Tournament', array('controller' => 'tournaments', 'action' => 'view')); ?></li>
 			<li><?php echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout')); ?></li>
 			<?php if ($is_admin): ?>
 			</ul>

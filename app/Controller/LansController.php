@@ -77,7 +77,7 @@ class LansController extends AppController {
 	public function view($id = null) {
 		$this->Lan->id = $id;
 
-		$this->Lan->recursive = 2;
+		$this->Lan->recursive = 3;
 		$this->set('lan', $this->Lan->read());
 	}
 
