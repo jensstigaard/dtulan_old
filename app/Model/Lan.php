@@ -3,7 +3,7 @@
 class Lan extends AppModel {
 
 	public $name = 'Lan';
-	public $hasMany = array('LanSignup', 'LanDay');
+	public $hasMany = array('LanSignup', 'LanDay', 'Tournament');
 	public $validate = array(
 		'title' => array(
 			'required' => array(

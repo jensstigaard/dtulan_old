@@ -22,5 +22,24 @@
 			</tr>
 		<?php endforeach; ?>
 	</table>
-	<?php // pr($lan); ?>
+	
+	<h2>Tournaments (<?php echo count($lan['Tournament']); ?>)</h2>
+	<?php // echo $this->Html->link('User lookup', array('action' => 'lookup')); ?>
+	<table>
+		<tr>
+			<th>Title:</th>
+			<th>Game title:</th>
+			<th>Max team size:</th>
+			<th>Participants:</th>
+		</tr>
+		<?php foreach ($lan['Tournament'] as $tournament): ?>
+			<tr>
+				<td><?php echo $this->Html->link($tournament['title'], array('controller'=>'tournaments','action' => 'view', $tournament['id'])); ?></td>
+				<td><?php echo $tournament['Game']['title'] ?></td>
+				<td><?php echo $tournament['max_team_size'] ?></td>
+				<td><?php  //Participants	 ?></td>
+			</tr>
+		<?php endforeach; ?>
+	</table>
+	<?php  pr($lan); ?>
 </div>
