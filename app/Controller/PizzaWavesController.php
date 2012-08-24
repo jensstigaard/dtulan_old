@@ -7,7 +7,6 @@ class PizzaWavesController extends AppController {
 	public $uses = 'PizzaWave';
 
 	public function index() {
-		debug($this);
 		$this->set('pizzaWaves', $this->PizzaWave->find('all'));
 	}
 
