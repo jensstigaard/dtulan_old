@@ -14,8 +14,20 @@ class PizzaCategory extends AppModel {
 
 	public $name = 'PizzaCategory';
 	public $hasMany = array(
-		'Pizza',
-		'PizzaCategoryType'
+		'Pizza'
+	);
+	public $hasAndBelongsToMany = array(
+		'PizzaType' => array(
+			'joinTable' => 'pizza_category_types'
+		)
+	);
+	public $validate = array(
+		'title' => array(
+			'not empty' => array(
+				'rule' => array('notEmpty'),
+				'message' => 'Title cannot be empty'
+			)
+		)
 	);
 
 }

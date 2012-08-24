@@ -25,7 +25,7 @@ class PizzaCategoriesController extends AppController {
 			array(
 				'PizzaCategory.available' => 1
 			),
-			'recursive' => 2)
+			'recursive' => 3)
 		);
 
 		$data_prices = array();
@@ -36,16 +36,16 @@ class PizzaCategoriesController extends AppController {
 					$data_prices[$price['pizza_type_id']][$pizza['id']]['pizza_price_id'] = $price['id'];
 				}
 
-				foreach ($category['PizzaCategoryType'] as $type) {
+				foreach ($category['PizzaType'] as $type) {
 					$price = 0;
-					if (isset($data_prices[$type['PizzaType']['id']][$pizza['id']])) {
-						$price = $data_prices[$type['PizzaType']['id']][$pizza['id']]['price'];
-						$id = $data_prices[$type['PizzaType']['id']][$pizza['id']]['pizza_price_id'];
+					if (isset($data_prices[$type['id']][$pizza['id']])) {
+						$price = $data_prices[$type['id']][$pizza['id']]['price'];
+						$id = $data_prices[$type['id']][$pizza['id']]['pizza_price_id'];
 					}
-					$data_category[$category_id]['Pizza'][$pizza_id]['Prices'][$type['PizzaType']['id']]['price'] = $price;
+					$data_category[$category_id]['Pizza'][$pizza_id]['Prices'][$type['id']]['price'] = $price;
 
 					if (isset($id) && $id > 0) {
-						$data_category[$category_id]['Pizza'][$pizza_id]['Prices'][$type['PizzaType']['id']]['id'] = $id;
+						$data_category[$category_id]['Pizza'][$pizza_id]['Prices'][$type['id']]['id'] = $id;
 					}
 				}
 			}
@@ -53,6 +53,27 @@ class PizzaCategoriesController extends AppController {
 
 		$this->set('pizza_categories', $data_category);
 		$this->set('isOrderable', $this->Auth->loggedIn());
+	}
+
+
+	public function add(){
+		if ($this->request->is('post')) {
+
+//			debug($this->request->data);
+
+			if ($this->PizzaCategory->saveAssociated($this->request->data)) {
+				$this->Session->setFlash('Your category has been created.');
+				//$this->redirect(array('action' => 'index'));
+			} else {
+				$this->Session->setFlash('Unable to create category.');
+			}
+		}
+
+		$this->set('types', $this->PizzaCategory->PizzaCategoryType->find('list'));
+	}
+
+	public function edit($id = null){
+
 	}
 
 }

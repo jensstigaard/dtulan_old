@@ -43,11 +43,20 @@ if ($isOrderable) {
 				<th colspan="3"><?php echo $pizza_category['PizzaCategory']['title']; ?><br />
 					<small><?php echo $pizza_category['PizzaCategory']['description'] ?></small>
 				</th>
-				<?php foreach ($pizza_category['PizzaCategoryType'] as $type): ?>
-					<th><?php echo $type['PizzaType']['title_short']; ?></th>
+				<?php foreach ($pizza_category['PizzaType'] as $type): ?>
+					<th><?php echo $type['title_short']; ?></th>
 				<?php endforeach; ?>
 				<?php if ($is_admin): ?>
-					<th><small>Admin</small></th>
+					<th><?php
+			echo $this->Html->image('16x16_GIF/reply.gif', array(
+				'alt' => 'Edit category',
+				'title' => 'Edit category',
+				'url' => array(
+					'controller' => 'pizza_categories',
+					'action' => 'edit', $pizza_category['PizzaCategory']['id'])
+					)
+			);
+					?></th>
 				<?php endif; ?>
 			</tr>
 			<?php if (!count($pizza_category['Pizza'])): ?>
@@ -74,10 +83,12 @@ if ($isOrderable) {
 								?></td>
 							<?php endforeach; ?>
 							<?php if ($is_admin): ?>
-								<td><?php echo $this->Html->image('16x16_GIF/reply.gif', array(
-									'alt' => 'Edit pizza',
-									'title' => 'Edit pizza',
-									'url' => array('controller' => 'pizzas', 'action' => 'edit', $pizza['id']))); ?></td>
+								<td><?php
+					echo $this->Html->image('16x16_GIF/reply.gif', array(
+						'alt' => 'Edit pizza',
+						'title' => 'Edit pizza',
+						'url' => array('controller' => 'pizzas', 'action' => 'edit', $pizza['id'])));
+								?></td>
 							<?php endif; ?>
 						</tr>
 					<?php endif; ?>
