@@ -1,11 +1,9 @@
 <?php
-
 class PizzaWave extends AppModel {
 
-        public $name = 'PizzaWave';
-	public $hasMany = 'Order';
-	public $belongsTo = 'Lan';
-	
+	public $hasMany = array('Order');
+	public $belongsTo = array('Lan');
+
 	public $validate = array(
 		'time_start' => array(
 			'bigger than end' => array(
@@ -14,9 +12,9 @@ class PizzaWave extends AppModel {
 			)
 		)
 	);
-        
-        public function validateDates($check){
-		if($check['time_start'] >= $this->data['Lan']['time_end']){
+
+	public function validateDates($check) {
+		if ($check['time_start'] >= $this->data['Lan']['time_end']) {
 			$this->invalidate('time_end', 'Invalid start-/end-time');
 			return false;
 		}
@@ -24,7 +22,3 @@ class PizzaWave extends AppModel {
 	}
 
 }
-
-
-
-?>

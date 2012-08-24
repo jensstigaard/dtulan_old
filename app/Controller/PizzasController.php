@@ -83,7 +83,7 @@ class PizzasController extends AppController {
 				}
 			}
 
-			debug($this->request->data);
+//			debug($this->request->data);
 
 			if ($this->Pizza->save($this->request->data)) {
 				$this->Pizza->PizzaPrice->deleteAll(array('PizzaPrice.pizza_id' => $id), false);
@@ -98,7 +98,7 @@ class PizzasController extends AppController {
 			$this->request->data = $this->Pizza->read(null, $id);
 		}
 
-		$this->Pizza->recursive = 3;
+		$this->Pizza->recursive = 2;
 		$this->set('pizza', $this->Pizza->read());
 	}
 

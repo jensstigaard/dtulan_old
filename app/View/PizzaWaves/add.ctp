@@ -1,5 +1,5 @@
 <div class="form">
-	<?php echo $this->Form->create('PizzaWave'); ?>
+	<?php echo $this->Form->create(); ?>
     <fieldset>
         <legend><?php echo __('Create PizzaWave'); ?></legend>
 		<?php

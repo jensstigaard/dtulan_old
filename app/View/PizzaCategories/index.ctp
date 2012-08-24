@@ -104,5 +104,5 @@ if ($isOrderable) {
 		</table>
 	<?php endforeach; ?>
 	<div style="clear:both;"></div>
-	<?php pr($pizza_categories); ?>
+	<?php // pr($pizza_categories); ?>
 </div>

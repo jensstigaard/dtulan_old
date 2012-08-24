@@ -18,18 +18,18 @@
 				<tr>
 					<?php
 					$x = 0;
-					foreach ($pizza['PizzaCategory']['PizzaCategoryType'] as $type):
+					foreach ($pizza['PizzaCategory']['PizzaType'] as $type):
 						?>
 						<td>
-							<div style="text-align:center;margin:0;padding:0;"><?php echo $type['PizzaType']['title']; ?></div>
+							<div style="text-align:center;margin:0;padding:0;"><?php echo $type['title']; ?></div>
 							<?php
 							$price_value = '';
 							foreach($pizza['PizzaPrice'] as $price){
-								if($price['pizza_type_id'] == $type['pizza_type_id']){
+								if($price['pizza_type_id'] == $type['id']){
 									$price_value = $price['price'];
 								}
 							}
-							echo $this->Form->input('PizzaPrice.' . $type['pizza_type_id'] . '.price', array('label' => '', 'value' => $price_value));
+							echo $this->Form->input('PizzaPrice.' . $type['id'] . '.price', array('label' => '', 'value' => $price_value));
 							$x++;
 							?>
 						</td>

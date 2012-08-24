@@ -31,7 +31,7 @@
 /**
  * ...and connect the rest of 'Pages' controller's urls.
  */
-	Router::connect('/pizzas', array('controller' => 'pizzacategories'));
+	Router::connect('/pizzas', array('controller' => 'pizza_categories'));
 
 /**
  * Load all plugin routes.  See the CakePlugin documentation on

@@ -61,11 +61,8 @@ class PizzaCategoriesController extends AppController {
 			foreach($this->request->data['PizzaType'] as $type_id => $type_data){
 				if(!$type_data['pizza_type_id'] > 0){
 					unset($this->request->data['PizzaType'][$type_id]);
-					//$this->request->data['PizzaCategoryType'][$type_id]['pizza']
 				}
 			}
-
-			debug($this->request->data);
 
 			if ($this->PizzaCategory->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your category has been created.');

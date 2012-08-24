@@ -3,9 +3,8 @@
 	<p><?php echo $this->Html->link('Add Page', array('action' => 'add')); ?></p>
 	<table>
 		<tr>
-			<th>Id</th>
+			<th><small>Type</small></th>
 			<th>Title</th>
-			<th>Type</th>
 			<th>Public</th>
 			<th>Actions</th>
 			<th>Created</th>
@@ -16,12 +15,23 @@
 
 		<?php foreach ($pages as $page): ?>
 			<tr>
-				<td><?php echo $page['Page']['id']; ?></td>
-				<td>
-					<?php echo $this->Html->link($page['Page']['title'], array('action' => 'view', $page['Page']['id'])); ?>
+				<td style="text-align: center;">
+					<?php
+					switch($page['Page']['command']){
+						case'uri':
+							$img = 'application';
+							$title = 'URI';
+							break;
+						default:
+							$img = 'file';
+							$title = 'Text';
+							break;
+					}
+					echo $this->Html->image('16x16_GIF/'.$img.'.gif', array('title' => $title));
+					?>
 				</td>
 				<td>
-					<?php echo ucfirst($page['Page']['command']); ?>
+					<?php echo $this->Html->link($page['Page']['title'], array('action' => 'view', $page['Page']['id'])); ?>
 				</td>
 				<td>
 					<?php echo $page['Page']['public'] ? 'Yes' : 'No'; ?>
