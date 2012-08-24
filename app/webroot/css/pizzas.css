@@ -1,0 +1,42 @@
+div.pizza_order{
+	width:32%;
+	float:right;
+	border:1px solid #CCC;
+	padding:5px;
+}
+
+div.pizza_order table tr:first-child th{
+	text-align:center;
+}
+
+div.pizza_order table td:nth-child(4), div.pizza_order table tr:last-child td:nth-child(2){
+	text-align:right;
+}
+
+table.pizza_list{
+	width:66%;
+	clear:none;
+	margin-bottom:20px;
+}
+
+table.pizza_list tr.pizza_category th{
+
+}
+
+table.pizza_list tr.pizza_item td .hidden{
+	display: none;
+}
+
+table.pizza_list tr.pizza_item td a{
+	visibility: hidden;
+	opacity: .6;
+}
+
+table.pizza_list tr.pizza_item:hover td a{
+	visibility: visible;
+}
+
+table.pizza_list tr.pizza_item td a:hover{
+	opacity: 1;
+}
+

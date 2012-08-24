@@ -43,7 +43,10 @@ class LansController extends AppController {
 
 	public function add() {
 		if ($this->request->is('post')) {
-			if ($this->Lan->save($this->request->data)) {
+			$this->request->data['LanDay'] = $this->Lan->getLanDays($this->request->data['Lan']['time_start'], $this->request->data['Lan']['time_end']);
+
+
+			if ($this->Lan->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your Lan has been saved.');
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -54,36 +57,33 @@ class LansController extends AppController {
 
 	public function edit($id = null) {
 		$this->Lan->id = $id;
-        if (!$this->Lan->exists()) {
-            throw new NotFoundException(__('Invalid Lan'));
-        }
+		if (!$this->Lan->exists()) {
+			throw new NotFoundException(__('Invalid Lan'));
+		}
 
-		$this->set('lan', $this->Lan->read(null, $id));
-
-        if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Lan->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved'));
-                $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('The Lan could not be saved. Please, try again.'));
-            }
-        } else {
-            $this->request->data = $this->Lan->read(null, $id);
-        }
+		if ($this->request->is('post') || $this->request->is('put')) {
+			if ($this->Lan->save($this->request->data)) {
+				$this->Session->setFlash(__('The LAN has been saved'));
+//				$this->redirect(array('action' => 'index'));
+			} else {
+				$this->Session->setFlash(__('The Lan could not be saved. Please, try again.'));
+			}
+		} else {
+			$this->request->data = $this->Lan->read(null, $id);
+		}
 	}
 
-	public function view($id = null){
+	public function view($id = null) {
 		$this->Lan->id = $id;
 
-		$this->Lan->recursive = 1;
+		$this->Lan->recursive = 3;
 		$this->set('lan', $this->Lan->read());
 	}
 
-
-	public function lookup($id = null){
+	public function lookup($id = null) {
 		$this->Lan->id = $id;
 
-		if(!$this->Lan->exists()){
+		if (!$this->Lan->exists()) {
 			throw new NotFoundException('Lan not found');
 		}
 

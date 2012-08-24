@@ -6,17 +6,17 @@
  */
 
 /**
- * Description of PizzaTypeCategory
+ * Description of LanSignup
  *
  * @author Jens
  */
-class PizzaCategoryType extends AppModel {
+class LanSignup extends AppModel {
 
-	public $name = 'PizzaCategoryType';
 	public $belongsTo = array(
-		//'PizzaCategory',
-		'PizzaType'
+		'User', 'Lan'
 	);
+
+	public $hasMany = array('LanSignupDay');
 
 }
 

@@ -13,8 +13,10 @@
 class PizzaType extends AppModel {
 
 	public $name = 'PizzaType';
-	public $hasMany = array(
-		'PizzaCategoryType'
+	public $hasAndBelongsToMany = array(
+		'PizzaCategory' => array(
+			'joinTable' => 'pizza_category_types'
+		)
 	);
 
 }
