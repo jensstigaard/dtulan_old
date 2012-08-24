@@ -10,9 +10,9 @@
  *
  * @author Superkatten
  */
-class Tournament extends AppModel {
-	public $belongsTo = array('Lan', 'Game');
-	public $hasAndBelongsToMany = array('Team' => array('joinTable' => 'tournament_teams'));
+class Team extends AppModel {
+	public $hasAndBelongsToMany = array('Tournament' => array('joinTable' => 'tournament_teams'));
+	public $hasMany = array('TeamUsers');
 }
 
 ?>

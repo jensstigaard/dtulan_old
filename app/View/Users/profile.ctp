@@ -44,9 +44,33 @@
 			<?php endif; ?>
 		</ul>
 	</div>
+	<?php
+	/*
+	  Teams that this profile is part of
+	 */
+	?>
+	<div>
+		<h3>Teams:</h3>
+		<table>
+			<tr>
+				<th>Team Name</th>
+			</tr>
+			<tr>
+			</tr>
+			<?php foreach ($user['TeamUser'] as $team_user): ?>
+				<tr>
+					<td><?php echo $this->Html->link($team_user['Team']['name'], array('controller' => 'teams', 'action' => 'view', $team_user['Team']['name'])); ?></td>
+					
+				</tr>
+			<?php endforeach; ?>
 
-
-
+		</table>
+	</div>
+	<?php
+	/*
+	  Lans that this profile is part of
+	 */
+	?>
 	<div>
 		<h3>LANs:</h3>
 		<table>
@@ -71,7 +95,7 @@
 								<?php foreach ($lan_signup['LanSignupDay'] as $day): ?>
 									<li><?php echo $this->Time->format('D M jS', $day['LanDay']['date']); ?></li>
 								<?php endforeach; ?>
-								</ul>
+							</ul>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -111,6 +135,6 @@
 		</table>
 	</div>
 
-	<?php // pr($user); ?>
+	<?php  //pr($user); ?>
 	<?php // pr($next_lan); ?>
 </div>

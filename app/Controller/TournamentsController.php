@@ -10,7 +10,7 @@ class TournamentsController extends AppController {
 
 		$this->Tournament->id = $id;
 
-		
+		$this->Tournament->recursive = 2;
 		$this->set('tournament', $this->Tournament->read());
 	}
 	public function add() {
