@@ -11,8 +11,22 @@
  * @author Superkatten
  */
 class Team extends AppModel {
-	public $hasAndBelongsToMany = array('Tournament' => array('joinTable' => 'tournament_teams'));
-	public $hasMany = array('TeamUsers');
+
+	public $hasMany = array('TeamInvite');
+	public $hasAndBelongsToMany = array('User' => array(
+			'joinTable' => 'team_users'
+		)
+	);
+	public $belongsTo = array('Tournament');
+	public $validate = array(
+		'name' => array(
+			'required' => array(
+				'rule' => array('notEmpty'),
+				'message' => 'invalid Team name'
+			)
+		)
+	);
+
 }
 
 ?>
