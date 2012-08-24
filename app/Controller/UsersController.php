@@ -207,7 +207,18 @@ class UsersController extends AppController {
 	}
 
 	public function login() {
-		if ($this->request->is('post')) {
+		if($this->request->is('post') && $this->request->accepts("application/vnd.dtulan+json; version=1.0")) {
+			$this->response->header(array('content-type: application/json'));
+			$this->render('API/response');
+			$data = array();
+			if($this->Auth->login()) {
+				$this->set('succes', 'true');
+				$this->set($data, array('access_token' => $this->Auth->user('access_token')));
+			} else {
+				$this->set('succes', 'false');
+				$this->set($data, array('message' => _('Invalid email or password!')));
+			}
+		} elseif ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 				$this->Session->setFlash(__('You are now logged in'));
 
