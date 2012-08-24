@@ -55,11 +55,17 @@ class PizzaCategoriesController extends AppController {
 		$this->set('isOrderable', $this->Auth->loggedIn());
 	}
 
-
-	public function add(){
+	public function add() {
 		if ($this->request->is('post')) {
 
-//			debug($this->request->data);
+			foreach($this->request->data['PizzaType'] as $type_id => $type_data){
+				if(!$type_data['pizza_type_id'] > 0){
+					unset($this->request->data['PizzaType'][$type_id]);
+					//$this->request->data['PizzaCategoryType'][$type_id]['pizza']
+				}
+			}
+
+			debug($this->request->data);
 
 			if ($this->PizzaCategory->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your category has been created.');
@@ -69,10 +75,10 @@ class PizzaCategoriesController extends AppController {
 			}
 		}
 
-		$this->set('types', $this->PizzaCategory->PizzaCategoryType->find('list'));
+		$this->set('types', $this->PizzaCategory->PizzaType->find('list'));
 	}
 
-	public function edit($id = null){
+	public function edit($id = null) {
 
 	}
 
