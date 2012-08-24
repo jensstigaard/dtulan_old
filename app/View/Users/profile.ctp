@@ -50,17 +50,18 @@
 	 */
 	?>
 	<div>
-		<h3>Teams:</h3>
+		<h3>Teams you're in:</h3>
 		<table>
 			<tr>
-				<th>Team Name</th>
+				<th>Name</th>
+				<th>Leader</th>
+				<th>MemberCount</th>
 			</tr>
-			<tr>
-			</tr>
-			<?php foreach ($user['TeamUser'] as $team_user): ?>
+			<?php foreach ($user['Team'] as $team): ?>
 				<tr>
-					<td><?php echo $this->Html->link($team_user['Team']['name'], array('controller' => 'teams', 'action' => 'view', $team_user['Team']['name'])); ?></td>
-					
+					<td><?php echo $this->Html->link($team['name'], array('controller' => 'teams', 'action' => 'view', $team['id'])); ?></td>
+					<td><?php //Leader ?></td>
+					<td><?php //Member count ?> </td>
 				</tr>
 			<?php endforeach; ?>
 
@@ -135,6 +136,6 @@
 		</table>
 	</div>
 
-	<?php  //pr($user); ?>
+	<?php  pr($user); ?>
 	<?php // pr($next_lan); ?>
 </div>

@@ -12,7 +12,7 @@
  */
 class Tournament extends AppModel {
 	public $belongsTo = array('Lan', 'Game');
-	public $hasAndBelongsToMany = array('Team' => array('joinTable' => 'tournament_teams'));
+	public $hasMany = array('Team');
 }
 
 ?>
