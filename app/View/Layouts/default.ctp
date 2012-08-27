@@ -53,7 +53,7 @@
 				</div>
 			</div>
 
-			<?php // echo $this->element('sql_dump'); ?>
+			<?php echo $this->element('sql_dump'); ?>
 
 <!--		<pre><?php // print_r($current_user);          ?></pre>-->
 		</div>

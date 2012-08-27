@@ -1,4 +1,4 @@
-<?php $isAuth = ($user['User']['id'] == $current_user['id'] || $isAdmin); ?>
+<?php $isAuth = ($user['User']['id'] == $current_user['id'] || $is_admin); ?>
 
 <div class="form">
 	<h1>Profile</h1>

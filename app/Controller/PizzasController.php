@@ -90,7 +90,7 @@ class PizzasController extends AppController {
 				$this->Pizza->PizzaPrice->saveAll($this->request->data['PizzaPrice']);
 
 				$this->Session->setFlash('Your pizza has been saved.');
-//				$this->redirect(array('controller' => 'pizza_categories', 'action' => 'index'));
+				$this->redirect(array('controller' => 'pizza_categories', 'action' => 'index'));
 			} else {
 				$this->Session->setFlash('Unable to add your pizza.');
 			}

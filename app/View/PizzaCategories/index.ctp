@@ -9,7 +9,8 @@ if ($isOrderable) {
 <div class="form">
 	<div style="float:right;">
 		<?php if ($logged_in && $is_admin): ?>
-			<?php echo $this->Html->link('New pizza category', array('action' => 'add')); ?>
+			<?php echo $this->Html->link('New pizza category', array('action' => 'add')); ?> |
+		<?php echo $this->Html->link('New pizza type', array('controller' => 'pizza_types', 'action' => 'add')); ?>
 		<?php endif; ?>
 	</div>
 
@@ -66,43 +67,53 @@ if ($isOrderable) {
 					</td>
 				</tr>
 			<?php else: ?>
-				<?php foreach ($pizza_category['Pizza'] as $pizza): ?>
-					<?php if ($pizza['available'] || $isAdmin): ?>
-						<tr class="pizza_item">
+				<?php foreach ($pizza_category['Pizza'] as $pizza):
+					$if_admin_and_unavailable = '';
+
+					if ($pizza['available'] || $is_admin):
+						if(!$pizza['available']){
+							$if_admin_and_unavailable = ' gray';
+						}
+					?>
+						<tr class="pizza_item<?php echo $if_admin_and_unavailable; ?>">
 							<td class="number"><?php echo $pizza['number']; ?></td>
 							<td class="title"><?php echo $pizza['title']; ?></td>
 							<td class="desc"><?php echo $pizza['description']; ?></td>
 							<?php
-							foreach ($pizza['Prices'] as $price_type_id => $price_info):
-								?>
-								<td class="price"><?php
-					if ($price_info['price'] != 0) {
-						echo'<span>' . $price_info['price'] . '</span>,- ';
-						echo'<span class="hidden price_id">' . $price_info['id'] . '</span>';
-					}
-								?></td>
-							<?php endforeach; ?>
-							<?php if ($is_admin): ?>
+							if (isset($pizza['Prices'])) {
+								foreach ($pizza['Prices'] as $price_type_id => $price_info):
+									?>
+									<td class="price"><?php
+						if ($price_info['price'] != 0) {
+							echo'<span>' . $price_info['price'] . '</span>,- ';
+							echo'<span class="hidden price_id">' . $price_info['id'] . '</span>';
+						}
+									?></td>
+								<?php
+								endforeach;
+							}
+							?>
+								<?php if ($is_admin): ?>
 								<td><?php
-					echo $this->Html->image('16x16_GIF/reply.gif', array(
-						'alt' => 'Edit pizza',
-						'title' => 'Edit pizza',
-						'url' => array('controller' => 'pizzas', 'action' => 'edit', $pizza['id'])));
-								?></td>
-							<?php endif; ?>
+									echo $this->Html->image('16x16_GIF/reply.gif', array(
+										'alt' => 'Edit pizza',
+										'title' => 'Edit pizza',
+										'url' => array('controller' => 'pizzas', 'action' => 'edit', $pizza['id'])));
+									?></td>
+						<?php endif; ?>
 						</tr>
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php endif; ?>
-			<?php if ($is_admin): ?>
+	<?php if ($is_admin): ?>
 				<tr>
 					<td colspan="7">
-						<?php echo $this->Html->link('New pizza in this category', array('controller' => 'pizzas', 'action' => 'add', $pizza_category['PizzaCategory']['id'])); ?>
+		<?php echo $this->Html->link('New pizza in this category', array('controller' => 'pizzas', 'action' => 'add', $pizza_category['PizzaCategory']['id'])); ?>
 					</td>
 				</tr>
-			<?php endif; ?>
+		<?php endif; ?>
 		</table>
 	<?php endforeach; ?>
 	<div style="clear:both;"></div>
-	<?php // pr($pizza_categories); ?>
+<?php // pr($pizza_categories); ?>
 </div>
