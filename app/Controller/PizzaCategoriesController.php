@@ -17,9 +17,27 @@ class PizzaCategoriesController extends AppController {
 		$this->Auth->allow('index');
 	}
 
-	public function index() {
+	public function index($wave_id = null) {
 
-		$this->set('title_for_layout', 'Pizzas');
+		$this->loadModel('Lan');
+		if ($this->Lan->isOnAir()) {
+			$current_lan = $this->Lan->getOnAir();
+			if ($wave_id != null) {
+				$this->Lan->PizzaWave->id = $wave_id;
+				if ($this->Lan->PizzaWave->exists()) {
+					$current_wave = $this->Lan->PizzaWave->read();
+				}
+			}
+
+			if (!isset($current_wave)) {
+				$current_wave = $this->Lan->PizzaWave->getOnAir($current_lan['Lan']['id']);
+			}
+
+			$waves = $this->Lan->PizzaWave->getAvailable($current_lan['Lan']['id']);
+		}
+
+		$title_for_layout = 'Pizzas';
+		$this->set(compact('title_for_layout', 'current_lan', 'current_wave', 'waves'));
 
 		$data_category = $this->PizzaCategory->find('all', array('conditions' =>
 			array(
@@ -52,7 +70,7 @@ class PizzaCategoriesController extends AppController {
 		}
 
 		$this->set('pizza_categories', $data_category);
-		$this->set('isOrderable', $this->Auth->loggedIn());
+		$this->set('is_orderable', ($this->Auth->loggedIn() && $current_wave != ''));
 	}
 
 	public function add() {

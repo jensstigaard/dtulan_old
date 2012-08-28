@@ -14,7 +14,7 @@ class User extends AppModel {
 
 	public $name = 'User';
 	public $hasOne = array('Admin');
-	public $hasMany = array('Payment', 'Order', 'Crew', 'LanSignup','TeamInvite');
+	public $hasMany = array('Payment', 'PizzaOrder', 'Crew', 'LanSignup','TeamInvite');
 	public $hasAndBelongsToMany = array('Team' => array(
 			'joinTable' => 'team_users'
 		)

@@ -35,8 +35,12 @@ $(document).ready(
 
 		$pizza_order_total = $last_row.find('.pizza_order_total');
 
+		var url_image_add = $('.hidden_images .image_add').attr('src');
 
-		$link = $('<a href="#"><img src="img/16x16_GIF/action_add.gif" alt="" /></a>').click(
+		var url_image_remove = $('.hidden_images .image_remove').attr('src');
+
+
+		$link = $('<a href="#"><img src="'+url_image_add+'" alt="" /></a>').click(
 			function(event) {
 				event.preventDefault();
 
@@ -124,7 +128,7 @@ $(document).ready(
 
 
 		$delete_icon = $('<a href="#">' +
-			'<img src="img/16x16_GIF/action_remove.gif" alt="" />' +
+			'<img src="' + url_image_remove + '" alt="" />' +
 			'</a>').click(function(event){
 			event.preventDefault();
 
