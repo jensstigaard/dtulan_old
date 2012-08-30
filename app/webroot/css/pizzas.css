@@ -1,3 +1,8 @@
+/*
+	Styles for the right menu of the Pizza page
+
+	On top is the waves, and further down the order comes
+*/
 div.right{
 	width:32%;
 	float:right;
@@ -15,11 +20,15 @@ div.right > div > h1{
 	border-bottom: 1px dotted #2F6FAB;
 }
 
+/*
+	Styles for Pizza waves
+*/
+
 div.pizza_waves a{
 	font-weight: normal;
 }
 
-div.pizza_waves div strong, div.pizza_waves div a{
+div.pizza_waves div strong, div.pizza_waves div > a{
 	display: block;
 }
 
@@ -29,12 +38,15 @@ div.pizza_waves div strong{
 	cursor:default;
 }
 
-div.pizza_waves div a{
+div.pizza_waves div > a{
 	margin-left:10px;
 	padding-left:8px;
 }
 
 
+/*
+	Syles for Pizza-order
+*/
 div.pizza_order div.wave_selected_id{
 	display: none;
 }
@@ -47,17 +59,20 @@ div.pizza_order table td:nth-child(4), div.pizza_order table tr:last-child td:nt
 	text-align:right;
 }
 
+div.pizza_order .hidden{
+	display:none;
+}
 
 
+/*
+	Styles for Pizza List
 
+	Each Pizza-category has a table with it's pizzas within
+*/
 table.pizza_list{
 	width:66%;
 	clear:none;
-	margin:30px 0 2px;
-}
-
-table.pizza_list:first-child{
-	margin-top:0;
+	margin-bottom:25px;
 }
 
 table.pizza_list tr.pizza_category th{
@@ -70,6 +85,7 @@ table.pizza_list tr.pizza_item td .hidden{
 table.pizza_list tr.pizza_item td{
 	cursor: default;
 }
+
 
 
 /* Styles for ordering a pizza add-icon */
@@ -95,6 +111,9 @@ table.pizza_list tr.pizza_item.gray{
 }
 
 
+/*
+	Hidden images is used for the orderable state of the pizza list (Javascript)
+*/
 .hidden_images{
 	display: none;
 }

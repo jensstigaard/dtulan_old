@@ -29,9 +29,9 @@ $(document).ready(
 
 		$pizza_order = $(".pizza_order");
 
-		$table = $pizza_order.find('table');
+		$table_body = $pizza_order.find('table tbody');
 
-		$last_row = $table.find('tr:last-child');
+		$last_row = $table_body.find('tr:last-child');
 
 		$pizza_order_total = $last_row.find('.pizza_order_total');
 
@@ -62,7 +62,7 @@ $(document).ready(
 
 				//				console.log('column:' + column);
 
-				$type_info = $item.parent().find('tr th:nth-child('+(column-1)+')');
+				$type_info = $item.closest('table').find('thead tr th:nth-child('+(column-1)+')');
 
 				var type_title = $type_info.text();
 
@@ -89,24 +89,24 @@ $(document).ready(
 
 		$(".text-order-submitted").hide();
 
-		$(".submit_order").click(function(event){
+		$(".pizza_order_submit").click(function(event){
 			event.preventDefault();
 
-			var wave_id = $(this).attr('alt');
+			var wave_id = $(this).parent().find('div.hidden').text();
 
 			if(orderListSize() > 0){
-				$.post("ajax/pizza_add_order.php", {
+				$.post($(this).attr('href'), {
 					'order_list': order_list,
 					'wave_id': wave_id
 				}, function(data) {
-					if(data==='1'){
+					if(data.trim()==='Order success'){
 						$(".pizza_order .text-order-submitted" ).show().delay(2000).hide("slow");
 
 						// Clear order visually
 						clearOrder();
 
 						// Update latest activities
-						showLatestActivities();
+//						showLatestActivities();
 					}
 					else{
 						console.log('Order list: ' + order_list);
@@ -115,7 +115,7 @@ $(document).ready(
 				});
 			}
 			else{
-				console.log(OrderListSize());
+				console.log('No pizzas in order. ', orderListSize());
 			}
 			return false;
 		});

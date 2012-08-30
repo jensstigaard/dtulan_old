@@ -91,6 +91,8 @@ class Lan extends AppModel {
 	public function getOnAir() {
 		$currentTime = date('Y-m-d H:i:s');
 
+		$this->recursive = 0;
+		
 		$data = $this->find('first', array(
 			'conditions' => array(
 				'Lan.time_end >' => $currentTime,
