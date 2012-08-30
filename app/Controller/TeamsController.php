@@ -46,36 +46,53 @@ class TeamsController extends AppController {
 	public function view($id = null) {
 		$this->Team->id = $id;
 
+		if(!$this->Team->exists()){
+			throw new NotFoundException('Team not found');
+		}
+
 		$this->Team->recursive = 2;
 		$this->set('team', $this->Team->read());
 	}
 
 	public function invite($id = null) {
-		
+
+		$this->Team->id = $id;
+
+		if(!$this->Team->exists()){
+			throw new NotFoundException('Team not found');
+		}
+
 		if ($this->request->is('post')) {
-			
-			if ($this->Team->save($this->request->data)) {
+
+			$this->request->data['TeamInvite']['team_id'] = $id;
+
+			debug($this->request->data);
+
+			if ($this->Team->Invite->save($this->request->data)) {
 				$this->Session->setFlash('Your invites has been sent.');
 				//$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash('Unable to send your invites.');
 			}
 		}
-		
-		$this->Team->id = $id;
 
+		$this->Team->recursive = 2;
 		$team = $this->Team->read();
 
 		$user_ids = array();
-		foreach ($team['User'] as $user) {	
+		foreach ($team['Invite'] as $user) {
 			$user_ids[] = $user['id'];
 		}
 
-		$users = $this->Team->User->find('list', array('conditions' => array(
+		foreach ($team['TeamUser'] as $user) {
+			$user_ids[] = $user['user_id'];
+		}
+
+		$users = $this->Team->Invite->find('list', array('conditions' => array(
 				'NOT' => array(
-					'User.id' => $user_ids
+					'Invite.id' => $user_ids,
 				),
-			//	'Lan.id' 
+			//	'Lan.id'
 			)
 				)
 		);

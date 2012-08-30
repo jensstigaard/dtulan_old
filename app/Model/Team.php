@@ -12,9 +12,10 @@
  */
 class Team extends AppModel {
 
-	public $hasMany = array('TeamInvite');
-	public $hasAndBelongsToMany = array('User' => array(
-			'joinTable' => 'team_users'
+	public $hasMany = array('TeamUser');
+	public $hasAndBelongsToMany = array('Invite' => array(
+			'className' => 'User',
+			'joinTable' => 'team_invites'
 		)
 	);
 	public $belongsTo = array('Tournament');
