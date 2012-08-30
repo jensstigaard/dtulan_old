@@ -3,7 +3,12 @@
 class Lan extends AppModel {
 
 	public $name = 'Lan';
-	public $hasMany = array('LanSignup', 'LanDay', 'Tournament');
+	public $hasMany = array(
+		'LanSignup',
+		'LanDay',
+		'Tournament',
+		'PizzaWave'
+	);
 	public $validate = array(
 		'title' => array(
 			'required' => array(
@@ -41,28 +46,26 @@ class Lan extends AppModel {
 				'message' => 'Invalid start-/end-time',
 			)
 		)
-
-
 	);
 
-	public function validateDates($check){
-		if($check['time_start'] >= $this->data['Lan']['time_end']){
+	public function validateDates($check) {
+		if ($check['time_start'] >= $this->data['Lan']['time_end']) {
 			$this->invalidate('time_end', 'Invalid start-/end-time');
 			return false;
 		}
 		return true;
 	}
 
-	public function getLanDays($start, $end){
+	public function getLanDays($start, $end) {
 		App::uses('CakeTime', 'Utility');
 
-		$date_start = $start['year'].'-'.$start['month'].'-'.$start['day'];
-		$date_end = $end['year'].'-'.$end['month'].'-'.$end['day'];
+		$date_start = $start['year'] . '-' . $start['month'] . '-' . $start['day'];
+		$date_end = $end['year'] . '-' . $end['month'] . '-' . $end['day'];
 
 		$days = array();
 
 		$date_current = $date_start;
-		while($date_current <= $date_end){
+		while ($date_current <= $date_end) {
 			$days[] = array('date' => $date_current);
 
 			$date_current = CakeTime::format('Y-m-d', strtotime('+1 day', strtotime($date_current)));
@@ -70,6 +73,37 @@ class Lan extends AppModel {
 
 		return $days;
 	}
+
+	public function isOnAir() {
+		$currentTime = date('Y-m-d H:i:s');
+
+		$count = $this->find('count', array(
+			'conditions' => array(
+				'Lan.time_end >' => $currentTime,
+				'Lan.time_start <' => $currentTime
+			)
+				)
+		);
+
+		return $count;
+	}
+
+	public function getOnAir() {
+		$currentTime = date('Y-m-d H:i:s');
+
+		$this->recursive = 0;
+		
+		$data = $this->find('first', array(
+			'conditions' => array(
+				'Lan.time_end >' => $currentTime,
+				'Lan.time_start <' => $currentTime
+			)
+				)
+		);
+
+		return $data;
+	}
+
 }
 
 ?>

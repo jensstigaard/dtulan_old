@@ -14,7 +14,11 @@ class User extends AppModel {
 
 	public $name = 'User';
 	public $hasOne = array('Admin');
-	public $hasMany = array('Payment', 'Order', 'Crew', 'LanSignup', 'TeamUser');
+	public $hasMany = array('Payment', 'PizzaOrder', 'Crew', 'LanSignup','TeamInvite');
+	public $hasAndBelongsToMany = array('Team' => array(
+			'joinTable' => 'team_users'
+		)
+	);
 	public $helpers = array('Js');
 	public $validate = array(
 		'name' => array(
@@ -183,6 +187,12 @@ class User extends AppModel {
 //			)
 //		)
 //	);
+	
+	public function getGuestNumber() {
+		$guestNumber = CakeTime::format('ymm');
+		$count = $this->find('count', array('conditions' => array('User.id_number LIKE' => $guestNumber.'%')));
+		return $count < 9 ? 'g'.$guestNumber.'0'.$count++: 'g'.$guestNumber.$count++;
+	}
 }
 
 ?>

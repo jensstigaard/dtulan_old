@@ -32,6 +32,7 @@ a:hover {
 
 a img {
 	border: none;
+	vertical-align: middle;
 }
 
 h1, h2, h3, h4 {

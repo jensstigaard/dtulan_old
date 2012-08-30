@@ -1,8 +1,54 @@
-div.pizza_order{
+/*
+	Styles for the right menu of the Pizza page
+
+	On top is the waves, and further down the order comes
+*/
+div.right{
 	width:32%;
 	float:right;
+}
+
+div.right > div{
 	border:1px solid #CCC;
 	padding:5px;
+	margin-bottom:20px;
+}
+
+div.right > div > h1{
+	font-size: 14pt;
+	text-align: center;
+	border-bottom: 1px dotted #2F6FAB;
+}
+
+/*
+	Styles for Pizza waves
+*/
+
+div.pizza_waves a{
+	font-weight: normal;
+}
+
+div.pizza_waves div strong, div.pizza_waves div > a{
+	display: block;
+}
+
+div.pizza_waves div strong{
+	padding-left:18px;
+	background: url('../img/16x16_GIF/action_check.gif') left center no-repeat;
+	cursor:default;
+}
+
+div.pizza_waves div > a{
+	margin-left:10px;
+	padding-left:8px;
+}
+
+
+/*
+	Syles for Pizza-order
+*/
+div.pizza_order div.wave_selected_id{
+	display: none;
 }
 
 div.pizza_order table tr:first-child th{
@@ -13,10 +59,20 @@ div.pizza_order table td:nth-child(4), div.pizza_order table tr:last-child td:nt
 	text-align:right;
 }
 
+div.pizza_order .hidden{
+	display:none;
+}
+
+
+/*
+	Styles for Pizza List
+
+	Each Pizza-category has a table with it's pizzas within
+*/
 table.pizza_list{
 	width:66%;
 	clear:none;
-	margin-bottom:20px;
+	margin-bottom:25px;
 }
 
 table.pizza_list tr.pizza_category th{
@@ -26,17 +82,38 @@ table.pizza_list tr.pizza_category th{
 table.pizza_list tr.pizza_item td .hidden{
 	display: none;
 }
+table.pizza_list tr.pizza_item td{
+	cursor: default;
+}
 
-table.pizza_list tr.pizza_item td a{
+
+
+/* Styles for ordering a pizza add-icon */
+table.pizza_list tr.pizza_item td a, table.pizza_list tr.pizza_category th a{
 	visibility: hidden;
 	opacity: .6;
 }
 
-table.pizza_list tr.pizza_item:hover td a{
+table.pizza_list img{
+	vertical-align: middle;
+}
+
+table.pizza_list tr.pizza_item:hover td a, table.pizza_list tr.pizza_category:hover th a{
 	visibility: visible;
 }
 
-table.pizza_list tr.pizza_item td a:hover{
+table.pizza_list tr.pizza_item td a:hover, table.pizza_list tr.pizza_category th a:hover{
 	opacity: 1;
 }
 
+table.pizza_list tr.pizza_item.gray{
+	color: #888;
+}
+
+
+/*
+	Hidden images is used for the orderable state of the pizza list (Javascript)
+*/
+.hidden_images{
+	display: none;
+}

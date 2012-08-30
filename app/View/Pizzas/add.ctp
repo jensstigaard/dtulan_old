@@ -18,12 +18,12 @@
 				<tr>
 					<?php
 					$x = 0;
-					foreach ($pizza_category['PizzaCategoryType'] as $type):
+					foreach ($pizza_category['PizzaType'] as $type):
 						?>
 						<td>
-							<div style="text-align:center;margin:0;padding:0;"><?php echo $type['PizzaType']['title']; ?></div>
+							<div style="text-align:center;margin:0;padding:0;"><?php echo $type['title']; ?></div>
 							<?php
-							echo $this->Form->input('PizzaPrice.' . $type['pizza_type_id'] . '.price', array('label' => ''));
+							echo $this->Form->input('PizzaPrice.' . $type['id'] . '.price', array('label' => ''));
 							$x++;
 							?>
 						</td>

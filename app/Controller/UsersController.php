@@ -86,7 +86,9 @@ class UsersController extends AppController {
 			$this->request->data['User']['time_created'] = date('Y-m-d H:i:s');
 
 			//$this->User->create();
-
+            if($this->request->data['User']['type'] == 'guest') {
+				$this->request->data['User']['id_number'] = $this->User->getGuestNumber();
+			}
 			$name = $this->request->data['User']['name'];
 
 			$this->User->create();
@@ -157,7 +159,7 @@ class UsersController extends AppController {
 			$this->request->data = $this->User->read();
 		}
 	}
-
+ 
 //	public function delete($id = null) {
 //		if (!$this->request->is('post')) {
 //			throw new MethodNotAllowedException();

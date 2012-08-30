@@ -14,5 +14,7 @@
 		</small>
 	</p>
 
-	<p><?php echo $page['Page']['text']; ?></p>
+	<div>
+		<?php echo $page['Page']['text']; ?>
+	</div>
 </div>

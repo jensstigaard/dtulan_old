@@ -83,14 +83,14 @@ class PizzasController extends AppController {
 				}
 			}
 
-			debug($this->request->data);
+//			debug($this->request->data);
 
 			if ($this->Pizza->save($this->request->data)) {
 				$this->Pizza->PizzaPrice->deleteAll(array('PizzaPrice.pizza_id' => $id), false);
 				$this->Pizza->PizzaPrice->saveAll($this->request->data['PizzaPrice']);
 
 				$this->Session->setFlash('Your pizza has been saved.');
-//				$this->redirect(array('controller' => 'pizza_categories', 'action' => 'index'));
+				$this->redirect(array('controller' => 'pizza_categories', 'action' => 'index'));
 			} else {
 				$this->Session->setFlash('Unable to add your pizza.');
 			}
@@ -98,7 +98,7 @@ class PizzasController extends AppController {
 			$this->request->data = $this->Pizza->read(null, $id);
 		}
 
-		$this->Pizza->recursive = 3;
+		$this->Pizza->recursive = 2;
 		$this->set('pizza', $this->Pizza->read());
 	}
 

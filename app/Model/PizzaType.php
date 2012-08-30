@@ -19,6 +19,19 @@ class PizzaType extends AppModel {
 		)
 	);
 
+	public $validate = array(
+		'title' => array(
+			'required' => array(
+				'rule' => array('notEmpty', 'alphaNumeric'),
+				'message' => 'Title cannot be empty'
+			),
+			'unique' => array(
+				'rule' => 'isUnique',
+				'message' => 'A type with given title already exist'
+			)
+		)
+	);
+
 }
 
 ?>
