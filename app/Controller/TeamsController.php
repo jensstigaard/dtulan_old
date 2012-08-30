@@ -64,11 +64,7 @@ class TeamsController extends AppController {
 
 		if ($this->request->is('post')) {
 
-			$this->request->data['TeamInvite']['team_id'] = $id;
-
-			debug($this->request->data);
-
-			if ($this->Team->Invite->save($this->request->data)) {
+			if ($this->Team->save($this->request->data)) {
 				$this->Session->setFlash('Your invites has been sent.');
 				//$this->redirect(array('action' => 'index'));
 			} else {

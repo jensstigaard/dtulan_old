@@ -1,5 +1,5 @@
 <div class="form">
-	<?php echo $this->Form->create('TeamInvite'); ?>
+	<?php echo $this->Form->create('Invite'); ?>
     <fieldset>
         <legend><?php echo $team['Team']['name']; ?> member invitation</legend>
 		<?php echo $this->Form->input('user_id'); ?>
