@@ -187,6 +187,12 @@ class User extends AppModel {
 //			)
 //		)
 //	);
+	
+	public function getGuestNumber() {
+		$guestNumber = CakeTime::format('ymm');
+		$count = $this->find('count', array('conditions' => array('User.id_number LIKE' => $guestNumber.'%')));
+		return $count < 9 ? 'g'.$guestNumber.'0'.$count++: 'g'.$guestNumber.$count++;
+	}
 }
 
 ?>
