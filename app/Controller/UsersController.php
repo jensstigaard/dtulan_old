@@ -207,7 +207,7 @@ class UsersController extends AppController {
 	}
 
 	public function login() {
-		if($this->request->is('post') && $this->request->accepts("application/vnd.dtulan+json; version=1.0")) {
+		if($this->request->is('post') && $this->request->accepts("application/json")) {
 			$this->response->header(array('content-type: application/json'));
 			$this->render('API/response');
 			$data = array();
