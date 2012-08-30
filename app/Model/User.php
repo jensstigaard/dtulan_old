@@ -14,7 +14,7 @@ class User extends AppModel {
 
 	public $name = 'User';
 	public $hasOne = array('Admin');
-	public $hasMany = array('Payment', 'PizzaOrder', 'Crew', 'LanSignup','TeamInvite');
+	public $hasMany = array('Payment', 'PizzaOrder', 'Crew', 'LanSignup', 'TeamInvite');
 	public $hasAndBelongsToMany = array('Team' => array(
 			'joinTable' => 'team_users'
 		)
@@ -86,7 +86,7 @@ class User extends AppModel {
 			//$this->data['User']['id_number'] = str_replace('s', '', $this->data['User']['id_number']);
 			return preg_match("/^s[0-9]{6}$/", $this->data['User']['id_number']);
 		} else {
-			$this->data['User']['id_number'] = '0';
+			$this->data['User']['id_number'] = $this->getGuestNumber();
 			return true;
 		}
 	}
@@ -187,12 +187,20 @@ class User extends AppModel {
 //			)
 //		)
 //	);
-	
+
 	public function getGuestNumber() {
-		$guestNumber = CakeTime::format('ymm');
-		$count = $this->find('count', array('conditions' => array('User.id_number LIKE' => $guestNumber.'%')));
-		return $count < 9 ? 'g'.$guestNumber.'0'.$count++: 'g'.$guestNumber.$count++;
+		$guestNumber = 'g'.date('ym');
+
+		$count = $this->find('count', array(
+			'conditions' => array(
+				'User.id_number LIKE' => $guestNumber . '%'
+			)
+				)
+		);
+
+		return $count < 9 ? $guestNumber . '0' . ($count+1) : $guestNumber . ($count+1);
 	}
+
 }
 
 ?>
