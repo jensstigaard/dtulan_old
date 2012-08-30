@@ -577,3 +577,16 @@ class NotImplementedException extends CakeException {
 	}
 
 }
+
+/**
+ * Too Many Guest Sign Ups - used when too many guest signs up in the same month
+ * 
+ * @package Cake.error
+ */
+class TooManyGuestSignUps extends CakeException {
+	protected  $_messageTemplate = 'Too many users has signed up this month.';
+	
+	public function __construct($message, $code = 500) {
+		parent::__construct($message, $code);
+	}
+}

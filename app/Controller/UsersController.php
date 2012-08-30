@@ -60,7 +60,7 @@ class UsersController extends AppController {
 		$this->set('user', $user);
 
 		$lan_ids = array();
-		foreach($user['LanSignup'] as $lan){
+		foreach ($user['LanSignup'] as $lan) {
 			$lan_ids[] = $lan['lan_id'];
 		}
 
@@ -85,13 +85,10 @@ class UsersController extends AppController {
 
 			$this->request->data['User']['time_created'] = date('Y-m-d H:i:s');
 
-			//$this->User->create();
-            if($this->request->data['User']['type'] == 'guest') {
-				$this->request->data['User']['id_number'] = $this->User->getGuestNumber();
-			}
 			$name = $this->request->data['User']['name'];
 
 			$this->User->create();
+
 			if ($this->User->save($this->request->data)) {
 
 				$id = $this->User->getLastInsertID();
@@ -116,7 +113,7 @@ class UsersController extends AppController {
 				//echo $msg;
 
 				$this->Session->setFlash(__('The user has been made. Check your email to continue the activation process. ' . $msg));
-				$this->redirect(array('action' => 'index'));
+//				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The user could not be saved. Please try again.'));
 			}
@@ -159,7 +156,7 @@ class UsersController extends AppController {
 			$this->request->data = $this->User->read();
 		}
 	}
- 
+
 //	public function delete($id = null) {
 //		if (!$this->request->is('post')) {
 //			throw new MethodNotAllowedException();
@@ -209,11 +206,11 @@ class UsersController extends AppController {
 	}
 
 	public function login() {
-		if($this->request->is('post') && $this->request->accepts("application/json")) {
+		if ($this->request->is('post') && $this->request->accepts("application/vnd.dtulan+json; version=1.0")) {
 			$this->response->header(array('content-type: application/json'));
 			$this->render('API/response');
 			$data = array();
-			if($this->Auth->login()) {
+			if ($this->Auth->login()) {
 				$this->set('succes', 'true');
 				$this->set($data, array('access_token' => $this->Auth->user('access_token')));
 			} else {
