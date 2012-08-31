@@ -54,8 +54,15 @@ class UsersController extends AppController {
 			throw new NotFoundException(__('Invalid user'));
 		}
 
-		$this->User->recursive = 3;
-		$user = $this->User->read();
+		$options['conditions'] = array(
+			'PizzaOrder.user_id' => 'User.id',
+			'PizzaOrderItem.pizza_order_id' => 'PizzaOrder.id',
+			'PizzaPrice.id' => 'PizzaOrderItem.pizza_price_id',
+			'Pizza.id' => 'PizzaPrice.pizza_id'
+		);
+		$options['fields'] = array('Pizza.title');
+		
+		$user = $this->User->find('all', $options);
 
 		$this->set('user', $user);
 
@@ -230,6 +237,16 @@ class UsersController extends AppController {
 
 	public function logout() {
 		$this->redirect($this->Auth->logout());
+	}
+	
+	public function randomTilJens() {
+		$options['conditions'] = array(
+			'PizzaOrder.user_id' => 'User.id',
+			'PizzaOrderItem.pizza_order_id' => 'PizzaOrder.id',
+			'PizzaPrice.id' => 'PizzaOrderItem.pizza_price_id',
+			'Pizza.id' => 'PizzaPrice.pizza_id'
+		);
+		$options['fields'] = array('Pizza.title');
 	}
 
 }
