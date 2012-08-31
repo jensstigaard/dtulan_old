@@ -55,6 +55,7 @@ class UsersController extends AppController {
 		}
 
 		$options['conditions'] = array(
+			'User.id' => $id,
 			'PizzaOrder.user_id' => 'User.id',
 			'PizzaOrderItem.pizza_order_id' => 'PizzaOrder.id',
 			'PizzaPrice.id' => 'PizzaOrderItem.pizza_price_id',
@@ -238,17 +239,6 @@ class UsersController extends AppController {
 	public function logout() {
 		$this->redirect($this->Auth->logout());
 	}
-	
-	public function randomTilJens() {
-		$options['conditions'] = array(
-			'PizzaOrder.user_id' => 'User.id',
-			'PizzaOrderItem.pizza_order_id' => 'PizzaOrder.id',
-			'PizzaPrice.id' => 'PizzaOrderItem.pizza_price_id',
-			'Pizza.id' => 'PizzaPrice.pizza_id'
-		);
-		$options['fields'] = array('Pizza.title');
-	}
-
 }
 
 ?>

@@ -14,6 +14,7 @@ class PizzaPrice extends AppModel {
 
 	public $name = 'PizzaPrice';
 	public $belongsTo = array('Pizza', 'PizzaType');
+	public $hasMany = array('PizzaOrderItem');
 
 	public $validate = array(
 //		'price' => array(

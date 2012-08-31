@@ -10,7 +10,7 @@
  *
  * @author Jens
  */
-class PizzaOrderItem {
+class PizzaOrderItem extends AppModel {
 	public $belongsTo = array('PizzaOrder', 'PizzaPrice');
 }
 
