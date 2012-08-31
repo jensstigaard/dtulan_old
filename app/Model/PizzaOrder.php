@@ -12,6 +12,7 @@
  */
 class PizzaOrder extends AppModel {
 	public $hasMany = array('PizzaOrderItem');
+	public $belongsTo = array('User');
 }
 
 ?>

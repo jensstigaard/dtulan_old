@@ -57,11 +57,12 @@ class UsersController extends AppController {
 		$options['conditions'] = array(
 			'User.id' => $id,
 			'PizzaOrder.user_id' => 'User.id',
-			'PizzaOrderItem.pizza_order_id' => 'PizzaOrder.id',
-			'PizzaPrice.id' => 'PizzaOrderItem.pizza_price_id',
-			'Pizza.id' => 'PizzaPrice.pizza_id'
+//			'PizzaOrderItem.pizza_order_id' => 'PizzaOrder.id',
+//			'PizzaPrice.id' => 'PizzaOrderItem.pizza_price_id',
+//			'Pizza.id' => 'PizzaPrice.pizza_id'
 		);
-		$options['fields'] = array('Pizza.title');
+		$options['fields'] = array('PizzaOrder.user_id');
+		$options['recursive'] = 4;
 		
 		$user = $this->User->find('all', $options);
 
