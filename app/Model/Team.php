@@ -13,7 +13,6 @@
 class Team extends AppModel {
 
 	public $hasMany = array('TeamUser', 'TeamInvite');
-
 	public $belongsTo = array('Tournament');
 	public $validate = array(
 		'name' => array(
@@ -24,11 +23,10 @@ class Team extends AppModel {
 		)
 	);
 
-
-	public function getInviteableUsers($team_id = null){
+	public function getInviteableUsers($team_id = null) {
 		$this->id = $team_id;
 
-		if(!$this->exists()){
+		if (!$this->exists()) {
 			throw new NotFoundException('Team not found');
 		}
 
@@ -44,19 +42,25 @@ class Team extends AppModel {
 			$user_ids[] = $user['user_id'];
 		}
 
-		$users = $this->Tournament->Lan->LanSignup->find('all', array('conditions' => array(
-				'NOT' => array(
-					'LanSignup.user_id' => $user_ids,
-				),
-				'LanSignup.lan_id' => $team['Tournament']['Lan']['id']
-			)
-				)
-		);
-
 		$users_list = array();
 
-		foreach($users as $user){
-			$users_list[$user['User']['id']] = $user['User']['name'];
+		// Only the max team size is it possible to invite
+		if (count($user_ids) < $team['Tournament']['max_team_size']) {
+
+			$users = $this->Tournament->Lan->LanSignup->find('all', array('conditions' => array(
+					'NOT' => array(
+						'LanSignup.user_id' => $user_ids,
+					),
+					'LanSignup.lan_id' => $team['Tournament']['Lan']['id']
+				)
+					)
+			);
+
+
+
+			foreach ($users as $user) {
+				$users_list[$user['User']['id']] = $user['User']['name'];
+			}
 		}
 
 		return $users_list;

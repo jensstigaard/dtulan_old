@@ -14,8 +14,8 @@ class User extends AppModel {
 
 	public $name = 'User';
 	public $hasOne = array('Admin');
-	public $hasMany = array('Payment', 'PizzaOrder', 'Crew', 'LanSignup', 'TeamInvite', 'Team');
-	
+	public $hasMany = array('Payment', 'PizzaOrder', 'Crew', 'LanSignup', 'TeamInvite', 'TeamUser');
+
 	public $helpers = array('Js');
 	public $validate = array(
 		'name' => array(

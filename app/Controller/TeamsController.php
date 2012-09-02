@@ -79,8 +79,23 @@ class TeamsController extends AppController {
 			throw new NotFoundException('Invite not found');
 		}
 
+		$this->Team->TeamInvite->recursive = 2;
 		$invite = $this->Team->TeamInvite->read();
 
+		$leaders = array();
+
+		foreach ($invite['Team']['TeamUser'] as $user) {
+			if ($user['is_leader']) {
+				$leaders[] = $user['user_id'];
+			}
+		}
+
+		$current_user = $this->Auth->user();
+		if (!in_array($current_user['id'], $leaders)) {
+			throw new MethodNotAllowedException('You are not allowed to cancel invites');
+		}
+
+		debug($invite);
 
 		if ($this->Team->TeamInvite->deleteAll(array('TeamInvite.id' => $id), false)) {
 			$this->Session->setFlash('Invite cancelled');
@@ -88,8 +103,7 @@ class TeamsController extends AppController {
 			$this->Session->setFlash('FAILED');
 		}
 
-
-		$this->redirect(array('action' => 'view', $invite['team_id']));
+		$this->redirect(array('action' => 'view', $invite['TeamInvite']['team_id']));
 	}
 
 }
