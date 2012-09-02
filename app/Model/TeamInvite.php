@@ -5,9 +5,6 @@
  * and open the template in the editor.
  */
 class TeamInvite extends AppModel {
-
-	public $belongsTo = array('user','Team');
-
-
+	public $belongsTo = array('User','Team');
 }
 ?>
