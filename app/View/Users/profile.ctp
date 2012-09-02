@@ -60,8 +60,8 @@
 			<?php foreach ($user['Team'] as $team): ?>
 				<tr>
 					<td><?php echo $this->Html->link($team['name'], array('controller' => 'teams', 'action' => 'view', $team['id'])); ?></td>
-					<td><?php //Leader ?></td>
-					<td><?php //Member count ?> </td>
+					<td><?php //Leader      ?></td>
+					<td><?php //Member count      ?> </td>
 				</tr>
 			<?php endforeach; ?>
 
@@ -79,21 +79,21 @@
 				<th>Title</th>
 				<th>Days attending</th>
 			</tr>
-			<?php if (!count($user['LanSignup'])): ?>
+			<?php if (!count($lans)): ?>
 				<tr>
 					<td colspan="2">
 						Not signed up for any LANs
 					</td>
 				</tr>
 			<?php else: ?>
-				<?php foreach ($user['LanSignup'] as $lan_signup): ?>
+				<?php foreach ($lans as $lan): ?>
 					<tr>
-						<td><?php echo $this->Html->link($lan_signup['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan_signup['Lan']['id'])); ?></td>
+						<td><?php echo $this->Html->link($lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan['Lan']['id'])); ?></td>
 						<td>
 							<ul>
 
 
-								<?php foreach ($lan_signup['LanSignupDay'] as $day): ?>
+								<?php foreach ($lan['LanSignupDay'] as $day): ?>
 									<li><?php echo $this->Time->format('D M jS', $day['LanDay']['date']); ?></li>
 								<?php endforeach; ?>
 							</ul>
@@ -136,6 +136,53 @@
 		</table>
 	</div>
 
-	<?php  pr($user); ?>
+
+	<div>
+		<h3>Pizza orders:</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Time</th>
+					<th>Items</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php if (!count($pizza_orders)): ?>
+					<tr>
+						<td colspan="2">
+							No orders registered
+						</td>
+					</tr>
+				<?php else: ?>
+					<?php $total_balance = 0; ?>
+					<?php foreach ($pizza_orders as $pizza_order): ?>
+						<?php $order_balance = 0; ?>
+						<tr>
+							<td><?php echo $this->Time->nice($pizza_order['PizzaOrder']['time']); ?></td>
+							<td><?php foreach ($pizza_order['PizzaOrderItem'] as $item): ?>
+									<div>
+										<?php echo $item['amount']; ?> x <?php echo $item['PizzaPrice']['Pizza']['title']; ?>
+										<small>(<?php echo $item['PizzaPrice']['PizzaType']['title']; ?>)</small>
+									</div>
+									<?php $order_balance += $item['amount'] * $item['price']; ?>
+								<?php endforeach; ?></td>
+							<td><?php echo $order_balance; ?> DKK</td>
+						</tr>
+						<?php $total_balance += $order_balance; ?>
+					<?php endforeach; ?>
+					<tr>
+						<td>Orders: <?php echo count($pizza_orders); ?></td>
+						<td>Total amount spend on pizzas:</td>
+						<td><?php echo $total_balance; ?> DKK</td>
+					</tr>
+				<?php endif; ?>
+			</tbody>
+		</table>
+	</div>
+
+	<?php // pr($user); ?>
 	<?php // pr($next_lan); ?>
+	<?php // pr($pizza_orders); ?>
+	<?php pr($lans); ?>
 </div>

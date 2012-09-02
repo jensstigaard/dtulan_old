@@ -54,26 +54,41 @@ class UsersController extends AppController {
 			throw new NotFoundException(__('Invalid user'));
 		}
 
-		$options['conditions'] = array(
-			'User.id' => $id,
-			'PizzaOrder.user_id' => 'User.id',
-//			'PizzaOrderItem.pizza_order_id' => 'PizzaOrder.id',
-//			'PizzaPrice.id' => 'PizzaOrderItem.pizza_price_id',
-//			'Pizza.id' => 'PizzaPrice.pizza_id'
+//		$this->User->PizzaOrder->unBindModel(array('belongsTo' => array('User', 'PizzaWave')));
+//		$this->User->LanSignup->bindModel(array('hasOne' => array('Lan')));
+
+		$this->User->PizzaOrder->recursive = 3;
+		$this->User->PizzaOrder->unbindModel(array('belongsTo' => array('User')));
+		$this->User->PizzaOrder->PizzaWave->unbindModel(array('hasMany' => array('PizzaOrder')));
+		$this->User->PizzaOrder->PizzaWave->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'LanDay', 'PizzaWave')));
+		$pizza_orders = $this->User->PizzaOrder->find('all', array('conditions' => array(
+				'PizzaOrder.user_id' => $id
+			)
+				)
 		);
-		$options['fields'] = array('PizzaOrder.user_id');
-		$options['recursive'] = 4;
-		
-		$user = $this->User->find('all', $options);
+
+		$this->User->LanSignup->recursive = 2;
+		$this->User->LanSignup->unbindModel(array('belongsTo' => array('User')));
+		$this->User->LanSignup->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'PizzaWave')));
+		$this->User->LanSignup->LanSignupDay->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'PizzaWave')));
+
+		$lans = $this->User->LanSignup->find('all', array('conditions' => array(
+				'LanSignup.user_id' => $id
+			)
+				)
+		);
+
+		$this->User->unbindModel(array('hasMany' => array('PizzaOrder', 'LanSignup')));
+		$user = $this->User->read();
 
 		$this->set('user', $user);
 
 		$lan_ids = array();
-		foreach ($user['LanSignup'] as $lan) {
-			$lan_ids[] = $lan['lan_id'];
+		foreach ($lans as $lan) {
+			$lan_ids[] = $lan['Lan']['id'];
 		}
 
-		$next_lan = ClassRegistry::init('Lan')->find('first', array(
+		$next_lan = $this->User->LanSignup->Lan->find('first', array(
 			'conditions' => array(
 				'Lan.sign_up_open' => 1,
 				'Lan.time_end >' => date('Y-m-d H:i:s'),
@@ -86,7 +101,7 @@ class UsersController extends AppController {
 				)
 		);
 
-		$this->set(compact('next_lan'));
+		$this->set(compact('next_lan', 'pizza_orders', 'lans'));
 	}
 
 	public function add() {
@@ -240,6 +255,7 @@ class UsersController extends AppController {
 	public function logout() {
 		$this->redirect($this->Auth->logout());
 	}
+
 }
 
 ?>
