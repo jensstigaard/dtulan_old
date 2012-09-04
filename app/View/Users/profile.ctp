@@ -17,7 +17,7 @@
 		</div>
 	<?php endif; ?>
 
-	<?php if ($user['User']['id'] == $current_user['id'] && isset($next_lan)): ?>
+	<?php if ($user['User']['id'] == $current_user['id'] && isset($next_lan['Lan']['title'])): ?>
 		<div class="message">
 			<p style="margin:0;">You are not signed up for <?php echo $next_lan['Lan']['title']; ?>! <?php echo $this->Html->link('Sign up now!', array('controller' => 'lan_signups', 'action' => 'add', $next_lan['Lan']['id'])); ?></p>
 		</div>
@@ -27,26 +27,26 @@
 		<div class="message success">
 			<p style="margin:0;">You are invited to <?php echo $lan_invites['Lan']['title']; ?> by <?php echo $lan_invites['Student']['name']; ?>!
 				<?php
-	echo $this->Form->postLink('Accept and signup now', array(
-		'controller' => 'lan_invites',
-		'action' => 'accept',
-		$lan_invites['LanInvite']['id']), array(
-		'confirm' => 'Do you want to accept invite?'
-			)
-	); ?>
- |
-	<?php echo $this->Form->postLink('Decline invite', array(
-		'controller' => 'lan_invites',
-		'action' => 'decline',
-		$lan_invites['LanInvite']['id']), array(
-		'confirm' => 'Do you want to DECLINE invite?'
-			)
-	);
-		?></p>
+				echo $this->Html->link('Accept and signup now', array(
+					'controller' => 'lan_signups',
+					'action' => 'add',
+					$lan_invites['Lan']['id'])
+				);
+				?>
+				|
+				<?php
+				echo $this->Form->postLink('Decline invite', array(
+					'controller' => 'lan_invites',
+					'action' => 'decline',
+					$lan_invites['LanInvite']['id']), array(
+					'confirm' => 'Do you want to DECLINE invite?'
+						)
+				);
+				?></p>
 		</div>
 	<?php endif; ?>
 
-<?php // debug($lan_invites);  ?>
+<?php // debug($lan_invites);   ?>
 
 	<h3>User info</h3>
 
@@ -65,7 +65,7 @@
 				<li>ID-number: <?php echo $user['User']['id_number']; ?></li>
 				<li>Time created: <?php echo $this->Time->nice($user['User']['time_created']); ?></li>
 				<li>Time activated: <?php echo $this->Time->nice($user['User']['time_activated']); ?></li>
-<?php endif; ?>
+	<?php endif; ?>
 		</ul>
 	</div>
 	<?php
@@ -111,7 +111,7 @@
 						Not signed up for any LANs
 					</td>
 				</tr>
-			<?php else: ?>
+<?php else: ?>
 	<?php foreach ($lans as $lan): ?>
 					<tr>
 						<td><?php echo $this->Html->link($lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan['Lan']['id'])); ?></td>
@@ -125,7 +125,7 @@
 							</ul>
 						</td>
 					</tr>
-				<?php endforeach; ?>
+	<?php endforeach; ?>
 <?php endif; ?>
 		</table>
 	</div>
@@ -144,7 +144,7 @@
 					</td>
 				</tr>
 			<?php else: ?>
-				<?php $total_balance = 0; ?>
+	<?php $total_balance = 0; ?>
 	<?php foreach ($user['Payment'] as $payment): ?>
 					<tr>
 						<td><?php echo $this->Time->nice($payment['time']); ?></td>
@@ -182,20 +182,20 @@
 					</tr>
 				<?php else: ?>
 					<?php $total_balance = 0; ?>
-					<?php foreach ($pizza_orders as $pizza_order): ?>
+	<?php foreach ($pizza_orders as $pizza_order): ?>
 		<?php $order_balance = 0; ?>
 						<tr>
 							<td><?php echo $this->Time->nice($pizza_order['PizzaOrder']['time']); ?></td>
 							<td><?php foreach ($pizza_order['PizzaOrderItem'] as $item): ?>
 									<div>
-			<?php echo $item['amount']; ?> x <?php echo $item['PizzaPrice']['Pizza']['title']; ?>
+									<?php echo $item['amount']; ?> x <?php echo $item['PizzaPrice']['Pizza']['title']; ?>
 										<small>(<?php echo $item['PizzaPrice']['PizzaType']['title']; ?>)</small>
 									</div>
-									<?php $order_balance += $item['amount'] * $item['price']; ?>
-		<?php endforeach; ?></td>
+			<?php $order_balance += $item['amount'] * $item['price']; ?>
+						<?php endforeach; ?></td>
 							<td><?php echo $order_balance; ?> DKK</td>
 						</tr>
-						<?php $total_balance += $order_balance; ?>
+		<?php $total_balance += $order_balance; ?>
 	<?php endforeach; ?>
 					<tr>
 						<td>Orders: <?php echo count($pizza_orders); ?></td>
@@ -209,6 +209,6 @@
 
 	<?php // pr($user); ?>
 	<?php // pr($next_lan); ?>
-	<?php // pr($pizza_orders); ?>
-<?php // pr($teams);  ?>
+<?php // pr($pizza_orders);  ?>
+<?php // pr($teams);   ?>
 </div>

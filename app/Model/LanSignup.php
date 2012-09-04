@@ -18,6 +18,8 @@ class LanSignup extends AppModel {
 
 	public $hasMany = array('LanSignupDay');
 
+	public $hasOne = array('LanInvite');
+
 }
 
 ?>

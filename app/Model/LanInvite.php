@@ -21,7 +21,8 @@ class LanInvite extends AppModel {
 		'Student' => array(
 			'className' => 'User',
 			'foreignKey' => 'user_student_id'
-		)
+		),
+		'LanSignup'
 	);
 
 }

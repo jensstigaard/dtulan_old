@@ -30,11 +30,11 @@ class LanSignupsController extends AppController {
 			if ($this->LanSignup->Lan->LanInvite->find('count', array('conditions' => array(
 							'LanInvite.lan_id' => $id,
 							'LanInvite.user_guest_id' => $user['User']['id'],
-							'LanInvite.accepted' => 1
+							'LanInvite.accepted' => 0
 						)
 							)
 					)
-			!= 1) {
+					!= 1) {
 				throw new BadRequestException('Invite not found');
 			}
 		}
@@ -57,20 +57,36 @@ class LanSignupsController extends AppController {
 
 		if ($this->request->is('post')) {
 
-			$this->request->data['LanSignup']['lan_id'] = $id;
-			$this->request->data['LanSignup']['user_id'] = $user['User']['id'];
-
 			foreach ($this->request->data['LanSignupDay'] as $day_id => $day_value) {
 				if ($day_value['lan_day_id'] == 0) {
 					unset($this->request->data['LanSignupDay'][$day_id]);
 				}
 			}
 
+			if (count($this->request->data['LanSignupDay'])) {
+				$this->request->data['LanSignup']['lan_id'] = $id;
+				$this->request->data['LanSignup']['user_id'] = $user['User']['id'];
+
+				if ($user['User']['type'] == 'guest') {
+					$this->LanSignup->LanInvite->recursive = 0;
+					$invite = $this->LanSignup->LanInvite->find('first', array('conditions' => array(
+							'LanInvite.lan_id' => $id,
+							'LanInvite.user_guest_id' => $user['User']['id'],
+							'LanInvite.accepted' => 0
+						)
+							)
+					);
+
+					$this->request->data['LanInvite'] = array('id' => $invite['LanInvite']['id'], 'accepted' => 1);
+				}
+			}
+
+
 			if ($this->LanSignup->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your signup has been saved.');
 				$this->redirect(array('controller' => 'users', 'action' => 'profile'));
 			} else {
-				$this->Session->setFlash('Unable to add your signup.');
+				$this->Session->setFlash('Unable to add your signup. Have You selected any days?');
 			}
 		}
 
