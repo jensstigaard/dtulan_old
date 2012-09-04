@@ -14,8 +14,14 @@ class User extends AppModel {
 
 	public $name = 'User';
 	public $hasOne = array('Admin');
-	public $hasMany = array('Payment', 'PizzaOrder', 'Crew', 'LanSignup', 'TeamInvite', 'TeamUser');
-
+	public $hasMany = array('Payment', 'PizzaOrder', 'Crew', 'LanSignup', 'TeamInvite', 'TeamUser', 'LanInviteReceived' => array(
+			'className' => 'LanInvite',
+			'foreignKey' => 'user_guest_id'
+		), 'LanInviteSent' => array(
+			'className' => 'LanInvite',
+			'foreignKey' => 'user_guest_id'
+		)
+	);
 	public $helpers = array('Js');
 	public $validate = array(
 		'name' => array(
@@ -105,7 +111,7 @@ class User extends AppModel {
 	}
 
 	public function getGuestNumber() {
-		$guestNumber = 'g'.date('ym');
+		$guestNumber = 'g' . date('ym');
 
 		$count = $this->find('count', array(
 			'conditions' => array(
@@ -113,10 +119,10 @@ class User extends AppModel {
 			)
 				)
 		);
-		if($count >= 99) {
+		if ($count >= 99) {
 			throw new TooManyGuestSignUps();
 		}
-		return $count < 9 ? $guestNumber . '0' . ($count+1) : $guestNumber . ($count+1);
+		return $count < 9 ? $guestNumber . '0' . ($count + 1) : $guestNumber . ($count + 1);
 	}
 
 }

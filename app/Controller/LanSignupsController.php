@@ -54,12 +54,15 @@ class LanSignupsController extends AppController {
 			$this->request->data['LanSignup']['lan_id'] = $id;
 			$this->request->data['LanSignup']['user_id'] = $user['User']['id'];
 
-			foreach($this->request->data['LanSignupDay'] as $day_id => $day_value){
-				if($day_value['lan_day_id'] == 0){
+			foreach ($this->request->data['LanSignupDay'] as $day_id => $day_value) {
+				if ($day_value['lan_day_id'] == 0) {
 					unset($this->request->data['LanSignupDay'][$day_id]);
 				}
 			}
 
+//			debug($this->request->data);
+
+//			echo $this->LanSignup->validates();
 			if ($this->LanSignup->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your signup has been saved.');
 				$this->redirect(array('controller' => 'users', 'action' => 'profile'));
@@ -70,10 +73,16 @@ class LanSignupsController extends AppController {
 
 		$lan_days = array();
 		foreach ($lan['LanDay'] as $lan_day) {
-			$lan_days[$lan_day['id']] = CakeTime::nice($lan_day['date']);
+			$seats_left = $this->LanSignup->LanSignupDay->LanDay->seatsLeft($lan_day['id']);
+
+			$lan_days[$lan_day['id']] = array(
+				'value' => CakeTime::format('D, M jS Y', $lan_day['date']),
+				'seats_left' => $seats_left
+			);
 		}
 
 		$this->set(compact('lan', 'lan_days', 'user'));
+
 	}
 
 }

@@ -54,8 +54,14 @@ class UsersController extends AppController {
 			throw new NotFoundException(__('Invalid user'));
 		}
 
-//		$this->User->PizzaOrder->unBindModel(array('belongsTo' => array('User', 'PizzaWave')));
-//		$this->User->LanSignup->bindModel(array('hasOne' => array('Lan')));
+		$this->User->TeamUser->recursive = 2;
+		$this->User->TeamUser->Team->Tournament->unbindModel(array('belongsTo' => array('Lan')));
+
+		$teams = $this->User->TeamUser->find('all', array('conditions' => array(
+				'TeamUser.user_id' => $id
+			)
+				)
+		);
 
 		$this->User->PizzaOrder->recursive = 3;
 		$this->User->PizzaOrder->unbindModel(array('belongsTo' => array('User')));
@@ -88,20 +94,23 @@ class UsersController extends AppController {
 			$lan_ids[] = $lan['Lan']['id'];
 		}
 
-		$next_lan = $this->User->LanSignup->Lan->find('first', array(
-			'conditions' => array(
-				'Lan.sign_up_open' => 1,
-				'Lan.time_end >' => date('Y-m-d H:i:s'),
-				'NOT' => array(
-					'Lan.id' => $lan_ids
-				)
-			),
-			'order' => array('Lan.time_end ASC'),
-			'recursive' => 0
-				)
-		);
+		if ($user['User']['type'] == 'student') {
+			$this->set('next_lan', $this->User->LanSignup->Lan->find('first', array(
+						'conditions' => array(
+							'Lan.sign_up_open' => 1,
+							'Lan.time_end >' => date('Y-m-d H:i:s'),
+							'NOT' => array(
+								'Lan.id' => $lan_ids
+							)
+						),
+						'order' => array('Lan.time_start ASC'),
+						'recursive' => 0
+							)
+					)
+			);
+		}
 
-		$this->set(compact('next_lan', 'pizza_orders', 'lans'));
+		$this->set(compact('pizza_orders', 'lans', 'teams'));
 	}
 
 	public function add() {

@@ -17,7 +17,7 @@
 		</div>
 	<?php endif; ?>
 
-	<?php if ($user['User']['id'] == $current_user['id'] && $next_lan): ?>
+	<?php if ($user['User']['id'] == $current_user['id'] && isset($next_lan)): ?>
 		<div class="message">
 			<p style="margin:0;">You are not signed up for <?php echo $next_lan['Lan']['title']; ?>! <?php echo $this->Html->link('Sign up now!', array('controller' => 'lan_signups', 'action' => 'add', $next_lan['Lan']['id'])); ?></p>
 		</div>
@@ -54,14 +54,16 @@
 		<table>
 			<tr>
 				<th>Name</th>
+				<th>Tournament</th>
 				<th>Leader</th>
 				<th>MemberCount</th>
 			</tr>
-			<?php foreach ($user['Team'] as $team): ?>
+			<?php foreach ($teams as $team): ?>
 				<tr>
-					<td><?php echo $this->Html->link($team['name'], array('controller' => 'teams', 'action' => 'view', $team['id'])); ?></td>
-					<td><?php //Leader      ?></td>
-					<td><?php //Member count      ?> </td>
+					<td><?php echo $this->Html->link($team['Team']['name'], array('controller' => 'teams', 'action' => 'view', $team['Team']['id'])); ?></td>
+					<td><?php echo $this->Html->link($team['Team']['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $team['Team']['Tournament']['id'])); ?></td>
+					<td><?php echo $team['TeamUser']['is_leader'] ? 'Is leader' : ''; ?></td>
+					<td><?php echo count($team['Team']['TeamUser']); ?> </td>
 				</tr>
 			<?php endforeach; ?>
 
@@ -184,5 +186,5 @@
 	<?php // pr($user); ?>
 	<?php // pr($next_lan); ?>
 	<?php // pr($pizza_orders); ?>
-	<?php pr($lans); ?>
+	<?php // pr($teams); ?>
 </div>

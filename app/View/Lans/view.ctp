@@ -1,4 +1,12 @@
 <div class="form">
+	<?php if(isset($user_guests) && count($user_guests)): ?>
+	<div style="float:right">
+		<?php echo $this->Form->create('LanInvite'); ?>
+		<?php echo $this->Form->input('user_guest_id', array('label' => 'Invite guest to LAN', 'options' => $user_guests)); ?>
+		<?php echo $this->Form->end('Invite'); ?>
+		<?php // debug($user_guests); ?>
+	</div>
+	<?php endif; ?>
 	<h1><?php echo $lan['Lan']['title']; ?></h1>
 	<h2>General info</h2>
 	<ul style="margin-bottom: 20px;">
@@ -22,7 +30,7 @@
 			</tr>
 		<?php endforeach; ?>
 	</table>
-	
+
 	<h2>Tournaments (<?php echo count($lan['Tournament']); ?>)</h2>
 	<?php // echo $this->Html->link('User lookup', array('action' => 'lookup')); ?>
 	<table>

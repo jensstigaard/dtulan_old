@@ -10,18 +10,21 @@
 		<h2>Select attending days</h2>
 		<?php
 		$x = 0;
-		foreach ($lan_days as $day_id => $day_value):
+		foreach ($lan_days as $day_id => $day):
+			$conditions = array('value' => $day_id);
+
+//			if (!$day['seats_left']) {
+//				$conditions['disabled'] = 'disabled';
+//			}
 			?>
 			<div>
-				<?php
-				echo $this->Form->checkbox('LanSignupDay.' . $x . '.lan_day_id', array('value' => $day_id));
-				echo $day_value;
-				$x++;
-				?>
+				<?php echo $this->Form->checkbox('LanSignupDay.' . $x . '.lan_day_id', $conditions); ?>
+				<?php echo $day['value']; ?> (<?php echo ($day['seats_left']); ?> seats left)
+				<?php $x++; ?>
 			</div>
 		<?php endforeach; ?>
 	</fieldset>
 	<?php echo $this->Form->end(__('Submit')); ?>
 
-	<?php // pr($user);  ?>
+	<?php // pr($user);    ?>
 </div>

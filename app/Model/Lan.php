@@ -6,8 +6,9 @@ class Lan extends AppModel {
 	public $hasMany = array(
 		'LanSignup',
 		'LanDay',
+		'LanInvite',
 		'Tournament',
-		'PizzaWave'
+		'PizzaWave',
 	);
 	public $validate = array(
 		'title' => array(
@@ -92,7 +93,7 @@ class Lan extends AppModel {
 		$currentTime = date('Y-m-d H:i:s');
 
 		$this->recursive = 0;
-		
+
 		$data = $this->find('first', array(
 			'conditions' => array(
 				'Lan.time_end >' => $currentTime,
@@ -102,6 +103,47 @@ class Lan extends AppModel {
 		);
 
 		return $data;
+	}
+
+	public function getInviteableUsers($id = null) {
+		$this->id = $id;
+
+		if (!$this->exists()) {
+			throw new NotFoundException('Lan not found');
+		}
+
+		$lan = $this->read();
+
+		$user_ids = array();
+		foreach ($lan['LanSignup'] as $user) {
+			$user_ids[] = $user['user_id'];
+		}
+
+		foreach ($lan['LanInvite'] as $user) {
+			$user_ids[] = $user['user_guest_id'];
+		}
+
+		$users_list = array();
+
+		// Only the max participants is it possible to invite
+		if (count($user_ids) < $lan['Lan']['max_participants']) {
+
+			$users = $this->LanSignup->User->find('all', array('conditions' => array(
+					'NOT' => array(
+						'User.id' => $user_ids,
+					),
+					'User.type' => 'guest',
+					'User.activated' => 1
+				)
+					)
+			);
+
+			foreach ($users as $user) {
+				$users_list[$user['User']['id']] = $user['User']['name'];
+			}
+		}
+
+		return $users_list;
 	}
 
 }

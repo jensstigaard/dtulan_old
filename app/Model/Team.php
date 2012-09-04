@@ -56,8 +56,6 @@ class Team extends AppModel {
 					)
 			);
 
-
-
 			foreach ($users as $user) {
 				$users_list[$user['User']['id']] = $user['User']['name'];
 			}
