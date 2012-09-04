@@ -217,50 +217,55 @@ class UsersController extends AppController {
 //	}
 
 	public function activate($id = null) {
-		//$this->User->setValidation('activate');
+            if ($this->request->is('post')) {
 
-		$this->User->id = $id;
+                $this->User->read(array('id', 'activated'), $id);
 
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
 
-		$user = $this->User->read();
-
-		if ($user['User']['activated'] != 0) {
+		if ($this->User->isActivated()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
-
-		if ($this->request->is('post')) {
-
-			$this->request->data['User']['activated'] = 1;
-			$this->request->data['User']['time_activated'] = date('Y-m-d H:i:s');
-
-			if ($this->User->save($this->request->data)) {
-				/*
-				 * Logs user in after successful activation
-				 */
-				$this->Auth->login($this->User);
-				$this->Session->setFlash(__('User activated. Welcome'));
-				$this->redirect(array('action' => 'index'));
-			}
-			$this->Session->setFlash(__('User was not activated'));
-		}
+           
+                // Setting fields in $user for saving
+                $this->User->set(
+                    array(
+                        'activated' => 1,
+                        'time_activated' => date('Y-m-d H:i:s'),
+                        'password' => $this->request->data['User']['password'],
+                        'password_confirmation' => $this->request->data['User']['password_confirmation']
+                    )
+                );
+                
+                if ($this->User->save()) {
+                    /*
+                     * Logs user in after successful activation
+                     */
+                    $this->Auth->login($this->User->id);
+                    $this->Session->setFlash(__('User activated. Welcome'));
+                    $this->redirect(array('action' => 'index'));
+                } else {
+                    $this->Session->setFlash(__('User was not activated'));
+                }
+            }
 	}
 
 	public function login() {
-		if ($this->request->is('post') && $this->request->accepts("application/vnd.dtulan+json; version=1.0")) {
-			$this->response->header(array('content-type: application/json'));
-			$this->render('API/response');
-			$data = array();
-			if ($this->Auth->login()) {
-				$this->set('succes', 'true');
-				$this->set($data, array('access_token' => $this->Auth->user('access_token')));
-			} else {
-				$this->set('succes', 'false');
-				$this->set($data, array('message' => _('Invalid email or password!')));
-			}
-		} elseif ($this->request->is('post')) {
+//		if ($this->request->is('post') && $this->request->accepts("application/vnd.dtulan+json; version=1.0")) {
+//			$this->response->header(array('content-type: application/json'));
+//			$this->render('API/response');
+//			$data = array();
+//			if ($this->Auth->login()) {
+//				$this->set('succes', 'true');
+//				$this->set($data, array('access_token' => $this->Auth->user('access_token')));
+//			} else {
+//				$this->set('succes', 'false');
+//				$this->set($data, array('message' => _('Invalid email or password!')));
+//			}
+//		} else
+                    if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 				$this->Session->setFlash(__('You are now logged in'));
 
