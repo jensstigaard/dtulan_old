@@ -95,7 +95,7 @@ class TeamsController extends AppController {
 			throw new MethodNotAllowedException('You are not allowed to cancel invites');
 		}
 
-		debug($invite);
+//		debug($invite);
 
 		if ($this->Team->TeamInvite->deleteAll(array('TeamInvite.id' => $id), false)) {
 			$this->Session->setFlash('Invite cancelled');
