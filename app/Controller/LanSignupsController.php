@@ -21,33 +21,39 @@ class LanSignupsController extends AppController {
 		$this->LanSignup->User->id = $user['id'];
 
 		if (!$this->LanSignup->User->exists()) {
-			throw new NotFoundException(__('Invalid User'));
-		}
-
-		if ($id == null) {
-			throw new NotFoundException(__('Invalid LAN'));
+			throw new NotFoundException(__('Invalid user'));
 		}
 
 		$user = $this->LanSignup->User->read();
+
+		if ($user['User']['type'] == 'guest') {
+			if ($this->LanSignup->Lan->LanInvite->find('count', array('conditions' => array(
+							'LanInvite.lan_id' => $id,
+							'LanInvite.user_guest_id' => $user['User']['id'],
+							'LanInvite.accepted' => 1
+						)
+							)
+					)
+			!= 1) {
+				throw new BadRequestException('Invite not found');
+			}
+		}
+
+		$this->LanSignup->Lan->id = $id;
+		if (!$this->LanSignup->Lan->exists()) {
+			throw new NotFoundException('LAN not found');
+		}
 
 		$lans = array();
 		foreach ($user['LanSignup'] as $lan) {
 			$lans[] = $lan['lan_id'];
 		}
 
-		$lan = $this->LanSignup->Lan->find('first', array(
-			'conditions' => array(
-				'id' => $id,
-				'NOT' => array(
-					'Lan.id' => $lans
-				)
-			)
-				)
-		);
-
-		if (!$lan) {
-			throw new NotFoundException(__('LAN already signed up or no LAN found with given ID'));
+		if (in_array($id, $lans)) {
+			throw new BadRequestException(__('LAN already signed up'));
 		}
+
+		$lan = $this->LanSignup->Lan->read();
 
 		if ($this->request->is('post')) {
 
@@ -60,9 +66,6 @@ class LanSignupsController extends AppController {
 				}
 			}
 
-//			debug($this->request->data);
-
-//			echo $this->LanSignup->validates();
 			if ($this->LanSignup->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your signup has been saved.');
 				$this->redirect(array('controller' => 'users', 'action' => 'profile'));
@@ -82,7 +85,6 @@ class LanSignupsController extends AppController {
 		}
 
 		$this->set(compact('lan', 'lan_days', 'user'));
-
 	}
 
 }

@@ -84,6 +84,16 @@ class UsersController extends AppController {
 				)
 		);
 
+//		$this->User->LanInvite->recursive = 2;
+		$this->User->LanInvite->unbindModel(array('belongsTo' => array('Guest')));
+
+		$lan_invites = $this->User->LanInvite->find('first', array('conditions' => array(
+				'LanInvite.user_guest_id' => $id,
+				'LanInvite.accepted' => 0
+			)
+				)
+		);
+
 		$this->User->unbindModel(array('hasMany' => array('PizzaOrder', 'LanSignup')));
 		$user = $this->User->read();
 
@@ -110,7 +120,7 @@ class UsersController extends AppController {
 			);
 		}
 
-		$this->set(compact('pizza_orders', 'lans', 'teams'));
+		$this->set(compact('pizza_orders', 'lans', 'teams', 'lan_invites'));
 	}
 
 	public function add() {

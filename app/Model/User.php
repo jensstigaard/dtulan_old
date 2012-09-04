@@ -14,7 +14,7 @@ class User extends AppModel {
 
 	public $name = 'User';
 	public $hasOne = array('Admin');
-	public $hasMany = array('Payment', 'PizzaOrder', 'Crew', 'LanSignup', 'TeamInvite', 'TeamUser', 'LanInviteReceived' => array(
+	public $hasMany = array('Payment', 'PizzaOrder', 'Crew', 'LanSignup', 'TeamInvite', 'TeamUser', 'LanInvite' => array(
 			'className' => 'LanInvite',
 			'foreignKey' => 'user_guest_id'
 		), 'LanInviteSent' => array(
