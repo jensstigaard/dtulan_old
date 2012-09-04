@@ -125,6 +125,9 @@ class User extends AppModel {
 		return $count < 9 ? $guestNumber . '0' . ($count + 1) : $guestNumber . ($count + 1);
 	}
 
+        public function isActivated() {
+            return $this->data['User']['activated'] == 0 ? false: true;
+        }
 }
 
 ?>
