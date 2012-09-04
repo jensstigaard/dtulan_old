@@ -1,5 +1,7 @@
-<?php if ($error == 0): ?>
-	Order success
-<?php else: ?>
-	<?php print_r($data); ?>
-<?php endif; ?>
+<?php
+
+if (!is_array($msg)) {
+	echo $msg;
+} else {
+	print_r($msg);
+}

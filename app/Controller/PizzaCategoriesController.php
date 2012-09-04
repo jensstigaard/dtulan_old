@@ -19,25 +19,34 @@ class PizzaCategoriesController extends AppController {
 
 	public function index($wave_id = null) {
 
+		$title_for_layout = 'Pizzas';
+
+
 		$this->loadModel('Lan');
-		if ($this->Lan->isOnAir()) {
+		if ($this->Auth->loggedIn() && $this->Lan->isOnAir()) {
+			$user = $this->Auth->user();
+
 			$current_lan = $this->Lan->getOnAir();
-			if ($wave_id != null) {
-				$this->Lan->PizzaWave->id = $wave_id;
-				if ($this->Lan->PizzaWave->exists()) {
-					$current_wave = $this->Lan->PizzaWave->read();
+
+			if ($this->Lan->isUserAttending($current_lan['Lan']['id'], $user['id'])) {
+				if ($wave_id != null) {
+					$this->Lan->PizzaWave->id = $wave_id;
+					if ($this->Lan->PizzaWave->exists()) {
+						$current_wave = $this->Lan->PizzaWave->read();
+					}
 				}
-			}
 
-			if (!isset($current_wave)) {
-				$current_wave = $this->Lan->PizzaWave->getOnAir($current_lan['Lan']['id']);
-			}
+				if (!isset($current_wave)) {
+					$current_wave = $this->Lan->PizzaWave->getOnAir($current_lan['Lan']['id']);
+				}
 
-			$waves = $this->Lan->PizzaWave->getAvailable($current_lan['Lan']['id']);
+				$waves = $this->Lan->PizzaWave->getAvailable($current_lan['Lan']['id']);
+
+				$this->set(compact('current_lan', 'current_wave', 'waves'));
+			}
 		}
 
-		$title_for_layout = 'Pizzas';
-		$this->set(compact('title_for_layout', 'current_lan', 'current_wave', 'waves'));
+		$this->set(compact('title_for_layout'));
 
 		$data_category = $this->PizzaCategory->find('all', array('conditions' =>
 			array(
@@ -70,7 +79,7 @@ class PizzaCategoriesController extends AppController {
 		}
 
 		$this->set('pizza_categories', $data_category);
-		$this->set('is_orderable', ($this->Auth->loggedIn() && $current_wave != ''));
+		$this->set('is_orderable', ($this->Auth->loggedIn() && isset($current_wave) && $current_wave != ''));
 	}
 
 	public function add() {

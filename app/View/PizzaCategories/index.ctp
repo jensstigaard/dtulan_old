@@ -36,7 +36,16 @@ if ($is_orderable) {
 							<br />
 							<hr />
 						<?php endif; ?>
-						<h3><?php echo $this->Time->format('D, M jS', $wave['PizzaWave']['time_start']); ?></h3>
+						<h3><?php
+						if($this->Time->isToday($wave['PizzaWave']['time_start'])){
+							echo'Today';
+						}
+						elseif($this->Time->isToday($wave['PizzaWave']['time_start'])){
+							echo'Tomorrow';
+						}
+						else{
+							echo $this->Time->format('D, M jS', $wave['PizzaWave']['time_start']);
+						} ?></h3>
 						<?php $last_date = $this_date; ?>
 					<?php endif; ?>
 					<div>
@@ -80,13 +89,16 @@ if ($is_orderable) {
 					</tbody>
 
 				</table>
-				<div>
+				<div class="pizza_order_buttons hidden">
 					<?php echo $this->Js->link('Submit order', array('controller' => 'pizza_orders', 'action' => 'add'), array('class' => 'pizza_order_submit')); ?>
+
+					<small><?php echo $this->Js->link('Clear order', '#', array('class' => 'pizza_order_clear')); ?></small>
 					<div class="hidden"><?php echo $current_wave['PizzaWave']['id']; ?></div>
+					<div style="clear:both;"></div>
 				</div>
 				<?php echo $this->Form->end(); ?>
-				<div class="pizza_order_sending" style="display:none;"></div>
-				<div class="pizza_order_success"></div>
+				<div class="pizza_order_sending hidden"></div>
+				<div class="pizza_order_success hidden">Pizza order submitted</div>
 			</div>
 		<?php endif; ?>
 	</div>
