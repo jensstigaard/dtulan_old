@@ -126,7 +126,7 @@ class User extends AppModel {
 	}
 
         public function isActivated() {
-            return $this->data['User']['activated'] == 0 ? false: true;
+            return $this->data['User']['activated'];
         }
 }
 

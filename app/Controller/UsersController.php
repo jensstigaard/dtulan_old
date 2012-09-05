@@ -45,8 +45,7 @@ class UsersController extends AppController {
 
 	public function profile($id = null) {
 		if ($id == null) {
-			$user = $this->Auth->user();
-			$id = $user['id'];
+			$id = $this->Auth->user();
 		}
 
 		$this->User->id = $id;
@@ -219,7 +218,14 @@ class UsersController extends AppController {
 	public function activate($id = null) {
             if ($this->request->is('post')) {
 
-                $this->User->read(array('id', 'activated'), $id);
+                $this->User->unbindModel(
+                        array(
+                            'hasMany' => array('Payment', 'PizzaOrder', 'Crew', 'LanSignup', 'TeamInvite', 'TeamUser', 'LanInvite', 'LanInviteSent'),
+                            'hasOne' => array('Admin')
+                        )
+                    );
+                
+                $this->User->read(array('id', 'activated', 'email'), $id);
 
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
@@ -238,12 +244,13 @@ class UsersController extends AppController {
                         'password_confirmation' => $this->request->data['User']['password_confirmation']
                     )
                 );
-                
+//                debug($this->User->data);
                 if ($this->User->save()) {
                     /*
                      * Logs user in after successful activation
                      */
-                    $this->Auth->login($this->User->id);
+                    
+//                    $this->Auth->login($this->User->id);
                     $this->Session->setFlash(__('User activated. Welcome'));
                     $this->redirect(array('action' => 'index'));
                 } else {
