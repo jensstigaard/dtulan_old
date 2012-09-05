@@ -38,7 +38,7 @@ class AppController extends Controller {
 		'Auth' => array(
 			'loginRedirect' => array('controller' => 'pages', 'action' => 'view', 1),
 			'logoutRedirect' => array('controller' => 'pages', 'action' => 'view', 1),
-			'authError' => 'Please log in to show page',
+			'authError' => 'Access denied',
 			'authorize' => array('Controller'), // Added this line
 		)
 	);

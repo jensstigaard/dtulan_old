@@ -11,7 +11,16 @@
  * @author Jens
  */
 class LanInvitesController extends AppController {
-	
+
+	public function beforeFilter() {
+		parent::beforeFilter();
+//		$this->Auth->allow('');
+	}
+
+	public function isAuthorized($user) {
+		parent::isAuthorized($user);
+	}
+
 }
 
 ?>

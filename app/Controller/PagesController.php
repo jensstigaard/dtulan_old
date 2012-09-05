@@ -43,7 +43,6 @@ class PagesController extends AppController {
 	 *
 	 * @var array
 	 */
-
 	public $helpers = array('Html', 'Form', 'Js', 'Fck');
 
 	public function beforeFilter() {
@@ -54,7 +53,12 @@ class PagesController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		return true;
+		if (isset($user['Admin']['user_id'])) {
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	public function index() {

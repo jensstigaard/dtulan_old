@@ -4,6 +4,21 @@ class LansController extends AppController {
 
 	public $helpers = array('Html', 'Form');
 
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('view', 'menu', 'menuItem');
+	}
+
+	public function isAuthorized($user) {
+		parent::isAuthorized($user);
+
+		if (isset($user['Admin']['user_id'])) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public function index() {
 		$this->set('lans', $this->Lan->find('all'));
 	}
@@ -110,7 +125,7 @@ class LansController extends AppController {
 			throw new NotFoundException('Lan not found');
 		}
 
-		$this->Lan->recursive = -1;
+		$this->Lan->recursive = 0;
 		//$this->set('lan', $this->Lan->read());
 
 		$this->Lan->Behaviors->attach('Containable');
