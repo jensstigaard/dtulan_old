@@ -146,6 +146,15 @@ class Lan extends AppModel {
 		return $users_list;
 	}
 
+	public function isUserAttending($lan_id, $user_id) {
+		return $this->LanSignup->find('count', array('conditions' => array(
+			'LanSignup.lan_id' => $lan_id,
+			'LanSignup.user_id' => $user_id
+					)
+						)
+		) == 1;
+	}
+
 }
 
 ?>
