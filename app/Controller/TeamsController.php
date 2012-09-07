@@ -12,6 +12,19 @@
  */
 class TeamsController extends AppController {
 
+	public function beforeFilter() {
+		parent::beforeFilter();
+	}
+
+	public function isAuthorized($user) {
+		parent::isAuthorized($user);
+
+		if ($this->isAdmin($user)) {
+			return true;
+		}
+		return false;
+	}
+
 	//put your code here
 	public function add($tournament_id = null) {
 

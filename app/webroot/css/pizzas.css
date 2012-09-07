@@ -87,25 +87,6 @@ table.pizza_list tr.pizza_item td{
 }
 
 
-
-/* Styles for ordering a pizza add-icon */
-table.pizza_list tr.pizza_item td a, table.pizza_list tr.pizza_category th a{
-	visibility: hidden;
-	opacity: .6;
-}
-
-table.pizza_list img{
-	vertical-align: middle;
-}
-
-table.pizza_list tr.pizza_item:hover td a, table.pizza_list tr.pizza_category:hover th a{
-	visibility: visible;
-}
-
-table.pizza_list tr.pizza_item td a:hover, table.pizza_list tr.pizza_category th a:hover{
-	opacity: 1;
-}
-
 table.pizza_list tr.pizza_item.gray{
 	color: #888;
 }

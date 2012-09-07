@@ -17,22 +17,32 @@ class PizzaCategoriesController extends AppController {
 		$this->Auth->allow('index');
 	}
 
+	public function isAuthorized($user) {
+		parent::isAuthorized($user);
+
+		if ($this->isAdmin($user)) {
+			return true;
+		}
+		return false;
+	}
+
 	public function index($wave_id = null) {
 
 		$title_for_layout = 'Pizzas';
 
 
 		$this->loadModel('Lan');
-		if ($this->Auth->loggedIn() && $this->Lan->isOnAir()) {
+		if ($this->Lan->isOnAir()) {
 			$user = $this->Auth->user();
 
 			$current_lan = $this->Lan->getOnAir();
 
 			if ($this->Lan->isUserAttending($current_lan['Lan']['id'], $user['id'])) {
 				if ($wave_id != null) {
-					$this->Lan->PizzaWave->id = $wave_id;
-					if ($this->Lan->PizzaWave->exists()) {
-						$current_wave = $this->Lan->PizzaWave->read();
+					$this->Lan->PizzaWave->read(null, $wave_id);
+
+					if ($this->Lan->PizzaWave->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
+						$current_wave = $this->Lan->PizzaWave->read(null, $wave_id);
 					}
 				}
 
@@ -48,10 +58,15 @@ class PizzaCategoriesController extends AppController {
 
 		$this->set(compact('title_for_layout'));
 
-		$data_category = $this->PizzaCategory->find('all', array('conditions' =>
-			array(
-				'PizzaCategory.available' => 1
-			),
+		$this->PizzaCategory->Pizza->unbindModel(array('belongsTo' => array('PizzaCategory')));
+		$this->PizzaCategory->Pizza->PizzaPrice->unbindModel(array('belongsTo' => array('Pizza'), 'hasMany' => array('PizzaOrderItem')));
+
+		$conditions = array();
+		if(!$this->isAdmin($user)){
+			$conditions['PizzaCategory.available'] = 1;
+		}
+		$conditions =
+		$data_category = $this->PizzaCategory->find('all', array('conditions' => $conditions,
 			'recursive' => 3)
 		);
 
@@ -62,6 +77,8 @@ class PizzaCategoriesController extends AppController {
 					$data_prices[$price['pizza_type_id']][$pizza['id']]['price'] = $price['price'];
 					$data_prices[$price['pizza_type_id']][$pizza['id']]['pizza_price_id'] = $price['id'];
 				}
+
+
 
 				foreach ($category['PizzaType'] as $type) {
 					$price = 0;

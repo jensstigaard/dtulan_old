@@ -6,6 +6,19 @@ class PizzaWavesController extends AppController {
 
 	public $uses = 'PizzaWave';
 
+	public function beforeFilter() {
+		parent::beforeFilter();
+	}
+
+	public function isAuthorized($user) {
+		parent::isAuthorized($user);
+
+		if ($this->isAdmin($user)) {
+			return true;
+		}
+		return false;
+	}
+
 	public function index() {
 		$this->set('pizzaWaves', $this->PizzaWave->find('all'));
 	}

@@ -6,17 +6,15 @@ class LansController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('view', 'menu', 'menuItem');
 	}
 
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if (isset($user['Admin']['user_id'])) {
+		if ($this->isAdmin($user) || in_array($this->action, array('view'))) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	public function index() {
@@ -118,6 +116,7 @@ class LansController extends AppController {
 		}
 	}
 
+	// In use?????
 	public function lookup($id = null) {
 		$this->Lan->id = $id;
 

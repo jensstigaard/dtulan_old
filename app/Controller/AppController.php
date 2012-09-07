@@ -54,4 +54,8 @@ class AppController extends Controller {
 		$this->set('current_user', $current_user);
 	}
 
+	public function isAdmin($user = null){
+		return isset($user['Admin']['user_id']);
+	}
+
 }

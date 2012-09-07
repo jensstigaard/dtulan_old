@@ -14,7 +14,15 @@ class PizzasController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('index');
+	}
+
+	public function isAuthorized($user) {
+		parent::isAuthorized($user);
+
+		if ($this->isAdmin($user)) {
+			return true;
+		}
+		return false;
 	}
 
 	public function add($category_id = null) {

@@ -15,7 +15,7 @@ if ($is_orderable) {
 		<?php endif; ?>
 	</div>
 
-	<h2>Pizzas</h2>
+	<h1>Pizzas</h1>
 	<p>You'll see the list of available pizzas below</p>
 	<div class="right">
 		<?php if ($logged_in && count($waves)): ?>
@@ -99,6 +99,7 @@ if ($is_orderable) {
 				<?php echo $this->Form->end(); ?>
 				<div class="pizza_order_sending hidden"></div>
 				<div class="pizza_order_success hidden">Pizza order submitted</div>
+				<div class="pizza_order_errors hidden"></div>
 			</div>
 		<?php endif; ?>
 	</div>
@@ -200,5 +201,5 @@ if ($is_orderable) {
 		echo $this->Html->image('16x16_GIF/action_remove.gif', array('class' => 'image_remove'));
 		?>
 	</div>
-
+<?php pr($pizza_categories); ?>
 </div>

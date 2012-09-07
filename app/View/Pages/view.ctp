@@ -4,7 +4,7 @@
 			<?php echo $this->Html->link('Edit page', array('action' => 'edit', $page['Page']['id'])); ?>
 		</div>
 	<?php endif; ?>
-	<h2><?php echo h($page['Page']['title']); ?></h2>
+	<h1><?php echo h($page['Page']['title']); ?></h1>
 
 	<p>
 		<small>

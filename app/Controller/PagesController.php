@@ -53,12 +53,11 @@ class PagesController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if (isset($user['Admin']['user_id'])) {
+		if ($this->isAdmin($user)) {
 			return true;
 		}
-		else{
-			return false;
-		}
+
+		return false;
 	}
 
 	public function index() {
@@ -109,7 +108,7 @@ class PagesController extends AppController {
 			// Otherwise - save the page
 			if ($this->Page->save($this->request->data)) {
 				$this->Session->setFlash('Your page has been updated.');
-				$this->redirect(array('action' => 'index'));
+//				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash('Unable to update your page.');
 			}
@@ -119,7 +118,9 @@ class PagesController extends AppController {
 		$opt[0] = '[Top level]';
 		ksort($opt);
 
-		$this->set('parents', $opt);
+		$parents = $opt;
+
+		$this->set(compact('id', 'parents'));
 		$this->request->data['Page']['latest_update_by_id'] = $this->Auth->user('id');
 	}
 
