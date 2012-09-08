@@ -11,7 +11,8 @@
  * @author Jens
  */
 class AdminsController extends AppController {
-	public function beforeFilter(){
+
+	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
@@ -20,10 +21,10 @@ class AdminsController extends AppController {
 		return true;
 	}
 
-
-	public function index(){
+	public function index() {
 
 	}
+
 }
 
 ?>

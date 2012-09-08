@@ -15,6 +15,10 @@ div.menu > ul{
 	margin: 2px 0;
 }
 
+div.menu > ul:hover{
+	background: rgba(0,0,0, .3);
+}
+
 div.menu > ul > li.menuItemTop{
 	float: left;
 }
@@ -26,12 +30,16 @@ div.menu ul li{
 div.menu > ul li a{
 	display: block;
 	padding: 5px 15px 7px;
-	text-decoration: none;
-	color: #ddd;
+	font-weight: bold;
+	color:#DDD;
 }
 
 div.menu > ul li a:hover{
 	color:#fff;
+}
+
+div.menu > ul > li:hover > a{
+	background-color: rgba(0,0,0,.7);
 }
 
 
@@ -42,23 +50,24 @@ div.menu > ul > li {
 div.menu > ul > li > ul {
 	display: none;
 	width: 10em;
+	margin: 0;
+	padding: 0;
+	background-color: rgba(0, 0, 0, .7);
 }
 
 div.menu ul > li:hover > ul {
 	display: block;
 	position: absolute;
-	margin: 0;
-	padding: 0;
 }
 div.menu > ul > li > ul > li{
 	margin: 0;
-}
-
-div.menu > ul > li:hover > ul > li {
 	float: none;
-	border-bottom: 1px solid #333;
 }
 
-div.menu > ul > li > a:hover, div.menu > ul > li:hover > ul > li > a {
-	background-color: rgba(100, 150, 200, .95);
+div.menu > ul > li > ul > li > a {
+	border-bottom: 1px dotted rgba(100,100,100,.5);
+}
+
+div.menu > ul > li > ul > li > a:hover{
+	background-color: rgba(0,0,0,.3);
 }

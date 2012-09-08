@@ -12,34 +12,41 @@
 		echo $this->Html->css(array(
 			'layout.general',
 			'layout.menu',
-			'cake.errors'));
+			'layout.tables',
+			'cake.errors'
+				)
+		);
 
-		if($logged_in && $is_admin){
+		if ($logged_in && $is_admin) {
 			echo $this->Html->css(array(
-			'layout.admin'));
+				'layout.admin'));
 		}
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 
-		echo $this->Js->writeBuffer(array('cache'=>TRUE));
+		echo $this->Js->writeBuffer(array('cache' => TRUE));
 		?>
 	</head>
 	<body>
-		<div id="container">
-			<div id="header">
-				<h1><?php echo $this->Html->link('DTU LAN site', '../'); ?></h1>
-				<div class="menu">
-					<?php echo $this->element('menu'); ?>
-				</div>
+		<div id="header">
+			<h1><?php echo $this->Html->link('DTU LAN site', '../'); ?></h1>
+			<div class="menu">
+				<?php echo $this->element('menu'); ?>
 			</div>
+		</div>
+		<div id="container">
 			<div id="content">
 
-				<?php echo $this->Session->flash(); ?>
-				<?php echo $this->Session->flash('auth'); ?>
+				<div>
+					<?php echo $this->Session->flash(); ?>
+					<?php echo $this->Session->flash('auth'); ?>
+				</div>
 
-				<?php echo $this->fetch('content'); ?>
+				<div class="content">
+					<?php echo $this->fetch('content'); ?>
+				</div>
 
 				<div class="actions">
 					<?php echo $this->element('sidebar', array()); ?>
@@ -55,7 +62,7 @@
 
 			<?php // echo $this->element('sql_dump'); ?>
 
-<!--		<pre><?php // print_r($current_user);          ?></pre>-->
+<!--		<pre><?php // print_r($current_user);               ?></pre>-->
 		</div>
 	</body>
 </html>

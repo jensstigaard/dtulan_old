@@ -10,7 +10,6 @@ class Admin extends AppModel {
 //	public $belongsTo = array(
 //		'User'
 //	);
-
 }
 
 ?>

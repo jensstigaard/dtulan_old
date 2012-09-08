@@ -31,11 +31,16 @@ class UsersController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if (in_array($this->action, array('index', 'profile', 'editPersonalData', 'logout'))) {
+		if ($this->isAdmin($user)) {
 			return true;
-		} elseif (in_array($this->action, array('activate', 'add', 'login'))) {
-			return false;
+		} elseif (in_array($this->action, array(
+			'profile',
+			'logout',
+//			'editPersonalData',
+			))) {
+			return true;
 		}
+		return false;
 	}
 
 	public function index() {
@@ -119,7 +124,9 @@ class UsersController extends AppController {
 			);
 		}
 
-		$this->set(compact('pizza_orders', 'lans', 'teams', 'lan_invites'));
+		$title_for_layout = 'Profile &bull; '.$user['User']['name'];
+
+		$this->set(compact('pizza_orders', 'lans', 'teams', 'lan_invites', 'title_for_layout'));
 	}
 
 	public function add() {
@@ -216,7 +223,7 @@ class UsersController extends AppController {
 //	}
 
 	public function activate($id = null) {
-            if ($this->request->is('post')) {
+		if ($this->request->is('post')) {
 
                 $this->User->unbindModel(
                         array(
@@ -227,8 +234,34 @@ class UsersController extends AppController {
                 
                 $this->User->read(array('id', 'activated', 'email'), $id);
 
-		if (!$this->User->exists()) {
-			throw new NotFoundException(__('Invalid user'));
+			if (!$this->User->exists()) {
+				throw new NotFoundException(__('Invalid user'));
+			}
+
+			if ($this->User->isActivated()) {
+				throw new NotFoundException(__('Invalid user'));
+			}
+
+			// Setting fields in $user for saving
+			$this->User->set(
+					array(
+						'activated' => 1,
+						'time_activated' => date('Y-m-d H:i:s'),
+						'password' => $this->request->data['User']['password'],
+						'password_confirmation' => $this->request->data['User']['password_confirmation']
+					)
+			);
+
+			if ($this->User->save()) {
+				/*
+				 * Logs user in after successful activation
+				 */
+				$this->Auth->login($this->User->id);
+				$this->Session->setFlash(__('User activated. Welcome'));
+				$this->redirect(array('action' => 'index'));
+			} else {
+				$this->Session->setFlash(__('User was not activated'));
+			}
 		}
 
 		if ($this->User->isActivated()) {
@@ -276,7 +309,7 @@ class UsersController extends AppController {
 //				$this->set($data, array('message' => _('Invalid email or password!')));
 //			}
 //		} else
-                    if ($this->request->is('post')) {
+		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 				$this->Session->setFlash(__('You are now logged in'));
 

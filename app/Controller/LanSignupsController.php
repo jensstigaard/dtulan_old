@@ -12,6 +12,10 @@
  */
 class LanSignupsController extends AppController {
 
+	public function beforeFilter() {
+		parent::beforeFilter();
+	}
+
 	public function add($id = null) {
 
 		App::uses('CakeTime', 'Utility');

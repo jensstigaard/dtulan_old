@@ -1,13 +1,12 @@
 <?php $isAuth = ($user['User']['id'] == $current_user['id'] || $is_admin); ?>
 
 <div class="form">
-	<h1>Profile</h1>
+	<h1><?php echo $user['User']['name']; ?></h1>
 	<?php if ($user['User']['id'] == $current_user['id']): ?>
 		<div style="float:right">
 			<?php echo $this->Html->link('Edit personal data', array('action' => 'editPersonalData')); ?>
 		</div>
 	<?php endif; ?>
-	<h2><?php echo $user['User']['name']; ?></h2>
 
 	<?php if ($user['User']['activated'] != 1 && $is_admin): ?>
 		<div class="message">
@@ -48,7 +47,7 @@
 
 	<?php // debug($lan_invites);   ?>
 
-	<h3>User info</h3>
+	<h2>User info</h2>
 
 	<?php if ($isAuth): ?>
 		<div style="float:right;">Balance: <?php echo @$user['User']['balance']; ?></div>
@@ -74,7 +73,7 @@
 	 */
 	?>
 	<div>
-		<h3>Teams you're in:</h3>
+		<h2>Teams you're in</h2>
 		<table>
 			<tr>
 				<th>Name</th>
@@ -99,7 +98,7 @@
 	 */
 	?>
 	<div>
-		<h3>LANs:</h3>
+		<h2>LANs</h2>
 		<table>
 			<tr>
 				<th>Title</th>
@@ -130,82 +129,84 @@
 		</table>
 	</div>
 
-	<div>
-		<h3>Payments:</h3>
-		<table>
-			<tr>
-				<th>Time</th>
-				<th>Amount</th>
-			</tr>
-			<?php if (!count($user['Payment'])): ?>
-				<tr>
-					<td colspan="2">
-						No payments registered
-					</td>
-				</tr>
-			<?php else: ?>
-				<?php $total_balance = 0; ?>
-				<?php foreach ($user['Payment'] as $payment): ?>
-					<tr>
-						<td><?php echo $this->Time->nice($payment['time']); ?></td>
-						<td><?php echo $payment['amount']; ?></td>
-					</tr>
-					<?php $total_balance += $payment['amount'];
-					?>
-
-				<?php endforeach; ?>
-				<tr>
-					<td>Total payments: <?php echo $total_balance; ?></td>
-					<td><?php echo count($user['Payment']); ?></td>
-				</tr>
-			<?php endif; ?>
-		</table>
-	</div>
-
-
-	<div>
-		<h3>Pizza orders:</h3>
-		<table>
-			<thead>
+	<?php if ($isAuth): ?>
+		<div>
+			<h2>Payments</h2>
+			<table>
 				<tr>
 					<th>Time</th>
-					<th>Items</th>
-					<th></th>
+					<th>Amount</th>
 				</tr>
-			</thead>
-			<tbody>
-				<?php if (!count($pizza_orders)): ?>
+				<?php if (!count($user['Payment'])): ?>
 					<tr>
 						<td colspan="2">
-							No orders registered
+							No payments registered
 						</td>
 					</tr>
 				<?php else: ?>
 					<?php $total_balance = 0; ?>
-					<?php foreach ($pizza_orders as $pizza_order): ?>
-						<?php $order_balance = 0; ?>
+					<?php foreach ($user['Payment'] as $payment): ?>
 						<tr>
-							<td><?php echo $this->Time->nice($pizza_order['PizzaOrder']['time']); ?></td>
-							<td><?php foreach ($pizza_order['PizzaOrderItem'] as $item): ?>
-									<div>
-										<?php echo $item['amount']; ?> x <?php echo $item['PizzaPrice']['Pizza']['title']; ?>
-										<small>(<?php echo $item['PizzaPrice']['PizzaType']['title']; ?>)</small>
-									</div>
-									<?php $order_balance += $item['amount'] * $item['price']; ?>
-								<?php endforeach; ?></td>
-							<td><?php echo $order_balance; ?> DKK</td>
+							<td><?php echo $this->Time->nice($payment['time']); ?></td>
+							<td><?php echo $payment['amount']; ?></td>
 						</tr>
-						<?php $total_balance += $order_balance; ?>
+						<?php $total_balance += $payment['amount'];
+						?>
+
 					<?php endforeach; ?>
 					<tr>
-						<td>Orders: <?php echo count($pizza_orders); ?></td>
-						<td>Total amount spend on pizzas:</td>
-						<td><?php echo $total_balance; ?> DKK</td>
+						<td>Total payments: <?php echo $total_balance; ?></td>
+						<td><?php echo count($user['Payment']); ?></td>
 					</tr>
 				<?php endif; ?>
-			</tbody>
-		</table>
-	</div>
+			</table>
+		</div>
+
+
+		<div>
+			<h2>Pizza orders</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>Time</th>
+						<th>Items</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php if (!count($pizza_orders)): ?>
+						<tr>
+							<td colspan="2">
+								No orders registered
+							</td>
+						</tr>
+					<?php else: ?>
+						<?php $total_balance = 0; ?>
+						<?php foreach ($pizza_orders as $pizza_order): ?>
+							<?php $order_balance = 0; ?>
+							<tr>
+								<td><?php echo $this->Time->nice($pizza_order['PizzaOrder']['time']); ?></td>
+								<td><?php foreach ($pizza_order['PizzaOrderItem'] as $item): ?>
+										<div>
+											<?php echo $item['amount']; ?> x <?php echo $item['PizzaPrice']['Pizza']['title']; ?>
+											<small>(<?php echo $item['PizzaPrice']['PizzaType']['title']; ?>)</small>
+										</div>
+										<?php $order_balance += $item['amount'] * $item['price']; ?>
+									<?php endforeach; ?></td>
+								<td><?php echo $order_balance; ?> DKK</td>
+							</tr>
+							<?php $total_balance += $order_balance; ?>
+						<?php endforeach; ?>
+						<tr>
+							<td>Orders: <?php echo count($pizza_orders); ?></td>
+							<td>Total amount spend on pizzas:</td>
+							<td><?php echo $total_balance; ?> DKK</td>
+						</tr>
+					<?php endif; ?>
+				</tbody>
+			</table>
+		</div>
+	<?php endif; ?>
 
 	<?php // pr($user); ?>
 	<?php // pr($next_lan); ?>

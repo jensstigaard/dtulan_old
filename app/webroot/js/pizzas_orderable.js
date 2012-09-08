@@ -106,12 +106,11 @@ $(document).ready(
 						// Clear order visually
 						clearOrder();
 
-						// Update latest activities
-//						showLatestActivities();
+					// Update latest activities
+					//						showLatestActivities();
 					}
 					else{
-						console.log('Order list: ' + order_list);
-						console.log('DATA: ' + data);
+						$pizza_order.find(".pizza_order_errors").text(data).show();
 					}
 				});
 			}
