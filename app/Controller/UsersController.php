@@ -249,8 +249,12 @@ class UsersController extends AppController {
                     /*
                      * Logs user in after successful activation
                      */
+                    // This should login the user. Have not tried it out
+                    $data['User'] = $this->User->id;
+                    $data['User'] = array_merge($data['User'], array('password' => $this->request->data['User']['password']));
+                    $data['User'] = array_merge($data['User'], array('email' => $this->User->data['User']['email']));
                     
-//                    $this->Auth->login($this->User->id);
+                    $this->Auth->login($data);
                     $this->Session->setFlash(__('User activated. Welcome'));
                     $this->redirect(array('action' => 'index'));
                 } else {
