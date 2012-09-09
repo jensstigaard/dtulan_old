@@ -13,8 +13,6 @@
 			<th>Type</th>
 			<th>Id-number</th>
 			<th>Activated</th>
-			<th>Time created</th>
-			<th>Time activated</th>
 		</tr>
 
 		<?php foreach ($users as $user): ?>
@@ -25,8 +23,6 @@
 				<td><?php echo $user['User']['type']; ?></td>
 				<td><?php echo $user['User']['id_number']; ?></td>
 				<td><?php echo ($user['User']['activated'] != 1) ? $this->Html->link('Not activated', array('action' => 'activate', $user['User']['id'])) : '<span style="color:green">Activated</span>'; ?></td>
-				<td><?php echo $user['User']['time_created']; ?></td>
-				<td><?php echo $user['User']['time_activated']; ?></td>
 			</tr>
 		<?php endforeach; ?>
 

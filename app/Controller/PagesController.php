@@ -71,7 +71,11 @@ class PagesController extends AppController {
 			throw new NotFoundException(__('Page not found'));
 		}
 
-		$this->set('page', $this->Page->read());
+		$page = $this->Page->read();
+
+		$title_for_layout = $page['Page']['title'];
+
+		$this->set(compact('page', 'title_for_layout'));
 	}
 
 	public function add() {

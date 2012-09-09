@@ -113,6 +113,7 @@ class UsersController extends AppController {
 			$this->set('next_lan', $this->User->LanSignup->Lan->find('first', array(
 						'conditions' => array(
 							'Lan.sign_up_open' => 1,
+							'Lan.published' => 1,
 							'Lan.time_end >' => date('Y-m-d H:i:s'),
 							'NOT' => array(
 								'Lan.id' => $lan_ids

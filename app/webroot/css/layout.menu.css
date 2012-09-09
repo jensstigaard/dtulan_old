@@ -12,7 +12,7 @@ div.menu{
 }
 
 div.menu > ul{
-	margin: 2px 0;
+	margin: 0;
 }
 
 div.menu > ul:hover{
@@ -21,6 +21,10 @@ div.menu > ul:hover{
 
 div.menu > ul > li.menuItemTop{
 	float: left;
+}
+
+div.menu > ul > li.menuItemTop > a{
+	padding: 11px 20px 12px;
 }
 
 div.menu ul li{
@@ -44,7 +48,7 @@ div.menu > ul > li:hover > a{
 
 
 div.menu > ul > li {
-	margin: 0 10px;
+	margin: 0 5px;
 }
 
 div.menu > ul > li > ul {
@@ -52,7 +56,7 @@ div.menu > ul > li > ul {
 	width: 10em;
 	margin: 0;
 	padding: 0;
-	background-color: rgba(0, 0, 0, .7);
+	background-color: rgba(0, 0, 0, .8);
 }
 
 div.menu ul > li:hover > ul {
@@ -69,5 +73,5 @@ div.menu > ul > li > ul > li > a {
 }
 
 div.menu > ul > li > ul > li > a:hover{
-	background-color: rgba(0,0,0,.3);
+	background-color: rgba(0,0,0,1);
 }

@@ -54,6 +54,47 @@ class LansController extends AppController {
 		$this->view = 'index';
 	}
 
+	public function view($id = null) {
+
+		$this->Lan->recursive = 2;
+
+		$cond['Lan.id'] = $id;
+		if ($this->Auth->loggedIn()) {
+			$user = $this->Auth->user();
+			if(!$this->isAdmin($user)){
+				$cond['Lan.published'] = 1;
+			}
+
+		}
+		$lan = $this->Lan->find('first', array('conditions' => $cond));
+
+		if(!isset($lan['Lan'])){
+			throw new NotFoundException('No LAN found');
+		}
+
+		$this->set(compact('lan'));
+
+		if (isset($user)) {
+
+			if ($this->request->is('post')) {
+				$this->request->data['LanInvite']['lan_id'] = $id;
+				$this->request->data['LanInvite']['user_student_id'] = $user['id'];
+				$this->request->data['LanInvite']['time_invited'] = date('Y-m-d H:i:s');
+
+				if ($this->Lan->LanInvite->save($this->request->data)) {
+					$this->Session->setFlash('Your invite has been sent');
+				} else {
+					$this->Session->setFlash('Unable to send your invite');
+				}
+			}
+
+			if ($user['type'] == 'student') {
+				$user_guests = $this->Lan->getInviteableUsers($id);
+				$this->set(compact('user_guests'));
+			}
+		}
+	}
+
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->request->data['LanDay'] = $this->Lan->getLanDays($this->request->data['Lan']['time_start'], $this->request->data['Lan']['time_end']);
@@ -67,6 +108,8 @@ class LansController extends AppController {
 			}
 		}
 	}
+
+
 
 	public function edit($id = null) {
 		$this->Lan->id = $id;
@@ -86,35 +129,7 @@ class LansController extends AppController {
 		}
 	}
 
-	public function view($id = null) {
-		$this->Lan->id = $id;
 
-		$this->Lan->recursive = 2;
-		$this->set('lan', $this->Lan->read());
-
-		if ($this->Auth->loggedIn()) {
-
-			$user = $this->Auth->user();
-
-			if ($this->request->is('post')) {
-				$this->request->data['LanInvite']['lan_id'] = $id;
-				$this->request->data['LanInvite']['user_student_id'] = $user['id'];
-				$this->request->data['LanInvite']['time_invited'] = date('Y-m-d H:i:s');
-
-				if ($this->Lan->LanInvite->save($this->request->data)) {
-					$this->Session->setFlash('Your invite has been sent');
-				} else {
-					$this->Session->setFlash('Unable to send your invite');
-				}
-			}
-
-			if ($user['type'] == 'student') {
-				$user_guests = $this->Lan->getInviteableUsers($id);
-//				debug($user_guests);
-				$this->set(compact('user_guests'));
-			}
-		}
-	}
 
 	// In use?????
 	public function lookup($id = null) {

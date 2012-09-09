@@ -1,4 +1,4 @@
-<?php echo $this->Html->script(array('jquery', 'userRegister'), FALSE); ?>
+<?php echo $this->Html->script(array('jquery','userRegister'), FALSE); ?>
 <div class="form">
 	<?php echo $this->Form->create(); ?>
     <fieldset>
@@ -17,7 +17,7 @@
 		?>
 		<div id="id_number">
 			<?php
-			echo $this->Form->input('id_number', array('label' => 'Study Number', 'type' => 'Text'))
+			echo $this->Form->input('id_number', array('label' => 'Study Number', 'type' => 'Text', 'maxlength' => 7))
 			?>
 		</div>
     </fieldset>

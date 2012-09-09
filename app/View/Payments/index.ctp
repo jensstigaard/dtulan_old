@@ -15,7 +15,7 @@
 
 		<?php foreach ($payments as $payment): ?>
 			<tr>
-				<td><?php echo $payment['User']['name']; ?></td>
+				<td><?php echo $this->Html->link($payment['User']['name'], array('controller' => 'users', 'action' => 'profile', $payment['User']['id'])); ?></td>
 				<td><?php echo $this->Time->nice($payment['Payment']['time']); ?></td>
 				<td><?php echo $payment['Payment']['amount']; ?> DKK</td>
 				<td>

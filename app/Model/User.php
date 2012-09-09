@@ -86,7 +86,6 @@ class User extends AppModel {
 	public function validateStudynumber($check) {
 
 		if ($this->data['User']['type'] == 'student') {
-			//$this->data['User']['id_number'] = str_replace('s', '', $this->data['User']['id_number']);
 			return preg_match("/^s[0-9]{6}$/", $this->data['User']['id_number']);
 		} else {
 			$this->data['User']['id_number'] = $this->getGuestNumber();

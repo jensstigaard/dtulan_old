@@ -27,7 +27,7 @@ function orderListSize(){
 $(document).ready(
 	function() {
 
-		$pizza_order = $(".pizza_order");
+		$pizza_order = $("#pizza_order");
 
 		$table_body = $pizza_order.find('table tbody');
 
@@ -107,7 +107,7 @@ $(document).ready(
 						clearOrder();
 
 					// Update latest activities
-					//						showLatestActivities();
+					// showLatestActivities();
 					}
 					else{
 						$pizza_order.find(".pizza_order_errors").text(data).show();
@@ -149,6 +149,11 @@ $(document).ready(
 			else{
 				delete order_list[price_id];
 				removePizzaFromOrderList(price_id);
+
+				if(orderListSize()==0){
+					// Hide text and submit-button
+					$pizza_order_buttons.hide();
+				}
 			}
 		});
 	});
