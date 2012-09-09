@@ -50,8 +50,7 @@ class UsersController extends AppController {
 
 	public function profile($id = null) {
 		if ($id == null) {
-			$user = $this->Auth->user();
-			$id = $user['id'];
+			$id = $this->Auth->user();
 		}
 
 		$this->User->id = $id;
@@ -227,7 +226,14 @@ class UsersController extends AppController {
 	public function activate($id = null) {
 		if ($this->request->is('post')) {
 
-			$this->User->read(array('id', 'activated'), $id);
+                $this->User->unbindModel(
+                        array(
+                            'hasMany' => array('Payment', 'PizzaOrder', 'Crew', 'LanSignup', 'TeamInvite', 'TeamUser', 'LanInvite', 'LanInviteSent'),
+                            'hasOne' => array('Admin')
+                        )
+                    );
+                
+                $this->User->read(array('id', 'activated', 'email'), $id);
 
 			if (!$this->User->exists()) {
 				throw new NotFoundException(__('Invalid user'));
@@ -258,6 +264,37 @@ class UsersController extends AppController {
 				$this->Session->setFlash(__('User was not activated'));
 			}
 		}
+
+		if ($this->User->isActivated()) {
+			throw new NotFoundException(__('Invalid user'));
+		}
+           
+                // Setting fields in $user for saving
+                $this->User->set(
+                    array(
+                        'activated' => 1,
+                        'time_activated' => date('Y-m-d H:i:s'),
+                        'password' => $this->request->data['User']['password'],
+                        'password_confirmation' => $this->request->data['User']['password_confirmation']
+                    )
+                );
+//                debug($this->User->data);
+                if ($this->User->save()) {
+                    /*
+                     * Logs user in after successful activation
+                     */
+                    // This should login the user. Have not tried it out
+                    $data['User'] = $this->User->id;
+                    $data['User'] = array_merge($data['User'], array('password' => $this->request->data['User']['password']));
+                    $data['User'] = array_merge($data['User'], array('email' => $this->User->data['User']['email']));
+                    
+                    $this->Auth->login($data);
+                    $this->Session->setFlash(__('User activated. Welcome'));
+                    $this->redirect(array('action' => 'index'));
+                } else {
+                    $this->Session->setFlash(__('User was not activated'));
+                }
+            }
 	}
 
 	public function login() {
