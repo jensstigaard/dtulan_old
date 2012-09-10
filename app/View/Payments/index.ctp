@@ -1,8 +1,4 @@
-<div class="form">
-	<div style="float:right;">
-		<?php echo $this->Html->link('New Payment', array('action' => 'add')); ?>
-	</div>
-
+<div>
 	<h2>Payments</h2>
 
 	<table>
@@ -26,5 +22,5 @@
 		<?php endforeach; ?>
 
 	</table>
-	<?php pr($payments); ?>
 </div>
+<?php // pr($payments); ?>

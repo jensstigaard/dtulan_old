@@ -85,12 +85,15 @@ class LanSignupsController extends AppController {
 				}
 			}
 
+			$this->request->data['User']['id'] = $user['User']['id'];
+			$this->request->data['User']['balance'] = $user['User']['balance'] - $lan['Lan']['price'];
+
 
 			if ($this->LanSignup->saveAssociated($this->request->data)) {
-				$this->Session->setFlash('Your signup has been saved.');
+				$this->Session->setFlash('Your signup has been saved.', 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('controller' => 'users', 'action' => 'profile'));
 			} else {
-				$this->Session->setFlash('Unable to add your signup. Have You selected any days?');
+				$this->Session->setFlash('Unable to add your signup. Have You selected any days?', 'default', array(), 'bad');
 			}
 		}
 

@@ -9,8 +9,6 @@
 		<tr>
 			<th>Name</th>
 			<th>Email</th>
-			<th>Gamertag</th>
-			<th>Type</th>
 			<th>Id-number</th>
 			<th>Activated</th>
 		</tr>
@@ -19,8 +17,6 @@
 			<tr>
 				<td><?php echo $this->Html->link($user['User']['name'], array('action' => 'profile', $user['User']['id'])); ?></td>
 				<td><?php echo $user['User']['email']; ?></td>
-				<td><?php echo $user['User']['gamertag']; ?></td>
-				<td><?php echo $user['User']['type']; ?></td>
 				<td><?php echo $user['User']['id_number']; ?></td>
 				<td><?php echo ($user['User']['activated'] != 1) ? $this->Html->link('Not activated', array('action' => 'activate', $user['User']['id'])) : '<span style="color:green">Activated</span>'; ?></td>
 			</tr>

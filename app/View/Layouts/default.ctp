@@ -14,7 +14,8 @@
 			'layout.tables',
 			'layout.menu',
 			'layout.sidebar',
-			'cake.errors'
+			'cake.errors',
+			'ui-darkness/jquery-ui'
 				)
 		);
 
@@ -23,7 +24,11 @@
 				'layout.admin'));
 		}
 
-		$this->Html->script(array('jquery', 'generel'), false);
+		$this->Html->script(array('jquery', 'jquery-ui', 'generel'), false);
+
+		if($is_admin){
+			$this->Html->script(array('admin/user_lookup'), false);
+		}
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
@@ -44,6 +49,8 @@
 
 				<div class="content">
 					<?php echo $this->Session->flash(); ?>
+					<?php echo $this->Session->flash('good'); ?>
+					<?php echo $this->Session->flash('bad'); ?>
 					<?php echo $this->Session->flash('auth'); ?>
 					<?php echo $this->fetch('content'); ?>
 				</div>

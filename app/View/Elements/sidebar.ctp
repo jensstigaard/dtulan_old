@@ -80,7 +80,7 @@
 	<?php endif;
 	?>
 	<div>
-		<h1><?php echo $current_user['name']; ?></h1>
+		<h1 style="text-align:right;"><?php echo $this->Html->image('http://www.gravatar.com/avatar/'.md5(strtolower($current_user['email'])).'?s=56', array('style' => 'float:right;margin-left: 10px;margin-right:-5px;')); ?><?php echo $current_user['name']; ?></h1>
 		<ul>
 			<li><?php echo $this->Html->link($this->Html->image('16x16_GIF/user.gif', array('alt' => 'Profile')) . ' Profile', array('controller' => 'users', 'action' => 'profile'), array('escape' => false)); ?></li>
 			<li><?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif', array('alt' => 'Edit info')) . ' Edit personal data', array('controller' => 'users', 'action' => 'edit'), array('escape' => false)); ?></li>
@@ -90,8 +90,10 @@
 		</div>
 		<div>
 			<h1>User lookup</h1>
-			<div>
-				<?php echo $this->Form->input('string', array('label' => false, 'id' => 'user_lookup_field')); ?>
+			<div id="user_lookup">
+				<?php echo $this->Form->input('string', array('label' => false)); ?>
+				<div class="hidden" id="urlLookup"><?php echo $this->Html->link('#', array('controller' => 'users', 'action' => 'lookup')); ?></div>
+				<div class="hidden" id="urlRedirect"><?php echo $this->Html->link('#', array('controller' => 'users', 'action' => 'profile')); ?></div>
 			</div>
 		</div>
 		<div>
@@ -102,7 +104,7 @@
 				<li><?php echo $this->Html->link('Pages', array('controller' => 'pages', 'action' => 'index')); ?></li>
 				<li><?php echo $this->Html->link('Pizzas', array('controller' => 'pizza_categories', 'action' => 'index')); ?></li>
 				<li><?php echo $this->Html->link('Payments', array('controller' => 'payments', 'action' => 'index')); ?></li>
-				<li><?php echo $this->Html->link('Tournaments', array('controller' => 'tournaments', 'action' => 'add')); ?></li>
+				<li><?php echo $this->Html->link('Tournaments', array('controller' => 'tournaments', 'action' => 'index')); ?></li>
 			<?php endif; ?>
 		</ul>
 	</div>

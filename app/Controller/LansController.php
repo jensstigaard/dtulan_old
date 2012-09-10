@@ -61,18 +61,19 @@ class LansController extends AppController {
 		$cond['Lan.id'] = $id;
 		if ($this->Auth->loggedIn()) {
 			$user = $this->Auth->user();
-			if(!$this->isAdmin($user)){
+			if (!$this->isAdmin($user)) {
 				$cond['Lan.published'] = 1;
 			}
-
 		}
 		$lan = $this->Lan->find('first', array('conditions' => $cond));
 
-		if(!isset($lan['Lan'])){
+		if (!isset($lan['Lan'])) {
 			throw new NotFoundException('No LAN found');
 		}
 
-		$this->set(compact('lan'));
+		$title_for_layout = 'Lan &bull; '.$lan['Lan']['title'];
+
+		$this->set(compact('lan', 'title_for_layout'));
 
 		if (isset($user)) {
 
@@ -82,9 +83,9 @@ class LansController extends AppController {
 				$this->request->data['LanInvite']['time_invited'] = date('Y-m-d H:i:s');
 
 				if ($this->Lan->LanInvite->save($this->request->data)) {
-					$this->Session->setFlash('Your invite has been sent');
+					$this->Session->setFlash('Your invite has been sent', 'default', array('class' => 'message success'), 'good');
 				} else {
-					$this->Session->setFlash('Unable to send your invite');
+					$this->Session->setFlash('Unable to send your invite', 'default', array(), 'bad');
 				}
 			}
 
@@ -101,15 +102,13 @@ class LansController extends AppController {
 
 
 			if ($this->Lan->saveAssociated($this->request->data)) {
-				$this->Session->setFlash('Your Lan has been saved.');
+				$this->Session->setFlash('Your Lan has been saved.', 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Unable to add your lan.');
+				$this->Session->setFlash('Unable to add your lan.', 'default', array(), 'bad');
 			}
 		}
 	}
-
-
 
 	public function edit($id = null) {
 		$this->Lan->id = $id;
@@ -117,36 +116,37 @@ class LansController extends AppController {
 			throw new NotFoundException(__('Invalid Lan'));
 		}
 
-		if ($this->request->is('post') || $this->request->is('put')) {
+		if ($this->request->is('post')) {
 			if ($this->Lan->save($this->request->data)) {
-				$this->Session->setFlash(__('The LAN has been saved'));
+				$this->Session->setFlash(__('The LAN has been saved'), 'default', array('class' => 'message success'), 'good');
 //				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The Lan could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('The Lan could not be saved. Please, try again.'), 'default', array(), 'bad');
 			}
 		} else {
 			$this->request->data = $this->Lan->read(null, $id);
 		}
 	}
 
+	public function openForSignup($id = null) {
 
-
-	// In use?????
-	public function lookup($id = null) {
 		$this->Lan->id = $id;
-
 		if (!$this->Lan->exists()) {
-			throw new NotFoundException('Lan not found');
+			throw new NotFoundException(__('Invalid Lan'));
 		}
 
-		$this->Lan->recursive = 0;
-		//$this->set('lan', $this->Lan->read());
+		if (!$this->request->is('post')) {
+			throw new BadRequestException('Bad request');
+		}
 
-		$this->Lan->Behaviors->attach('Containable');
-		$this->Lan->contain(array('LanSignup' => array('User')));
-		$this->set('lan', $this->Lan->read());
+		$this->request->data['Lan']['sign_up_open'] = 1;
+
+		if ($this->Lan->save($this->request->data)) {
+			$this->Session->setFlash(__('The LAN has been opened for signups'), 'default', array('class' => 'message success'), 'good');
+		} else {
+			$this->Session->setFlash(__('The Lan could not be saved. Please try again'), 'default', array(), 'bad');
+		}
+		$this->redirect($this->referer());
 	}
 
 }
-
-?>

@@ -82,10 +82,10 @@ class PagesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->request->data['Page']['time_created'] = date('Y-m-d H:i:s');
 			if ($this->Page->save($this->request->data)) {
-				$this->Session->setFlash('Your page has been saved.');
+				$this->Session->setFlash('Your page has been saved.', 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Unable to add your page.');
+				$this->Session->setFlash('Unable to add your page.', 'default', array(), 'bad');
 			}
 		}
 
@@ -111,10 +111,10 @@ class PagesController extends AppController {
 		} else {
 			// Otherwise - save the page
 			if ($this->Page->save($this->request->data)) {
-				$this->Session->setFlash('Your page has been updated.');
+				$this->Session->setFlash('Your page has been updated.', 'default', array('class' => 'message success'), 'good');
 //				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Unable to update your page.');
+				$this->Session->setFlash('Unable to update your page.', 'default', array(), 'bad');
 			}
 		}
 

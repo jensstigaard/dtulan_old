@@ -55,10 +55,10 @@ class PizzasController extends AppController {
 //			debug($this->request->data);
 
 			if ($this->Pizza->saveAssociated($this->request->data)) {
-				$this->Session->setFlash('Your pizza has been saved.');
+				$this->Session->setFlash('Your pizza has been saved.', 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('controller' => 'pizza_categories', 'action' => 'index'));
 			} else {
-				$this->Session->setFlash('Unable to add your pizza.');
+				$this->Session->setFlash('Unable to add your pizza.', 'default', array(), 'bad');
 			}
 		}
 
@@ -110,11 +110,11 @@ class PizzasController extends AppController {
 
 			if ($this->Pizza->saveAssociated($this->request->data)) {
 
-				$this->Session->setFlash('Your pizza has been saved.');
+				$this->Session->setFlash('Your pizza has been saved.', 'default', array('class' => 'message success'), 'good');
 //				$this->redirect(array('controller' => 'pizza_categories', 'action' => 'index'));
 //				debug($this->request->data);
 			} else {
-				$this->Session->setFlash('Unable to add your pizza.');
+				$this->Session->setFlash('Unable to add your pizza.', 'default', array(), 'bad');
 			}
 		} else {
 			$this->request->data = $this->Pizza->read(null, $id);
@@ -129,5 +129,3 @@ class PizzasController extends AppController {
 	}
 
 }
-
-?>

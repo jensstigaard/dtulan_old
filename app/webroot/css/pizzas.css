@@ -47,10 +47,6 @@
 	text-align:right;
 }
 
-#pizza_order .hidden{
-	display:none;
-}
-
 #pizza_order .pizza_order_buttons small{
 	float:right;
 }

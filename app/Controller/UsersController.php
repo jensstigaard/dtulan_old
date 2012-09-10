@@ -34,10 +34,10 @@ class UsersController extends AppController {
 		if ($this->isAdmin($user)) {
 			return true;
 		} elseif (in_array($this->action, array(
-			'profile',
-			'logout',
+					'profile',
+					'logout',
 //			'editPersonalData',
-			))) {
+				))) {
 			return true;
 		}
 		return false;
@@ -50,7 +50,8 @@ class UsersController extends AppController {
 
 	public function profile($id = null) {
 		if ($id == null) {
-			$id = $this->Auth->user();
+			$user = $this->Auth->user();
+			$id = $user['id'];
 		}
 
 		$this->User->id = $id;
@@ -125,7 +126,7 @@ class UsersController extends AppController {
 			);
 		}
 
-		$title_for_layout = 'Profile &bull; '.$user['User']['name'];
+		$title_for_layout = 'Profile &bull; ' . $user['User']['name'];
 
 		$this->set(compact('pizza_orders', 'lans', 'teams', 'lan_invites', 'title_for_layout'));
 	}
@@ -162,10 +163,10 @@ class UsersController extends AppController {
 //				$email->send($msg);
 				//echo $msg;
 
-				$this->Session->setFlash(__('The user has been made. Check your email to continue the activation process. ' . $msg));
+				$this->Session->setFlash(__('The user has been made. Check your email to continue the activation process. ' . $msg), 'default', array('class' => 'message success'), 'good');
 //				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The user could not be saved. Please try again.'));
+				$this->Session->setFlash(__('The user could not be saved. Please try again.'), 'default', array(), 'bad');
 			}
 		}
 	}
@@ -177,10 +178,10 @@ class UsersController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash(__('The user has been saved'));
+				$this->Session->setFlash(__('The user has been saved'), 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('The user could not be saved. Please, try again'), 'default', array(), 'bad');
 			}
 		} else {
 			$this->request->data = $this->User->read(null, $id);
@@ -197,104 +198,58 @@ class UsersController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash(__('Your data has been saved'));
+				$this->Session->setFlash(__('Your data has been saved'), 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The data could not be saved. Please try again.'));
+				$this->Session->setFlash(__('The data could not be saved. Please try again'), 'default', array(), 'bad');
 			}
 		} else {
 			$this->request->data = $this->User->read();
 		}
 	}
 
-//	public function delete($id = null) {
-//		if (!$this->request->is('post')) {
-//			throw new MethodNotAllowedException();
-//		}
-//		$this->User->id = $id;
-//		if (!$this->User->exists()) {
-//			throw new NotFoundException(__('Invalid user'));
-//		}
-//		if ($this->User->delete()) {
-//			$this->Session->setFlash(__('User deleted'));
-//			$this->redirect(array('action' => 'index'));
-//		}
-//		$this->Session->setFlash(__('User was not deleted'));
-//		$this->redirect(array('action' => 'index'));
-//	}
-
 	public function activate($id = null) {
-		if ($this->request->is('post')) {
+		$user = $this->User->read(array('id', 'activated', 'email', 'name'), $id);
 
-                $this->User->unbindModel(
-                        array(
-                            'hasMany' => array('Payment', 'PizzaOrder', 'Crew', 'LanSignup', 'TeamInvite', 'TeamUser', 'LanInvite', 'LanInviteSent'),
-                            'hasOne' => array('Admin')
-                        )
-                    );
-                
-                $this->User->read(array('id', 'activated', 'email'), $id);
+		$this->User->id = $id;
 
-			if (!$this->User->exists()) {
-				throw new NotFoundException(__('Invalid user'));
-			}
-
-			if ($this->User->isActivated()) {
-				throw new NotFoundException(__('Invalid user'));
-			}
-
-			// Setting fields in $user for saving
-			$this->User->set(
-					array(
-						'activated' => 1,
-						'time_activated' => date('Y-m-d H:i:s'),
-						'password' => $this->request->data['User']['password'],
-						'password_confirmation' => $this->request->data['User']['password_confirmation']
-					)
-			);
-
-			if ($this->User->save()) {
-				/*
-				 * Logs user in after successful activation
-				 */
-				$this->Auth->login($this->User->id);
-				$this->Session->setFlash(__('User activated. Welcome'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('User was not activated'));
-			}
+		if (!$this->User->exists()) {
+			throw new NotFoundException(__('Invalid user'));
 		}
 
 		if ($this->User->isActivated()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
-           
-                // Setting fields in $user for saving
-                $this->User->set(
-                    array(
-                        'activated' => 1,
-                        'time_activated' => date('Y-m-d H:i:s'),
-                        'password' => $this->request->data['User']['password'],
-                        'password_confirmation' => $this->request->data['User']['password_confirmation']
-                    )
-                );
-//                debug($this->User->data);
-                if ($this->User->save()) {
-                    /*
-                     * Logs user in after successful activation
-                     */
-                    // This should login the user. Have not tried it out
-                    $data['User'] = $this->User->id;
-                    $data['User'] = array_merge($data['User'], array('password' => $this->request->data['User']['password']));
-                    $data['User'] = array_merge($data['User'], array('email' => $this->User->data['User']['email']));
-                    
-                    $this->Auth->login($data);
-                    $this->Session->setFlash(__('User activated. Welcome'));
-                    $this->redirect(array('action' => 'index'));
-                } else {
-                    $this->Session->setFlash(__('User was not activated'));
-                }
-            }
+
+		if ($this->request->is('post')) {
+
+			// Setting fields in $user for saving
+			$this->request->data['User']['activated'] = 1;
+			$this->request->data['User']['time_activated'] = date('Y-m-d H:i:s');
+
+			$password = $this->request->data['User']['password'];
+
+			if ($this->User->save($this->request->data)) {
+				/*
+				 * Logs user in after successful activation
+				 */
+
+				unset($this->request->data['User']);
+
+				$this->request->data['User']['email'] = $user['User']['email'];
+				$this->request->data['User']['password'] = $password;
+
+				if ($this->Auth->login()) {
+					$this->Session->setFlash(__('Your account is activated. Welcome ' . $user['User']['name']), 'default', array('class' => 'message success'), 'good');
+					$this->redirect('/');
+				} else {
+					$this->Session->setFlash(__('Your account is activated. Please log in.'), 'default', array('class' => 'message success'), 'good');
+					$this->redirect(array('action' => 'login'));
+				}
+			} else {
+				$this->Session->setFlash(__('Account was not activated'), 'default', array(), 'bad');
+			}
+		}
 	}
 
 	public function login() {
@@ -312,11 +267,11 @@ class UsersController extends AppController {
 //		} else
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
-				$this->Session->setFlash(__('You are now logged in'));
+				$this->Session->setFlash(__('You are now logged in'), 'default', array('class' => 'message success'), 'good');
 
 				$this->redirect($this->Auth->redirect());
 			} else {
-				$this->Session->setFlash(__('Your username/password combination was incorrect'));
+				$this->Session->setFlash(__('Your username/password combination was incorrect'), 'default', array('class' => 'message success'), 'bad');
 			}
 		}
 	}
@@ -325,6 +280,36 @@ class UsersController extends AppController {
 		$this->redirect($this->Auth->logout());
 	}
 
-}
+	public function lookup() {
 
-?>
+		$this->layout = 'ajax';
+		$users = array();
+
+		if ($this->request->is('post')) {
+
+			$input_string = $this->request->data['search_startsWith'];
+
+			$this->User->recursive = 0;
+			$users = $this->User->find('all', array(
+				'conditions' => array(
+					'OR' => array(
+						array(
+							'User.name LIKE' => '%' . $input_string . '%'
+						),
+						array(
+							'User.email LIKE' => '%' . $input_string . '%'
+						),
+						array(
+							'User.id_number LIKE' => '%' . $input_string . '%'
+						),
+					)
+				)
+					)
+			);
+
+			$users = array('users' => $users);
+		}
+		$this->set(compact('users'));
+	}
+
+}

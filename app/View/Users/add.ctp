@@ -1,4 +1,4 @@
-<?php echo $this->Html->script(array('jquery','userRegister'), FALSE); ?>
+<?php echo $this->Html->script(array('jquery','user_register'), FALSE); ?>
 <div class="form">
 	<?php echo $this->Form->create(); ?>
     <fieldset>

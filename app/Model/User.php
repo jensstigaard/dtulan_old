@@ -14,13 +14,21 @@ class User extends AppModel {
 
 	public $name = 'User';
 	public $hasOne = array('Admin');
-	public $hasMany = array('Payment', 'PizzaOrder', 'Crew', 'LanSignup', 'TeamInvite', 'TeamUser', 'LanInvite' => array(
+	public $hasMany = array(
+		'Crew',
+		'LanSignup',
+		'LanInvite' => array(
 			'className' => 'LanInvite',
 			'foreignKey' => 'user_guest_id'
-		), 'LanInviteSent' => array(
+		),
+		'LanInviteSent' => array(
 			'className' => 'LanInvite',
 			'foreignKey' => 'user_guest_id'
-		)
+		),
+		'Payment',
+		'PizzaOrder',
+		'TeamInvite',
+		'TeamUser',
 	);
 	public $helpers = array('Js');
 	public $validate = array(
@@ -124,9 +132,10 @@ class User extends AppModel {
 		return $count < 9 ? $guestNumber . '0' . ($count + 1) : $guestNumber . ($count + 1);
 	}
 
-        public function isActivated() {
-            return $this->data['User']['activated'];
-        }
+	public function isActivated() {
+		return isset($this->data['User']['activated']) && $this->data['User']['activated'];
+	}
+
 }
 
 ?>

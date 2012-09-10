@@ -23,11 +23,19 @@ class PaymentsController extends AppController {
 	}
 
 	public function add() {
-		if ($this->request->is('post')) {
-			if ($this->Payment->save($this->request->data)) {
-				$this->Session->setFlash('Your payment has been saved');
+		if (!$this->request->is('post')) {
+			throw new BadRequestException('Invalid request');
+		}
+		else{
+			$this->Payment->User->read(array('balance'), $this->request->data['Payment']['user_id']);
+
+			$this->request->data['User']['id'] = $this->request->data['Payment']['user_id'];
+			$this->request->data['User']['balance'] = $this->Payment->User->data['User']['balance'] + $this->request->data['Payment']['amount'];
+
+			if ($this->Payment->saveAssociated($this->request->data)) {
+				$this->Session->setFlash('Your payment has been saved', 'default', array('class' => 'message success'), 'good');
 			} else {
-				$this->Session->setFlash('Unable to add your payment.');
+				$this->Session->setFlash('Unable to add your payment.', 'default', array(), 'bad');
 			}
 		}
 

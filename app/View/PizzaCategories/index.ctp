@@ -11,7 +11,9 @@ if ($is_orderable) {
 		<?php if ($logged_in && $is_admin): ?>
 			<?php echo $this->Html->link('New pizza category', array('action' => 'add')); ?>
 			| <?php echo $this->Html->link('New pizza type', array('controller' => 'pizza_types', 'action' => 'add')); ?>
+			<?php if(isset($current_lan)): ?>
 			| <?php echo $this->Html->link('New pizza wave', array('controller' => 'pizza_waves', 'action' => 'add', $current_lan['Lan']['id'])); ?>
+			<?php endif; ?>
 		<?php endif; ?>
 	</div>
 

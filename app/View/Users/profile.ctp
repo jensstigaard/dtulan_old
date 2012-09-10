@@ -1,46 +1,7 @@
 <?php $isAuth = ($user['User']['id'] == $current_user['id'] || $is_admin); ?>
 
 <div>
-	<h1><?php echo $user['User']['name']; ?></h1>
-
-	<?php if ($user['User']['activated'] != 1 && $is_admin): ?>
-		<div class="message">
-			<p style="margin:0;">
-				This user is not activated!
-			</p>
-		</div>
-	<?php endif; ?>
-
-	<?php if ($user['User']['id'] == $current_user['id'] && isset($next_lan['Lan']['title'])): ?>
-		<div class="message">
-			<p style="margin:0;">You are not signed up for <?php echo $next_lan['Lan']['title']; ?>! <?php echo $this->Html->link('Sign up now!', array('controller' => 'lan_signups', 'action' => 'add', $next_lan['Lan']['id'])); ?></p>
-		</div>
-	<?php endif; ?>
-
-	<?php if ($user['User']['id'] == $current_user['id'] && isset($lan_invites['Lan']['title'])): ?>
-		<div class="message success">
-			<p style="margin:0;">You are invited to <?php echo $lan_invites['Lan']['title']; ?> by <?php echo $lan_invites['Student']['name']; ?>!
-				<?php
-				echo $this->Html->link('Accept and signup now', array(
-					'controller' => 'lan_signups',
-					'action' => 'add',
-					$lan_invites['Lan']['id'])
-				);
-				?>
-				|
-				<?php
-				echo $this->Form->postLink('Decline invite', array(
-					'controller' => 'lan_invites',
-					'action' => 'decline',
-					$lan_invites['LanInvite']['id']), array(
-					'confirm' => 'Do you want to DECLINE invite?'
-						)
-				);
-				?></p>
-		</div>
-	<?php endif; ?>
-
-	<h2><?php echo $this->Html->image('32x32_PNG/users_two.png'); ?> User info</h2>
+	<h1><?php echo $this->Html->image('http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email'])) . '?s=64'); ?> <?php echo $user['User']['name']; ?></h1>
 
 	<?php if ($is_admin): ?>
 		<div style="float:right;width:200px;background-color:rgba(0,0,0,.2);padding:10px;">
@@ -55,10 +16,6 @@
 	<div>
 		<table style="width:400px;clear:none;">
 			<tbody>
-				<tr>
-					<td>Name:</td>
-					<td><?php echo $user['User']['name']; ?></td>
-				</tr>
 				<tr>
 					<td>Gamertag:</td>
 					<td><?php echo $user['User']['gamertag']; ?></td>
@@ -92,8 +49,46 @@
 			</tbody>
 		</table>
 	</div>
-
 </div>
+
+
+
+<?php if ($user['User']['id'] == $current_user['id'] && isset($next_lan['Lan']['title'])): ?>
+	<div>
+		<p style="margin:0;">You are not signed up for <?php echo $next_lan['Lan']['title']; ?>! <?php echo $this->Html->link('Sign up now!', array('controller' => 'lan_signups', 'action' => 'add', $next_lan['Lan']['id'])); ?></p>
+	</div>
+<?php endif; ?>
+
+<?php if ($user['User']['activated'] != 1 && $is_admin): ?>
+	<div class="message">
+		This user is not activated!
+	</div>
+<?php endif; ?>
+
+<?php if ($user['User']['id'] == $current_user['id'] && isset($lan_invites['Lan']['title'])): ?>
+	<div>
+		<h1>Invite</h1>
+		<p style="margin:0;">You are invited to <?php echo $lan_invites['Lan']['title']; ?> by <?php echo $lan_invites['Student']['name']; ?>!</p>
+			<?php
+			echo $this->Html->link('Accept and signup now', array(
+				'controller' => 'lan_signups',
+				'action' => 'add',
+				$lan_invites['Lan']['id'])
+			);
+			?>
+			|
+			<?php
+			echo $this->Form->postLink('Decline invite', array(
+				'controller' => 'lan_invites',
+				'action' => 'decline',
+				$lan_invites['LanInvite']['id']), array(
+				'confirm' => 'Do you want to decline this invite?'
+					)
+			);
+			?>
+	</div>
+<?php endif; ?>
+
 
 <div>
 	<?php

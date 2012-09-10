@@ -2,10 +2,23 @@
 	<?php echo $this->Form->create('LanSignup', array('url' => array('controller' => 'lansignups', 'action' => 'add', $lan['Lan']['id']))); ?>
     <fieldset>
         <legend><?php echo __('Signup for ' . $lan['Lan']['title']); ?></legend>
-		<ul>
-			<li>Start time: <?php echo $this->Time->nice($lan['Lan']['time_start']); ?></li>
-			<li>End time: <?php echo $this->Time->nice($lan['Lan']['time_end']); ?></li>
-		</ul>
+		<table>
+			<tbody>
+				<tr>
+					<td>Price:</td>
+					<td><?php echo $lan['Lan']['price']; ?> DKK</td>
+				</tr>
+				<tr>
+					<td>Start time:</td>
+					<td><?php echo $this->Time->nice($lan['Lan']['time_start']); ?></td>
+				</tr>
+				<tr>
+					<td>End time:</td>
+					<td><?php echo $this->Time->nice($lan['Lan']['time_end']); ?></td>
+				</tr>
+			</tbody>
+
+		</table>
 		<br /><hr />
 		<h2>Select attending days</h2>
 		<?php

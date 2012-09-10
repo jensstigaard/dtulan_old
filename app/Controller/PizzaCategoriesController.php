@@ -62,11 +62,11 @@ class PizzaCategoriesController extends AppController {
 		$this->PizzaCategory->Pizza->PizzaPrice->unbindModel(array('belongsTo' => array('Pizza'), 'hasMany' => array('PizzaOrderItem')));
 
 		$conditions = array();
-		if(!$this->isAdmin($user)){
+		if (!$this->isAdmin($this->Auth->user())) {
 			$conditions['PizzaCategory.available'] = 1;
 		}
 		$conditions =
-		$data_category = $this->PizzaCategory->find('all', array('conditions' => $conditions,
+				$data_category = $this->PizzaCategory->find('all', array('conditions' => $conditions,
 			'recursive' => 3)
 		);
 
@@ -109,10 +109,10 @@ class PizzaCategoriesController extends AppController {
 			}
 
 			if ($this->PizzaCategory->saveAssociated($this->request->data)) {
-				$this->Session->setFlash('Your category has been created.');
+				$this->Session->setFlash('Your category has been created.', 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Unable to create category.');
+				$this->Session->setFlash('Unable to create category.', 'default', array(), 'bad');
 			}
 		}
 
@@ -144,11 +144,11 @@ class PizzaCategoriesController extends AppController {
 			}
 
 			if ($this->PizzaCategory->saveAssociated($this->request->data)) {
-				$this->Session->setFlash('Category has been updated.');
+				$this->Session->setFlash('Category has been updated.', 'default', array('class' => 'message success'), 'good');
 				debug($this->request->data);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Unable to update category.');
+				$this->Session->setFlash('Unable to update category.', 'default', array(), 'bad');
 			}
 		} else {
 			$this->request->data = $this->PizzaCategory->read(null, $id);
@@ -167,5 +167,3 @@ class PizzaCategoriesController extends AppController {
 	}
 
 }
-
-?>
