@@ -6,12 +6,16 @@ class LansController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
+
+		$this->Auth->allow('view');
 	}
 
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin($user) || in_array($this->action, array('view'))) {
+		if ($this->isAdmin($user)
+//				|| in_array($this->action, array('view'))
+		) {
 			return true;
 		}
 		return false;
@@ -21,38 +25,38 @@ class LansController extends AppController {
 		$this->set('lans', $this->Lan->find('all'));
 	}
 
-	public function viewPastLans() {
-		$currentTime = date('Y-m-d H:i:s');
-		$data = $this->Lan->find('all', array(
-			'conditions' => array(
-				'Lan.published' => 1,
-				'Lan.time_end <' => $currentTime
-				)));
-
-		$this->set('lans', $data);
-		$this->view = 'index';
-	}
-
-	public function viewCurrentLans() {
-		$currentTime = date('Y-m-d H:i:s');
-		$data = $this->Lan->find('all', array(
-			'conditions' => array(
-				'Lan.time_end >' => $currentTime,
-				'Lan.time_start <' => $currentTime
-				)));
-		$this->set('lans', $data);
-		$this->view = 'index';
-	}
-
-	public function viewFutureLans() {
-		$currentTime = date('Y-m-d H:i:s');
-		$data = $this->Lan->find('all', array(
-			'conditions' => array(
-				'Lan.time_start >' => $currentTime
-				)));
-		$this->set('lans', $data);
-		$this->view = 'index';
-	}
+//	public function viewPastLans() {
+//		$currentTime = date('Y-m-d H:i:s');
+//		$data = $this->Lan->find('all', array(
+//			'conditions' => array(
+//				'Lan.published' => 1,
+//				'Lan.time_end <' => $currentTime
+//				)));
+//
+//		$this->set('lans', $data);
+//		$this->view = 'index';
+//	}
+//
+//	public function viewCurrentLans() {
+//		$currentTime = date('Y-m-d H:i:s');
+//		$data = $this->Lan->find('all', array(
+//			'conditions' => array(
+//				'Lan.time_end >' => $currentTime,
+//				'Lan.time_start <' => $currentTime
+//				)));
+//		$this->set('lans', $data);
+//		$this->view = 'index';
+//	}
+//
+//	public function viewFutureLans() {
+//		$currentTime = date('Y-m-d H:i:s');
+//		$data = $this->Lan->find('all', array(
+//			'conditions' => array(
+//				'Lan.time_start >' => $currentTime
+//				)));
+//		$this->set('lans', $data);
+//		$this->view = 'index';
+//	}
 
 	public function view($id = null) {
 
@@ -71,27 +75,32 @@ class LansController extends AppController {
 			throw new NotFoundException('No LAN found');
 		}
 
-		$title_for_layout = 'Lan &bull; '.$lan['Lan']['title'];
+		$title_for_layout = 'Lan &bull; ' . $lan['Lan']['title'];
 
 		$this->set(compact('lan', 'title_for_layout'));
 
-		if (isset($user)) {
 
-			if ($this->request->is('post')) {
-				$this->request->data['LanInvite']['lan_id'] = $id;
-				$this->request->data['LanInvite']['user_student_id'] = $user['id'];
-				$this->request->data['LanInvite']['time_invited'] = date('Y-m-d H:i:s');
-
-				if ($this->Lan->LanInvite->save($this->request->data)) {
-					$this->Session->setFlash('Your invite has been sent', 'default', array('class' => 'message success'), 'good');
-				} else {
-					$this->Session->setFlash('Unable to send your invite', 'default', array(), 'bad');
-				}
-			}
+		if ($lan['Lan']['sign_up_open'] && isset($user)) {
 
 			if ($user['type'] == 'student') {
-				$user_guests = $this->Lan->getInviteableUsers($id);
-				$this->set(compact('user_guests'));
+				if (!$this->Lan->isUserAttending($id, $user['id'])) {
+					$this->set('is_not_attending', 1);
+				} else {
+					if ($this->request->is('post')) {
+						$this->request->data['LanInvite']['lan_id'] = $id;
+						$this->request->data['LanInvite']['user_student_id'] = $user['id'];
+						$this->request->data['LanInvite']['time_invited'] = date('Y-m-d H:i:s');
+
+						if ($this->Lan->LanInvite->save($this->request->data)) {
+							$this->Session->setFlash('Your invite has been sent', 'default', array('class' => 'message success'), 'good');
+						} else {
+							$this->Session->setFlash('Unable to send your invite', 'default', array(), 'bad');
+						}
+					}
+
+					$user_guests = $this->Lan->getInviteableUsers($id);
+					$this->set(compact('user_guests'));
+				}
 			}
 		}
 	}

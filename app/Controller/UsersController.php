@@ -25,7 +25,7 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 
-		$this->Auth->allow('login', 'add', 'activate');
+		$this->Auth->allow('login', 'add', 'activate', 'forgot_password', 'reset_password');
 	}
 
 	public function isAuthorized($user) {
@@ -36,7 +36,7 @@ class UsersController extends AppController {
 		} elseif (in_array($this->action, array(
 					'profile',
 					'logout',
-//			'editPersonalData',
+					'edit',
 				))) {
 			return true;
 		}
@@ -58,6 +58,10 @@ class UsersController extends AppController {
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
+
+		$this->User->unbindModel(array('hasMany' => array('PizzaOrder', 'LanSignup')));
+		$user = $this->User->read();
+
 
 		$this->User->TeamUser->recursive = 2;
 		$this->User->TeamUser->Team->Tournament->unbindModel(array('belongsTo' => array('Lan')));
@@ -89,21 +93,6 @@ class UsersController extends AppController {
 				)
 		);
 
-//		$this->User->LanInvite->recursive = 2;
-		$this->User->LanInvite->unbindModel(array('belongsTo' => array('Guest')));
-
-		$lan_invites = $this->User->LanInvite->find('first', array('conditions' => array(
-				'LanInvite.user_guest_id' => $id,
-				'LanInvite.accepted' => 0
-			)
-				)
-		);
-
-		$this->User->unbindModel(array('hasMany' => array('PizzaOrder', 'LanSignup')));
-		$user = $this->User->read();
-
-		$this->set('user', $user);
-
 		$lan_ids = array();
 		foreach ($lans as $lan) {
 			$lan_ids[] = $lan['Lan']['id'];
@@ -128,13 +117,20 @@ class UsersController extends AppController {
 
 		$title_for_layout = 'Profile &bull; ' . $user['User']['name'];
 
-		$this->set(compact('pizza_orders', 'lans', 'teams', 'lan_invites', 'title_for_layout'));
+		$this->set(compact('user', 'pizza_orders', 'lans', 'teams', 'title_for_layout'));
 	}
 
 	public function add() {
+
+		App::uses('CakeEmail', 'Network/Email');
+
+		$this->set('title_for_layout', 'Register new user');
+
 		if ($this->request->is('post')) {
 
 			$this->request->data['User']['time_created'] = date('Y-m-d H:i:s');
+
+			$this->request->data['User']['email_gravatar'] = $this->request->data['User']['email'];
 
 			$name = $this->request->data['User']['name'];
 
@@ -171,47 +167,29 @@ class UsersController extends AppController {
 		}
 	}
 
-	public function edit($id = null) {
-		$this->User->id = $id;
-		if (!$this->User->exists()) {
-			throw new NotFoundException(__('Invalid user'));
-		}
-		if ($this->request->is('post') || $this->request->is('put')) {
-			if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash(__('The user has been saved'), 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The user could not be saved. Please, try again'), 'default', array(), 'bad');
-			}
-		} else {
-			$this->request->data = $this->User->read(null, $id);
-			unset($this->request->data['User']['password']);
-		}
-	}
-
-	public function editPersonalData() {
-		$user = $this->Auth->user();
-		$this->User->id = $user['id'];
+	public function edit() {
+		$this->User->id = $this->Auth->user('id');
 
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
-		if ($this->request->is('post') || $this->request->is('put')) {
+
+		if ($this->request->is('post')) {
 			if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash(__('Your data has been saved'), 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(__('User has been saved'), 'default', array('class' => 'message success'), 'good');
+				$this->redirect(array('action' => 'profile'));
 			} else {
-				$this->Session->setFlash(__('The data could not be saved. Please try again'), 'default', array(), 'bad');
+				$this->Session->setFlash(__('User could not be saved. Please try again'), 'default', array(), 'bad');
 			}
-		} else {
-			$this->request->data = $this->User->read();
 		}
+
+		$this->set('user', $this->User->read());
 	}
 
 	public function activate($id = null) {
-		$user = $this->User->read(array('id', 'activated', 'email', 'name'), $id);
 
-		$this->User->id = $id;
+		$user = $this->User->read(array('id', 'activated', 'email', 'name'), $id);
+		$this->User->data['User']['activated'];
 
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
@@ -220,6 +198,8 @@ class UsersController extends AppController {
 		if ($this->User->isActivated()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
+
+		$this->set('title_for_layout', 'Activate user');
 
 		if ($this->request->is('post')) {
 
@@ -253,6 +233,7 @@ class UsersController extends AppController {
 	}
 
 	public function login() {
+		$this->set('title_for_layout', 'User login');
 //		if ($this->request->is('post') && $this->request->accepts("application/vnd.dtulan+json; version=1.0")) {
 //			$this->response->header(array('content-type: application/json'));
 //			$this->render('API/response');
@@ -278,6 +259,80 @@ class UsersController extends AppController {
 
 	public function logout() {
 		$this->redirect($this->Auth->logout());
+	}
+
+	public function forgot_password() {
+		App::uses('CakeEmail', 'Network/Email');
+
+		$this->set('title_for_layout', 'Forgot password');
+
+		if ($this->request->is('post')) {
+			$email = $this->request->data['User']['email'];
+			$user = $this->User->findByEmail($email);
+
+			if ($user) {
+				$this->request->data['UserPasswordTicket']['user_id'] = $user['User']['id'];
+				$this->request->data['UserPasswordTicket']['time'] = date('Y-m-d H:i:s');
+
+
+				if (!$this->User->UserPasswordTicket->save($this->request->data)) {
+					$this->Session->setFlash(__('Fatal error during database call. Please try again'), 'default', array(), 'bad');
+				}
+				else{
+
+					$email = new CakeEmail();
+					$email->from(array('no-reply@dtu-lan.dk' => 'DTU LAN Party'));
+					$email->to($user['User']['email']);
+					$email->subject('DTU LAN site - Password reset');
+
+					$id = $this->User->UserPasswordTicket->getLastInsertID();
+
+					$msg = '';
+					$msg.='<h2>Hey ' . $user['User']['name'] . '</h2>';
+					$msg.='This is an autogenerated email from the DTU LAN site.';
+					$msg.='<br />';
+					$msg.='To reset your password, please follow the "reset password"-link below.';
+					$msg.='<br />';
+					$msg.='<a href="http://dtu-lan.dk/users/reset_password/' . $id . '">http://dtu-lan.dk/users/reset_password/' . $id . '</a>';
+					$msg.='<br /><br />';
+					$msg.='Best regards';
+					$msg.='<br />';
+					$msg.='The DTU LAN Crew';
+
+//					if ($email->send($msg)) {
+//						$this->Session->setFlash(__('Email sent'), 'default', array('class' => 'message success'), 'good');
+//					}
+//					else{
+						$this->Session->setFlash('Fatal error during sending. Please try again. '. $msg, 'default', array(), 'bad');
+//					}
+				}
+			}
+		}
+	}
+
+	public function reset_password($id = null) {
+		$this->set('title_for_layout', 'Reset password');
+
+		$this->User->UserPasswordTicket->id = $id;
+
+		if(!$this->User->UserPasswordTicket->exists()){
+			throw new NotFoundException('Key not found');
+		}
+
+		$ticket = $this->User->UserPasswordTicket->read();
+
+		if ($this->request->is('post')) {
+
+			$this->request->data['User']['id'] = $ticket['UserPasswordTicket']['user_id'];
+
+			if ($this->User->save($this->request->data) && $this->User->UserPasswordTicket->delete()) {
+				$this->Session->setFlash(__('Password has been updated'), 'default', array('class' => 'message success'), 'good');
+				$this->redirect('/');
+			}
+			else{
+				$this->Session->setFlash('Unable to save password. Please try again. ', 'default', array(), 'bad');
+			}
+		}
 	}
 
 	public function lookup() {

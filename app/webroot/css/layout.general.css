@@ -34,7 +34,7 @@ a {
 }
 
 a:hover {
-	color: #FFF;
+	color: #F65D10;
 	text-decoration: underline;
 }
 
@@ -68,8 +68,12 @@ h4 {
 	color: #993;
 }
 
-ul, li {
+ul, ol, li {
 	margin: 0 12px;
+}
+
+ul, ol{
+	margin-bottom: 10px;
 }
 
 p {
@@ -88,21 +92,70 @@ hr{
 
 
 /** Header **/
-#header{
+#header, #footer{
 	background: rgba(0, 0, 0, .3);
-	/* url('../img/icon.png') no-repeat left*/
-	height:40px;
 	border-bottom: 1px solid rgba(0,0,0,.25);
 }
 
-#header > a {
+#header{
+	height:40px;
+}
+
+#header > div, #footer > div{
+	width:950px;
+	margin: 0 auto;
+}
+
+#header > div > a {
 	float:left;
 	margin: 8px 0 0 30px;
 }
 
-#header > a img{
+#header > div > a img{
 	opacity: .7;
 	height:25px;
+}
+
+#footer{
+	clear:both;
+	padding:10px;
+	border-top: 1px solid rgba(0,0,0,.25);
+}
+
+#sponsors table{
+	margin: 5px auto;
+	width: auto;
+
+}
+
+#sponsors table td{
+	border:none;
+	text-align: center;
+}
+
+#sponsors table a{
+	display: block;
+	padding: 2px;
+	margin: 0 5px;
+}
+
+#sponsors a > img{
+	opacity: .5;
+}
+
+#sponsors a:hover > img{
+/*	opacity: 1;*/
+}
+
+#sponsors ul li a{
+	text-align: center;
+}
+
+#copyright{
+	padding:10px 0;
+	clear:both;
+	text-align:center;
+	opacity:.7;
 }
 
 
@@ -115,7 +168,7 @@ hr{
 
 #content{
 	clear: both;
-	padding: 10px 20px 40px 20px;
+	padding: 10px 20px 20px 20px;
 	overflow: auto;
 }
 

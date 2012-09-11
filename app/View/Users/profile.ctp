@@ -1,7 +1,15 @@
 <?php $isAuth = ($user['User']['id'] == $current_user['id'] || $is_admin); ?>
 
 <div>
-	<h1><?php echo $this->Html->image('http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email'])) . '?s=64'); ?> <?php echo $user['User']['name']; ?></h1>
+	<h1>
+		<?php
+		if (!empty($user['User']['email_gravatar'])) {
+			echo $this->Html->image(
+					'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=64', array('style' => 'margin-right:10px;'));
+		}
+		echo $user['User']['name'];
+		?>
+	</h1>
 
 	<?php if ($is_admin): ?>
 		<div style="float:right;width:200px;background-color:rgba(0,0,0,.2);padding:10px;">
@@ -51,41 +59,9 @@
 	</div>
 </div>
 
-
-
-<?php if ($user['User']['id'] == $current_user['id'] && isset($next_lan['Lan']['title'])): ?>
-	<div>
-		<p style="margin:0;">You are not signed up for <?php echo $next_lan['Lan']['title']; ?>! <?php echo $this->Html->link('Sign up now!', array('controller' => 'lan_signups', 'action' => 'add', $next_lan['Lan']['id'])); ?></p>
-	</div>
-<?php endif; ?>
-
 <?php if ($user['User']['activated'] != 1 && $is_admin): ?>
 	<div class="message">
 		This user is not activated!
-	</div>
-<?php endif; ?>
-
-<?php if ($user['User']['id'] == $current_user['id'] && isset($lan_invites['Lan']['title'])): ?>
-	<div>
-		<h1>Invite</h1>
-		<p style="margin:0;">You are invited to <?php echo $lan_invites['Lan']['title']; ?> by <?php echo $lan_invites['Student']['name']; ?>!</p>
-			<?php
-			echo $this->Html->link('Accept and signup now', array(
-				'controller' => 'lan_signups',
-				'action' => 'add',
-				$lan_invites['Lan']['id'])
-			);
-			?>
-			|
-			<?php
-			echo $this->Form->postLink('Decline invite', array(
-				'controller' => 'lan_invites',
-				'action' => 'decline',
-				$lan_invites['LanInvite']['id']), array(
-				'confirm' => 'Do you want to decline this invite?'
-					)
-			);
-			?>
 	</div>
 <?php endif; ?>
 
@@ -140,10 +116,13 @@
 			<tr>
 				<th>Title</th>
 				<th>Days attending</th>
+				<?php if ($isAuth): ?>
+					<th>Actions</th>
+				<?php endif; ?>
 			</tr>
 			<?php if (!count($lans)): ?>
 				<tr>
-					<td colspan="2">
+					<td colspan="3">
 						Not signed up for any LANs
 					</td>
 				</tr>
@@ -160,8 +139,25 @@
 								<?php endforeach; ?>
 							</ul>
 						</td>
+						<?php if ($isAuth): ?>
+							<td>
+								<?php if ($user['User']['id'] == $current_user['id'] && $lan['Lan']['sign_up_open']): ?>
+									<?php
+									echo $this->Html->link(
+											$this->Html->image('16x16_GIF/reply.gif') . ' Edit your signup', array('controller' => 'lan_signups', 'action' => 'edit', $lan['Lan']['id']), array('escape' => false)
+									);
+									?>
+									<br />
+									<?php
+									echo $this->Form->postLink(
+											$this->Html->image('16x16_GIF/action_delete.gif') . ' Delete signup', array('controller' => 'lan_signups', 'action' => 'delete', $lan['Lan']['id']), array('confirm' => 'Are You sure you will delete the signup?', 'escape' => false)
+									);
+									?>
+								<?php endif; ?>
+							</td>
+							<?php endif; ?>
 					</tr>
-				<?php endforeach; ?>
+					<?php endforeach; ?>
 			<?php endif; ?>
 		</table>
 	</div>
@@ -178,21 +174,21 @@
 					<th>Time</th>
 					<th>Amount</th>
 				</tr>
-				<?php if (!count($user['Payment'])): ?>
+	<?php if (!count($user['Payment'])): ?>
 					<tr>
 						<td colspan="2">
 							No payments registered
 						</td>
 					</tr>
-				<?php else: ?>
+	<?php else: ?>
 					<?php $total_balance = 0; ?>
 					<?php foreach ($user['Payment'] as $payment): ?>
 						<tr>
 							<td><?php echo $this->Time->isToday($payment['time']) ? 'Today, ' . $this->Time->format('H:i', $payment['time']) : $this->Time->nice($payment['time']); ?></td>
 							<td><?php echo $payment['amount']; ?> DKK</td>
 						</tr>
-						<?php $total_balance += $payment['amount'];
-						?>
+			<?php $total_balance += $payment['amount'];
+			?>
 
 					<?php endforeach; ?>
 					<tr>
@@ -202,7 +198,7 @@
 						</td>
 						<td><?php echo $total_balance; ?> DKK</td>
 					</tr>
-				<?php endif; ?>
+	<?php endif; ?>
 			</table>
 		</div>
 	</div>
@@ -219,13 +215,13 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php if (!count($pizza_orders)): ?>
+	<?php if (!count($pizza_orders)): ?>
 						<tr>
 							<td colspan="2">
 								No orders registered
 							</td>
 						</tr>
-					<?php else: ?>
+	<?php else: ?>
 						<?php $total_balance = 0; ?>
 						<?php foreach ($pizza_orders as $pizza_order): ?>
 							<?php $order_balance = 0; ?>
@@ -234,21 +230,21 @@
 								<td><?php foreach ($pizza_order['PizzaOrderItem'] as $item): ?>
 										<div>
 											<div style="float:right"><?php echo $item['price']; ?> DKK =</div>
-											<?php echo $item['amount']; ?> x <?php echo $item['PizzaPrice']['Pizza']['title']; ?>
+				<?php echo $item['amount']; ?> x <?php echo $item['PizzaPrice']['Pizza']['title']; ?>
 											<small>(<?php echo $item['PizzaPrice']['PizzaType']['title']; ?>)</small>
 										</div>
-										<?php $order_balance += $item['amount'] * $item['price']; ?>
+				<?php $order_balance += $item['amount'] * $item['price']; ?>
 									<?php endforeach; ?></td>
 								<td><?php echo $order_balance; ?> DKK</td>
 							</tr>
-							<?php $total_balance += $order_balance; ?>
+			<?php $total_balance += $order_balance; ?>
 						<?php endforeach; ?>
 						<tr>
 							<td>Orders: <?php echo count($pizza_orders); ?></td>
 							<td style="text-align:right;">Total amount spend on pizzas:</td>
 							<td style="text-decoration: underline"><?php echo $total_balance; ?> DKK</td>
 						</tr>
-					<?php endif; ?>
+	<?php endif; ?>
 				</tbody>
 			</table>
 		</div>
@@ -256,7 +252,7 @@
 <?php endif; ?>
 
 <?php // pr($user); ?>
-<?php // pr($next_lan); ?>
+<?php // pr($next_lan);  ?>
 <?php // pr($pizza_orders);  ?>
 <?php
 // pr($teams); ?>

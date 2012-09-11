@@ -119,14 +119,16 @@ class Lan extends AppModel {
 			$user_ids[] = $user['user_id'];
 		}
 
+		$count_invites = 0;
 		foreach ($lan['LanInvite'] as $user) {
 			$user_ids[] = $user['user_guest_id'];
+			$count_invites++;
 		}
 
 		$users_list = array();
 
 		// Only the max participants is it possible to invite
-		if (count($user_ids) < $lan['Lan']['max_participants']) {
+		if ($lan['Lan']['max_participants'] > count($user_ids) && $lan['Lan']['max_guests_per_student'] > $count_invites) {
 
 			$users = $this->LanSignup->User->find('all', array('conditions' => array(
 					'NOT' => array(

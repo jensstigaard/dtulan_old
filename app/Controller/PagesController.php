@@ -112,7 +112,7 @@ class PagesController extends AppController {
 			// Otherwise - save the page
 			if ($this->Page->save($this->request->data)) {
 				$this->Session->setFlash('Your page has been updated.', 'default', array('class' => 'message success'), 'good');
-//				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('action' => 'view', $id));
 			} else {
 				$this->Session->setFlash('Unable to update your page.', 'default', array(), 'bad');
 			}

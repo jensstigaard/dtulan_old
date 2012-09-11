@@ -116,16 +116,13 @@ class PizzasController extends AppController {
 			} else {
 				$this->Session->setFlash('Unable to add your pizza.', 'default', array(), 'bad');
 			}
-		} else {
+		} elseif($this->request->is('get')) {
 			$this->request->data = $this->Pizza->read(null, $id);
 		}
 
 		$this->Pizza->recursive = 2;
 		$this->set('pizza', $this->Pizza->read());
 
-
-
-//		$this->set(compact('pizza_prices'));
 	}
 
 }

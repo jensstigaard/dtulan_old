@@ -13,7 +13,7 @@
 class User extends AppModel {
 
 	public $name = 'User';
-	public $hasOne = array('Admin');
+	public $hasOne = array('Admin', 'UserPasswordTicket');
 	public $hasMany = array(
 		'Crew',
 		'LanSignup',
@@ -102,7 +102,7 @@ class User extends AppModel {
 	}
 
 	public function matchPasswords($check) {
-		if ($check['password'] == $this->data['User']['password_confirmation']) {
+		if (isset($this->data['User']['password_confirmation']) && $check['password'] == $this->data['User']['password_confirmation']) {
 			return true;
 		}
 		$this->invalidate('password_confirmation', 'Your passwords do not match');

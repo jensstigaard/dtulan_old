@@ -1,5 +1,5 @@
-<div class="users form">
-	<?php echo $this->Form->create('User'); ?>
+<div>
+	<?php echo $this->Form->create(); ?>
     <fieldset>
         <legend><?php echo __('Enter password'); ?></legend>
 		<p>Please enter a personal password for your further site useage.</p>
@@ -8,5 +8,5 @@
 		echo $this->Form->input('password_confirmation', array('type' => 'password'));
 		?>
     </fieldset>
-	<?php echo $this->Form->end(__('Submit')); ?>
+	<?php echo $this->Form->end(__('Save')); ?>
 </div>

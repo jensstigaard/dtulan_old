@@ -1,4 +1,4 @@
-<?php echo $this->Html->script(array('jquery','pageEdit', 'ckeditor/ckeditor'), FALSE); ?>
+<?php echo $this->Html->script(array('jquery', 'pageEdit', 'ckeditor/ckeditor'), FALSE); ?>
 
 <div class="form">
 	<h1>Edit Page</h1>

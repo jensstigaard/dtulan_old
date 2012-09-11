@@ -7,5 +7,5 @@
         echo $this->Form->input('password');
     ?>
     </fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<?php echo $this->Form->end(__('Log in')); ?>
 </div>
