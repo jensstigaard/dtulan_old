@@ -111,6 +111,8 @@ class LanSignupsController extends AppController {
 
 	public function edit($lan_id = null) {
 
+		App::uses('CakeTime', 'Utility');
+
 		$this->LanSignup->User->id = $this->Auth->user('id');
 
 		if (!$this->LanSignup->User->exists()) {
@@ -216,6 +218,10 @@ class LanSignupsController extends AppController {
 	}
 
 	public function delete($lan_id = null) {
+		if (!$this->request->is('post')) {
+			throw new BadRequestException('Bad request from client');
+		}
+
 		$this->LanSignup->User->id = $this->Auth->user('id');
 
 		if (!$this->LanSignup->User->exists()) {
@@ -243,7 +249,40 @@ class LanSignupsController extends AppController {
 			throw new InvalidArgumentException('You are not signed up for this LAN');
 		}
 
-		if ($this->LanSignup->delete($id) && $this->LanSignup->LanSignupDay->deleteAll(array('lan_signup_id' => $id))) {
+		$delete_lan_signups = array();
+		$delete_lan_invites = array();
+
+		$delete_lan_signups[] = $id;
+
+		if ($user['User']['type'] == 'student') {
+
+			$lan_invites = $this->LanSignup->LanInvite->find('all', array('conditions' => array(
+					'LanInvite.lan_id' => $lan_signup['LanSignup']['lan_id'],
+					'LanInvite.user_student_id' => $lan_signup['LanSignup']['user_id'],
+				)
+					)
+			);
+
+			foreach ($lan_invites as $invite) {
+				$delete_lan_invites[] = $invite['LanInvite']['id'];
+
+				if ($invite['LanInvite']['accepted']) {
+					$delete_lan_signups[] = $invite['LanInvite']['lan_signup_id'];
+				}
+			}
+		} else {
+			$delete_lan_invites[] = $id;
+		}
+
+//		debug($lan_invites);
+//		debug($delete_lan_signups);
+		if ($this->LanSignup->deleteAll(array('LanSignup.id' => $delete_lan_signups)) && $this->LanSignup->LanSignupDay->deleteAll(array('lan_signup_id' => $id))) {
+
+			if(count($delete_lan_invites)){
+				$this->LanSignup->LanInvite->deleteAll(array('lan_signup_id' => $delete_lan_invites));
+			}
+
+
 			$this->Session->setFlash('Your signup has been deleted', 'default', array('class' => 'message success'), 'good');
 			$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan_id));
 		}

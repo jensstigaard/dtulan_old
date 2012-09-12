@@ -1,4 +1,4 @@
-<?php $isAuth = ($user['User']['id'] == $current_user['id'] || $is_admin); ?>
+<?php $is_auth = ($user['User']['id'] == $current_user['id'] || $is_admin); ?>
 
 <div>
 	<h1>
@@ -28,7 +28,7 @@
 					<td>Gamertag:</td>
 					<td><?php echo $user['User']['gamertag']; ?></td>
 				</tr>
-				<?php if ($isAuth): ?>
+				<?php if ($is_auth): ?>
 					<tr>
 						<td>Email:</td>
 						<td><?php echo $user['User']['email']; ?></td>
@@ -42,12 +42,12 @@
 						<td><?php echo $user['User']['id_number']; ?></td>
 					</tr>
 					<tr>
-						<td>Time created:</td>
-						<td><?php echo $this->Time->nice($user['User']['time_created']); ?></td>
+						<td>Phonenumber:</td>
+						<td><?php echo $user['User']['phonenumber']; ?></td>
 					</tr>
 					<tr>
-						<td>Time activated:</td>
-						<td><?php echo $this->Time->nice($user['User']['time_activated']); ?></td>
+						<td>Type:</td>
+						<td><?php echo $user['User']['type']; ?></td>
 					</tr>
 					<tr style="font-size:13pt;">
 						<td>Balance:</td>
@@ -116,7 +116,7 @@
 			<tr>
 				<th>Title</th>
 				<th>Days attending</th>
-				<?php if ($isAuth): ?>
+				<?php if ($is_auth): ?>
 					<th>Actions</th>
 				<?php endif; ?>
 			</tr>
@@ -139,18 +139,12 @@
 								<?php endforeach; ?>
 							</ul>
 						</td>
-						<?php if ($isAuth): ?>
+						<?php if ($is_auth): ?>
 							<td>
 								<?php if ($user['User']['id'] == $current_user['id'] && $lan['Lan']['sign_up_open']): ?>
 									<?php
 									echo $this->Html->link(
 											$this->Html->image('16x16_GIF/reply.gif') . ' Edit your signup', array('controller' => 'lan_signups', 'action' => 'edit', $lan['Lan']['id']), array('escape' => false)
-									);
-									?>
-									<br />
-									<?php
-									echo $this->Form->postLink(
-											$this->Html->image('16x16_GIF/action_delete.gif') . ' Delete signup', array('controller' => 'lan_signups', 'action' => 'delete', $lan['Lan']['id']), array('confirm' => 'Are You sure you will delete the signup?', 'escape' => false)
 									);
 									?>
 								<?php endif; ?>
@@ -165,7 +159,7 @@
 </div>
 
 
-<?php if ($isAuth): ?>
+<?php if ($is_auth): ?>
 	<div>
 		<div>
 			<h2><?php echo $this->Html->image('32x32_PNG/payment_cash.png'); ?> Payments</h2>

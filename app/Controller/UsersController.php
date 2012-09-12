@@ -85,7 +85,7 @@ class UsersController extends AppController {
 		$this->User->LanSignup->recursive = 2;
 		$this->User->LanSignup->unbindModel(array('belongsTo' => array('User')));
 		$this->User->LanSignup->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'PizzaWave')));
-		$this->User->LanSignup->LanSignupDay->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'PizzaWave')));
+		$this->User->LanSignup->LanSignupDay->unbindModel(array('belongsTo' => array('LanSignup')));
 
 		$lans = $this->User->LanSignup->find('all', array('conditions' => array(
 				'LanSignup.user_id' => $id
@@ -152,15 +152,20 @@ class UsersController extends AppController {
 				$msg.='<br />';
 				$msg.='The DTU LAN crew';
 
-//				$email = new CakeEmail();
-//				$email->from(array('admin@DTU-Lan.dk' => 'DTU-Lan'));
-//				$email->to($this->request->data['User']['email']);
-//				$email->subject('DTU-LAN site - Activation');
-//				$email->send($msg);
-				//echo $msg;
+				ini_set("SMTP", 'smtp.unoeuro.com');
 
-				$this->Session->setFlash(__('The user has been made. Check your email to continue the activation process. ' . $msg), 'default', array('class' => 'message success'), 'good');
-//				$this->redirect(array('action' => 'index'));
+				$email = new CakeEmail();
+				$email->config('smtp');
+				$email->emailFormat('html');
+				$email->template('default');
+				$email->from(array('no-reply@dtu-lan.dk' => 'DTU LAN site - No reply'));
+				$email->to($this->request->data['User']['email']);
+				$email->subject('DTU-LAN site - Activation');
+				$email->send($msg);
+
+
+				$this->Session->setFlash(__('Your user has been registered. Check your email to continue the activation process'), 'default', array('class' => 'message success'), 'good');
+				$this->redirect('/');
 			} else {
 				$this->Session->setFlash(__('The user could not be saved. Please try again.'), 'default', array(), 'bad');
 			}
@@ -168,22 +173,27 @@ class UsersController extends AppController {
 	}
 
 	public function edit() {
+		$this->set('title_for_layout', 'Edit personal data');
+
 		$this->User->id = $this->Auth->user('id');
 
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
 
-		if ($this->request->is('post')) {
+		if ($this->request->is('get')) {
+			$this->request->data = $this->User->read();
+		} else {
 			if ($this->User->save($this->request->data)) {
 				$this->Session->setFlash(__('User has been saved'), 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'profile'));
 			} else {
 				$this->Session->setFlash(__('User could not be saved. Please try again'), 'default', array(), 'bad');
+				debug($this->User->validates());
 			}
 		}
 
-		$this->set('user', $this->User->read());
+		$this->set('this_user', $this->User->read());
 	}
 
 	public function activate($id = null) {
@@ -277,10 +287,13 @@ class UsersController extends AppController {
 
 				if (!$this->User->UserPasswordTicket->save($this->request->data)) {
 					$this->Session->setFlash(__('Fatal error during database call. Please try again'), 'default', array(), 'bad');
-				}
-				else{
+				} else {
 
 					$email = new CakeEmail();
+					$email->config('smtp');
+					$email->emailFormat('html');
+					$email->template('default');
+
 					$email->from(array('no-reply@dtu-lan.dk' => 'DTU LAN Party'));
 					$email->to($user['User']['email']);
 					$email->subject('DTU LAN site - Password reset');
@@ -299,12 +312,11 @@ class UsersController extends AppController {
 					$msg.='<br />';
 					$msg.='The DTU LAN Crew';
 
-//					if ($email->send($msg)) {
-//						$this->Session->setFlash(__('Email sent'), 'default', array('class' => 'message success'), 'good');
-//					}
-//					else{
-						$this->Session->setFlash('Fatal error during sending. Please try again. '. $msg, 'default', array(), 'bad');
-//					}
+					if ($email->send($msg)) {
+						$this->Session->setFlash(__('Email sent'), 'default', array('class' => 'message success'), 'good');
+					} else {
+						$this->Session->setFlash('Fatal error during sending. Please try again. ' . $msg, 'default', array(), 'bad');
+					}
 				}
 			}
 		}
@@ -315,11 +327,15 @@ class UsersController extends AppController {
 
 		$this->User->UserPasswordTicket->id = $id;
 
-		if(!$this->User->UserPasswordTicket->exists()){
+		if (!$this->User->UserPasswordTicket->exists()) {
 			throw new NotFoundException('Key not found');
 		}
 
 		$ticket = $this->User->UserPasswordTicket->read();
+
+		if ($ticket['UserPasswordTicket']['time'] > strtotime('+ 1day')) {
+			throw new NotFoundException('Invalid link');
+		}
 
 		if ($this->request->is('post')) {
 
@@ -328,8 +344,7 @@ class UsersController extends AppController {
 			if ($this->User->save($this->request->data) && $this->User->UserPasswordTicket->delete()) {
 				$this->Session->setFlash(__('Password has been updated'), 'default', array('class' => 'message success'), 'good');
 				$this->redirect('/');
-			}
-			else{
+			} else {
 				$this->Session->setFlash('Unable to save password. Please try again. ', 'default', array(), 'bad');
 			}
 		}

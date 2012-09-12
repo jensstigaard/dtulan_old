@@ -15,10 +15,9 @@ class LanSignup extends AppModel {
 	public $belongsTo = array(
 		'User', 'Lan'
 	);
+	public $hasOne = array('LanInvite');
 
 	public $hasMany = array('LanSignupDay');
-
-	public $hasOne = array('LanInvite');
 
 }
 

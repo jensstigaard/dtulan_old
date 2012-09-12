@@ -46,13 +46,14 @@
 //									);
 			?>
 								</td>
-								<td>
-			<?php
-//									echo $this->Html->link(
-//											$this->Html->image('redbull2.png', array('alt' => 'Redbull - Energy drinks')), 'http://redbull.com/', array('target' => '_blank', 'escape' => false)
-//									);
-			?>
-								</td>-->
+			-->
+			<td>
+				<?php
+				echo $this->Html->link(
+						$this->Html->image('redbull2.png', array('alt' => 'Redbull - Energy drinks')), 'http://redbull.com/', array('target' => '_blank', 'escape' => false)
+				);
+				?>
+			</td>
 		</tr>
 	</tbody>
 </table>

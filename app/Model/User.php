@@ -69,6 +69,18 @@ class User extends AppModel {
 				'message' => 'This studynumber is already in use'
 			)
 		),
+		'phonenumber' => array(
+			'validPhone' => array(
+				'rule' => 'validatePhonenumber',
+				'message' => 'Please enter a valid phonenumber'
+			)
+		),
+		'gamertag' => array(
+			'maxlength' => array(
+				'rule' => array('maxlength', 20),
+				'message' => 'Too long gamertag entered'
+			)
+		),
 		'password' => array(
 			'Not empty' => array(
 				'rule' => 'notEmpty',
@@ -109,6 +121,14 @@ class User extends AppModel {
 		return false;
 	}
 
+	public function validatePhonenumber($check){
+		if(!empty($check['phonenumber']) && !preg_match("/^[0-9]{8}$/", $check['phonenumber'])){
+			return false;
+		}
+
+		return true;
+	}
+
 	public function beforeSave($options = array()) {
 		parent::beforeSave($options);
 		if (isset($this->data['User']['password'])) {
@@ -116,6 +136,8 @@ class User extends AppModel {
 		}
 		return true;
 	}
+
+
 
 	public function getGuestNumber() {
 		$guestNumber = 'g' . date('ym');
