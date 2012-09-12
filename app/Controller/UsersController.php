@@ -164,7 +164,7 @@ class UsersController extends AppController {
 				$email->send($msg);
 
 
-				$this->Session->setFlash(__('Your user has been registered. Check your email to continue the activation process'), 'default', array('class' => 'message success'), 'good');
+				$this->Session->setFlash(__('Your user has been registered. Check your email to continue the activation process. Remember to check your junk folder'), 'default', array('class' => 'message success'), 'good');
 				$this->redirect('/');
 			} else {
 				$this->Session->setFlash(__('The user could not be saved. Please try again.'), 'default', array(), 'bad');

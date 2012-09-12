@@ -54,6 +54,13 @@
 				);
 				?>
 			</td>
+			<td>
+				<?php
+				echo $this->Html->link(
+						$this->Html->image('facebook.png', array('alt' => 'Facebook')), 'http://facebook.com/dtulanparty', array('target' => '_blank', 'escape' => false)
+				);
+				?>
+			</td>
 		</tr>
 	</tbody>
 </table>
