@@ -24,7 +24,7 @@
 						);
 						?>
 						<?php if ($lan_signup['User']['type']): ?>
-							<p>Notice that if you're a student and has guests or sent invites, these would be deleted.</p>
+							<p style="padding-left:5px;">Notice that guests of you or invites you've sent would be deleted too.</p>
 						<?php endif; ?>
 					</td>
 				</tr>
@@ -44,10 +44,12 @@
 			}
 			?>
 			<div>
-				<?php echo $this->Form->checkbox('LanSignupDay.' . $x . '.lan_day_id', $conditions); ?>
-				<?php echo $day['value']; ?> (<?php echo ($day['seats_left']); ?> seats left)
+				<label>
+					<?php echo $this->Form->checkbox('LanSignupDay.' . $x . '.lan_day_id', $conditions); ?>
+					<?php echo $day['value']; ?> (<?php echo ($day['seats_left']); ?> seats left)
+				</label>
 			</div>
 		<?php endforeach; ?>
-	<?php echo $this->Form->end(__('Save')); ?>
-		</fieldset>
+		<?php echo $this->Form->end(__('Save')); ?>
+	</fieldset>
 </div>

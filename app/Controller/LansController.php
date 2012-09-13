@@ -60,8 +60,6 @@ class LansController extends AppController {
 
 	public function view($id = null) {
 
-		$this->Lan->recursive = 2;
-
 		$cond['Lan.id'] = $id;
 		if ($this->Auth->loggedIn()) {
 			$user = $this->Auth->user();
@@ -78,6 +76,69 @@ class LansController extends AppController {
 		$title_for_layout = 'Lan &bull; ' . $lan['Lan']['title'];
 
 		$this->set(compact('lan', 'title_for_layout'));
+
+
+		$this->set('lan_days', $this->Lan->LanDay->find('all', array(
+					'conditions' => array(
+						'LanDay.lan_id' => $id
+					),
+					'order' => array(
+						'LanDay.date ASC',
+					)
+						)
+				)
+		);
+
+		$this->set('lan_invites', $this->Lan->LanInvite->find('all', array(
+					'conditions' => array(
+						'LanInvite.lan_id' => $id
+					)
+						)
+				)
+		);
+
+
+		$this->Lan->LanSignup->recursive = 2;
+		$this->Lan->LanSignup->unbindModel(array(
+			'belongsTo' => array(
+				'Lan'
+			),
+			'hasOne' => array(
+				'LanInvite'
+			),
+			'hasMany' => array(
+//				'LanSignupDay'
+			)
+				)
+		);
+		$this->Lan->LanSignup->User->unbindModel(array(
+			'hasOne' => array(
+				'UserPasswordTicket'
+			),
+			'hasMany' => array(
+				'LanSignup',
+				'LanInvite',
+				'LanInviteSent',
+				'Payment',
+				'PizzaOrder',
+				'TeamInvite',
+				'TeamUser'
+			)
+		));
+
+		$this->paginate = array(
+			'LanSignup' => array(
+				'conditions' => array(
+					'LanSignup.lan_id' => $id,
+				),
+				'limit' => 10,
+				'order' => array(
+					array('User.name' => 'asc')
+				)
+			)
+		);
+
+		$this->set('lan_signups', $this->paginate('LanSignup'));
 
 
 		if ($lan['Lan']['sign_up_open'] && isset($user)) {
@@ -98,7 +159,7 @@ class LansController extends AppController {
 						}
 					}
 
-					$user_guests = $this->Lan->getInviteableUsers($id);
+					$user_guests = $this->Lan->getInviteableUsers($id, $user['id']);
 					$this->set(compact('user_guests'));
 				}
 			}

@@ -45,7 +45,15 @@ class UsersController extends AppController {
 
 	public function index() {
 		$this->User->recursive = 0;
-		$this->set('users', $this->paginate());
+
+		$this->paginate = array(
+			'User' => array(
+				'limit' => 10,
+				'order' => 'time_created ASC'
+			)
+		);
+
+		$this->set('users', $this->paginate('User'));
 	}
 
 	public function profile($id = null) {
@@ -262,7 +270,7 @@ class UsersController extends AppController {
 
 				$this->redirect($this->Auth->redirect());
 			} else {
-				$this->Session->setFlash(__('Your username/password combination was incorrect'), 'default', array('class' => 'message success'), 'bad');
+				$this->Session->setFlash(__('Your username/password combination was incorrect'), 'default', array(), 'bad');
 			}
 		}
 	}
@@ -373,7 +381,8 @@ class UsersController extends AppController {
 							'User.id_number LIKE' => '%' . $input_string . '%'
 						),
 					)
-				)
+				),
+				'limit' => 5
 					)
 			);
 

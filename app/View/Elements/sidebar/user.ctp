@@ -14,7 +14,7 @@
 	<div style="clear:both;">
 		<ul>
 			<li><?php echo $this->Html->link($this->Html->image('16x16_GIF/user.gif', array('alt' => 'Profile')) . ' Profile', array('controller' => 'users', 'action' => 'profile'), array('escape' => false)); ?></li>
-			<li><?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif', array('alt' => 'Edit info')) . ' Edit personal data', array('controller' => 'users', 'action' => 'edit'), array('escape' => false)); ?></li>
+			<li><?php echo $this->Html->link($this->Html->image('16x16_PNG/spanner.png', array('alt' => 'Edit info')) . ' Edit personal data', array('controller' => 'users', 'action' => 'edit'), array('escape' => false)); ?></li>
 			<li><?php echo $this->Html->link($this->Html->image('16x16_GIF/login.gif', array('alt' => 'Log out')) . ' Logout', array('controller' => 'users', 'action' => 'logout'), array('escape' => false)); ?></li>
 		</ul>
 	</div>

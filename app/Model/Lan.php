@@ -105,8 +105,8 @@ class Lan extends AppModel {
 		return $data;
 	}
 
-	public function getInviteableUsers($id = null) {
-		$this->id = $id;
+	public function getInviteableUsers($lan_id = null, $user_id) {
+		$this->id = $lan_id;
 
 		if (!$this->exists()) {
 			throw new NotFoundException('Lan not found');
@@ -122,15 +122,18 @@ class Lan extends AppModel {
 		$count_invites = 0;
 		foreach ($lan['LanInvite'] as $user) {
 			$user_ids[] = $user['user_guest_id'];
-			$count_invites++;
+
+			if ($user['user_student_id'] == $user_id) {
+				$count_invites++;
+			}
 		}
 
-		$users_list = array();
+		$users = array();
 
 		// Only the max participants is it possible to invite
 		if ($lan['Lan']['max_participants'] > count($user_ids) && $lan['Lan']['max_guests_per_student'] > $count_invites) {
 
-			$users = $this->LanSignup->User->find('all', array('conditions' => array(
+			$users = $this->LanSignup->User->find('list', array('conditions' => array(
 					'NOT' => array(
 						'User.id' => $user_ids,
 					),
@@ -140,21 +143,21 @@ class Lan extends AppModel {
 					)
 			);
 
-			foreach ($users as $user) {
-				$users_list[$user['User']['id']] = $user['User']['name'];
-			}
+//			foreach ($users as $user) {
+//				$users_list[$user['User']['id']] = $user['User']['name'];
+//			}
 		}
 
-		return $users_list;
+		return $users;
 	}
 
 	public function isUserAttending($lan_id, $user_id) {
 		return $this->LanSignup->find('count', array('conditions' => array(
-			'LanSignup.lan_id' => $lan_id,
-			'LanSignup.user_id' => $user_id
+						'LanSignup.lan_id' => $lan_id,
+						'LanSignup.user_id' => $user_id
 					)
 						)
-		) == 1;
+				) == 1;
 	}
 
 }

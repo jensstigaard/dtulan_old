@@ -45,10 +45,6 @@
 						<td>Phonenumber:</td>
 						<td><?php echo $user['User']['phonenumber']; ?></td>
 					</tr>
-					<tr>
-						<td>Type:</td>
-						<td><?php echo $user['User']['type']; ?></td>
-					</tr>
 					<tr style="font-size:13pt;">
 						<td>Balance:</td>
 						<td><?php echo $user['User']['balance']; ?></td>
@@ -129,7 +125,13 @@
 			<?php else: ?>
 				<?php foreach ($lans as $lan): ?>
 					<tr>
-						<td><?php echo $this->Html->link($lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan['Lan']['id'])); ?></td>
+						<td>
+							<?php echo $this->Html->link($lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan['Lan']['id'])); ?>
+							<?php if (isset($lan['LanInvite']['Student'])): ?>
+								<br />
+								<small>Invited by: <?php echo $this->Html->link($lan['LanInvite']['Student']['name'], array('controller' => 'users', 'action' => 'profile', $lan['LanInvite']['Student']['id'])); ?></small>
+							<?php endif; ?>
+						</td>
 						<td>
 							<ul>
 
@@ -149,13 +151,12 @@
 									?>
 								<?php endif; ?>
 							</td>
-							<?php endif; ?>
+						<?php endif; ?>
 					</tr>
-					<?php endforeach; ?>
+				<?php endforeach; ?>
 			<?php endif; ?>
 		</table>
 	</div>
-
 </div>
 
 
@@ -168,21 +169,21 @@
 					<th>Time</th>
 					<th>Amount</th>
 				</tr>
-	<?php if (!count($user['Payment'])): ?>
+				<?php if (!count($user['Payment'])): ?>
 					<tr>
 						<td colspan="2">
 							No payments registered
 						</td>
 					</tr>
-	<?php else: ?>
+				<?php else: ?>
 					<?php $total_balance = 0; ?>
 					<?php foreach ($user['Payment'] as $payment): ?>
 						<tr>
 							<td><?php echo $this->Time->isToday($payment['time']) ? 'Today, ' . $this->Time->format('H:i', $payment['time']) : $this->Time->nice($payment['time']); ?></td>
 							<td><?php echo $payment['amount']; ?> DKK</td>
 						</tr>
-			<?php $total_balance += $payment['amount'];
-			?>
+						<?php $total_balance += $payment['amount'];
+						?>
 
 					<?php endforeach; ?>
 					<tr>
@@ -192,7 +193,7 @@
 						</td>
 						<td><?php echo $total_balance; ?> DKK</td>
 					</tr>
-	<?php endif; ?>
+				<?php endif; ?>
 			</table>
 		</div>
 	</div>
@@ -209,13 +210,13 @@
 					</tr>
 				</thead>
 				<tbody>
-	<?php if (!count($pizza_orders)): ?>
+					<?php if (!count($pizza_orders)): ?>
 						<tr>
 							<td colspan="2">
 								No orders registered
 							</td>
 						</tr>
-	<?php else: ?>
+					<?php else: ?>
 						<?php $total_balance = 0; ?>
 						<?php foreach ($pizza_orders as $pizza_order): ?>
 							<?php $order_balance = 0; ?>
@@ -224,21 +225,21 @@
 								<td><?php foreach ($pizza_order['PizzaOrderItem'] as $item): ?>
 										<div>
 											<div style="float:right"><?php echo $item['price']; ?> DKK =</div>
-				<?php echo $item['amount']; ?> x <?php echo $item['PizzaPrice']['Pizza']['title']; ?>
+											<?php echo $item['amount']; ?> x <?php echo $item['PizzaPrice']['Pizza']['title']; ?>
 											<small>(<?php echo $item['PizzaPrice']['PizzaType']['title']; ?>)</small>
 										</div>
-				<?php $order_balance += $item['amount'] * $item['price']; ?>
+										<?php $order_balance += $item['amount'] * $item['price']; ?>
 									<?php endforeach; ?></td>
 								<td><?php echo $order_balance; ?> DKK</td>
 							</tr>
-			<?php $total_balance += $order_balance; ?>
+							<?php $total_balance += $order_balance; ?>
 						<?php endforeach; ?>
 						<tr>
 							<td>Orders: <?php echo count($pizza_orders); ?></td>
 							<td style="text-align:right;">Total amount spend on pizzas:</td>
 							<td style="text-decoration: underline"><?php echo $total_balance; ?> DKK</td>
 						</tr>
-	<?php endif; ?>
+					<?php endif; ?>
 				</tbody>
 			</table>
 		</div>

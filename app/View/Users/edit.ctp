@@ -3,6 +3,9 @@
 	<p>You are able to change some of your personal data.</p>
 	<?php echo $this->Form->create(); ?>
 	<div>
+		<?php echo $this->Form->input('name'); ?>
+	</div>
+	<div>
 		<?php echo $this->Form->input('phonenumber'); ?>
 		<p style="margin:0 7px;">Your phonenumber is not visible at the website. We're giving the fire department information about all our participants during events.</p>
 	</div>

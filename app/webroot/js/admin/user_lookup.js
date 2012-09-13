@@ -24,16 +24,18 @@ $(document).ready(function(){
 							label: item.User.name,
 							id_number: item.User.id_number,
 							email: item.User.email,
-							value: item.User.id
+							id: item.User.id,
+							value: item.User.id_number
 						}
 					}));
 				}
 			});
 		},
-		minLength: 2,
+		minLength : 3,
+		selectFirst : true,
 		select: function( event, ui ) {
 			if(ui.item){
-				document.location = urlRedirect + '/' + ui.item.value;
+				document.location = urlRedirect + '/' + ui.item.id;
 			}
 		},
 		open: function() {
