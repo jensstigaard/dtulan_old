@@ -294,7 +294,7 @@ class UsersController extends AppController {
                     $this->Session->setFlash(__('User was not activated'));
                 }
             }
-	}
+	
 
 	public function login() {
 //		if ($this->request->is('post') && $this->request->accepts("application/vnd.dtulan+json; version=1.0")) {
