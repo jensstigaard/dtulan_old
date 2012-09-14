@@ -14,7 +14,15 @@
 				</tr>
 				<tr>
 					<td>Participants:</td>
-					<td><?php echo count($lan_signups); ?></td>
+					<td><?php echo $count_lan_signups; ?></td>
+				</tr>
+				<tr>
+					<td>Participants students:</td>
+					<td><?php echo $count_lan_signups - $count_lan_signups_guests; ?></td>
+				</tr>
+				<tr>
+					<td>Participants guests:</td>
+					<td><?php echo $count_lan_signups_guests; ?></td>
 				</tr>
 				<tr style="font-size:110%">
 					<td>Price:</td>

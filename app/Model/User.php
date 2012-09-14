@@ -158,6 +158,10 @@ class User extends AppModel {
 		return isset($this->data['User']['activated']) && $this->data['User']['activated'];
 	}
 
+	public function isAdmin($user){
+		return isset($user['Admin']['user_id']);
+	}
+
 }
 
 ?>

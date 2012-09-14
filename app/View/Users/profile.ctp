@@ -1,5 +1,3 @@
-<?php $is_auth = ($user['User']['id'] == $current_user['id'] || $is_admin); ?>
-
 <div>
 	<h1>
 		<?php
@@ -112,7 +110,7 @@
 			<tr>
 				<th>Title</th>
 				<th>Days attending</th>
-				<?php if ($is_auth): ?>
+				<?php if ($is_you): ?>
 					<th>Actions</th>
 				<?php endif; ?>
 			</tr>
@@ -127,6 +125,8 @@
 					<tr>
 						<td>
 							<?php echo $this->Html->link($lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan['Lan']['id'])); ?>
+							<?php if (isset($lan['LanInvite']['Student'])): ?>
+							<?php endif; ?>
 							<?php if (isset($lan['LanInvite']['Student'])): ?>
 								<br />
 								<small>Invited by: <?php echo $this->Html->link($lan['LanInvite']['Student']['name'], array('controller' => 'users', 'action' => 'profile', $lan['LanInvite']['Student']['id'])); ?></small>
@@ -143,7 +143,7 @@
 						</td>
 						<?php if ($is_auth): ?>
 							<td>
-								<?php if ($user['User']['id'] == $current_user['id'] && $lan['Lan']['sign_up_open']): ?>
+								<?php if ($is_you && $lan['Lan']['sign_up_open']): ?>
 									<?php
 									echo $this->Html->link(
 											$this->Html->image('16x16_GIF/reply.gif') . ' Edit your signup', array('controller' => 'lan_signups', 'action' => 'edit', $lan['Lan']['id']), array('escape' => false)
@@ -158,6 +158,8 @@
 		</table>
 	</div>
 </div>
+
+<?php // pr($lans); ?>
 
 
 <?php if ($is_auth): ?>
@@ -206,7 +208,10 @@
 					<tr>
 						<th>Time</th>
 						<th>Items</th>
-						<th></th>
+						<th>Price</th>
+						<?php if ($is_you): ?>
+							<th>Actions</th>
+						<?php endif; ?>
 					</tr>
 				</thead>
 				<tbody>
@@ -231,6 +236,11 @@
 										<?php $order_balance += $item['amount'] * $item['price']; ?>
 									<?php endforeach; ?></td>
 								<td><?php echo $order_balance; ?> DKK</td>
+								<?php if ($is_you): ?>
+									<td>
+										Cancel order
+									</td>
+								<?php endif; ?>
 							</tr>
 							<?php $total_balance += $order_balance; ?>
 						<?php endforeach; ?>
@@ -238,6 +248,9 @@
 							<td>Orders: <?php echo count($pizza_orders); ?></td>
 							<td style="text-align:right;">Total amount spend on pizzas:</td>
 							<td style="text-decoration: underline"><?php echo $total_balance; ?> DKK</td>
+							<?php if ($is_you): ?>
+									<td></td>
+								<?php endif; ?>
 						</tr>
 					<?php endif; ?>
 				</tbody>
@@ -248,6 +261,6 @@
 
 <?php // pr($user); ?>
 <?php // pr($next_lan);  ?>
-<?php // pr($pizza_orders);  ?>
+<?php pr($pizza_orders); ?>
 <?php
 // pr($teams); ?>

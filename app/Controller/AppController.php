@@ -107,6 +107,10 @@ class AppController extends Controller {
 	}
 
 	public function isAdmin($user = null) {
+		if($user == null && $this->Auth->loggedIn()){
+			$user = $this->Auth->user();
+		}
+
 		return isset($user['Admin']['user_id']);
 	}
 

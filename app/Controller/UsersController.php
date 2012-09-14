@@ -57,9 +57,12 @@ class UsersController extends AppController {
 	}
 
 	public function profile($id = null) {
+
+		$is_you = false;
+		$is_auth = false;
+
 		if ($id == null) {
-			$user = $this->Auth->user();
-			$id = $user['id'];
+			$id = $this->Auth->user('id');
 		}
 
 		$this->User->id = $id;
@@ -70,7 +73,17 @@ class UsersController extends AppController {
 		$this->User->unbindModel(array('hasMany' => array('PizzaOrder', 'LanSignup')));
 		$user = $this->User->read();
 
+		if ($user['User']['id'] = $this->Auth->user('id')) {
+			$is_you = true;
+		}
+		
+		if ($is_you || isset($user['Admin']['user_id'])) {
+			$is_auth = true;
+		}
 
+		$title_for_layout = 'Profile &bull; ' . $user['User']['name'];
+
+		/* Teams for user */
 		$this->User->TeamUser->recursive = 2;
 		$this->User->TeamUser->Team->Tournament->unbindModel(array('belongsTo' => array('Lan')));
 
@@ -80,16 +93,19 @@ class UsersController extends AppController {
 				)
 		);
 
+		/* Pizza orders */
 		$this->User->PizzaOrder->recursive = 3;
 		$this->User->PizzaOrder->unbindModel(array('belongsTo' => array('User')));
-		$this->User->PizzaOrder->PizzaWave->unbindModel(array('hasMany' => array('PizzaOrder')));
-		$this->User->PizzaOrder->PizzaWave->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'LanDay', 'PizzaWave')));
+		$this->User->PizzaOrder->PizzaWave->unbindModel(array('hasMany' => array('PizzaOrder'), 'belongsTo' => array('Lan')));
+		$this->User->PizzaOrder->PizzaOrderItem->unbindModel(array('belongsTo' => array('PizzaOrder')));
+//		$this->User->PizzaOrder->PizzaWave->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'LanDay', 'PizzaWave')));
 		$pizza_orders = $this->User->PizzaOrder->find('all', array('conditions' => array(
 				'PizzaOrder.user_id' => $id
 			)
 				)
 		);
 
+		/* Lan signups */
 		$this->User->LanSignup->recursive = 2;
 		$this->User->LanSignup->unbindModel(array('belongsTo' => array('User')));
 		$this->User->LanSignup->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'PizzaWave')));
@@ -123,9 +139,10 @@ class UsersController extends AppController {
 			);
 		}
 
-		$title_for_layout = 'Profile &bull; ' . $user['User']['name'];
-
-		$this->set(compact('user', 'pizza_orders', 'lans', 'teams', 'title_for_layout'));
+		$this->set(compact(
+						'title_for_layout', 'is_you', 'is_auth', 'user', 'pizza_orders', 'lans', 'teams'
+				)
+		);
 	}
 
 	public function add() {

@@ -32,12 +32,10 @@ class PizzaCategoriesController extends AppController {
 
 
 		$this->loadModel('Lan');
-		if ($this->Lan->isOnAir()) {
-			$user = $this->Auth->user();
+		if ($this->Lan->isCurrent($this->isAdmin())) {
+			$current_lan = $this->Lan->getCurrent($this->isAdmin());
 
-			$current_lan = $this->Lan->getOnAir();
-
-			if ($this->Lan->isUserAttending($current_lan['Lan']['id'], $user['id'])) {
+			if ($this->Lan->isUserAttending($current_lan['Lan']['id'], $this->Auth->user('id'))) {
 				if ($wave_id != null) {
 					$this->Lan->PizzaWave->read(null, $wave_id);
 

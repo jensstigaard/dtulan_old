@@ -97,6 +97,23 @@ class LansController extends AppController {
 				)
 		);
 
+		$this->set('count_lan_signups', $this->Lan->LanSignup->find('count', array(
+					'conditions' => array(
+						'LanSignup.lan_id' => $id
+					)
+						)
+				)
+		);
+
+		$this->set('count_lan_signups_guests', $this->Lan->LanInvite->find('count', array(
+					'conditions' => array(
+						'LanInvite.lan_id' => $id,
+						'LanInvite.accepted' => 1
+					)
+						)
+				)
+		);
+
 
 		$this->Lan->LanSignup->recursive = 2;
 		$this->Lan->LanSignup->unbindModel(array(
@@ -169,8 +186,6 @@ class LansController extends AppController {
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->request->data['LanDay'] = $this->Lan->getLanDays($this->request->data['Lan']['time_start'], $this->request->data['Lan']['time_end']);
-
-
 			if ($this->Lan->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your Lan has been saved.', 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'index'));
@@ -186,15 +201,15 @@ class LansController extends AppController {
 			throw new NotFoundException(__('Invalid Lan'));
 		}
 
-		if ($this->request->is('post')) {
+		if ($this->request->is('get')) {
+			$this->request->data = $this->Lan->read();
+		} else {
 			if ($this->Lan->save($this->request->data)) {
 				$this->Session->setFlash(__('The LAN has been saved'), 'default', array('class' => 'message success'), 'good');
 //				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The Lan could not be saved. Please, try again.'), 'default', array(), 'bad');
 			}
-		} else {
-			$this->request->data = $this->Lan->read(null, $id);
 		}
 	}
 
