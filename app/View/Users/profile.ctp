@@ -125,7 +125,7 @@
 				<?php foreach ($lans as $lan): ?>
 					<tr>
 						<td>
-							<?php echo $this->Html->link($lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan['Lan']['id'])); ?>
+							<?php echo $this->Html->link($lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug'])); ?>
 							<?php if (isset($lan['LanInvite']['Student'])): ?>
 							<?php endif; ?>
 							<?php if (isset($lan['LanInvite']['Student'])): ?>

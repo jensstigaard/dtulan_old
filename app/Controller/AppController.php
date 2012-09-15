@@ -36,8 +36,8 @@ class AppController extends Controller {
 	public $components = array(
 		'Session',
 		'Auth' => array(
-			'loginRedirect' => array('controller' => 'pages', 'action' => 'view', 1),
-			'logoutRedirect' => array('controller' => 'pages', 'action' => 'view', 1),
+			'loginRedirect' => array('controller' => 'pages', 'action' => 'view', 'welcome'),
+			'logoutRedirect' => array('controller' => 'pages', 'action' => 'view', 'welcome'),
 			'authError' => 'Access denied',
 			'authorize' => array('Controller'), // Added this line
 		)
@@ -57,7 +57,6 @@ class AppController extends Controller {
 
 		$this->set(compact('current_user', 'is_loggedin', 'is_admin'));
 
-		
 		$this->loadModel('User');
 
 		if ($this->User->LanSignup->Lan->isCurrent($is_admin)) {

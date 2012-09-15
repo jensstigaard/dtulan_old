@@ -22,7 +22,7 @@
 				</td>
 
 				<td>
-					<?php echo $this->Html->link($payment['User']['name'], array('controller' => 'users', 'action' => 'profile', $payment['User']['id'])); ?>
+					(coming)
 				</td>
 
 
@@ -31,4 +31,4 @@
 
 	</table>
 </div>
-<?php pr($payments); ?>
+<?php // pr($payments); ?>

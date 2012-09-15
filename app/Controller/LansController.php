@@ -22,6 +22,7 @@ class LansController extends AppController {
 	}
 
 	public function index() {
+		$this->Lan->recursive = 1;
 		$this->set('lans', $this->Lan->find('all'));
 	}
 
@@ -58,20 +59,22 @@ class LansController extends AppController {
 //		$this->view = 'index';
 //	}
 
-	public function view($id = null) {
+	public function view($slug) {
 
-		$cond['Lan.id'] = $id;
+		$cond = array();
 		if ($this->Auth->loggedIn()) {
 			$user = $this->Auth->user();
 			if (!$this->isAdmin($user)) {
 				$cond['Lan.published'] = 1;
 			}
 		}
-		$lan = $this->Lan->find('first', array('conditions' => $cond));
+		$lan = $this->Lan->findBySlug($slug, array('conditions' => $cond));
 
-		if (!isset($lan['Lan'])) {
+		if (!$lan) {
 			throw new NotFoundException('No LAN found');
 		}
+
+		$lan_id = $lan['Lan']['id'];
 
 		$title_for_layout = 'Lan &bull; ' . $lan['Lan']['title'];
 
@@ -80,7 +83,7 @@ class LansController extends AppController {
 
 		$this->set('lan_days', $this->Lan->LanDay->find('all', array(
 					'conditions' => array(
-						'LanDay.lan_id' => $id
+						'LanDay.lan_id' => $lan_id
 					),
 					'order' => array(
 						'LanDay.date ASC',
@@ -91,38 +94,24 @@ class LansController extends AppController {
 
 		$this->set('lan_invites', $this->Lan->LanInvite->find('all', array(
 					'conditions' => array(
-						'LanInvite.lan_id' => $id
+						'LanInvite.lan_id' => $lan_id
 					)
 						)
 				)
 		);
 
-		$this->set('count_lan_signups', $this->Lan->LanSignup->find('count', array(
-					'conditions' => array(
-						'LanSignup.lan_id' => $id
-					)
-						)
-				)
-		);
-
-		$this->set('count_lan_signups_guests', $this->Lan->LanInvite->find('count', array(
-					'conditions' => array(
-						'LanInvite.lan_id' => $id,
-						'LanInvite.accepted' => 1
-					)
-						)
-				)
-		);
+		$this->set('count_lan_signups', $this->Lan->LanSignup->countTotalInLan($lan_id));
+		$this->set('count_lan_signups_guests', $this->Lan->LanInvite->countGuestsInLan($lan_id));
 
 		$conditions_tournaments = array(
-			'Tournament.lan_id' => $id,
+			'Tournament.lan_id' => $lan_id,
 		);
 
 		// Users signed up for LAN
 		$this->Lan->Tournament->recursive = 2;
 		$tournaments = $this->Lan->Tournament->find('all', array(
 			'conditions' => $conditions_tournaments
-		));
+				));
 
 		$this->set(compact('tournaments'));
 
@@ -159,7 +148,7 @@ class LansController extends AppController {
 		$this->paginate = array(
 			'LanSignup' => array(
 				'conditions' => array(
-					'LanSignup.lan_id' => $id,
+					'LanSignup.lan_id' => $lan_id,
 				),
 				'limit' => 10,
 				'order' => array(
@@ -174,11 +163,11 @@ class LansController extends AppController {
 		if ($lan['Lan']['sign_up_open'] && isset($user)) {
 
 			if ($user['type'] == 'student') {
-				if (!$this->Lan->isUserAttending($id, $user['id'])) {
+				if (!$this->Lan->isUserAttending($lan_id, $user['id'])) {
 					$this->set('is_not_attending', 1);
 				} else {
 					if ($this->request->is('post')) {
-						$this->request->data['LanInvite']['lan_id'] = $id;
+						$this->request->data['LanInvite']['lan_id'] = $lan_id;
 						$this->request->data['LanInvite']['user_student_id'] = $user['id'];
 						$this->request->data['LanInvite']['time_invited'] = date('Y-m-d H:i:s');
 
@@ -189,7 +178,7 @@ class LansController extends AppController {
 						}
 					}
 
-					$user_guests = $this->Lan->getInviteableUsers($id, $user['id']);
+					$user_guests = $this->Lan->getInviteableUsers($lan_id, $user['id']);
 					$this->set(compact('user_guests'));
 				}
 			}
@@ -198,6 +187,8 @@ class LansController extends AppController {
 
 	public function add() {
 		if ($this->request->is('post')) {
+
+			$this->request->data['Lan']['slug'] = $this->Lan->stringToSlug($this->request->data['Lan']['title']);
 			$this->request->data['LanDay'] = $this->Lan->getLanDays($this->request->data['Lan']['time_start'], $this->request->data['Lan']['time_end']);
 			if ($this->Lan->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your Lan has been saved.', 'default', array('class' => 'message success'), 'good');
@@ -217,6 +208,8 @@ class LansController extends AppController {
 		if ($this->request->is('get')) {
 			$this->request->data = $this->Lan->read();
 		} else {
+			$this->request->data['Lan']['slug'] = $this->Lan->stringToSlug($this->request->data['Lan']['title']);
+
 			if ($this->Lan->save($this->request->data)) {
 				$this->Session->setFlash(__('The LAN has been saved'), 'default', array('class' => 'message success'), 'good');
 //				$this->redirect(array('action' => 'index'));

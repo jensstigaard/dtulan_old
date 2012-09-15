@@ -26,8 +26,53 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
-Router::connect('/', array('controller' => 'pages', 'action' => 'view', 1));
-Router::connect('/admin', array('controller' => 'admins'));
+Router::connect('/', array(
+	'controller' => 'pages',
+	'action' => 'view',
+	'slug' => 'welcome'
+		), array(
+	'pass' => array(
+		'slug'
+	)
+		)
+);
+
+//Router::connect('/lan/*', array(
+//	'controller' => 'lans',
+//	'action' => 'view',
+//	'slug' => 'e2012'
+//		), array(
+//	'pass' => array(
+//		'slug'
+//	),
+//			'slug' => '[0-9]+'
+//		)
+//);
+
+Router::connect('/lan/:slug', array(
+	'controller' => 'lans',
+	'action' => 'view',
+	'slug' => null
+		), array(
+	'pass' => array(
+		'slug'
+	),
+	'slug' => '[a-z][-_a-z0-9]*'
+		)
+);
+
+Router::connect('/page/:slug', array(
+	'controller' => 'pages',
+	'action' => 'view',
+	'slug' => null
+		), array(
+	'pass' => array(
+		'slug'
+	),
+	'slug' => '[a-z][-_a-z0-9]*')
+);
+
+//Router::connect('/admin', array('controller' => 'admins'));
 
 /**
  * ...and connect the rest of 'Pages' controller's urls.
@@ -35,7 +80,13 @@ Router::connect('/admin', array('controller' => 'admins'));
 Router::connect('/pizzas/:wave_id', array(
 	'controller' => 'pizza_categories',
 	'action' => 'index',
-	'wave_id' => null), array('pass' => array('wave_id'), 'wave_id' => '[0-9]+')
+	'wave_id' => null
+		), array(
+	'pass' => array(
+		'wave_id'
+	),
+	'wave_id' => '[0-9]+'
+		)
 );
 Router::connect('/pizzas', array('controller' => 'pizza_categories'));
 

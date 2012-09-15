@@ -36,7 +36,7 @@
 			<?php echo $this->Form->input('command_value', array('label' => 'Link to page')); ?>
 		</div>
 		<div id="text">
-			<?php echo $this->Form->input('text', array('rows' => '6', 'class' => 'ckeditor', 'value' => '<h1>Default heading</h1><p>Default text</p>')); ?>
+			<?php echo $this->Form->input('text', array('class' => 'ckeditor', 'value' => '<h1>Default heading</h1><p>Default text</p>')); ?>
 		</div>
 
 		<?php

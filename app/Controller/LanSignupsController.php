@@ -56,6 +56,7 @@ class LanSignupsController extends AppController {
 			throw new BadRequestException(__('LAN already signed up'));
 		}
 
+		$this->LanSignup->Lan->recursive = 2;
 		$lan = $this->LanSignup->Lan->read();
 
 		if ($this->request->is('post')) {
@@ -65,6 +66,9 @@ class LanSignupsController extends AppController {
 					unset($this->request->data['LanSignupDay'][$day_id]);
 				}
 			}
+
+			$this->request->data['LanSignup']['lan_id'] = 0;
+			$this->request->data['LanSignup']['user_id'] = 0;
 
 			if (count($this->request->data['LanSignupDay'])) {
 				$this->request->data['LanSignup']['lan_id'] = $id;
@@ -90,7 +94,7 @@ class LanSignupsController extends AppController {
 
 			if ($this->LanSignup->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your signup has been saved', 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('controller' => 'lans', 'action' => 'view', $id));
+//				$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
 			} else {
 				$this->Session->setFlash('Unable to add your signup. Have You selected any days?', 'default', array(), 'bad');
 			}
@@ -125,6 +129,8 @@ class LanSignupsController extends AppController {
 		if (!$this->LanSignup->Lan->exists()) {
 			throw new NotFoundException('LAN not found');
 		}
+
+		$lan = $this->LanSignup->Lan->read(array('slug'), $lan_id);
 
 		$this->LanSignup->recursive = 2;
 		$lan_signup = $this->LanSignup->find('first', array('conditions' => array(
@@ -188,7 +194,7 @@ class LanSignupsController extends AppController {
 
 				if ($saved) {
 					$this->Session->setFlash('Your signup has been updated', 'default', array('class' => 'message success'), 'good');
-					$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan_id));
+					$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
 				}
 			}
 		}

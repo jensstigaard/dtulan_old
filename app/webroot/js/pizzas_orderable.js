@@ -80,7 +80,7 @@ $(document).ready(
 			});
 
 
-		$pizzas_orderable_span = $('table.pizza_list tr.pizza_item td.price span');
+		$pizzas_orderable_span = $('table.pizza_list tr.pizza_item td.price span.available');
 
 		$pizzas_orderable = $pizzas_orderable_span.closest('td');
 

@@ -14,7 +14,7 @@
 				</tr>
 				<tr>
 					<td>Participants:</td>
-					<td><?php echo ($count_lan_signups - $count_lan_signups_guests).'S + '. $count_lan_signups_guests .'G = '. $count_lan_signups; ?></td>
+					<td><?php echo ($count_lan_signups - $count_lan_signups_guests).'s + '. $count_lan_signups_guests .'g = '. $count_lan_signups; ?></td>
 				</tr>
 				<tr style="font-size:110%">
 					<td>Price:</td>
@@ -74,12 +74,8 @@
 		<?php echo $this->Form->create('LanInvite'); ?>
 		<?php echo $this->Form->input('user_guest_id', array('label' => 'Invite guest to LAN', 'options' => $user_guests)); ?>
 		<?php echo $this->Form->end('Invite'); ?>
-		<?php // debug($user_guests); ?>
 	</div>
 <?php endif; ?>
-
-
-<?php // pr($lan_days);  ?>
 
 
 <?php if (isset($is_not_attending) && $is_not_attending == 1): ?>
@@ -145,6 +141,11 @@
 
 
 <div>
+	<?php if ($is_admin): ?>
+	<div style="float:right">
+		<?php echo $this->Html->link('New tournament', array('controller' => 'tournaments', 'action' => 'add', $lan['Lan']['id'])); ?>
+	</div>
+	<?php endif; ?>
 	<h2><?php echo $this->Html->image('32x32_PNG/trophy_gold.png'); ?> Tournaments (<?php echo count($tournaments); ?>)</h2>
 	<table>
 		<thead>
@@ -165,9 +166,9 @@
 			<?php else: ?>
 				<?php foreach ($tournaments as $tournament): ?>
 					<tr>
-						<td><?php echo $this->Html->link($tournament['title'], array('controller' => 'tournaments', 'action' => 'view', $tournament['id'])); ?></td>
+						<td><?php echo $this->Html->link($tournament['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $tournament['Tournament']['id'])); ?></td>
 						<td><?php echo $tournament['Game']['title'] ?></td>
-						<td><?php echo $tournament['max_team_size'] ?></td>
+						<td><?php echo $tournament['Tournament']['team_size'] ?></td>
 						<td><?php //Participants	                         ?></td>
 					</tr>
 				<?php endforeach; ?>

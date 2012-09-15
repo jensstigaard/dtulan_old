@@ -1,7 +1,14 @@
 <?php if (isset($sidebar_next_lan['Lan']['title'])): ?>
 	<div class="unsigned_lan">
 		<h1><?php echo $this->Html->image('24x24_PNG/001_01.png'); ?> New event!</h1>
-		<h2><?php echo $this->Html->link($sidebar_next_lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $sidebar_next_lan['Lan']['id'])); ?></h2>
+		<h2><?php
+	echo $this->Html->link($sidebar_next_lan['Lan']['title'], array(
+		'controller' => 'lans',
+		'action' => 'view',
+		$sidebar_next_lan['Lan']['slug']
+			)
+	);
+	?></h2>
 		<p>
 			Start: <?php echo $this->Time->nice($sidebar_next_lan['Lan']['time_start']); ?><br />
 			End: <?php echo $this->Time->nice($sidebar_next_lan['Lan']['time_end']); ?>
@@ -36,7 +43,7 @@
 				'escape' => false
 					)
 			);
-	?></li>
+			?></li>
 		</ul>
 	</div>
 <?php endif; ?>

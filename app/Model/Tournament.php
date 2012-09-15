@@ -22,13 +22,17 @@ class Tournament extends AppModel {
 			)
 		),
 
-		'max_team_size' => array(
+		'team_size' => array(
 			'is between' => array(
 				'rule' => array('between', 1, 16),
 				'message' => 'Invalid team size'
 			)
 		)
 	);
+
+	public function ag(){
+		
+	}
 }
 
 ?>

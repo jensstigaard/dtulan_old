@@ -17,6 +17,12 @@ class Lan extends AppModel {
 				'message' => 'Title is required'
 			)
 		),
+		'slug' => array(
+			'isUnique' => array(
+				'rule' => 'isUnique',
+				'message' => 'Lan has to have an unique title'
+			)
+		),
 		'max_participants' => array(
 			'required' => array(
 				'rule' => array('numeric'),
@@ -117,7 +123,7 @@ class Lan extends AppModel {
 		return $data;
 	}
 
-	public function isCurrent($is_admin){
+	public function isCurrent($is_admin) {
 		$currentTime = date('Y-m-d H:i:s');
 
 		$conditions = array(
@@ -136,7 +142,7 @@ class Lan extends AppModel {
 		return $count;
 	}
 
-	public function getCurrent($is_admin){
+	public function getCurrent($is_admin) {
 		$currentTime = date('Y-m-d H:i:s');
 
 		$conditions = array(
@@ -147,7 +153,7 @@ class Lan extends AppModel {
 			$conditions['Lan.published'] = 1;
 		}
 
-		$this->recursive = 0;
+		$this->recursive = 1;
 
 		$data = $this->find('first', array(
 			'conditions' => $conditions
@@ -211,6 +217,14 @@ class Lan extends AppModel {
 					)
 						)
 				) == 1;
+	}
+
+	public function stringToSlug($str) {
+		// turn into slug
+		$str = Inflector::slug($str);
+		// to lowercase
+		$str = strtolower($str);
+		return $str;
 	}
 
 }

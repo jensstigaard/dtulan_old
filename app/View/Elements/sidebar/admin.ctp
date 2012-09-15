@@ -8,7 +8,7 @@
 	</div>
 </div>
 <div>
-	<h1>Admin</h1>
+	<h1>Admin menu</h1>
 	<ul>
 		<li><?php echo $this->Html->link('LANS', array('controller' => 'lans', 'action' => 'index')); ?></li>
 		<li><?php echo $this->Html->link('Users', array('controller' => 'users', 'action' => 'index')); ?></li>

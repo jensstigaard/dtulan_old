@@ -59,6 +59,4 @@
 		<?php endforeach; ?>
 
 	</table>
-
-	<?php // pr($pages); ?>
 </div>
