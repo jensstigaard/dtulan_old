@@ -1,4 +1,4 @@
-<div class="form">
+<div>
 	<div style="float:right;">
 		<?php echo $this->Html->link('New user', array('action' => 'add')); ?>
 	</div>
@@ -7,33 +7,27 @@
 
 	<table>
 		<tr>
-			<th>Name</th>
-			<th>Email</th>
-			<th>Gamertag</th>
-			<th>Type</th>
-			<th>Id-number</th>
-			<th>Activated</th>
-			<th>Time created</th>
-			<th>Time activated</th>
+			<th><?php echo $this->Paginator->sort('name', 'Name'); ?></th>
+			<th><?php echo $this->Paginator->sort('id_number', 'ID-number'); ?></th>
+			<th><?php echo $this->Paginator->sort('balance', 'Balance'); ?></th>
+			<th><?php echo $this->Paginator->sort('activated', 'Activated'); ?></th>
 		</tr>
 
 		<?php foreach ($users as $user): ?>
 			<tr>
 				<td><?php echo $this->Html->link($user['User']['name'], array('action' => 'profile', $user['User']['id'])); ?></td>
-				<td><?php echo $user['User']['email']; ?></td>
-				<td><?php echo $user['User']['gamertag']; ?></td>
-				<td><?php echo $user['User']['type']; ?></td>
 				<td><?php echo $user['User']['id_number']; ?></td>
-				<td><?php echo ($user['User']['activated'] != 1) ? $this->Html->link('Not activated', array('action' => 'activate', $user['User']['id'])) : '<span style="color:green">Activated</span>'; ?></td>
-				<td><?php echo $user['User']['time_created']; ?></td>
-				<td><?php echo $user['User']['time_activated']; ?></td>
+				<td><?php echo $user['User']['balance']; ?></td>
+				<td><?php echo (!$user['User']['activated']) ? 'Not activated' : '<span style="color:green">Activated</span>'; ?></td>
 			</tr>
 		<?php endforeach; ?>
 
 	</table>
 
-	<!--Users:
+	<?php echo $this->Paginator->numbers(); ?>
+</div>
+
+<!--Users:
 	<pre>
 	<?php // print_r($users); ?>
 	</pre>-->
-</div>

@@ -14,169 +14,185 @@
 
 /** General Style Info **/
 body{
-	font-family: 'lucida grande', verdana, helvetica, arial, sans-serif;
+	font-family: "Lucida Grande","Lucida Sans Unicode","Eras Medium ITC","DejaVu Sans",Helvetica,Verdana,sans-serif;
+	/*	font-family: 'lucida grande', verdana, helvetica, arial, sans-serif;*/
 	font-size: 90%;
+	color: #DDD;
+
+	background-color: #222;
+	background-image: url('../img/background_big.jpg');
+	background-repeat: repeat;
+	background-position: top left;
 	margin: 0;
 }
 
 a {
-	color: #003d4c;
-	text-decoration: underline;
-	font-weight: bold;
+	/*	color: #87D7FF;*/
+	color: #55CCFF;
+	/*	font-weight: bold;*/
+	text-decoration: none;
 }
 
 a:hover {
-	color: #367889;
-	text-decoration: none;
+	color: #F65D10;
+	text-decoration: underline;
+}
+
+a img, h1 img, h2 img{
+	vertical-align: middle;
 }
 
 a img {
 	border: none;
-	vertical-align: middle;
 }
+
 
 h1, h2, h3, h4 {
 	font-weight: normal;
 	margin-bottom: 0.5em;
-	font-family: 'Gill Sans','lucida grande', helvetica, arial, sans-serif;
+	/*	font-family: 'Gill Sans','lucida grande', helvetica, arial, sans-serif;*/
 }
 
 h1 {
-	color: #003d4c;
+	color: #46C2FF;
 }
 h2 {
-	color: #e32;
+	color: #F65D10;
+/*	color: #e32;*/
 }
 h3 {
-	color: #2c6877;
+	color: #48C4FF;
+	font-weight: bold;
 }
 h4 {
 	color: #993;
 }
 
-ul, li {
+ul, ol, li {
 	margin: 0 12px;
+}
+
+ul, ol{
+	margin-bottom: 10px;
 }
 
 p {
 	margin: 0 0 1em 0;
 }
 
+hr{
+	border:none;
+	border-bottom: 1px dotted #999;
+}
+
+
+.hidden{
+	display:none;
+}
+
 
 /** Header **/
+#header, #footer{
+	background: rgba(0, 0, 0, .3);
+	border-bottom: 1px solid rgba(0,0,0,.25);
+}
+
 #header{
-	padding: 5px;
-	background: #003d4c;
-/* url('../img/icon.png') no-repeat left*/
-	height:30px;
+	height:40px;
 }
 
-#header h1 {
+#header > div, #footer > div{
+	width:950px;
+	margin: 0 auto;
+}
+
+#header > div > a {
 	float:left;
-	color: #fff;
-	padding: 0px 30px;
+	margin: 8px 0 0 30px;
 }
 
-#header h1 a {
-	color: #fff;
-	font-weight: normal;
-	text-decoration: none;
+#header > div > a img{
+	opacity: .7;
+	height:25px;
 }
 
-#header h1 a:hover {
-	color: #fff;
-	background: #003d4c;
-	text-decoration: underline;
+#footer{
+	clear:both;
+	padding:10px;
+	border-top: 1px solid rgba(0,0,0,.25);
+	padding-bottom: 50px;
 }
 
+#sponsors table{
+	margin: 5px auto;
+	width: auto;
+
+}
+
+#sponsors table td{
+	border:none;
+	text-align: center;
+}
+
+#sponsors table a{
+	display: block;
+	padding: 2px;
+	margin: 0 5px;
+}
+
+#sponsors a > img{
+	opacity: .5;
+}
+
+#sponsors a:hover > img{
+/*	opacity: 1;*/
+}
+
+#sponsors ul li a{
+	text-align: center;
+}
+
+#copyright{
+	padding:10px 0;
+	clear:both;
+	text-align:center;
+	opacity:.7;
+}
 
 
 /** Layout **/
+
+#container{
+	width:950px;
+	margin:0 auto;
+}
+
 #content{
-	background: #fff;
 	clear: both;
-	color: #333;
-	padding: 10px 20px 40px 20px;
+	padding: 10px 20px 20px 20px;
 	overflow: auto;
 }
 
-#footer {
-	clear: both;
-	padding: 6px 10px;
-	text-align: right;
+#content > div.content > div:not([class~=message]), #content > #sidebar > div{
+	background: rgba(0,0,0, .3);
+	border: 1px solid rgba(0,0,0,.25);
+	margin:0 0 10px;
+}
+
+/*#content > div.content > div:hover, #content > #sidebar > div:hover{
+	background: rgba(0,0,0, .4);
+}*/
+
+#content > div.content > div:not([class~=message]){
+	padding: 5px 8px 10px;
 }
 
 
 /** containers **/
-div.form,
-div.index,
-div.view {
+
+#content > div.content{
 	float: left;
-	width: 76%;
-	border-right: 1px solid #666;
-	padding: 10px 2%;
-}
-
-div.actions {
-	float: right;
-	width: 16%;
-	padding: 10px 1.5%;
-}
-
-div.actions h3 {
-	padding-top: 0;
-	color: #777;
-}
-
-/** Tables **/
-table {
-	border-right: 0;
-	clear: both;
-	color: #333;
-	margin-bottom: 10px;
-	width: 100%;
-}
-
-th {
-	border: 0;
-	border-bottom: 2px solid #555;
-	text-align: left;
-	padding: 4px;
-}
-
-th a {
-	display: block;
-	padding: 2px 4px;
-	text-decoration: none;
-}
-
-th a.asc:after {
-	content: ' ⇣';
-}
-
-th a.desc:after {
-	content: ' ⇡';
-}
-
-table tr td {
-	padding: 6px;
-	text-align: left;
-	vertical-align: top;
-	border-bottom: 1px solid #ddd;
-}
-
-table tr:nth-child(even) {
-	background: #f9f9f9;
-}
-
-td.actions {
-	text-align: center;
-	white-space: nowrap;
-}
-
-table td.actions a {
-	margin: 0px 6px;
-	padding: 2px 5px;
+	width: 650px;
 }
 
 
@@ -249,7 +265,7 @@ fieldset {
 }
 
 fieldset legend {
-	color: #e32;
+	color: #48C4FF;
 	font-size: 160%;
 	font-weight: bold;
 }
@@ -272,12 +288,12 @@ fieldset fieldset div {
 form div {
 	clear: both;
 	margin-bottom: 1em;
-	padding: .5em;
+	padding: .4em;
 	vertical-align: text-top;
 }
 
 form .input {
-	color: #444;
+	/*	color: #444;*/
 }
 
 form .required {
@@ -304,16 +320,24 @@ label {
 
 input, textarea {
 	clear: both;
-	font-size: 140%;
-	font-family: "frutiger linotype", "lucida grande", "verdana", sans-serif;
+	font-size: 130%;
+	/*	font-family: "frutiger linotype", "lucida grande", "verdana", sans-serif;*/
+	font-family: "Lucida Grande","Lucida Sans Unicode","Eras Medium ITC","DejaVu Sans",Helvetica,Verdana,sans-serif;
 	padding: 1%;
 	width:98%;
+	background-color:rgba(0,0,0,.2);
+	border:1px solid rgba(100,100,100,.7);
+	color:#DDD;
 }
 
 select {
 	clear: both;
 	font-size: 120%;
 	vertical-align: text-bottom;
+	background-color:rgba(0,0,0,.2);
+	border:1px solid rgba(100,100,100,.7);
+	color:#DDD;
+	font-family: "Lucida Grande","Lucida Sans Unicode","Eras Medium ITC","DejaVu Sans",Helvetica,Verdana,sans-serif;
 }
 
 select[multiple=multiple] {
@@ -323,6 +347,7 @@ select[multiple=multiple] {
 option {
 	font-size: 120%;
 	padding: 0 3px;
+	background-color:rgba(0,0,0,.9);
 }
 
 input[type=checkbox] {
@@ -363,7 +388,7 @@ form .submit input[type=submit] {
 	border-color: #2d6324;
 	color: #fff;
 	text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0px;
-	padding: 8px 10px;
+	padding: 6px 10px;
 }
 
 form .submit input[type=submit]:hover {
@@ -372,7 +397,7 @@ form .submit input[type=submit]:hover {
 
 /* Form errors */
 form .error {
-	background: #FFDACC;
+	background: rgba(250,180,180,.9);
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	border-radius: 4px;
@@ -496,26 +521,6 @@ p.error em {
 
 .success {
 	color: #fff;
-}
-
-
-/**  Actions  **/
-.actions ul {
-	margin: 0;
-	padding: 0;
-}
-
-.actions li {
-	margin:0 0 0.5em 0;
-	list-style-type: none;
-	white-space: nowrap;
-	padding: 0;
-}
-
-.actions ul li a {
-	font-weight: normal;
-	display: block;
-	clear: both;
 }
 
 

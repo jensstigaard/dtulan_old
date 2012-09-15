@@ -13,6 +13,22 @@
 class Tournament extends AppModel {
 	public $belongsTo = array('Lan', 'Game');
 	public $hasMany = array('Team');
+
+	public $validate = array(
+		'title' => array(
+			'notEmpty' => array(
+				'rule' => array('notEmpty'),
+				'message' => 'The title cannot be empty'
+			)
+		),
+
+		'max_team_size' => array(
+			'is between' => array(
+				'rule' => array('between', 1, 16),
+				'message' => 'Invalid team size'
+			)
+		)
+	);
 }
 
 ?>

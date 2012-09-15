@@ -9,7 +9,6 @@
 		echo $this->Form->input('time_start', array('timeFormat' => '24'));
 		echo $this->Form->input('time_end', array('timeFormat' => '24'));
 		echo $this->Form->input('published');
-		echo $this->Form->input('sign_up_open');
 		?>
     </fieldset>
 	<?php echo $this->Form->end(__('Submit')); ?>

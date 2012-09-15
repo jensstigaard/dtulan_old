@@ -8,9 +8,8 @@
 	<table>
 		<tr>
 			<th>Title</th>
-			<th><small>Participants signed up</small></th>
-			<th><small>Max participants</small></th>
-			<th><small>Max guests per student</small></th>
+			<th><small>Part. signed up</small></th>
+			<th><small>Max part.</small></th>
 			<th>Date start</th>
 			<th>Date end</th>
 			<th><small>Published</small></th>
@@ -23,11 +22,22 @@
 				<td><?php echo $this->Html->link($lan['Lan']['title'], array('action' => 'view', $lan['Lan']['id'])); ?></td>
 				<td><?php echo count($lan['LanSignup']); ?></td>
 				<td><?php echo $lan['Lan']['max_participants']; ?></td>
-				<td><?php echo $lan['Lan']['max_guests_per_student']; ?></td>
 				<td><?php echo $this->Time->nice($lan['Lan']['time_start']); ?></td>
 				<td><?php echo $this->Time->nice($lan['Lan']['time_end']); ?></td>
-				<td><strong style="color:<?php echo $lan['Lan']['published'] == '0' ? 'red;">No' : 'green;">Yes'; ?></strong></td>
-							<td><strong style="color:<?php echo $lan['Lan']['sign_up_open'] == '0' ? 'red;">No' : 'green;">Yes'; ?></strong></td>
+				<td>
+					<?php if ($lan['Lan']['published']): ?>
+						<strong style="color:green">Yes</strong>
+					<?php else: ?>
+						<strong style="color:red">No</strong>
+					<?php endif; ?>
+				</td>
+				<td>
+					<?php if ($lan['Lan']['sign_up_open']): ?>
+						<strong style="color:green">Yes</strong>
+					<?php else: ?>
+						<?php echo $this->Form->postLink('OPEN NOW', array('action' => 'openForSignup', $lan['Lan']['id']), array('confirm' => 'Are you sure you want to open for sign ups?')); ?>
+					<?php endif; ?>
+				</td>
 				<td>
 					<?php echo $this->Html->link('Edit', array('action' => 'edit', $lan['Lan']['id'])); ?>
 				</td>

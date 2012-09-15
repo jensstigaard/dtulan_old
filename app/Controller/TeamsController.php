@@ -12,6 +12,19 @@
  */
 class TeamsController extends AppController {
 
+	public function beforeFilter() {
+		parent::beforeFilter();
+	}
+
+	public function isAuthorized($user) {
+		parent::isAuthorized($user);
+
+		if ($this->isAdmin($user)) {
+			return true;
+		}
+		return false;
+	}
+
 	//put your code here
 	public function add($tournament_id = null) {
 
@@ -33,10 +46,10 @@ class TeamsController extends AppController {
 			$this->request->data['Team']['tournament_id'] = $tournament_id;
 
 			if ($this->Team->save($this->request->data)) {
-				$this->Session->setFlash('Your Team has been created.');
+				$this->Session->setFlash('Your Team has been created.', 'default', array('class' => 'message success'), 'good');
 				//$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Unable to create your Team.');
+				$this->Session->setFlash('Unable to create your Team.', 'default', array(), 'bad');
 			}
 		}
 
@@ -55,9 +68,9 @@ class TeamsController extends AppController {
 			$this->request->data['TeamInvite']['team_id'] = $id;
 
 			if ($this->Team->TeamInvite->save($this->request->data)) {
-				$this->Session->setFlash('Your invites has been sent.');
+				$this->Session->setFlash('Your invites has been sent', 'default', array('class' => 'message success'), 'good');
 			} else {
-				$this->Session->setFlash('Unable to send your invites.');
+				$this->Session->setFlash('Unable to send your invites', 'default', array(), 'bad');
 			}
 		}
 
@@ -98,14 +111,12 @@ class TeamsController extends AppController {
 //		debug($invite);
 
 		if ($this->Team->TeamInvite->deleteAll(array('TeamInvite.id' => $id), false)) {
-			$this->Session->setFlash('Invite cancelled');
+			$this->Session->setFlash('Invite cancelled', 'default', array('class' => 'message success'), 'good');
 		} else {
-			$this->Session->setFlash('FAILED');
+			$this->Session->setFlash('FAILED', 'default', array(), 'bad');
 		}
 
 		$this->redirect(array('action' => 'view', $invite['TeamInvite']['team_id']));
 	}
 
 }
-
-?>

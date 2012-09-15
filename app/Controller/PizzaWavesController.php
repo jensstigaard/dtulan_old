@@ -6,6 +6,19 @@ class PizzaWavesController extends AppController {
 
 	public $uses = 'PizzaWave';
 
+	public function beforeFilter() {
+		parent::beforeFilter();
+	}
+
+	public function isAuthorized($user) {
+		parent::isAuthorized($user);
+
+		if ($this->isAdmin($user)) {
+			return true;
+		}
+		return false;
+	}
+
 	public function index() {
 		$this->set('pizzaWaves', $this->PizzaWave->find('all'));
 	}
@@ -26,14 +39,13 @@ class PizzaWavesController extends AppController {
 			$this->request->data['PizzaWave']['lan_id'] = $lan_id;
 
 			if ($this->PizzaWave->save($this->request->data)) {
-				$this->Session->setFlash('Your PizzaWave has been added.');
+				$this->Session->setFlash('Your PizzaWave has been added.', 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Unable to add this PizzaWave.');
+				$this->Session->setFlash('Unable to add this PizzaWave.', 'default', array(), 'bad');
 			}
 		}
 
 		$this->set('lan', $this->PizzaWave->Lan->read());
 	}
 }
-?>

@@ -43,7 +43,6 @@ class PagesController extends AppController {
 	 *
 	 * @var array
 	 */
-
 	public $helpers = array('Html', 'Form', 'Js', 'Fck');
 
 	public function beforeFilter() {
@@ -54,7 +53,11 @@ class PagesController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		return true;
+		if ($this->isAdmin($user)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public function index() {
@@ -68,17 +71,21 @@ class PagesController extends AppController {
 			throw new NotFoundException(__('Page not found'));
 		}
 
-		$this->set('page', $this->Page->read());
+		$page = $this->Page->read();
+
+		$title_for_layout = $page['Page']['title'];
+
+		$this->set(compact('page', 'title_for_layout'));
 	}
 
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->request->data['Page']['time_created'] = date('Y-m-d H:i:s');
 			if ($this->Page->save($this->request->data)) {
-				$this->Session->setFlash('Your page has been saved.');
+				$this->Session->setFlash('Your page has been saved.', 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Unable to add your page.');
+				$this->Session->setFlash('Unable to add your page.', 'default', array(), 'bad');
 			}
 		}
 
@@ -104,10 +111,10 @@ class PagesController extends AppController {
 		} else {
 			// Otherwise - save the page
 			if ($this->Page->save($this->request->data)) {
-				$this->Session->setFlash('Your page has been updated.');
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash('Your page has been updated.', 'default', array('class' => 'message success'), 'good');
+				$this->redirect(array('action' => 'view', $id));
 			} else {
-				$this->Session->setFlash('Unable to update your page.');
+				$this->Session->setFlash('Unable to update your page.', 'default', array(), 'bad');
 			}
 		}
 
@@ -115,7 +122,9 @@ class PagesController extends AppController {
 		$opt[0] = '[Top level]';
 		ksort($opt);
 
-		$this->set('parents', $opt);
+		$parents = $opt;
+
+		$this->set(compact('id', 'parents'));
 		$this->request->data['Page']['latest_update_by_id'] = $this->Auth->user('id');
 	}
 

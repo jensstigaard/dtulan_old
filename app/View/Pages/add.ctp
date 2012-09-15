@@ -1,4 +1,4 @@
-<?php echo $this->Html->script(array('jquery', 'pageEdit'), FALSE); ?>
+<?php echo $this->Html->script(array('jquery', 'pageEdit', 'ckeditor/ckeditor'), FALSE); ?>
 <div class="form">
 	<?php echo $this->Form->create(); ?>
 	<fieldset>
@@ -8,34 +8,35 @@
 		?>
 
 		<table>
-			<tr>
-				<td>
-					<?php
-					echo $this->Form->input('command', array(
-						'options' => array(
-							'text' => 'text',
-							'uri' => 'uri'
-						),
-						'id' => 'command'
-					));
-					?>
-				</td>
-				<td>
-					<?php echo $this->Form->input('parent_id'); ?>
-				</td>
-				<td>
-					<strong>Public page:</strong>
-					<?php echo $this->Form->input('public', array('label' => '')); ?>
-				</td>
-			</tr>
+			<tbody>
+				<tr>
+					<td>
+						<?php
+						echo $this->Form->input('command', array(
+							'options' => array(
+								'text' => 'text',
+								'uri' => 'uri'
+							),
+							'id' => 'command'
+						));
+						?>
+					</td>
+					<td>
+						<?php echo $this->Form->input('parent_id'); ?>
+					</td>
+					<td>
+						<strong>Public page:</strong>
+						<?php echo $this->Form->input('public', array('label' => '')); ?>
+					</td>
+				</tr>
+			</tbody>
 		</table>
-
 
 		<div id="command_value">
 			<?php echo $this->Form->input('command_value', array('label' => 'Link to page')); ?>
 		</div>
 		<div id="text">
-			<?php echo $this->Form->input('text', array('rows' => '6')); ?>
+			<?php echo $this->Form->input('text', array('rows' => '6', 'class' => 'ckeditor', 'value' => '<h1>Default heading</h1><p>Default text</p>')); ?>
 		</div>
 
 		<?php

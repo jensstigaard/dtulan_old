@@ -13,14 +13,22 @@
 class User extends AppModel {
 
 	public $name = 'User';
-	public $hasOne = array('Admin');
-	public $hasMany = array('Payment', 'PizzaOrder', 'Crew', 'LanSignup', 'TeamInvite', 'TeamUser', 'LanInvite' => array(
+	public $hasOne = array('Admin', 'UserPasswordTicket');
+	public $hasMany = array(
+		'Crew',
+		'LanSignup',
+		'LanInvite' => array(
 			'className' => 'LanInvite',
 			'foreignKey' => 'user_guest_id'
-		), 'LanInviteSent' => array(
+		),
+		'LanInviteSent' => array(
 			'className' => 'LanInvite',
 			'foreignKey' => 'user_guest_id'
-		)
+		),
+		'Payment',
+		'PizzaOrder',
+		'TeamInvite',
+		'TeamUser',
 	);
 	public $helpers = array('Js');
 	public $validate = array(
@@ -61,6 +69,18 @@ class User extends AppModel {
 				'message' => 'This studynumber is already in use'
 			)
 		),
+		'phonenumber' => array(
+			'validPhone' => array(
+				'rule' => 'validatePhonenumber',
+				'message' => 'Please enter a valid phonenumber'
+			)
+		),
+		'gamertag' => array(
+			'maxlength' => array(
+				'rule' => array('maxlength', 20),
+				'message' => 'Too long gamertag entered'
+			)
+		),
 		'password' => array(
 			'Not empty' => array(
 				'rule' => 'notEmpty',
@@ -86,7 +106,6 @@ class User extends AppModel {
 	public function validateStudynumber($check) {
 
 		if ($this->data['User']['type'] == 'student') {
-			//$this->data['User']['id_number'] = str_replace('s', '', $this->data['User']['id_number']);
 			return preg_match("/^s[0-9]{6}$/", $this->data['User']['id_number']);
 		} else {
 			$this->data['User']['id_number'] = $this->getGuestNumber();
@@ -95,11 +114,19 @@ class User extends AppModel {
 	}
 
 	public function matchPasswords($check) {
-		if ($check['password'] == $this->data['User']['password_confirmation']) {
+		if (isset($this->data['User']['password_confirmation']) && $check['password'] == $this->data['User']['password_confirmation']) {
 			return true;
 		}
 		$this->invalidate('password_confirmation', 'Your passwords do not match');
 		return false;
+	}
+
+	public function validatePhonenumber($check){
+		if(!empty($check['phonenumber']) && !preg_match("/^[0-9]{8}$/", $check['phonenumber'])){
+			return false;
+		}
+
+		return true;
 	}
 
 	public function beforeSave($options = array()) {
@@ -109,6 +136,8 @@ class User extends AppModel {
 		}
 		return true;
 	}
+
+
 
 	public function getGuestNumber() {
 		$guestNumber = 'g' . date('ym');
@@ -125,10 +154,14 @@ class User extends AppModel {
 		return $count < 9 ? $guestNumber . '0' . ($count + 1) : $guestNumber . ($count + 1);
 	}
 
-        public function isActivated() {
-			// Activated is an integer, where 0 means not activated
-            return $this->data['User']['activated'];
-        }
+	public function isActivated() {
+		return isset($this->data['User']['activated']) && $this->data['User']['activated'];
+	}
+
+	public function isAdmin($user){
+		return isset($user['Admin']['user_id']);
+	}
+
 }
 
 ?>

@@ -17,32 +17,54 @@ class PizzaCategoriesController extends AppController {
 		$this->Auth->allow('index');
 	}
 
+	public function isAuthorized($user) {
+		parent::isAuthorized($user);
+
+		if ($this->isAdmin($user)) {
+			return true;
+		}
+		return false;
+	}
+
 	public function index($wave_id = null) {
 
+		$title_for_layout = 'Pizzas';
+
+
 		$this->loadModel('Lan');
-		if ($this->Lan->isOnAir()) {
-			$current_lan = $this->Lan->getOnAir();
-			if ($wave_id != null) {
-				$this->Lan->PizzaWave->id = $wave_id;
-				if ($this->Lan->PizzaWave->exists()) {
-					$current_wave = $this->Lan->PizzaWave->read();
+		if ($this->Lan->isCurrent($this->isAdmin())) {
+			$current_lan = $this->Lan->getCurrent($this->isAdmin());
+
+			if ($this->Lan->isUserAttending($current_lan['Lan']['id'], $this->Auth->user('id'))) {
+				if ($wave_id != null) {
+					$this->Lan->PizzaWave->read(null, $wave_id);
+
+					if ($this->Lan->PizzaWave->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
+						$current_wave = $this->Lan->PizzaWave->read(null, $wave_id);
+					}
 				}
-			}
 
-			if (!isset($current_wave)) {
-				$current_wave = $this->Lan->PizzaWave->getOnAir($current_lan['Lan']['id']);
-			}
+				if (!isset($current_wave)) {
+					$current_wave = $this->Lan->PizzaWave->getOnAir($current_lan['Lan']['id']);
+				}
 
-			$waves = $this->Lan->PizzaWave->getAvailable($current_lan['Lan']['id']);
+				$waves = $this->Lan->PizzaWave->getAvailable($current_lan['Lan']['id']);
+
+				$this->set(compact('current_lan', 'current_wave', 'waves'));
+			}
 		}
 
-		$title_for_layout = 'Pizzas';
-		$this->set(compact('title_for_layout', 'current_lan', 'current_wave', 'waves'));
+		$this->set(compact('title_for_layout'));
 
-		$data_category = $this->PizzaCategory->find('all', array('conditions' =>
-			array(
-				'PizzaCategory.available' => 1
-			),
+		$this->PizzaCategory->Pizza->unbindModel(array('belongsTo' => array('PizzaCategory')));
+		$this->PizzaCategory->Pizza->PizzaPrice->unbindModel(array('belongsTo' => array('Pizza'), 'hasMany' => array('PizzaOrderItem')));
+
+		$conditions = array();
+		if (!$this->isAdmin($this->Auth->user())) {
+			$conditions['PizzaCategory.available'] = 1;
+		}
+		$conditions =
+				$data_category = $this->PizzaCategory->find('all', array('conditions' => $conditions,
 			'recursive' => 3)
 		);
 
@@ -53,6 +75,8 @@ class PizzaCategoriesController extends AppController {
 					$data_prices[$price['pizza_type_id']][$pizza['id']]['price'] = $price['price'];
 					$data_prices[$price['pizza_type_id']][$pizza['id']]['pizza_price_id'] = $price['id'];
 				}
+
+
 
 				foreach ($category['PizzaType'] as $type) {
 					$price = 0;
@@ -70,7 +94,7 @@ class PizzaCategoriesController extends AppController {
 		}
 
 		$this->set('pizza_categories', $data_category);
-		$this->set('is_orderable', ($this->Auth->loggedIn() && $current_wave != ''));
+		$this->set('is_orderable', ($this->Auth->loggedIn() && isset($current_wave) && $current_wave != ''));
 	}
 
 	public function add() {
@@ -83,10 +107,10 @@ class PizzaCategoriesController extends AppController {
 			}
 
 			if ($this->PizzaCategory->saveAssociated($this->request->data)) {
-				$this->Session->setFlash('Your category has been created.');
+				$this->Session->setFlash('Your category has been created.', 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Unable to create category.');
+				$this->Session->setFlash('Unable to create category.', 'default', array(), 'bad');
 			}
 		}
 
@@ -118,11 +142,11 @@ class PizzaCategoriesController extends AppController {
 			}
 
 			if ($this->PizzaCategory->saveAssociated($this->request->data)) {
-				$this->Session->setFlash('Category has been updated.');
+				$this->Session->setFlash('Category has been updated.', 'default', array('class' => 'message success'), 'good');
 				debug($this->request->data);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Unable to update category.');
+				$this->Session->setFlash('Unable to update category.', 'default', array(), 'bad');
 			}
 		} else {
 			$this->request->data = $this->PizzaCategory->read(null, $id);
@@ -141,5 +165,3 @@ class PizzaCategoriesController extends AppController {
 	}
 
 }
-
-?>

@@ -9,6 +9,10 @@ class PizzaWave extends AppModel {
 			'bigger than end' => array(
 				'rule' => 'validateDates',
 				'message' => 'Invalid start-/end-time',
+			),
+			'validInterval' => array(
+				'rule' => 'validInterval',
+				'message' => 'There already exist a pizza wave in this interval'
 			)
 		)
 	);
@@ -19,6 +23,28 @@ class PizzaWave extends AppModel {
 			return false;
 		}
 		return true;
+	}
+
+	public function validInterval($check) {
+		return $this->find('count', array(
+					'conditions' => array(
+						'OR' => array(
+							array(
+								'PizzaWave.time_start >= ' => $this->data['PizzaWave']['time_start'],
+								'PizzaWave.time_start < ' => $this->data['PizzaWave']['time_end'],
+							),
+							array(
+								'PizzaWave.time_end > ' => $this->data['PizzaWave']['time_start'],
+								'PizzaWave.time_end <= ' => $this->data['PizzaWave']['time_end'],
+							),
+							array(
+								'PizzaWave.time_start <= ' => $this->data['PizzaWave']['time_start'],
+								'PizzaWave.time_end >= ' => $this->data['PizzaWave']['time_end'],
+							)
+						)
+					)
+						)
+				) == 0;
 	}
 
 	public function isOnAir() {
