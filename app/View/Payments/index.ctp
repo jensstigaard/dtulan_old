@@ -6,21 +6,29 @@
 			<th>User</th>
 			<th>Payment occurred</th>
 			<th>Amount</th>
-			<th>Actions</th>
+			<th>Made by</th>
 		</tr>
 
 		<?php foreach ($payments as $payment): ?>
 			<tr>
-				<td><?php echo $this->Html->link($payment['User']['name'], array('controller' => 'users', 'action' => 'profile', $payment['User']['id'])); ?></td>
-				<td><?php echo $this->Time->nice($payment['Payment']['time']); ?></td>
-				<td><?php echo $payment['Payment']['amount']; ?> DKK</td>
 				<td>
-					<?php echo $this->Html->link('Edit', array('action' => 'edit', $payment['Payment']['id'])); ?>
+					<?php echo $this->Html->link($payment['User']['name'], array('controller' => 'users', 'action' => 'profile', $payment['User']['id'])); ?>
 				</td>
+				<td>
+					<?php echo $this->Time->nice($payment['Payment']['time']); ?>
+				</td>
+				<td>
+					<?php echo $payment['Payment']['amount']; ?> DKK
+				</td>
+
+				<td>
+					<?php echo $this->Html->link($payment['User']['name'], array('controller' => 'users', 'action' => 'profile', $payment['User']['id'])); ?>
+				</td>
+
 
 			</tr>
 		<?php endforeach; ?>
 
 	</table>
 </div>
-<?php // pr($payments); ?>
+<?php pr($payments); ?>

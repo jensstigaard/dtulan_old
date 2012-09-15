@@ -7,7 +7,9 @@
 			<?php echo $title_for_layout; ?>
 		</title>
 		<?php
-		echo $this->Html->meta('icon');
+		echo $this->Html->meta(
+				'favicon.ico', '/favicon.ico', array('type' => 'icon')
+		);
 
 		echo $this->Html->css(array(
 			'layout.general',
@@ -19,7 +21,7 @@
 				)
 		);
 
-		if ($logged_in && $is_admin) {
+		if ($is_admin) {
 			echo $this->Html->css(array(
 				'layout.admin'));
 		}
@@ -40,9 +42,9 @@
 	<body>
 		<div id="header">
 			<div>
-				<?php echo $this->Html->image('dtulan_logo.png', array('url' => '../')); ?>
+<?php echo $this->Html->image('dtulan_logo.png', array('url' => '../')); ?>
 				<div class="menu">
-					<?php echo $this->element('menu'); ?>
+				<?php echo $this->element('menu'); ?>
 				</div>
 			</div>
 		</div>
@@ -50,24 +52,24 @@
 			<div id="content">
 
 				<div class="content">
-					<?php
-					echo $this->Session->flash();
-					echo $this->Session->flash('good');
-					echo $this->Session->flash('bad');
-					echo $this->Session->flash('auth');
-					echo $this->fetch('content');
-					?>
+<?php
+echo $this->Session->flash();
+echo $this->Session->flash('good');
+echo $this->Session->flash('bad');
+echo $this->Session->flash('auth');
+echo $this->fetch('content');
+?>
 				</div>
 
 				<div id="sidebar">
-					<?php echo $this->element('sidebar', array()); ?>
+<?php echo $this->element('sidebar', array()); ?>
 				</div>
 			</div>
 		</div>
 		<div id="footer">
 			<div>
 				<div id="sponsors">
-					<?php echo $this->element('sponsors', array()); ?>
+<?php echo $this->element('sponsors', array()); ?>
 					<div id="copyright">
 						<p>DTU LAN Party &bull; Copyright &copy 2012 &bull; <?php echo $this->Html->link('contact@dtu-lan.dk', 'mailto: contact@dtu-lan.dk'); ?></p>
 					</div>
@@ -75,6 +77,6 @@
 			</div>
 		</div>
 
-		<?php // echo $this->element('sql_dump'); ?>
+<?php // echo $this->element('sql_dump');  ?>
 	</body>
 </html>

@@ -164,6 +164,7 @@ class Lan extends AppModel {
 			throw new NotFoundException('Lan not found');
 		}
 
+		$this->recursive = 1;
 		$lan = $this->read();
 
 		$user_ids = array();

@@ -7,7 +7,7 @@
  */
 class Payment extends AppModel {
 
-	public $belongsTo = array('User', 'Crew');
+	public $belongsTo = array('User');
 	public $validate = array(
 		'amount' => array(
 			'required1' => array(
@@ -26,7 +26,7 @@ class Payment extends AppModel {
 			)
 		),
 		'crew_id' => array(
-			
+
 		)
 	);
 

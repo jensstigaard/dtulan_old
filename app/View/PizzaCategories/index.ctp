@@ -8,7 +8,7 @@ if ($is_orderable) {
 
 <div class="form">
 	<div style="float:right;">
-		<?php if ($logged_in && $is_admin): ?>
+		<?php if ($is_admin): ?>
 			<?php echo $this->Html->link('New pizza category', array('action' => 'add')); ?>
 			| <?php echo $this->Html->link('New pizza type', array('controller' => 'pizza_types', 'action' => 'add')); ?>
 			<?php if(isset($current_lan)): ?>

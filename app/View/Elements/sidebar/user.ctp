@@ -11,6 +11,9 @@
 		?>
 <?php echo $current_user['name']; ?>
 	</h1>
+	<div>
+		<p>Balance: <?php echo $current_user['balance']; ?></p>
+	</div>
 	<div style="clear:both;">
 		<ul>
 			<li><?php echo $this->Html->link($this->Html->image('16x16_GIF/user.gif', array('alt' => 'Profile')) . ' Profile', array('controller' => 'users', 'action' => 'profile'), array('escape' => false)); ?></li>

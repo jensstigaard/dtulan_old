@@ -1,5 +1,5 @@
 <div class="view">
-	<?php if ($logged_in && $is_admin): ?>
+	<?php if ($is_admin): ?>
 		<div style="float:right;">
 			<?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif', array('alt' => 'Edit page')). 'Edit page', array('action' => 'edit', $page['Page']['id']),array('escape' => false)); ?>
 		</div>

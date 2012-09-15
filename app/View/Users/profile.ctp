@@ -51,6 +51,7 @@
 			</tbody>
 		</table>
 	</div>
+	<div style="clear:both"></div>
 </div>
 
 <?php if ($user['User']['activated'] != 1 && $is_admin): ?>
@@ -78,7 +79,7 @@
 			<?php if (!count($teams)): ?>
 				<tr>
 					<td colspan="4">
-						Not anticipating in any tournaments
+						Do not participate in any tournaments
 					</td>
 				</tr>
 			<?php else: ?>
@@ -131,6 +132,9 @@
 								<br />
 								<small>Invited by: <?php echo $this->Html->link($lan['LanInvite']['Student']['name'], array('controller' => 'users', 'action' => 'profile', $lan['LanInvite']['Student']['id'])); ?></small>
 							<?php endif; ?>
+							<?php if ($is_auth && count($lan['Lan']['LanInvite'])): ?>
+
+							<?php endif; ?>
 						</td>
 						<td>
 							<ul>
@@ -141,9 +145,9 @@
 								<?php endforeach; ?>
 							</ul>
 						</td>
-						<?php if ($is_auth): ?>
+						<?php if ($is_you): ?>
 							<td>
-								<?php if ($is_you && $lan['Lan']['sign_up_open']): ?>
+								<?php if ($lan['Lan']['sign_up_open']): ?>
 									<?php
 									echo $this->Html->link(
 											$this->Html->image('16x16_GIF/reply.gif') . ' Edit your signup', array('controller' => 'lan_signups', 'action' => 'edit', $lan['Lan']['id']), array('escape' => false)
@@ -158,8 +162,6 @@
 		</table>
 	</div>
 </div>
-
-<?php // pr($lans); ?>
 
 
 <?php if ($is_auth): ?>
@@ -217,7 +219,7 @@
 				<tbody>
 					<?php if (!count($pizza_orders)): ?>
 						<tr>
-							<td colspan="2">
+							<td colspan="4">
 								No orders registered
 							</td>
 						</tr>
@@ -249,8 +251,8 @@
 							<td style="text-align:right;">Total amount spend on pizzas:</td>
 							<td style="text-decoration: underline"><?php echo $total_balance; ?> DKK</td>
 							<?php if ($is_you): ?>
-									<td></td>
-								<?php endif; ?>
+								<td></td>
+							<?php endif; ?>
 						</tr>
 					<?php endif; ?>
 				</tbody>
@@ -258,9 +260,3 @@
 		</div>
 	</div>
 <?php endif; ?>
-
-<?php // pr($user); ?>
-<?php // pr($next_lan);  ?>
-<?php pr($pizza_orders); ?>
-<?php
-// pr($teams); ?>

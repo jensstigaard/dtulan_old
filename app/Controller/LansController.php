@@ -114,7 +114,20 @@ class LansController extends AppController {
 				)
 		);
 
+		$conditions_tournaments = array(
+			'Tournament.lan_id' => $id,
+		);
 
+		// Users signed up for LAN
+		$this->Lan->Tournament->recursive = 2;
+		$tournaments = $this->Lan->Tournament->find('all', array(
+			'conditions' => $conditions_tournaments
+		));
+
+		$this->set(compact('tournaments'));
+
+
+		// Users signed up for LAN
 		$this->Lan->LanSignup->recursive = 2;
 		$this->Lan->LanSignup->unbindModel(array(
 			'belongsTo' => array(

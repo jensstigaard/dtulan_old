@@ -48,35 +48,43 @@ class AppController extends Controller {
 	}
 
 	public function beforeFilter() {
+		// Variables used all over the site - can be accessed in any view
+		$is_loggedin = $this->Auth->loggedIn();
+
 		$current_user = $this->Auth->user();
-		$this->set('logged_in', $this->Auth->loggedIn());
-		$this->set('is_admin', isset($current_user['Admin']['user_id']));
-		$this->set(compact('current_user'));
+
+		$is_admin = $is_loggedin && isset($current_user['Admin']['user_id']);
+
+		$this->set(compact('current_user', 'is_loggedin', 'is_admin'));
+
+		
+		$this->loadModel('User');
+
+		if ($this->User->LanSignup->Lan->isCurrent($is_admin)) {
+			$this->set('sidebar_current_lan', $this->User->LanSignup->Lan->getCurrent($is_admin));
+		}
 
 
+
+		// For student: Find next lans / For guest: find invites
 		if (isset($current_user['type'])) {
-
-			$user_id = $current_user['id'];
-
-			$this->loadModel('User');
-
 
 			if ($current_user['type'] == 'guest') {
 				$this->User->LanInvite->unbindModel(array('belongsTo' => array('Guest', 'LanSignup')));
 
-				$lan_invites = $this->User->LanInvite->find('first', array('conditions' => array(
-						'LanInvite.user_guest_id' => $user_id,
-						'LanInvite.accepted' => 0
-					)
+				$this->set('sidebar_lan_invites', $this->User->LanInvite->find('first', array('conditions' => array(
+								'LanInvite.user_guest_id' => $this->Auth->user('id'),
+								'LanInvite.accepted' => 0
+							)
+								)
 						)
 				);
-				$this->set(compact('lan_invites'));
 			} else {
 
 				$this->User->LanSignup->recursive = 0;
 
 				$lans = $this->User->LanSignup->find('all', array('conditions' => array(
-						'LanSignup.user_id' => $user_id
+						'LanSignup.user_id' => $this->Auth->user('id')
 					)
 						)
 				);
@@ -87,7 +95,7 @@ class AppController extends Controller {
 				}
 
 				if ($current_user['type'] == 'student') {
-					$this->set('next_lan', $this->User->LanSignup->Lan->find('first', array(
+					$this->set('sidebar_next_lan', $this->User->LanSignup->Lan->find('first', array(
 								'conditions' => array(
 									'Lan.sign_up_open' => 1,
 									'Lan.published' => 1,
@@ -107,7 +115,7 @@ class AppController extends Controller {
 	}
 
 	public function isAdmin($user = null) {
-		if($user == null && $this->Auth->loggedIn()){
+		if ($user == null && $this->Auth->loggedIn()) {
 			$user = $this->Auth->user();
 		}
 

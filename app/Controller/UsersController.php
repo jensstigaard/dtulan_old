@@ -73,11 +73,11 @@ class UsersController extends AppController {
 		$this->User->unbindModel(array('hasMany' => array('PizzaOrder', 'LanSignup')));
 		$user = $this->User->read();
 
-		if ($user['User']['id'] = $this->Auth->user('id')) {
+		if ($user['User']['id'] == $this->Auth->user('id')) {
 			$is_you = true;
 		}
-		
-		if ($is_you || isset($user['Admin']['user_id'])) {
+
+		if ($is_you || $this->isAdmin()) {
 			$is_auth = true;
 		}
 
@@ -113,31 +113,9 @@ class UsersController extends AppController {
 
 		$lans = $this->User->LanSignup->find('all', array('conditions' => array(
 				'LanSignup.user_id' => $id
-			)
+			),
 				)
 		);
-
-		$lan_ids = array();
-		foreach ($lans as $lan) {
-			$lan_ids[] = $lan['Lan']['id'];
-		}
-
-		if ($user['User']['type'] == 'student') {
-			$this->set('next_lan', $this->User->LanSignup->Lan->find('first', array(
-						'conditions' => array(
-							'Lan.sign_up_open' => 1,
-							'Lan.published' => 1,
-							'Lan.time_end >' => date('Y-m-d H:i:s'),
-							'NOT' => array(
-								'Lan.id' => $lan_ids
-							)
-						),
-						'order' => array('Lan.time_start ASC'),
-						'recursive' => 0
-							)
-					)
-			);
-		}
 
 		$this->set(compact(
 						'title_for_layout', 'is_you', 'is_auth', 'user', 'pizza_orders', 'lans', 'teams'
@@ -155,7 +133,7 @@ class UsersController extends AppController {
 
 			$this->request->data['User']['time_created'] = date('Y-m-d H:i:s');
 
-			$this->request->data['User']['email_gravatar'] = $this->request->data['User']['email'];
+			$email = $this->request->data['User']['email_gravatar'] = $this->request->data['User']['email'];
 
 			$name = $this->request->data['User']['name'];
 
@@ -189,7 +167,7 @@ class UsersController extends AppController {
 				$email->send($msg);
 
 
-				$this->Session->setFlash(__('Your user has been registered. Check your email to continue the activation process. Remember to check your junk folder'), 'default', array('class' => 'message success'), 'good');
+				$this->Session->setFlash(__('Your user has been registered. An email is sent to '.$email.'. Follow the instructions in the email to continue the activation process. Remember to check your spam folder'), 'default', array('class' => 'message success'), 'good');
 				$this->redirect('/');
 			} else {
 				$this->Session->setFlash(__('The user could not be saved. Please try again.'), 'default', array(), 'bad');

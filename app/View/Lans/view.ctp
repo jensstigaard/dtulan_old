@@ -14,15 +14,7 @@
 				</tr>
 				<tr>
 					<td>Participants:</td>
-					<td><?php echo $count_lan_signups; ?></td>
-				</tr>
-				<tr>
-					<td>Participants students:</td>
-					<td><?php echo $count_lan_signups - $count_lan_signups_guests; ?></td>
-				</tr>
-				<tr>
-					<td>Participants guests:</td>
-					<td><?php echo $count_lan_signups_guests; ?></td>
+					<td><?php echo ($count_lan_signups - $count_lan_signups_guests).'S + '. $count_lan_signups_guests .'G = '. $count_lan_signups; ?></td>
 				</tr>
 				<tr style="font-size:110%">
 					<td>Price:</td>
@@ -153,7 +145,7 @@
 
 
 <div>
-	<h2><?php echo $this->Html->image('32x32_PNG/trophy_gold.png'); ?> Tournaments (<?php echo count($lan['Tournament']); ?>)</h2>
+	<h2><?php echo $this->Html->image('32x32_PNG/trophy_gold.png'); ?> Tournaments (<?php echo count($tournaments); ?>)</h2>
 	<table>
 		<thead>
 			<tr>
@@ -164,14 +156,14 @@
 			</tr>
 		</thead>
 		<tbody>
-			<?php if (!count($lan['Tournament'])): ?>
+			<?php if (!count($tournaments)): ?>
 				<tr>
 					<td colspan="4">
 						No tournaments published yet
 					</td>
 				</tr>
 			<?php else: ?>
-				<?php foreach ($lan['Tournament'] as $tournament): ?>
+				<?php foreach ($tournaments as $tournament): ?>
 					<tr>
 						<td><?php echo $this->Html->link($tournament['title'], array('controller' => 'tournaments', 'action' => 'view', $tournament['id'])); ?></td>
 						<td><?php echo $tournament['Game']['title'] ?></td>
