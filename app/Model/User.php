@@ -161,7 +161,14 @@ class User extends AppModel {
 	public function isAdmin($user){
 		return isset($user['Admin']['user_id']);
 	}
-
+	
+	public function getName() {
+		return $this->data['User']['name'];
+	}
+	
+	public function getEmail() {
+		return $this->data['User']['email'];
+	}
 }
 
 ?>

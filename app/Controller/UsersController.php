@@ -200,10 +200,9 @@ class UsersController extends AppController {
 	}
 
 	public function activate($id = null) {
-
+		
 		$user = $this->User->read(array('id', 'activated', 'email', 'name'), $id);
-		$this->User->data['User']['activated'];
-
+		
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
@@ -228,12 +227,11 @@ class UsersController extends AppController {
 				 */
 
 				unset($this->request->data['User']);
-
 				$this->request->data['User']['email'] = $user['User']['email'];
 				$this->request->data['User']['password'] = $password;
 
 				if ($this->Auth->login()) {
-					$this->Session->setFlash(__('Your account is activated. Welcome ' . $user['User']['name']), 'default', array('class' => 'message success'), 'good');
+					$this->Session->setFlash(__('Your account is activated. Welcome ' . $data['User']['name']), 'default', array('class' => 'message success'), 'good');
 					$this->redirect('/');
 				} else {
 					$this->Session->setFlash(__('Your account is activated. Please log in.'), 'default', array('class' => 'message success'), 'good');
@@ -243,6 +241,45 @@ class UsersController extends AppController {
 				$this->Session->setFlash(__('Account was not activated'), 'default', array(), 'bad');
 			}
 		}
+		
+		
+	/**
+	 * @author Casper
+	 * Ask my if you have any questions. This is only an alternative.
+	
+		$this->User->read(array('id', 'activated', 'email', 'name'), $id);
+		if (!$this->User->exists()) {
+			throw new NotFoundException(__('Invalid user'));
+		}
+		if ($this->User->isActivated()) {
+			throw new NotFoundException(__('Invalid user'));
+		}
+		$this->set('title_for_layout', 'Activate user');
+
+		if ($this->request->is('post')) {
+			
+	 		$this->User->set('activated', 1);
+			$this->User->set('time_activated', date('Y-m-d H:i:s'));
+			$this->User->set('password', $this->request->data['User']['password']);
+			$this->User->set('password_confirmation', $this->request->data['User']['password_confirmation']);
+			
+			if ($this->User->save()) {
+				 // Logs user in after successful activation
+				unset($this->request->data['User']);
+				$this->request->data['User']['email'] = $this->User->getEmail();
+				$this->request->data['User']['password'] = $this->User->data['User']['password'];
+				if ($this->Auth->login()) {
+					$this->Session->setFlash(__('Your account is activated. Welcome ' . $this->User->getName()), 'default', array('class' => 'message success'), 'good');
+					$this->redirect('/');
+				} else {
+					$this->Session->setFlash(__('Your account is activated. Please log in.'), 'default', array('class' => 'message success'), 'good');
+					$this->redirect(array('action' => 'login'));
+				}
+			} else {
+				$this->Session->setFlash(__('Account was not activated'), 'default', array(), 'bad');
+			}
+		}
+	 */
 	}
 
 	public function login() {
