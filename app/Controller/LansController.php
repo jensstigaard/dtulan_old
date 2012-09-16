@@ -61,14 +61,14 @@ class LansController extends AppController {
 
 	public function view($slug) {
 
-		$cond = array();
+		$cond = array('Lan.slug' => $slug);
 		if ($this->Auth->loggedIn()) {
 			$user = $this->Auth->user();
-			if (!$this->isAdmin($user)) {
-				$cond['Lan.published'] = 1;
+			if (!$this->Lan->LanSignup->User->isAdmin($user)) {
+				$cond['published'] = 1;
 			}
 		}
-		$lan = $this->Lan->findBySlug($slug, array('conditions' => $cond));
+		$lan = $this->Lan->find('first', array('conditions' => $cond));
 
 		if (!$lan) {
 			throw new NotFoundException('No LAN found');
@@ -115,7 +115,6 @@ class LansController extends AppController {
 
 		$this->set(compact('tournaments'));
 
-
 		// Users signed up for LAN
 		$this->Lan->LanSignup->recursive = 2;
 		$this->Lan->LanSignup->unbindModel(array(
@@ -158,6 +157,51 @@ class LansController extends AppController {
 		);
 
 		$this->set('lan_signups', $this->paginate('LanSignup'));
+
+
+		// Pizza waves
+		$this->Lan->PizzaWave->recursive = 2;
+		$this->Lan->PizzaWave->unbindModel(array(
+			'belongsTo' => array(
+				'Lan'
+			),
+			'hasOne' => array(
+			),
+			'hasMany' => array(
+			)
+				)
+		);
+
+		$this->Lan->PizzaWave->PizzaOrder->unbindModel(array(
+			'belongsTo' => array(
+				'User', 'PizzaWave'
+			),
+			'hasOne' => array(
+			),
+			'hasMany' => array(
+			)
+				)
+		);
+
+		$pizza_waves = $this->Lan->PizzaWave->find('all', array(
+			'conditions' => array(
+				'PizzaWave.lan_id' => $lan_id,
+			)
+				)
+		);
+
+		$total_pizzas = 0;
+		$total_pizza_orders = 0;
+		foreach($pizza_waves as $wave){
+			$total_pizza_orders += count($wave['PizzaOrder']);
+			foreach($wave['PizzaOrder'] as $order){
+				foreach($order['PizzaOrderItem'] as $item){
+					$total_pizzas += $item['price']*$item['amount'];
+				}
+			}
+		}
+
+		$this->set(compact('total_pizzas', 'total_pizza_orders'));
 
 
 		if ($lan['Lan']['sign_up_open'] && isset($user)) {

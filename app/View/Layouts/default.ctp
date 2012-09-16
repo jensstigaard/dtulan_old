@@ -42,7 +42,7 @@
 	<body>
 		<div id="header">
 			<div>
-<?php echo $this->Html->image('dtulan_logo.png', array('url' => '../')); ?>
+<?php echo $this->Html->image('dtulan_logo.png', array('url' => '/')); ?>
 				<div class="menu">
 				<?php echo $this->element('menu'); ?>
 				</div>

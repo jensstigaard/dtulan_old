@@ -91,10 +91,9 @@ class LanSignupsController extends AppController {
 			$this->request->data['User']['id'] = $user['User']['id'];
 			$this->request->data['User']['balance'] = $user['User']['balance'] - $lan['Lan']['price'];
 
-
 			if ($this->LanSignup->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your signup has been saved', 'default', array('class' => 'message success'), 'good');
-//				$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
+				$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
 			} else {
 				$this->Session->setFlash('Unable to add your signup. Have You selected any days?', 'default', array(), 'bad');
 			}
@@ -241,6 +240,8 @@ class LanSignupsController extends AppController {
 			throw new NotFoundException('LAN not found');
 		}
 
+		$lan = $this->LanSignup->Lan->read(array('slug'), $lan_id);
+
 		$this->LanSignup->recursive = 2;
 		$lan_signup = $this->LanSignup->find('first', array('conditions' => array(
 				'LanSignup.lan_id' => $lan_id,
@@ -291,7 +292,7 @@ class LanSignupsController extends AppController {
 			}
 
 			$this->Session->setFlash('Your signup has been deleted', 'default', array('class' => 'message success'), 'good');
-			$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan_id));
+			$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
 		} else {
 			$this->Session->setFlash('Your signup could not be deleted', 'default', array(), 'bad');
 			$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan_id));

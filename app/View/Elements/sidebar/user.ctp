@@ -23,7 +23,7 @@
 				}
 				?>
 				<strong style="color: <?php echo $color; ?>">
-					<?php echo $current_user['balance']; ?>
+					<?php echo $current_user_balance; ?>
 				</strong>
 			</p>
 		</div>

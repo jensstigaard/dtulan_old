@@ -68,6 +68,9 @@ class AppController extends Controller {
 		// For student: Find next lans / For guest: find invites
 		if (isset($current_user['type'])) {
 
+			$user_read_balance = $this->User->read(array('balance'), $this->Auth->user('id'));
+			$this->set('current_user_balance', $user_read_balance['User']['balance']);
+
 			if ($current_user['type'] == 'guest') {
 				$this->User->LanInvite->unbindModel(array('belongsTo' => array('Guest', 'LanSignup')));
 
