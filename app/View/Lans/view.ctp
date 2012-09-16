@@ -176,3 +176,58 @@
 		</tbody>
 	</table>
 </div>
+
+<?php if($is_admin): ?>
+<?php
+
+// Reset total
+$total_lan = 0;
+
+// For signups
+$total_lan += $count_lan_signups*$lan['Lan']['price'];
+
+// For pizzas
+$total_lan += $total_pizzas;
+
+
+?>
+<div>
+	<h1>Economics</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>Post</th>
+				<th>Quantity</th>
+				<th>Price</th>
+				<th>Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>User signups</td>
+				<td><?php echo $count_lan_signups; ?></td>
+				<td><?php echo $lan['Lan']['price']; ?> DKK</td>
+				<td><?php echo $count_lan_signups*$lan['Lan']['price']; ?> DKK</td>
+			</tr>
+			<tr>
+				<td>Candy &amp; soda</td>
+				<td>0</td>
+				<td>0</td>
+				<td>0</td>
+			</tr>
+			<tr>
+				<td>Pizza orders</td>
+				<td><?php echo $total_pizza_orders; ?></td>
+				<td>~ <?php echo $total_pizza_orders>0 ? floor($total_pizzas/$total_pizza_orders) : 0; ?> DKK</td>
+				<td><?php echo $total_pizzas; ?> DKK</td>
+			</tr>
+			<tr>
+				<th>Total</th>
+				<th colspan="2"></th>
+				<th><?php echo $total_lan; ?> DKK</th>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<?php endif; ?>
+<?php // pr($pizza_waves); ?>
