@@ -72,13 +72,16 @@ class User extends AppModel {
 		'phonenumber' => array(
 			'validPhone' => array(
 				'rule' => 'validatePhonenumber',
-				'message' => 'Please enter a valid phonenumber'
+				'message' => 'Please enter a valid phonenumber',
+				'allowEmpty' => true
+
 			)
 		),
 		'gamertag' => array(
 			'maxlength' => array(
 				'rule' => array('maxlength', 20),
-				'message' => 'Too long gamertag entered'
+				'message' => 'Too long gamertag entered',
+				'allowEmpty' => true
 			)
 		),
 		'password' => array(
@@ -100,6 +103,12 @@ class User extends AppModel {
 				'rule' => 'notEmpty',
 				'message' => 'Please confirm your password'
 			),
+		),
+		'balance' => array(
+			'balance' => array(
+				'rule' => array('between', -100, 999),
+				'message' => 'Your balance is too low'
+			)
 		)
 	);
 
@@ -158,14 +167,14 @@ class User extends AppModel {
 		return isset($this->data['User']['activated']) && $this->data['User']['activated'];
 	}
 
-	public function isAdmin($user){
+	public function isAdmin($user = null){
 		return isset($user['Admin']['user_id']);
 	}
-	
+
 	public function getName() {
 		return $this->data['User']['name'];
 	}
-	
+
 	public function getEmail() {
 		return $this->data['User']['email'];
 	}
