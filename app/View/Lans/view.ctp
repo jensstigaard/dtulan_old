@@ -87,6 +87,51 @@
 <?php endif; ?>
 
 <div>
+	<h2><?php echo $this->Html->image('32x32_PNG/users_two.png'); ?> Crew</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:28px"></th>
+                        <th>Name</th>
+                        <th>Gamertag</th>
+                        <?php if($is_admin):?>
+                            <th>Days attending</th>
+                        <?php endif;?>
+                    </tr>   
+                </thead>
+                <tbody>
+		<?php foreach($lan_crew as $user):?>
+                    <tr>
+                        <td style="padding:0 2px;text-align:center;">
+                            <?php
+				if (!empty($user['User']['email_gravatar'])) {
+                                    echo $this->Html->image(
+                                            'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=24', array(
+                                            'alt' => $user['User']['name'],
+                                            'title' => $user['User']['name'] . ' gravatar',
+                                            'style' => ''
+                                                )
+                                            );
+					}
+						?>
+					</td>
+					<td>
+						<?php echo $this->Html->link($user['User']['name'], array('controller' => 'users', 'action' => 'profile', $user['User']['id'])); ?>
+					
+					</td>
+					<td><?php echo $user['User']['gamertag']; ?></td>
+					<?php if ($is_admin): ?>
+						<td>
+							<?php echo count($user['LanSignupDay']); ?> days
+						</td>
+					<?php endif; ?>
+                    </tr>
+                <?php endforeach;?>
+                </tbody>
+            </table>
+</div>
+
+<div>
 	<h2><?php echo $this->Html->image('32x32_PNG/users_two.png'); ?> Signups for this LAN</h2>
 	<table>
 		<thead>
@@ -119,9 +164,6 @@
 						<?php echo $this->Html->link($user['User']['name'], array('controller' => 'users', 'action' => 'profile', $user['User']['id'])); ?>
 						<?php if ($user['User']['type'] == 'guest'): ?>
 							(g)
-						<?php endif; ?>
-						<?php if (isset($user['User']['Admin']['user_id'])): ?>
-							(crew)
 						<?php endif; ?>
 					</td>
 					<td><?php echo $user['User']['gamertag']; ?></td>
