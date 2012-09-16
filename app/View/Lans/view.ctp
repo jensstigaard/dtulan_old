@@ -145,6 +145,7 @@
 				<th><?php echo $this->Paginator->sort('User.gamertag', 'Gamertag'); ?></th>
 				<?php if ($is_admin): ?>
 					<th>Days attending</th>
+                                        <th>Phone number</th>
 				<?php endif; ?>
 			</tr>
 		</thead>
