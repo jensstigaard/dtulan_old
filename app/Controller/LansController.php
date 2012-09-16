@@ -147,9 +147,10 @@ class LansController extends AppController {
 		);
 
 		// Crew signed up for LAN
-		$lan_signups_crew = $this->Lan->LanSignup->find('all', array(
+		$lan_signups_crew = $this->Lan->LanSignup->find('threaded', array(
 			'conditions' => array(
 				'LanSignup.lan_id' => $lan_id,
+				'Crew.lan_id' => $lan_id,
 			)
 				)
 		);
