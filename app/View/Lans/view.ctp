@@ -165,9 +165,6 @@
 						<?php if ($user['User']['type'] == 'guest'): ?>
 							(g)
 						<?php endif; ?>
-						<?php if (isset($user['User']['Admin']['user_id'])): ?>
-							(crew)
-						<?php endif; ?>
 					</td>
 					<td><?php echo $user['User']['gamertag']; ?></td>
 					<?php if ($is_admin): ?>
