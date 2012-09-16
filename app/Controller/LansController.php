@@ -152,7 +152,7 @@ class LansController extends AppController {
 			),
 			'fields' => array(
 				'Crew.user_id'
-			)
+			),
 				)
 		);
 
@@ -166,6 +166,9 @@ class LansController extends AppController {
 			'conditions' => array(
 				'LanSignup.lan_id' => $lan_id,
 				'LanSignup.user_id' => $lan_crew_ids,
+			),
+			'order' => array(
+				'User.name'
 			)
 				)
 		);
