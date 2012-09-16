@@ -24,6 +24,36 @@ class LanInvite extends AppModel {
 		),
 		'LanSignup'
 	);
+	public $validate = array(
+		'user_guest_id' => array(
+			'rule' => 'validateUser',
+			'message' => 'Invalid user'
+		)
+	);
+
+	public function validateUser($check) {
+		if ($this->find('count', array('conditions' => array(
+						'LanInvite.lan_id' => $this->data['LanInvite']['lan_id'],
+						'LanInvite.user_guest_id' => $check['user_guest_id'],
+					)
+						)
+				)
+				== 0) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function countGuestsInLan($lan_id) {
+		return $this->find('count', array(
+					'conditions' => array(
+						'LanInvite.lan_id' => $lan_id,
+						'LanInvite.accepted' => 1
+					)
+						)
+		);
+	}
 
 }
 

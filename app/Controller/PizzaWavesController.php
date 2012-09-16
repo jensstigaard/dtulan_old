@@ -23,6 +23,10 @@ class PizzaWavesController extends AppController {
 		$this->set('pizzaWaves', $this->PizzaWave->find('all'));
 	}
 
+	public function view($wave_id){
+	}
+
+
 	public function add($lan_id = null) {
 		if($lan_id == null){
 			throw new NotFoundException('Invalid LAN id');
@@ -39,14 +43,13 @@ class PizzaWavesController extends AppController {
 			$this->request->data['PizzaWave']['lan_id'] = $lan_id;
 
 			if ($this->PizzaWave->save($this->request->data)) {
-				$this->Session->setFlash('Your PizzaWave has been added.');
+				$this->Session->setFlash('Your PizzaWave has been added.', 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Unable to add this PizzaWave.');
+				$this->Session->setFlash('Unable to add this PizzaWave.', 'default', array(), 'bad');
 			}
 		}
 
 		$this->set('lan', $this->PizzaWave->Lan->read());
 	}
 }
-?>

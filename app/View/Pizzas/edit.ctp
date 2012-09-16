@@ -1,4 +1,4 @@
-<div class="form">
+<div>
 	<?php echo $this->Form->create(); ?>
     <fieldset>
         <legend><?php echo __('Edit pizza'); ?></legend>
@@ -6,10 +6,11 @@
 		<?php echo $this->Html->link('Back to pizzas', array('controller' => 'pizza_categories', 'action' => 'index')); ?>
 		<div>
 			<?php
-			echo $this->Form->input('title');
-			echo $this->Form->input('number');
-			echo $this->Form->input('description', array('rows' => 3));
-			echo $this->Form->input('available');
+			echo $this->Form->input('Pizza.id', array('type' => 'hidden'));
+			echo $this->Form->input('Pizza.title');
+			echo $this->Form->input('Pizza.number');
+			echo $this->Form->input('Pizza.description', array('rows' => 3));
+			echo $this->Form->input('Pizza.available');
 			?>
 			<hr />
 			<br />
@@ -39,5 +40,4 @@
 		</div>
     </fieldset>
 	<?php echo $this->Form->end(__('Submit')); ?>
-	<?php // pr($pizza);  ?>
 </div>

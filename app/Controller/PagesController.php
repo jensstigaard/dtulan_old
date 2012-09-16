@@ -64,24 +64,25 @@ class PagesController extends AppController {
 		$this->set('pages', $this->Page->find('all'));
 	}
 
-	public function view($id = null) {
-		$this->Page->id = $id;
+	public function view($slug = 'welcome') {
+		$page = $this->Page->findBySlug($slug);
 
-		if (!$this->Page->exists()) {
-			throw new NotFoundException(__('Page not found'));
-		}
+		$title_for_layout = $page['Page']['title'];
 
-		$this->set('page', $this->Page->read());
+		$this->set(compact('page', 'title_for_layout'));
 	}
 
 	public function add() {
 		if ($this->request->is('post')) {
+
 			$this->request->data['Page']['time_created'] = date('Y-m-d H:i:s');
+			$this->request->data['Page']['slug'] = $this->Page->stringToSlug($this->request->data['Page']['title']);
+
 			if ($this->Page->save($this->request->data)) {
-				$this->Session->setFlash('Your page has been saved.');
+				$this->Session->setFlash('Your page has been saved.', 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('Unable to add your page.');
+				$this->Session->setFlash('Unable to add your page.', 'default', array(), 'bad');
 			}
 		}
 
@@ -106,11 +107,14 @@ class PagesController extends AppController {
 			$this->request->data = $this->Page->read();
 		} else {
 			// Otherwise - save the page
+
+			$slug = $this->request->data['Page']['slug'] = $this->Page->stringToSlug($this->request->data['Page']['title']);
+
 			if ($this->Page->save($this->request->data)) {
-				$this->Session->setFlash('Your page has been updated.');
-//				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash('Your page has been updated.', 'default', array('class' => 'message success'), 'good');
+				$this->redirect(array('action' => 'view', 'slug' => $slug));
 			} else {
-				$this->Session->setFlash('Unable to update your page.');
+				$this->Session->setFlash('Unable to update your page.', 'default', array(), 'bad');
 			}
 		}
 
@@ -125,39 +129,26 @@ class PagesController extends AppController {
 	}
 
 	public function menu() {
-		return $this->Page->find('all', array('conditions' => array(
-						'Page.parent_id' => 0
-					)
+		$this->Page->recursive = 2;
+		$pages = $this->Page->find('all', array('conditions' => array(
+						'Page.parent_id' => 0,
+						'Page.public' => 1
+					),
+			'fields' => array(
+				'Page.id',
+				'Page.title',
+				'Page.slug',
+				'Page.public',
+				'Page.parent_id',
+				'Page.command',
+				'Page.command_value',
+			)
 						)
 		);
-	}
 
-	public function menuItem($id = null) {
-		$this->Page->id = $id;
-		$this->Page->recursive = 0;
+//		debug($pages);
 
-		if (!$this->Page->exists()) {
-			throw new NotFoundException(__('Page not found with id #%u', $id));
-		}
-
-		$page = $this->Page->read();
-		$item = array();
-		$item['title'] = $page['Page']['title'];
-
-		switch ($page['Page']['command']) {
-			case 'uri':
-				$item['url'] = $page['Page']['command_value'];
-				break;
-			default:
-				$item['url'] = array(
-					'controller' => 'pages',
-					'action' => 'view',
-					$page['Page']['id']
-				);
-				break;
-		}
-
-		$this->set('item', $item);
+		return $pages;
 	}
 
 }

@@ -79,6 +79,13 @@ class PizzaOrdersController extends AppController {
 		$this->set(compact('msg'));
 	}
 
+	public function set_status($pizza_order_id = null){
+		$this->PizzaOrder->id = $pizza_order_id;
+
+		if(!$this->PizzaOrder->exists()){
+			throw new NotFoundException('Pizza order not found');
+		}
+	}
 }
 
 ?>

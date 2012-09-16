@@ -17,6 +17,12 @@ class Lan extends AppModel {
 				'message' => 'Title is required'
 			)
 		),
+		'slug' => array(
+			'isUnique' => array(
+				'rule' => 'isUnique',
+				'message' => 'Lan has to have an unique title'
+			)
+		),
 		'max_participants' => array(
 			'required' => array(
 				'rule' => array('numeric'),
@@ -75,43 +81,96 @@ class Lan extends AppModel {
 		return $days;
 	}
 
-	public function isOnAir() {
+	public function isOnAir($is_admin) {
 		$currentTime = date('Y-m-d H:i:s');
 
+		$conditions = array(
+			'Lan.time_end >' => $currentTime,
+			'Lan.time_start <' => $currentTime
+		);
+
+		if (!$is_admin) {
+			$conditions['Lan.published'] = 1;
+		}
+
 		$count = $this->find('count', array(
-			'conditions' => array(
-				'Lan.time_end >' => $currentTime,
-				'Lan.time_start <' => $currentTime
-			)
+			'conditions' => $conditions
 				)
 		);
 
 		return $count;
 	}
 
-	public function getOnAir() {
+	public function getOnAir($is_admin) {
 		$currentTime = date('Y-m-d H:i:s');
+
+		$conditions = array(
+			'Lan.time_end >' => $currentTime,
+			'Lan.time_start <' => $currentTime
+		);
+
+		if (!$is_admin) {
+			$conditions['Lan.published'] = 1;
+		}
 
 		$this->recursive = 0;
 
 		$data = $this->find('first', array(
-			'conditions' => array(
-				'Lan.time_end >' => $currentTime,
-				'Lan.time_start <' => $currentTime
-			)
+			'conditions' => $conditions
 				)
 		);
 
 		return $data;
 	}
 
-	public function getInviteableUsers($id = null) {
-		$this->id = $id;
+	public function isCurrent($is_admin) {
+		$currentTime = date('Y-m-d H:i:s');
+
+		$conditions = array(
+			'Lan.time_end >' => $currentTime,
+		);
+
+		if (!$is_admin) {
+			$conditions['Lan.published'] = 1;
+		}
+
+		$count = $this->find('count', array(
+			'conditions' => $conditions
+				)
+		);
+
+		return $count;
+	}
+
+	public function getCurrent($is_admin) {
+		$currentTime = date('Y-m-d H:i:s');
+
+		$conditions = array(
+			'Lan.time_end >' => $currentTime,
+		);
+
+		if (!$is_admin) {
+			$conditions['Lan.published'] = 1;
+		}
+
+		$this->recursive = 1;
+
+		$data = $this->find('first', array(
+			'conditions' => $conditions
+				)
+		);
+
+		return $data;
+	}
+
+	public function getInviteableUsers($lan_id, $user_id) {
+		$this->id = $lan_id;
 
 		if (!$this->exists()) {
 			throw new NotFoundException('Lan not found');
 		}
 
+		$this->recursive = 1;
 		$lan = $this->read();
 
 		$user_ids = array();
@@ -119,16 +178,21 @@ class Lan extends AppModel {
 			$user_ids[] = $user['user_id'];
 		}
 
+		$count_invites = 0;
 		foreach ($lan['LanInvite'] as $user) {
 			$user_ids[] = $user['user_guest_id'];
+
+			if ($user['user_student_id'] == $user_id) {
+				$count_invites++;
+			}
 		}
 
-		$users_list = array();
+		$users = array();
 
 		// Only the max participants is it possible to invite
-		if (count($user_ids) < $lan['Lan']['max_participants']) {
+		if ($lan['Lan']['max_participants'] > count($user_ids) && $lan['Lan']['max_guests_per_student'] > $count_invites) {
 
-			$users = $this->LanSignup->User->find('all', array('conditions' => array(
+			$users = $this->LanSignup->User->find('list', array('conditions' => array(
 					'NOT' => array(
 						'User.id' => $user_ids,
 					),
@@ -138,21 +202,29 @@ class Lan extends AppModel {
 					)
 			);
 
-			foreach ($users as $user) {
-				$users_list[$user['User']['id']] = $user['User']['name'];
-			}
+//			foreach ($users as $user) {
+//				$users_list[$user['User']['id']] = $user['User']['name'];
+//			}
 		}
 
-		return $users_list;
+		return $users;
 	}
 
 	public function isUserAttending($lan_id, $user_id) {
 		return $this->LanSignup->find('count', array('conditions' => array(
-			'LanSignup.lan_id' => $lan_id,
-			'LanSignup.user_id' => $user_id
+						'LanSignup.lan_id' => $lan_id,
+						'LanSignup.user_id' => $user_id
 					)
 						)
-		) == 1;
+				) == 1;
+	}
+
+	public function stringToSlug($str) {
+		// turn into slug
+		$str = Inflector::slug($str);
+		// to lowercase
+		$str = strtolower($str);
+		return $str;
 	}
 
 }

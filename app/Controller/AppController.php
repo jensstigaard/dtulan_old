@@ -36,8 +36,8 @@ class AppController extends Controller {
 	public $components = array(
 		'Session',
 		'Auth' => array(
-			'loginRedirect' => array('controller' => 'pages', 'action' => 'view', 1),
-			'logoutRedirect' => array('controller' => 'pages', 'action' => 'view', 1),
+			'loginRedirect' => array('controller' => 'pages', 'action' => 'view', 'welcome'),
+			'logoutRedirect' => array('controller' => 'pages', 'action' => 'view', 'welcome'),
 			'authError' => 'Access denied',
 			'authorize' => array('Controller'), // Added this line
 		)
@@ -48,13 +48,76 @@ class AppController extends Controller {
 	}
 
 	public function beforeFilter() {
+		// Variables used all over the site - can be accessed in any view
+		$is_loggedin = $this->Auth->loggedIn();
+
 		$current_user = $this->Auth->user();
-		$this->set('logged_in', $this->Auth->loggedIn());
-		$this->set('is_admin', isset($current_user['Admin']['user_id']));
-		$this->set('current_user', $current_user);
+
+		$is_admin = $is_loggedin && isset($current_user['Admin']['user_id']);
+
+		$this->set(compact('current_user', 'is_loggedin', 'is_admin'));
+
+		$this->loadModel('User');
+
+		if ($this->User->LanSignup->Lan->isCurrent($is_admin)) {
+			$this->set('sidebar_current_lan', $this->User->LanSignup->Lan->getCurrent($is_admin));
+		}
+
+
+
+		// For student: Find next lans / For guest: find invites
+		if (isset($current_user['type'])) {
+
+			if ($current_user['type'] == 'guest') {
+				$this->User->LanInvite->unbindModel(array('belongsTo' => array('Guest', 'LanSignup')));
+
+				$this->set('sidebar_lan_invites', $this->User->LanInvite->find('first', array('conditions' => array(
+								'LanInvite.user_guest_id' => $this->Auth->user('id'),
+								'LanInvite.accepted' => 0
+							)
+								)
+						)
+				);
+			} else {
+
+				$this->User->LanSignup->recursive = 0;
+
+				$lans = $this->User->LanSignup->find('all', array('conditions' => array(
+						'LanSignup.user_id' => $this->Auth->user('id')
+					)
+						)
+				);
+
+				$lan_ids = array();
+				foreach ($lans as $lan) {
+					$lan_ids[] = $lan['LanSignup']['lan_id'];
+				}
+
+				if ($current_user['type'] == 'student') {
+					$this->set('sidebar_next_lan', $this->User->LanSignup->Lan->find('first', array(
+								'conditions' => array(
+									'Lan.sign_up_open' => 1,
+									'Lan.published' => 1,
+									'Lan.time_end >' => date('Y-m-d H:i:s'),
+									'NOT' => array(
+										'Lan.id' => $lan_ids
+									)
+								),
+								'order' => array('Lan.time_start ASC'),
+								'recursive' => 0
+									)
+							)
+					);
+				}
+			}
+		}
 	}
 
-	public function isAdmin($user = null){
+	public function isAdmin($user = null) {
+		if ($user == null && $this->Auth->loggedIn()) {
+			$user = $this->Auth->user();
+		}
+
 		return isset($user['Admin']['user_id']);
 	}
 
