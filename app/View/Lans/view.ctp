@@ -96,6 +96,7 @@
                         <th>Gamertag</th>
                         <?php if($is_admin):?>
                             <th>Days attending</th>
+                            <th>Phone number</th>
                         <?php endif;?>
                     </tr>   
                 </thead>
@@ -121,9 +122,12 @@
 					</td>
 					<td><?php echo $user['User']['gamertag']; ?></td>
 					<?php if ($is_admin): ?>
-						<td>
+						<td style="text-align: center">
 							<?php echo count($user['LanSignupDay']); ?> days
 						</td>
+                                                <td style="text-align: right">
+                                                    <?php echo $user['User']['phonenumber']?>
+                                                </td>
 					<?php endif; ?>
                     </tr>
                 <?php endforeach;?>
@@ -141,6 +145,7 @@
 				<th><?php echo $this->Paginator->sort('User.gamertag', 'Gamertag'); ?></th>
 				<?php if ($is_admin): ?>
 					<th>Days attending</th>
+                                        <th>Phone number</th>
 				<?php endif; ?>
 			</tr>
 		</thead>
@@ -168,9 +173,12 @@
 					</td>
 					<td><?php echo $user['User']['gamertag']; ?></td>
 					<?php if ($is_admin): ?>
-						<td>
+						<td style="text-align: center">
 							<?php echo count($user['LanSignupDay']); ?> days
 						</td>
+                                                <td style="text-align: right">
+                                                    <?php echo $user['User']['phonenumber']?>
+                                                </td>
 					<?php endif; ?>
 				</tr>
 			<?php endforeach; ?>
