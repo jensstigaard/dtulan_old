@@ -4,6 +4,7 @@ class Lan extends AppModel {
 
 	public $name = 'Lan';
 	public $hasMany = array(
+		'Crew',
 		'LanSignup',
 		'LanDay',
 		'LanInvite',

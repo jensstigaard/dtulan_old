@@ -146,18 +146,33 @@ class LansController extends AppController {
 				)
 		);
 
+		$this->Lan->Crew->recursive = 0;
+		$lan_crews = $this->Lan->Crew->find('all', array('conditions' => array(
+				'Crew.lan_id' => $lan_id
+			),
+			'fields' => array(
+				'Crew.user_id'
+			)
+				)
+		);
+
+		$lan_crew_ids = array();
+		foreach($lan_crews as $crew){
+			$lan_crew_ids[] = $crew['Crew']['user_id'];
+		}
+
 		// Crew signed up for LAN
-		$lan_signups_crew = $this->Lan->LanSignup->find('threaded', array(
+		$lan_signups_crew = $this->Lan->LanSignup->find('all', array(
 			'conditions' => array(
 				'LanSignup.lan_id' => $lan_id,
-				'Crew.lan_id' => $lan_id,
+				'LanSignup.user_id' => $lan_crew_ids,
 			)
 				)
 		);
 
 		$lan_signups_id_crew = array();
 
-		foreach($lan_signups_crew as $lan_signup_crew){
+		foreach ($lan_signups_crew as $lan_signup_crew) {
 			$lan_signups_id_crew[] = $lan_signup_crew['LanSignup']['id'];
 		}
 
