@@ -96,6 +96,7 @@
                         <th>Gamertag</th>
                         <?php if($is_admin):?>
                             <th>Days attending</th>
+                            <th>Phone number</th>
                         <?php endif;?>
                     </tr>   
                 </thead>
@@ -124,6 +125,9 @@
 						<td>
 							<?php echo count($user['LanSignupDay']); ?> days
 						</td>
+                                                <td>
+                                                    <?php echo $user['User']['phonenumber']?>
+                                                </td>
 					<?php endif; ?>
                     </tr>
                 <?php endforeach;?>
@@ -171,6 +175,9 @@
 						<td>
 							<?php echo count($user['LanSignupDay']); ?> days
 						</td>
+                                                <td>
+                                                    <?php echo $user['User']['phonenumber']?>
+                                                </td>
 					<?php endif; ?>
 				</tr>
 			<?php endforeach; ?>

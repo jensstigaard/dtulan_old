@@ -11,12 +11,10 @@
  * @author Jens
  */
 class Crew extends AppModel {
-
-	public $uses = 'User';
-
-//	public $belongsTo = array(
-//		'User'
-//	);
+    
+	public $belongsTo = array(
+		'User', 'Lan'
+	);
 
 }
 
