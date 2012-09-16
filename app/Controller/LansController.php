@@ -1,4 +1,4 @@
-<?php
+w<?php
 
 class LansController extends AppController {
 
