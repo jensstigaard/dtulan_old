@@ -154,12 +154,12 @@ class UsersController extends AppController {
 				$msg.='<br />';
 				$msg.='The DTU LAN crew';
 
-//				$email = new CakeEmail();
-//				$email->from(array('admin@DTU-Lan.dk' => 'DTU-Lan'));
-//				$email->to($this->request->data['User']['email']);
-//				$email->subject('DTU-LAN site - Activation');
-//				$email->send($msg);
-				//echo $msg;
+				$email = new CakeEmail();
+				$email->from(array('admin@DTU-Lan.dk' => 'DTU-Lan'));
+				$email->to($this->request->data['User']['email']);
+				$email->subject('DTU-LAN site - Activation');
+				$email->send($msg);
+				echo $msg;
 
 				$this->Session->setFlash(__('The user has been made. Check your email to continue the activation process. ' . $msg));
 //				$this->redirect(array('action' => 'index'));
