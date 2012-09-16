@@ -100,7 +100,7 @@
                     </tr>   
                 </thead>
                 <tbody>
-		<?php foreach($lan_crew as $user):?>
+		<?php foreach($lan_signups_crew as $user):?>
                     <tr>
                         <td style="padding:0 2px;text-align:center;">
                             <?php
