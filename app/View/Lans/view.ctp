@@ -122,10 +122,10 @@
 					</td>
 					<td><?php echo $user['User']['gamertag']; ?></td>
 					<?php if ($is_admin): ?>
-						<td>
+						<td style="text-align: center">
 							<?php echo count($user['LanSignupDay']); ?> days
 						</td>
-                                                <td>
+                                                <td style="text-align: right">
                                                     <?php echo $user['User']['phonenumber']?>
                                                 </td>
 					<?php endif; ?>
@@ -173,10 +173,10 @@
 					</td>
 					<td><?php echo $user['User']['gamertag']; ?></td>
 					<?php if ($is_admin): ?>
-						<td>
+						<td style="text-align: center">
 							<?php echo count($user['LanSignupDay']); ?> days
 						</td>
-                                                <td>
+                                                <td style="text-align: right">
                                                     <?php echo $user['User']['phonenumber']?>
                                                 </td>
 					<?php endif; ?>
