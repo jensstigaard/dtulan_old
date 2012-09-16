@@ -95,8 +95,8 @@
                         <th>Name</th>
                         <th>Gamertag</th>
                         <?php if($is_admin):?>
-                            <th>Days attending</th>
-                            <th>Phone number</th>
+                            <th style="text-align: center">Days attending</th>
+                            <th style="text-align: right">Phone number</th>
                         <?php endif;?>
                     </tr>   
                 </thead>
@@ -144,8 +144,8 @@
 				<th><?php echo $this->Paginator->sort('User.name', 'Name'); ?></th>
 				<th><?php echo $this->Paginator->sort('User.gamertag', 'Gamertag'); ?></th>
 				<?php if ($is_admin): ?>
-					<th>Days attending</th>
-                                        <th>Phone number</th>
+					<th style="text-align: center">Days attending</th>
+                                        <th style="text-align: right">Phone number</th>
 				<?php endif; ?>
 			</tr>
 		</thead>
