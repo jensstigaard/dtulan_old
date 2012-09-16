@@ -62,6 +62,7 @@ class LansController extends AppController {
 	public function view($slug) {
 
 		$cond = array('Lan.slug' => $slug);
+
 		if ($this->Auth->loggedIn()) {
 			$user = $this->Auth->user();
 			if (!$this->Lan->LanSignup->User->isAdmin($user)) {
@@ -103,11 +104,11 @@ class LansController extends AppController {
 		$this->set('count_lan_signups', $this->Lan->LanSignup->countTotalInLan($lan_id));
 		$this->set('count_lan_signups_guests', $this->Lan->LanInvite->countGuestsInLan($lan_id));
 
+		// Tournaments signed up for LAN
 		$conditions_tournaments = array(
 			'Tournament.lan_id' => $lan_id,
 		);
 
-		// Users signed up for LAN
 		$this->Lan->Tournament->recursive = 2;
 		$tournaments = $this->Lan->Tournament->find('all', array(
 			'conditions' => $conditions_tournaments
@@ -142,22 +143,45 @@ class LansController extends AppController {
 				'TeamInvite',
 				'TeamUser'
 			)
-		));
+				)
+		);
+
+		// Crew signed up for LAN
+		$lan_signups_crew = $this->Lan->LanSignup->find('all', array(
+			'conditions' => array(
+				'LanSignup.lan_id' => $lan_id,
+			)
+				)
+		);
+
+		$lan_signups_id_crew = array();
+
+		foreach($lan_signups_crew as $lan_signup_crew){
+			$lan_signups_id_crew[] = $lan_signup_crew['LanSignup']['id'];
+		}
+
+		$this->set(compact('lan_signups_crew'));
 
 		$this->paginate = array(
 			'LanSignup' => array(
 				'conditions' => array(
 					'LanSignup.lan_id' => $lan_id,
+					'NOT' => array(
+						'LanSignup.id' => $lan_signups_id_crew
+					)
 				),
 				'limit' => 10,
 				'order' => array(
 					array('User.name' => 'asc')
 				)
-			)
+			),
 		);
 
-		$this->set('lan_signups', $this->paginate('LanSignup'));
+		$lan_signups = $this->paginate('LanSignup');
 
+//		debug($lan_signups);
+
+		$this->set(compact('lan_signups'));
 
 		// Pizza waves
 		$this->Lan->PizzaWave->recursive = 2;
@@ -192,11 +216,11 @@ class LansController extends AppController {
 
 		$total_pizzas = 0;
 		$total_pizza_orders = 0;
-		foreach($pizza_waves as $wave){
+		foreach ($pizza_waves as $wave) {
 			$total_pizza_orders += count($wave['PizzaOrder']);
-			foreach($wave['PizzaOrder'] as $order){
-				foreach($order['PizzaOrderItem'] as $item){
-					$total_pizzas += $item['price']*$item['amount'];
+			foreach ($wave['PizzaOrder'] as $order) {
+				foreach ($order['PizzaOrderItem'] as $item) {
+					$total_pizzas += $item['price'] * $item['amount'];
 				}
 			}
 		}

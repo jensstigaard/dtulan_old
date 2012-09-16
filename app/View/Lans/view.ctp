@@ -260,7 +260,7 @@ $total_lan += $total_pizzas;
 			<tr>
 				<td>Pizza orders</td>
 				<td><?php echo $total_pizza_orders; ?></td>
-				<td>~ <?php echo $total_pizza_orders>0 ? floor($total_pizzas/$total_pizza_orders) : 0; ?> DKK</td>
+				<td>~ <?php echo $total_pizza_orders > 0 ? floor($total_pizzas/$total_pizza_orders) : 0; ?> DKK</td>
 				<td><?php echo $total_pizzas; ?> DKK</td>
 			</tr>
 			<tr>
