@@ -115,7 +115,7 @@
 								echo $this->Html->image(
 										'http://www.gravatar.com/avatar/' . md5(strtolower($invite['Guest']['email_gravatar'])) . '?s=24&amp;r=r', array(
 									'alt' => $invite['Guest']['name'],
-									'title' => $user['User']['name'] . ' gravatar',
+									'title' => $invite['Guest']['name'] . ' gravatar',
 									'style' => ''
 										)
 								);

@@ -164,8 +164,6 @@ class Lan extends AppModel {
 		return $data;
 	}
 
-	
-
 	public function getInviteableUsers($lan_id, $user_id) {
 		$this->id = $lan_id;
 
@@ -195,9 +193,8 @@ class Lan extends AppModel {
 		$users = array();
 
 		// Only the max participants is it possible to invite
-
 		// $lan['Lan']['max_participants'] > count($user_ids)
-		if ($lan['Lan']['max_guests_per_student'] > $count_invites) {
+		if ($this->isSignupPossible($lan_id) && $lan['Lan']['max_guests_per_student'] > $count_invites) {
 
 			$users = $this->LanSignup->User->find('list', array('conditions' => array(
 					'NOT' => array(
@@ -211,6 +208,27 @@ class Lan extends AppModel {
 		}
 
 		return $users;
+	}
+
+	public function isSignupPossible($lan_id) {
+		$this->id = $lan_id;
+
+		if (!$this->exists()) {
+			throw new NotFoundException('Lan not found');
+		}
+
+		$max_participants = $this->read(array('max_participants'));
+
+		$this->LanDay->recursive = 0;
+		$lan_days = $this->LanDay->find('all', array('conditions' => array('LanDay.lan_id' => $lan_id)));
+
+		foreach ($lan_days as $day) {
+			if ($this->LanDay->seatsLeft($day['LanDay']['id'])) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public function isUserAttending($lan_id, $user_id) {
