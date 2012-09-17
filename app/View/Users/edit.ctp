@@ -7,7 +7,7 @@
 	</div>
 	<div>
 		<?php echo $this->Form->input('phonenumber'); ?>
-		<p style="margin:0 7px;">Your phonenumber is not visible at the website. We're giving the fire department information about all our participants during events.</p>
+		<p style="margin:0 7px;">Your phone number is not visible at the website. We're giving the fire department information about all our participants during events.</p>
 	</div>
 	<div>
 		<?php echo $this->Form->input('gamertag'); ?>

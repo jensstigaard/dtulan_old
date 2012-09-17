@@ -45,7 +45,7 @@ class User extends AppModel {
 		'email' => array(
 			'required1' => array(
 				'rule' => array('notEmpty'),
-				'message' => 'Email name is required',
+				'message' => 'Email is required',
 			),
 			'required2' => array(
 				'rule' => array('email', true),
@@ -77,8 +77,6 @@ class User extends AppModel {
 			'validPhone' => array(
 				'rule' => 'validatePhonenumber',
 				'message' => 'Please enter a valid phonenumber',
-				'allowEmpty' => true
-
 			)
 		),
 		'gamertag' => array(
@@ -113,7 +111,14 @@ class User extends AppModel {
 				'rule' => array('between', -100, 999),
 				'message' => 'Your balance is too low'
 			)
-		)
+		),
+                'email_gravatar' => array(
+			'required2' => array(
+				'rule' => array('email', true),
+				'message' => 'Please supply a valid email address',
+                                'allowEmpty' => true,
+			),
+		),
 	);
 
 	public function validateStudynumber($check) {
