@@ -64,7 +64,7 @@ class LanSignupsController extends AppController {
 			foreach ($this->request->data['LanSignupDay'] as $day_id => $day_value) {
 				if ($day_value['lan_day_id'] == 0) {
 					unset($this->request->data['LanSignupDay'][$day_id]);
-				} elseif (!$this->LanSignup->LanSignupDay->LanDay->seatsLeft($day_id)) {
+				} elseif (!$this->LanSignup->LanSignupDay->LanDay->seatsLeft($day_value['lan_day_id'])) {
 					$do_not_save = 1;
 				}
 			}
