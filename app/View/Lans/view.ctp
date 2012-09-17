@@ -4,6 +4,10 @@
 		<h2 style="text-align: center"><?php echo $this->Html->image('32x32_PNG/globe.png'); ?> General info</h2>
 		<table>
 			<tbody>
+				<tr style="font-size:110%">
+					<td>Price:</td>
+					<td><?php echo $lan['Lan']['price']; ?> DKK</td>
+				</tr>
 				<tr>
 					<td>Date start:</td>
 					<td><?php echo $this->Time->nice($lan['Lan']['time_start']); ?></td>
@@ -16,11 +20,15 @@
 					<td>Participants:</td>
 					<td><?php echo ($count_lan_signups - $count_lan_signups_guests) . 's + ' . $count_lan_signups_guests . 'g = ' . $count_lan_signups; ?></td>
 				</tr>
-				<tr style="font-size:110%">
-					<td>Price:</td>
-					<td><?php echo $lan['Lan']['price']; ?> DKK</td>
-				</tr>
 				<?php if ($is_admin): ?>
+					<tr>
+						<td>Invited (not accepted):</td>
+						<td><?php echo count($lan_invites); ?></td>
+					</tr>
+					<tr>
+						<td>Tournaments:</td>
+						<td><?php echo count($tournaments); ?></td>
+					</tr>
 					<tr>
 						<td>Public:</td>
 						<td><?php echo $lan['Lan']['published'] ? 'Yes' : 'No'; ?></td>
@@ -261,7 +269,7 @@
 						<td><?php echo $this->Html->link($tournament['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $tournament['Tournament']['id'])); ?></td>
 						<td><?php echo $tournament['Game']['title'] ?></td>
 						<td style="text-align: center"><?php echo $tournament['Tournament']['team_size'] ?></td>
-						<td style="text-align: right"><?php //Participants	                            ?></td>
+						<td style="text-align: right"><?php //Participants	                              ?></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>

@@ -69,6 +69,7 @@ class LansController extends AppController {
 				$cond['published'] = 1;
 			}
 		}
+
 		$lan = $this->Lan->find('first', array('conditions' => $cond));
 
 		if (!$lan) {
@@ -94,7 +95,7 @@ class LansController extends AppController {
 		);
 
 		$this->Lan->LanInvite->recursive = 2;
-		
+
 		$this->set('lan_invites', $this->Lan->LanInvite->find('all', array(
 					'conditions' => array(
 						'LanInvite.lan_id' => $lan_id,
@@ -268,7 +269,7 @@ class LansController extends AppController {
 						}
 					}
 
-					$user_guests = $this->Lan->getInviteableUsers($lan_id, $user['id']);
+					$user_guests = $this->Lan->getInviteableUsers($lan_id, $this->Auth->user('id'));
 					$this->set(compact('user_guests'));
 				}
 			}

@@ -164,6 +164,8 @@ class Lan extends AppModel {
 		return $data;
 	}
 
+	
+
 	public function getInviteableUsers($lan_id, $user_id) {
 		$this->id = $lan_id;
 
@@ -179,6 +181,8 @@ class Lan extends AppModel {
 			$user_ids[] = $user['user_id'];
 		}
 
+//		$user_ids_signed_up = $user_ids;
+
 		$count_invites = 0;
 		foreach ($lan['LanInvite'] as $user) {
 			$user_ids[] = $user['user_guest_id'];
@@ -191,7 +195,9 @@ class Lan extends AppModel {
 		$users = array();
 
 		// Only the max participants is it possible to invite
-		if ($lan['Lan']['max_participants'] > count($user_ids) && $lan['Lan']['max_guests_per_student'] > $count_invites) {
+
+		// $lan['Lan']['max_participants'] > count($user_ids)
+		if ($lan['Lan']['max_guests_per_student'] > $count_invites) {
 
 			$users = $this->LanSignup->User->find('list', array('conditions' => array(
 					'NOT' => array(
@@ -202,10 +208,6 @@ class Lan extends AppModel {
 				)
 					)
 			);
-
-//			foreach ($users as $user) {
-//				$users_list[$user['User']['id']] = $user['User']['name'];
-//			}
 		}
 
 		return $users;
