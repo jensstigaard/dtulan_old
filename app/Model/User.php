@@ -113,12 +113,12 @@ class User extends AppModel {
 	);
 
 	public function validateStudynumber($check) {
-
-		if ($this->data['User']['type'] == 'student') {
-			return preg_match("/^s[0-9]{6}$/", $this->data['User']['id_number']);
+          	if ($this->data['User']['type'] == 'student') {
+                    $this->data['User']['id_number'] = strtolower($this->data['User']['id_number']);
+                    return preg_match("/^s[0-9]{6}$/", $this->data['User']['id_number']);
 		} else {
-			$this->data['User']['id_number'] = $this->getGuestNumber();
-			return true;
+                    $this->data['User']['id_number'] = $this->getGuestNumber();
+                    return true;
 		}
 	}
 
@@ -143,6 +143,12 @@ class User extends AppModel {
 		if (isset($this->data['User']['password'])) {
 			$this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
 		}
+                if(isset($this->data['User']['name'])) {
+                    $this->data['User']['name'] = ucwords(strtolower($this->data['User']['name']));
+                }
+                if(isset($this->data['User']['email'])) {
+                    $this->data['User']['email'] = strtolower($this->data['User']['email']);
+                }
 		return true;
 	}
 
