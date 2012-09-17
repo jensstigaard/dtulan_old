@@ -124,4 +124,8 @@ class AppController extends Controller {
 		return isset($user['Admin']['user_id']);
 	}
 
+	public function isJsonRequest(){
+		return $this->request->header('Accept') === 'application/json';
+	}
+
 }
