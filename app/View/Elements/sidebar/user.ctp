@@ -3,7 +3,7 @@
 	if (!empty($current_user['email_gravatar'])) {
 		$size = 72;
 		echo $this->Html->image(
-				'http://www.gravatar.com/avatar/' . md5(strtolower($current_user['email_gravatar'])) . '?s='.$size, array(
+				'http://www.gravatar.com/avatar/' . md5(strtolower($current_user['email_gravatar'])) . '?s='.$size.'&amp;r=r', array(
 			'style' => 'float:left;margin: 5px;width:'.$size.'px;height:'.$size.'px;'
 				)
 		);

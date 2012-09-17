@@ -107,7 +107,7 @@
                             <?php
 				if (!empty($user['User']['email_gravatar'])) {
                                     echo $this->Html->image(
-                                            'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=24', array(
+                                            'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=24&amp;r=r', array(
                                             'alt' => $user['User']['name'],
                                             'title' => $user['User']['name'] . ' gravatar',
                                             'style' => ''
@@ -145,7 +145,7 @@
 				<th><?php echo $this->Paginator->sort('User.gamertag', 'Gamertag'); ?></th>
 				<?php if ($is_admin): ?>
 					<th style="text-align: center">Days attending</th>
-                                        <th style="text-align: right">Phone number</th>
+                                        <th style="text-align: right"><?php echo $this->Paginator->sort('User.phonenumber', 'Phone number');?></th>
 				<?php endif; ?>
 			</tr>
 		</thead>
@@ -156,7 +156,7 @@
 						<?php
 						if (!empty($user['User']['email_gravatar'])) {
 							echo $this->Html->image(
-									'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=24', array(
+									'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=24&amp;r=r', array(
 								'alt' => $user['User']['name'],
 								'title' => $user['User']['name'] . ' gravatar',
 								'style' => ''
@@ -249,7 +249,7 @@ $total_lan += $total_pizzas;
 				<th>Post</th>
 				<th style="text-align: center">Quantity</th>
                                 <th></th>
-				<th style="text-align: right">Price</th>
+				<th style="text-align: left">Price</th>
                                 <th></th>
 				<th style="text-align: right">Total</th>
                                 
