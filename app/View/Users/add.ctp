@@ -4,7 +4,7 @@
     <fieldset>
         <legend><?php echo __('Register user'); ?></legend>
 		<?php
-		echo $this->Form->input('name');
+		echo $this->Form->input('name', array('label' => __('Full name')));
 		echo $this->Form->input('email');
 		echo $this->Form->input('gamertag', array('required' => false));
 		echo $this->Form->input('type', array(

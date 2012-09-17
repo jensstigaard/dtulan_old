@@ -33,9 +33,13 @@ class User extends AppModel {
 	public $helpers = array('Js');
 	public $validate = array(
 		'name' => array(
-			'required' => array(
+			'required1' => array(
 				'rule' => array('notEmpty'),
-				'message' => 'First name is required'
+				'message' => 'Full name is required'
+			),
+                        'required2' => array(
+				'rule' => array('validateName'),
+				'message' => 'Full name is required'
 			)
 		),
 		'email' => array(
@@ -113,12 +117,12 @@ class User extends AppModel {
 	);
 
 	public function validateStudynumber($check) {
-
-		if ($this->data['User']['type'] == 'student') {
-			return preg_match("/^s[0-9]{6}$/", $this->data['User']['id_number']);
+          	if ($this->data['User']['type'] == 'student') {
+                    $this->data['User']['id_number'] = strtolower($this->data['User']['id_number']);
+                    return preg_match("/^s[0-9]{6}$/", $this->data['User']['id_number']);
 		} else {
-			$this->data['User']['id_number'] = $this->getGuestNumber();
-			return true;
+                    $this->data['User']['id_number'] = $this->getGuestNumber();
+                    return true;
 		}
 	}
 
@@ -138,11 +142,25 @@ class User extends AppModel {
 		return true;
 	}
 
+        public function validateName($check) {
+            $name = explode(' ', $check['name']);
+            if(count($name) > 1) {
+                return true;
+            }
+            return false;
+        }
+        
 	public function beforeSave($options = array()) {
 		parent::beforeSave($options);
 		if (isset($this->data['User']['password'])) {
 			$this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
 		}
+                if(isset($this->data['User']['name'])) {
+                    $this->data['User']['name'] = ucwords(strtolower($this->data['User']['name']));
+                }
+                if(isset($this->data['User']['email'])) {
+                    $this->data['User']['email'] = strtolower($this->data['User']['email']);
+                }
 		return true;
 	}
 
