@@ -93,9 +93,12 @@ class LansController extends AppController {
 				)
 		);
 
+		$this->Lan->LanInvite->recursive = 2;
+		
 		$this->set('lan_invites', $this->Lan->LanInvite->find('all', array(
 					'conditions' => array(
-						'LanInvite.lan_id' => $lan_id
+						'LanInvite.lan_id' => $lan_id,
+						'LanInvite.accepted' => 0
 					)
 						)
 				)

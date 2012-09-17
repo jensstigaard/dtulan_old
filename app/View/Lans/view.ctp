@@ -14,7 +14,7 @@
 				</tr>
 				<tr>
 					<td>Participants:</td>
-					<td><?php echo ($count_lan_signups - $count_lan_signups_guests).'s + '. $count_lan_signups_guests .'g = '. $count_lan_signups; ?></td>
+					<td><?php echo ($count_lan_signups - $count_lan_signups_guests) . 's + ' . $count_lan_signups_guests . 'g = ' . $count_lan_signups; ?></td>
 				</tr>
 				<tr style="font-size:110%">
 					<td>Price:</td>
@@ -78,7 +78,7 @@
 <?php endif; ?>
 
 
-<?php if (isset($is_not_attending) && $is_not_attending == 1): ?>
+<?php if (isset($is_not_attending) && $is_not_attending): ?>
 	<div>
 		<h2><?php echo $this->Html->image('24x24_PNG/001_01.png'); ?> Sign up now!</h2>
 		<p>You are not anticipating to this LAN.</p>
@@ -86,53 +86,95 @@
 	</div>
 <?php endif; ?>
 
+<?php if ($is_admin && count($lan_invites)): ?>
+	<div>
+		<h2><?php echo $this->Html->image('32x32_PNG/users_two.png'); ?> Users invited (not accepted)</h2>
+		<table>
+			<thead>
+				<tr>
+					<th style="width:28px"></th>
+					<th>Name</th>
+					<th>Invited by</th>
+					<th>Time invited</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($lan_invites as $invite): ?>
+					<tr>
+						<td style="padding:0 2px;text-align:center;">
+							<?php
+							if (!empty($invite['Guest']['email_gravatar'])) {
+								echo $this->Html->image(
+										'http://www.gravatar.com/avatar/' . md5(strtolower($invite['Guest']['email_gravatar'])) . '?s=24&amp;r=r', array(
+									'alt' => $invite['Guest']['name'],
+									'title' => $user['User']['name'] . ' gravatar',
+									'style' => ''
+										)
+								);
+							}
+							?>
+						</td>
+						<td>
+							<?php echo $this->Html->link($invite['Guest']['name'], array('controller' => 'users', 'action' => 'profile', $invite['Guest']['id'])); ?>
+						</td>
+						<td>
+							<?php echo $this->Html->link($invite['Student']['name'], array('controller' => 'users', 'action' => 'profile', $invite['Student']['id'])); ?>
+						</td>
+						<td><?php echo $this->Time->nice($invite['LanInvite']['time_invited']); ?></td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+<?php endif; ?>
+
 <div>
 	<h2><?php echo $this->Html->image('32x32_PNG/users_two.png'); ?> Crew</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width:28px"></th>
-                        <th>Name</th>
-                        <th>Gamertag</th>
-                        <?php if($is_admin):?>
-                            <th style="text-align: center">Days attending</th>
-                            <th style="text-align: right">Phone number</th>
-                        <?php endif;?>
-                    </tr>   
-                </thead>
-                <tbody>
-		<?php foreach($lan_signups_crew as $user):?>
-                    <tr>
-                        <td style="padding:0 2px;text-align:center;">
-                            <?php
-				if (!empty($user['User']['email_gravatar'])) {
-                                    echo $this->Html->image(
-                                            'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=24&amp;r=r', array(
-                                            'alt' => $user['User']['name'],
-                                            'title' => $user['User']['name'] . ' gravatar',
-                                            'style' => ''
-                                                )
-                                            );
-					}
+	<table>
+		<thead>
+			<tr>
+				<th style="width:28px"></th>
+				<th>Name</th>
+				<th>Gamertag</th>
+				<?php if ($is_admin): ?>
+					<th style="text-align: center">Days attending</th>
+					<th style="text-align: right">Phone number</th>
+				<?php endif; ?>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach ($lan_signups_crew as $user): ?>
+				<tr>
+					<td style="padding:0 2px;text-align:center;">
+						<?php
+						if (!empty($user['User']['email_gravatar'])) {
+							echo $this->Html->image(
+									'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=24&amp;r=r', array(
+								'alt' => $user['User']['name'],
+								'title' => $user['User']['name'] . ' gravatar',
+								'style' => ''
+									)
+							);
+						}
 						?>
 					</td>
 					<td>
 						<?php echo $this->Html->link($user['User']['name'], array('controller' => 'users', 'action' => 'profile', $user['User']['id'])); ?>
-					
+
 					</td>
 					<td><?php echo $user['User']['gamertag']; ?></td>
 					<?php if ($is_admin): ?>
 						<td style="text-align: center">
 							<?php echo count($user['LanSignupDay']); ?> days
 						</td>
-                                                <td style="text-align: right">
-                                                    <?php echo $user['User']['phonenumber']?>
-                                                </td>
+						<td style="text-align: right">
+							<?php echo $user['User']['phonenumber'] ?>
+						</td>
 					<?php endif; ?>
-                    </tr>
-                <?php endforeach;?>
-                </tbody>
-            </table>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
 </div>
 
 <div>
@@ -145,7 +187,7 @@
 				<th><?php echo $this->Paginator->sort('User.gamertag', 'Gamertag'); ?></th>
 				<?php if ($is_admin): ?>
 					<th style="text-align: center">Days attending</th>
-                                        <th style="text-align: right"><?php echo $this->Paginator->sort('User.phonenumber', 'Phone number');?></th>
+					<th style="text-align: right"><?php echo $this->Paginator->sort('User.phonenumber', 'Phone number'); ?></th>
 				<?php endif; ?>
 			</tr>
 		</thead>
@@ -176,9 +218,9 @@
 						<td style="text-align: center">
 							<?php echo count($user['LanSignupDay']); ?> days
 						</td>
-                                                <td style="text-align: right">
-                                                    <?php echo $user['User']['phonenumber']?>
-                                                </td>
+						<td style="text-align: right">
+							<?php echo $user['User']['phonenumber'] ?>
+						</td>
 					<?php endif; ?>
 				</tr>
 			<?php endforeach; ?>
@@ -192,9 +234,9 @@
 
 <div>
 	<?php if ($is_admin): ?>
-	<div style="float:right">
-		<?php echo $this->Html->link('New tournament', array('controller' => 'tournaments', 'action' => 'add', $lan['Lan']['id'])); ?>
-	</div>
+		<div style="float:right">
+			<?php echo $this->Html->link('New tournament', array('controller' => 'tournaments', 'action' => 'add', $lan['Lan']['id'])); ?>
+		</div>
 	<?php endif; ?>
 	<h2><?php echo $this->Html->image('32x32_PNG/trophy_gold.png'); ?> Tournaments (<?php echo count($tournaments); ?>)</h2>
 	<table>
@@ -219,7 +261,7 @@
 						<td><?php echo $this->Html->link($tournament['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $tournament['Tournament']['id'])); ?></td>
 						<td><?php echo $tournament['Game']['title'] ?></td>
 						<td style="text-align: center"><?php echo $tournament['Tournament']['team_size'] ?></td>
-						<td style="text-align: right"><?php //Participants	                         ?></td>
+						<td style="text-align: right"><?php //Participants	                            ?></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
@@ -227,71 +269,68 @@
 	</table>
 </div>
 
-<?php if($is_admin): ?>
-<?php
-
+<?php if ($is_admin): ?>
+	<?php
 // Reset total
-$total_lan = 0;
+	$total_lan = 0;
 
 // For signups
-$total_lan += $count_lan_signups*$lan['Lan']['price'];
+	$total_lan += $count_lan_signups * $lan['Lan']['price'];
 
 // For pizzas
-$total_lan += $total_pizzas;
+	$total_lan += $total_pizzas;
+	?>
+	<div>
+		<h1>Economics</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>Post</th>
+					<th style="text-align: center">Quantity</th>
+					<th></th>
+					<th style="text-align: left">Price</th>
+					<th></th>
+					<th style="text-align: right">Total</th>
 
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>User signups</td>
+					<td style="text-align: center"><?php echo $count_lan_signups; ?></td>
+					<td style="text-align: right">DKK</td>
+					<td style="text-align: right"><?php echo $lan['Lan']['price']; ?></td>
+					<td style="text-align: right">DKK</td>
+					<td style="text-align: right"><?php echo $count_lan_signups * $lan['Lan']['price']; ?></td>
 
-?>
-<div>
-	<h1>Economics</h1>
-	<table>
-		<thead>
-			<tr>
-				<th>Post</th>
-				<th style="text-align: center">Quantity</th>
-                                <th></th>
-				<th style="text-align: left">Price</th>
-                                <th></th>
-				<th style="text-align: right">Total</th>
-                                
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>User signups</td>
-				<td style="text-align: center"><?php echo $count_lan_signups; ?></td>
-                                <td style="text-align: right">DKK</td>
-				<td style="text-align: right"><?php echo $lan['Lan']['price']; ?></td>
-                                <td style="text-align: right">DKK</td>
-				<td style="text-align: right"><?php echo $count_lan_signups*$lan['Lan']['price']; ?></td>
-                                
-			</tr>
-			<tr>
-				<td>Candy &amp; soda</td>
-				<td style="text-align: center">0</td>
-                                <td style="text-align: right">DKK</td>
-				<td style="text-align: right">0</td>
-                                <td style="text-align: right">DKK</td>
-				<td style="text-align: right">0</td>
-                                
-			</tr>
-			<tr>
-				<td>Pizza orders</td>
-				<td style="text-align: center"><?php echo $total_pizza_orders; ?></td>
-                                <td style="text-align: right">DKK</td>
-				<td style="text-align: right">~ <?php echo $total_pizza_orders > 0 ? floor($total_pizzas/$total_pizza_orders) : 0; ?></td>
-				<td style="text-align: right">DKK</td>
-                                <td style="text-align: right"><?php echo $total_pizzas; ?></td>
-                                
-			</tr>
-			<tr>
-				<th>Total</th>
-				<th colspan="3"></th>
-                                <th style="text-align: right">DKK</th>
-				<th style="text-align: right"><?php echo $total_lan; ?></th>
-                                
-			</tr>
-		</tbody>
-	</table>
-</div>
+				</tr>
+				<tr>
+					<td>Candy &amp; soda</td>
+					<td style="text-align: center">0</td>
+					<td style="text-align: right">DKK</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">DKK</td>
+					<td style="text-align: right">0</td>
+
+				</tr>
+				<tr>
+					<td>Pizza orders</td>
+					<td style="text-align: center"><?php echo $total_pizza_orders; ?></td>
+					<td style="text-align: right">DKK</td>
+					<td style="text-align: right">~ <?php echo $total_pizza_orders > 0 ? floor($total_pizzas / $total_pizza_orders) : 0; ?></td>
+					<td style="text-align: right">DKK</td>
+					<td style="text-align: right"><?php echo $total_pizzas; ?></td>
+
+				</tr>
+				<tr>
+					<th>Total</th>
+					<th colspan="3"></th>
+					<th style="text-align: right">DKK</th>
+					<th style="text-align: right"><?php echo $total_lan; ?></th>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
 <?php endif; ?>
-<?php // pr($pizza_waves); ?>
+<?php // pr($pizza_waves);  ?>
