@@ -182,12 +182,10 @@ class LanSignupsController extends AppController {
 					if (!$this->LanSignup->LanSignupDay->deleteAll(array('LanSignupDay.id' => $days_delete), false)) {
 						$this->Session->setFlash('Dates were NOT DELETED', 'default', array(), 'bad');
 						$not_ok = 1;
-					} elseif (!count($days_wanted)) {
-						$saved = 1;
 					}
 				}
 
-				$this->request->data['LanSignup']['id'] = $id;
+				$this->LanSignup->id = $id;
 
 				if (count($days_wanted) && !isset($not_ok)) {
 					if ($this->LanSignup->saveAssociated($this->request->data)) {
@@ -197,7 +195,7 @@ class LanSignupsController extends AppController {
 					}
 				}
 
-				if ($saved) {
+				if (isset($saved)) {
 					$this->Session->setFlash('Your signup has been updated', 'default', array('class' => 'message success'), 'good');
 					$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
 				}
@@ -267,6 +265,12 @@ class LanSignupsController extends AppController {
 
 		$delete_lan_signups[] = $id;
 
+		$update_balances = array();
+		$update_balances[] = array(
+			'id' => $user['User']['id'],
+			'balance' => $user['User']['balance'] + $lan_signup['Lan']['price']
+		);
+
 		if ($user['User']['type'] == 'student') {
 
 			$lan_invites = $this->LanSignup->LanInvite->find('all', array('conditions' => array(
@@ -281,27 +285,44 @@ class LanSignupsController extends AppController {
 
 				if ($invite['LanInvite']['accepted']) {
 					$delete_lan_signups[] = $invite['LanInvite']['lan_signup_id'];
+
+					$update_balances[] = array(
+						'id' => $invite['Guest']['id'],
+						'balance' => $invite['Guest']['balance'] + $lan_signup['Lan']['price'],
+					);
 				}
 			}
 		} else {
-			$delete_lan_invites[] = $id;
+			$lan_invite = $this->LanSignup->LanInvite->find('first', array(
+				'conditions' => array(
+					'LanInvite.lan_signup_id' => $id
+				)
+					)
+			);
+			$delete_lan_invites[] = $lan_invite['LanInvite']['id'];
 		}
 
-		$this->LanSignup->User->id = $user['User']['id'];
-		$this->request->data['User']['id'] = $user['User']['id'];
-		$this->request->data['User']['balance'] = $user['User']['balance'] + $lan_signup['Lan']['price'];
 
-		if ($this->LanSignup->deleteAll(array('LanSignup.id' => $delete_lan_signups)) && $this->LanSignup->LanSignupDay->deleteAll(array('lan_signup_id' => $id)) && $this->LanSignup->User->save($this->request->data, false)) {
+		if (!$this->LanSignup->User->saveMany($update_balances)) {
 
-			if (count($delete_lan_invites)) {
-				$this->LanSignup->LanInvite->deleteAll(array('lan_signup_id' => $delete_lan_invites));
-			}
-
-			$this->Session->setFlash('Your signup has been deleted', 'default', array('class' => 'message success'), 'good');
-			$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
 		} else {
-			$this->Session->setFlash('Your signup could not be deleted', 'default', array(), 'bad');
-			$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan_id));
+			if (!(
+					$this->LanSignup->deleteAll(array(
+						'LanSignup.id' => $delete_lan_signups
+					)) && $this->LanSignup->LanSignupDay->deleteAll(array(
+						'LanSignupDay.lan_signup_id' => $delete_lan_signups
+					))
+					)
+			) {
+				$this->Session->setFlash('Your signup could not be deleted', 'default', array(), 'bad');
+				$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
+			} else {
+				if (count($delete_lan_invites)) {
+					$this->LanSignup->LanInvite->deleteAll(array('LanInvite.id' => $delete_lan_invites));
+				}
+				$this->Session->setFlash('Your signup has been deleted', 'default', array('class' => 'message success'), 'good');
+				$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
+			}
 		}
 	}
 
