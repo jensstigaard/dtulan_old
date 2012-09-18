@@ -128,10 +128,10 @@
 							<?php echo $this->Html->link($lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug'])); ?>
 
 							<?php if ($is_you && $lan['Lan']['sign_up_open']): ?>
-								<?php
-								echo $this->Html->link(
-										$this->Html->image('16x16_GIF/reply.gif') . ' Edit your signup', array('controller' => 'lan_signups', 'action' => 'edit', $lan['Lan']['id']), array('escape' => false)
-								);
+								<br /><?php
+					echo $this->Html->link(
+							$this->Html->image('16x16_GIF/reply.gif') . ' Edit your signup', array('controller' => 'lan_signups', 'action' => 'edit', $lan['Lan']['id']), array('escape' => false)
+					);
 								?>
 							<?php endif; ?>
 							<?php if (isset($lan['LanInvite']['Student'])): ?>
@@ -148,11 +148,14 @@
 							<?php endforeach; ?>
 						</td>
 
-						<?php if ($is_you && count($lan_invites_accepted['Lan']['sign_up_open'])): ?>
+						<?php if ($is_you): ?>
 							<td>
-								<?php foreach ($lan['LanSignupDay'] as $day): ?>
-									<?php echo $this->Time->format('D M jS', $day['LanDay']['date']); ?><br />
-								<?php endforeach; ?>
+								<?php if (isset($lan_invites_accepted) && count($lan_invites_accepted)): ?>
+								<strong>Guests of you:</strong>
+									<?php foreach ($lan_invites_accepted as $invite_accepted): ?>
+										<?php echo $invite_accepted['Guest']['name']; ?><br />
+									<?php endforeach; ?>
+								<?php endif; ?>
 							</td>
 						<?php endif; ?>
 					</tr>
