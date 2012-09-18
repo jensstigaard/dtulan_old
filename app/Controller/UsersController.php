@@ -122,12 +122,12 @@ class UsersController extends AppController {
 			// Lan invites made by user
 			$this->User->LanInvite->recursive = 1;
 			$this->set('lan_invites_accepted', $this->User->LanInvite->find('all', array(
-				'conditions' => array(
-					'LanInvite.user_student_id' => $id,
-					'LanInvite.accepted' => 1
-				)
-					)
-			));
+						'conditions' => array(
+							'LanInvite.user_student_id' => $id,
+							'LanInvite.accepted' => 1
+						)
+							)
+					));
 		}
 
 
@@ -332,12 +332,22 @@ class UsersController extends AppController {
 
 		if ($this->request->is('post')) {
 			$email = $this->request->data['User']['email'];
-			$user = $this->User->findByEmail($email);
 
-			if ($user) {
+			$this->User->find('first', array(
+				'conditions' => array(
+					'User.email' => $email
+				),
+				'recursive' => 0
+					)
+			);
+
+			if (!$this->User->exists()) {
+				throw new NotFoundException(__('Could not send email'));
+			} elseif (isset($this->User->data['UserPasswordTicket']['time']) && $this->User->data['UserPasswordTicket']['time'] < date('Y-m-d H:i:s', strtotime('-1 day'))) {
+				throw new UnauthorizedException(__('Ticket for user already sent'));
+			} else {
 				$this->request->data['UserPasswordTicket']['user_id'] = $user['User']['id'];
 				$this->request->data['UserPasswordTicket']['time'] = date('Y-m-d H:i:s');
-
 
 				if (!$this->User->UserPasswordTicket->save($this->request->data)) {
 					$this->Session->setFlash(__('Fatal error during database call. Please try again'), 'default', array(), 'bad');

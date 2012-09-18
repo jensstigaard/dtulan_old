@@ -95,7 +95,7 @@ class PizzaWave extends AppModel {
 			$conditions['PizzaWave.lan_id'] = $lan_id;
 		}
 
-		$current_wave = $this->Lan->PizzaWave->find('all', array(
+		$current_wave = $this->find('all', array(
 			'conditions' => $conditions,
 			'order' => array(
 				'PizzaWave.time_start ASC'

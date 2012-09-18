@@ -12,7 +12,11 @@
  */
 class PizzaOrder extends AppModel {
 
-	public $hasMany = array('PizzaOrderItem');
+	public $hasMany = array(
+		'PizzaOrderItem' => array(
+			'dependent' => true
+		)
+	);
 	public $belongsTo = array('User', 'PizzaWave');
 	public $validate = array(
 		'pizza_wave_id' => array(
@@ -40,4 +44,5 @@ class PizzaOrder extends AppModel {
 	}
 
 }
+
 ?>

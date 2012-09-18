@@ -30,7 +30,6 @@ class PizzaCategoriesController extends AppController {
 
 		$title_for_layout = 'Pizzas';
 
-
 		$this->loadModel('Lan');
 		if ($this->Lan->isCurrent($this->isAdmin())) {
 			$current_lan = $this->Lan->getCurrent($this->isAdmin());
