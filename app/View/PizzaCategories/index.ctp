@@ -29,27 +29,30 @@ if ($is_orderable) {
 							<small><?php echo $pizza_category['PizzaCategory']['description'] ?></small>
 						</th>
 						<?php foreach ($pizza_category['PizzaType'] as $type): ?>
-							<th><?php echo $type['title_short']; ?></th>
+							<th style="vertical-align: bottom; text-align: center;">
+								<?php echo $type['title_short']; ?>
+							</th>
 						<?php endforeach; ?>
 						<?php if ($is_admin): ?>
-							<th><?php
-				echo $this->Html->image('16x16_GIF/reply.gif', array(
-					'alt' => 'Edit category',
-					'title' => 'Edit category',
-					'url' => array(
-						'controller' => 'pizza_categories',
-						'action' => 'edit', $pizza_category['PizzaCategory']['id'])
-						)
-				);
-				echo $this->Html->image('16x16_GIF/action_add.gif', array(
-					'alt' => 'Add pizza to category',
-					'title' => 'Add pizza to category',
-					'url' => array(
-						'controller' => 'pizzas',
-						'action' => 'add', $pizza_category['PizzaCategory']['id'])
-						)
-				);
-							?>
+							<th>
+								<?php
+								echo $this->Html->image('16x16_GIF/reply.gif', array(
+									'alt' => 'Edit category',
+									'title' => 'Edit category',
+									'url' => array(
+										'controller' => 'pizza_categories',
+										'action' => 'edit', $pizza_category['PizzaCategory']['id'])
+										)
+								);
+								echo $this->Html->image('16x16_GIF/action_add.gif', array(
+									'alt' => 'Add pizza to category',
+									'title' => 'Add pizza to category',
+									'url' => array(
+										'controller' => 'pizzas',
+										'action' => 'add', $pizza_category['PizzaCategory']['id'])
+										)
+								);
+								?>
 							</th>
 						<?php endif; ?>
 					</tr>
@@ -113,8 +116,8 @@ if ($is_orderable) {
 	<div style="clear:both;"></div>
 	<div class="hidden_images">
 		<?php
-		echo $this->Html->image('16x16_GIF/action_add.gif', array('class' => 'image_add'));
-		echo $this->Html->image('16x16_GIF/action_remove.gif', array('class' => 'image_remove'));
+		echo $this->Html->image('16x16_PNG/add.png', array('class' => 'image_add'));
+		echo $this->Html->image('16x16_PNG/cancel.png', array('class' => 'image_remove'));
 		?>
 	</div>
 	<?php // pr($pizza_categories); ?>

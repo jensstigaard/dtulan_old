@@ -210,21 +210,29 @@ class Lan extends AppModel {
 		return $users;
 	}
 
-	public function isSignupPossible($lan_id) {
+	public function isPublished($lan_id) {
 		$this->id = $lan_id;
 
 		if (!$this->exists()) {
 			throw new NotFoundException('Lan not found');
 		}
 
-		$max_participants = $this->read(array('max_participants'));
+		$this->read(array('published'));
 
-		$this->LanDay->recursive = 0;
-		$lan_days = $this->LanDay->find('all', array('conditions' => array('LanDay.lan_id' => $lan_id)));
+		return $this->data['Lan']['published'];
+	}
 
-		foreach ($lan_days as $day) {
-			if ($this->LanDay->seatsLeft($day['LanDay']['id'])) {
-				return true;
+	public function isSignupPossible($lan_id) {
+		if ($this->isPublished($lan_id)) {
+			$max_participants = $this->read(array('max_participants'));
+
+			$this->LanDay->recursive = 0;
+			$lan_days = $this->LanDay->find('all', array('conditions' => array('LanDay.lan_id' => $lan_id)));
+
+			foreach ($lan_days as $day) {
+				if ($this->LanDay->seatsLeft($day['LanDay']['id'])) {
+					return true;
+				}
 			}
 		}
 

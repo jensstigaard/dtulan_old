@@ -106,4 +106,22 @@ class PizzaWave extends AppModel {
 		return $current_wave;
 	}
 
+	public function isOrderable($id){
+		$this->id = $id;
+
+		if(!$this->exists()){
+			throw new NotFoundException(__('Pizza wave not found'));
+		}
+
+		$this->read(array('time_end', 'lan_id'));
+
+		if($this->Lan->isPublished($this->data['PizzaWave']['lan_id'])){
+			if($this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }
