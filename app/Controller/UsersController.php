@@ -423,8 +423,8 @@ class UsersController extends AppController {
 
 			$input_string = $this->request->data['search_startsWith'];
 
-			$this->User->recursive = 0;
 			$users = $this->User->find('all', array(
+				'recursive' => -1,
 				'conditions' => array(
 					'OR' => array(
 						array(
