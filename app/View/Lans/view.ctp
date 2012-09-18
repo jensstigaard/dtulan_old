@@ -21,6 +21,9 @@
 					<td><?php echo ($count_lan_signups - $count_lan_signups_guests) . 's + ' . $count_lan_signups_guests . 'g = ' . $count_lan_signups; ?></td>
 				</tr>
 				<?php if ($is_admin): ?>
+                                <tr>
+                                    <th colspan="2">Crew only</th>
+                                </tr>
 					<tr>
 						<td>Invited (not accepted):</td>
 						<td><?php echo count($lan_invites); ?></td>
@@ -93,6 +96,73 @@
 		<?php echo $this->Html->link('Sign up this LAN!', array('controller' => 'lan_signups', 'action' => 'add', $lan['Lan']['id'])); ?>
 	</div>
 <?php endif; ?>
+<?php if ($is_admin): ?>
+<div>
+    <h1>Crew only</h1>
+</div>
+	<?php
+// Reset total
+	$total_lan = 0;
+
+// For signups
+	$total_lan += $count_lan_signups * $lan['Lan']['price'];
+
+// For pizzas
+	$total_lan += $total_pizzas;
+	?>
+	<div>
+		<h2>Economics</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Post</th>
+					<th style="text-align: center">Quantity</th>
+					<th></th>
+					<th style="text-align: left">Price</th>
+					<th></th>
+					<th style="text-align: right">Total</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>User signups</td>
+					<td style="text-align: center"><?php echo $count_lan_signups; ?></td>
+					<td style="text-align: right">DKK</td>
+					<td style="text-align: right"><?php echo $lan['Lan']['price']; ?></td>
+					<td style="text-align: right">DKK</td>
+					<td style="text-align: right"><?php echo $count_lan_signups * $lan['Lan']['price']; ?></td>
+
+				</tr>
+				<tr>
+					<td>Candy &amp; soda</td>
+					<td style="text-align: center">0</td>
+					<td style="text-align: right">DKK</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">DKK</td>
+					<td style="text-align: right">0</td>
+
+				</tr>
+				<tr>
+					<td>Pizza orders</td>
+					<td style="text-align: center"><?php echo $total_pizza_orders; ?></td>
+					<td style="text-align: right">DKK</td>
+					<td style="text-align: right">~ <?php echo $total_pizza_orders > 0 ? floor($total_pizzas / $total_pizza_orders) : 0; ?></td>
+					<td style="text-align: right">DKK</td>
+					<td style="text-align: right"><?php echo $total_pizzas; ?></td>
+
+				</tr>
+				<tr>
+					<th>Total</th>
+					<th colspan="3"></th>
+					<th style="text-align: right">DKK</th>
+					<th style="text-align: right"><?php echo $total_lan; ?></th>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+<?php endif; ?>
 
 <?php if ($is_admin && count($lan_invites)): ?>
 	<div>
@@ -135,7 +205,11 @@
 		</table>
 	</div>
 <?php endif; ?>
-
+<?php if($is_admin):?>
+<div>
+    <h1>Viewable by users</h1>
+</div>
+<?php endif;?>
 <div>
 	<h2><?php echo $this->Html->image('32x32_PNG/users_two.png'); ?> Crew</h2>
 	<table>
@@ -277,68 +351,4 @@
 	</table>
 </div>
 
-<?php if ($is_admin): ?>
-	<?php
-// Reset total
-	$total_lan = 0;
-
-// For signups
-	$total_lan += $count_lan_signups * $lan['Lan']['price'];
-
-// For pizzas
-	$total_lan += $total_pizzas;
-	?>
-	<div>
-		<h1>Economics</h1>
-		<table>
-			<thead>
-				<tr>
-					<th>Post</th>
-					<th style="text-align: center">Quantity</th>
-					<th></th>
-					<th style="text-align: left">Price</th>
-					<th></th>
-					<th style="text-align: right">Total</th>
-
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>User signups</td>
-					<td style="text-align: center"><?php echo $count_lan_signups; ?></td>
-					<td style="text-align: right">DKK</td>
-					<td style="text-align: right"><?php echo $lan['Lan']['price']; ?></td>
-					<td style="text-align: right">DKK</td>
-					<td style="text-align: right"><?php echo $count_lan_signups * $lan['Lan']['price']; ?></td>
-
-				</tr>
-				<tr>
-					<td>Candy &amp; soda</td>
-					<td style="text-align: center">0</td>
-					<td style="text-align: right">DKK</td>
-					<td style="text-align: right">0</td>
-					<td style="text-align: right">DKK</td>
-					<td style="text-align: right">0</td>
-
-				</tr>
-				<tr>
-					<td>Pizza orders</td>
-					<td style="text-align: center"><?php echo $total_pizza_orders; ?></td>
-					<td style="text-align: right">DKK</td>
-					<td style="text-align: right">~ <?php echo $total_pizza_orders > 0 ? floor($total_pizzas / $total_pizza_orders) : 0; ?></td>
-					<td style="text-align: right">DKK</td>
-					<td style="text-align: right"><?php echo $total_pizzas; ?></td>
-
-				</tr>
-				<tr>
-					<th>Total</th>
-					<th colspan="3"></th>
-					<th style="text-align: right">DKK</th>
-					<th style="text-align: right"><?php echo $total_lan; ?></th>
-
-				</tr>
-			</tbody>
-		</table>
-	</div>
-<?php endif; ?>
 <?php // pr($pizza_waves);  ?>
