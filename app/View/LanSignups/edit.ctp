@@ -23,7 +23,7 @@
 								$this->Html->image('16x16_GIF/action_delete.gif') . ' Delete your signup', array('controller' => 'lan_signups', 'action' => 'delete', $lan_signup['Lan']['id']), array('confirm' => "Are You sure you will delete the signup?", 'escape' => false)
 						);
 						?>
-						<?php if ($lan_signup['User']['type']): ?>
+						<?php if ($lan_signup['User']['type'] == 'student'): ?>
 							<p style="padding-left:5px;">Notice that guests of you or invites you've sent would be deleted too.</p>
 						<?php endif; ?>
 					</td>

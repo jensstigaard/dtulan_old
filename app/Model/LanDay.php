@@ -25,6 +25,7 @@ class LanDay extends AppModel {
 			throw new NotFoundException('Lan day not found');
 		}
 
+		$this->recursive = 1;
 		$lan_day = $this->read();
 
 		return $lan_day['Lan']['max_participants'] - count($lan_day['LanSignupDay']);

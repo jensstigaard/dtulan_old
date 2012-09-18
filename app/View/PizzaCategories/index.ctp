@@ -2,7 +2,7 @@
 echo $this->Html->css('pizzas', null, array('inline' => false));
 
 if ($is_orderable) {
-	echo $this->Html->script(array('jquery','pizzas_orderable'), FALSE);
+	echo $this->Html->script(array('jquery', 'pizzas_orderable'), FALSE);
 }
 ?>
 
@@ -11,8 +11,8 @@ if ($is_orderable) {
 		<?php if ($is_admin): ?>
 			<?php echo $this->Html->link('New pizza category', array('action' => 'add')); ?>
 			| <?php echo $this->Html->link('New pizza type', array('controller' => 'pizza_types', 'action' => 'add')); ?>
-			<?php if(isset($current_lan)): ?>
-			| <?php echo $this->Html->link('New pizza wave', array('controller' => 'pizza_waves', 'action' => 'add', $current_lan['Lan']['id'])); ?>
+			<?php if (isset($current_lan)): ?>
+				| <?php echo $this->Html->link('New pizza wave', array('controller' => 'pizza_waves', 'action' => 'add', $current_lan['Lan']['id'])); ?>
 			<?php endif; ?>
 		<?php endif; ?>
 	</div>
@@ -84,12 +84,12 @@ if ($is_orderable) {
 									if (isset($pizza['Prices'])) {
 										foreach ($pizza['Prices'] as $price_type_id => $price_info):
 											?>
-											<td class="price"><?php
-							if ($price_info['price'] != 0) {
-								echo'<span>' . $price_info['price'] . '</span>,- ';
-								echo'<span class="hidden price_id">' . $price_info['id'] . '</span>';
-							}
-											?></td>
+											<td class="price">
+												<?php if ($price_info['price'] != 0): ?>
+													<span<?php echo $pizza['available'] ? ' class="available"' : '' ?>><?php echo $price_info['price']; ?></span>,-
+													<span class="hidden price_id"><?php echo $price_info['id']; ?></span>
+												<?php endif; ?>
+											</td>
 											<?php
 										endforeach;
 									}
@@ -117,5 +117,5 @@ if ($is_orderable) {
 		echo $this->Html->image('16x16_GIF/action_remove.gif', array('class' => 'image_remove'));
 		?>
 	</div>
-<?php // pr($pizza_categories); ?>
+	<?php // pr($pizza_categories); ?>
 </div>

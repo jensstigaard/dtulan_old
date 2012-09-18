@@ -31,11 +31,23 @@ class Page extends AppModel {
 				'message' => 'Title is required'
 			)
 		),
+		'slug' => array(
+			'rule' => 'isUnique',
+			'message' => 'Page has to be unique'
+		),
 		'command' => array(
 			'rule' => array('inList', array('text', 'uri')),
 			'message' => 'Invalid command'
 		)
 	);
+
+	public function stringToSlug($str) {
+		// turn into slug
+		$str = Inflector::slug($str);
+		// to lowercase
+		$str = strtolower($str);
+		return $str;
+	}
 
 }
 

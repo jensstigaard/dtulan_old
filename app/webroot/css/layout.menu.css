@@ -34,8 +34,10 @@ div.menu ul li{
 div.menu > ul li a{
 	display: block;
 	padding: 5px 15px 7px;
+
 	font-weight: bold;
 	color:#DDD;
+	text-decoration: none;
 }
 
 div.menu > ul li a:hover{
@@ -63,7 +65,7 @@ div.menu ul > li:hover > ul {
 	display: block;
 	position: absolute;
 }
-div.menu > ul > li > ul > li{
+div.menu ul > li > ul li{
 	margin: 0;
 	float: none;
 }

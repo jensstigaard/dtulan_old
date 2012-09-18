@@ -19,7 +19,7 @@
 
 		<?php foreach ($lans as $lan): ?>
 			<tr>
-				<td><?php echo $this->Html->link($lan['Lan']['title'], array('action' => 'view', $lan['Lan']['id'])); ?></td>
+				<td><?php echo $this->Html->link($lan['Lan']['title'], array('action' => 'view', $lan['Lan']['slug'])); ?></td>
 				<td><?php echo count($lan['LanSignup']); ?></td>
 				<td><?php echo $lan['Lan']['max_participants']; ?></td>
 				<td><?php echo $this->Time->nice($lan['Lan']['time_start']); ?></td>

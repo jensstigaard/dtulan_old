@@ -143,7 +143,6 @@ class PizzaCategoriesController extends AppController {
 
 			if ($this->PizzaCategory->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Category has been updated.', 'default', array('class' => 'message success'), 'good');
-				debug($this->request->data);
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash('Unable to update category.', 'default', array(), 'bad');

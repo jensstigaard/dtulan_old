@@ -6,16 +6,16 @@
  */
 
 /**
- * Description of Crew
+ * Description of AccessToken
  *
  * @author Jens
  */
-class Crew extends AppModel {
-    
+class AccessToken extends AppModel {
 	public $belongsTo = array(
-		'User', 'Lan'
+		'User'
 	);
 
+	
 }
 
 ?>

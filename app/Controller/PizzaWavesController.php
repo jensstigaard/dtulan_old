@@ -23,6 +23,10 @@ class PizzaWavesController extends AppController {
 		$this->set('pizzaWaves', $this->PizzaWave->find('all'));
 	}
 
+	public function view($wave_id){
+	}
+
+
 	public function add($lan_id = null) {
 		if($lan_id == null){
 			throw new NotFoundException('Invalid LAN id');

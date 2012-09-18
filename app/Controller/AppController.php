@@ -36,8 +36,8 @@ class AppController extends Controller {
 	public $components = array(
 		'Session',
 		'Auth' => array(
-			'loginRedirect' => array('controller' => 'pages', 'action' => 'view', 1),
-			'logoutRedirect' => array('controller' => 'pages', 'action' => 'view', 1),
+			'loginRedirect' => array('controller' => 'pages', 'action' => 'view', 'welcome'),
+			'logoutRedirect' => array('controller' => 'pages', 'action' => 'view', 'welcome'),
 			'authError' => 'Access denied',
 			'authorize' => array('Controller'), // Added this line
 		)
@@ -57,7 +57,6 @@ class AppController extends Controller {
 
 		$this->set(compact('current_user', 'is_loggedin', 'is_admin'));
 
-		
 		$this->loadModel('User');
 
 		if ($this->User->LanSignup->Lan->isCurrent($is_admin)) {
@@ -68,6 +67,9 @@ class AppController extends Controller {
 
 		// For student: Find next lans / For guest: find invites
 		if (isset($current_user['type'])) {
+
+			$user_read_balance = $this->User->read(array('balance'), $this->Auth->user('id'));
+			$this->set('current_user_balance', $user_read_balance['User']['balance']);
 
 			if ($current_user['type'] == 'guest') {
 				$this->User->LanInvite->unbindModel(array('belongsTo' => array('Guest', 'LanSignup')));
@@ -120,6 +122,10 @@ class AppController extends Controller {
 		}
 
 		return isset($user['Admin']['user_id']);
+	}
+
+	public function isJsonRequest(){
+		return $this->request->header('Accept') === 'application/json';
 	}
 
 }

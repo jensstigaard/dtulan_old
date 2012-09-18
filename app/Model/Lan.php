@@ -4,6 +4,7 @@ class Lan extends AppModel {
 
 	public $name = 'Lan';
 	public $hasMany = array(
+		'Crew',
 		'LanSignup',
 		'LanDay',
 		'LanInvite',
@@ -15,6 +16,12 @@ class Lan extends AppModel {
 			'required' => array(
 				'rule' => array('notEmpty'),
 				'message' => 'Title is required'
+			)
+		),
+		'slug' => array(
+			'isUnique' => array(
+				'rule' => 'isUnique',
+				'message' => 'Lan has to have an unique title'
 			)
 		),
 		'max_participants' => array(
@@ -117,7 +124,7 @@ class Lan extends AppModel {
 		return $data;
 	}
 
-	public function isCurrent($is_admin){
+	public function isCurrent($is_admin) {
 		$currentTime = date('Y-m-d H:i:s');
 
 		$conditions = array(
@@ -136,7 +143,7 @@ class Lan extends AppModel {
 		return $count;
 	}
 
-	public function getCurrent($is_admin){
+	public function getCurrent($is_admin) {
 		$currentTime = date('Y-m-d H:i:s');
 
 		$conditions = array(
@@ -147,7 +154,7 @@ class Lan extends AppModel {
 			$conditions['Lan.published'] = 1;
 		}
 
-		$this->recursive = 0;
+		$this->recursive = 1;
 
 		$data = $this->find('first', array(
 			'conditions' => $conditions
@@ -172,6 +179,8 @@ class Lan extends AppModel {
 			$user_ids[] = $user['user_id'];
 		}
 
+//		$user_ids_signed_up = $user_ids;
+
 		$count_invites = 0;
 		foreach ($lan['LanInvite'] as $user) {
 			$user_ids[] = $user['user_guest_id'];
@@ -184,7 +193,8 @@ class Lan extends AppModel {
 		$users = array();
 
 		// Only the max participants is it possible to invite
-		if ($lan['Lan']['max_participants'] > count($user_ids) && $lan['Lan']['max_guests_per_student'] > $count_invites) {
+		// $lan['Lan']['max_participants'] > count($user_ids)
+		if ($this->isSignupPossible($lan_id) && $lan['Lan']['max_guests_per_student'] > $count_invites) {
 
 			$users = $this->LanSignup->User->find('list', array('conditions' => array(
 					'NOT' => array(
@@ -195,13 +205,30 @@ class Lan extends AppModel {
 				)
 					)
 			);
-
-//			foreach ($users as $user) {
-//				$users_list[$user['User']['id']] = $user['User']['name'];
-//			}
 		}
 
 		return $users;
+	}
+
+	public function isSignupPossible($lan_id) {
+		$this->id = $lan_id;
+
+		if (!$this->exists()) {
+			throw new NotFoundException('Lan not found');
+		}
+
+		$max_participants = $this->read(array('max_participants'));
+
+		$this->LanDay->recursive = 0;
+		$lan_days = $this->LanDay->find('all', array('conditions' => array('LanDay.lan_id' => $lan_id)));
+
+		foreach ($lan_days as $day) {
+			if ($this->LanDay->seatsLeft($day['LanDay']['id'])) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public function isUserAttending($lan_id, $user_id) {
@@ -211,6 +238,14 @@ class Lan extends AppModel {
 					)
 						)
 				) == 1;
+	}
+
+	public function stringToSlug($str) {
+		// turn into slug
+		$str = Inflector::slug($str);
+		// to lowercase
+		$str = strtolower($str);
+		return $str;
 	}
 
 }

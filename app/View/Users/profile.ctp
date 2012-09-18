@@ -3,7 +3,7 @@
 		<?php
 		if (!empty($user['User']['email_gravatar'])) {
 			echo $this->Html->image(
-					'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=64', array('style' => 'margin-right:10px;'));
+					'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=64&amp;r=r', array('style' => 'margin-right:10px;'));
 		}
 		echo $user['User']['name'];
 		?>
@@ -125,8 +125,14 @@
 				<?php foreach ($lans as $lan): ?>
 					<tr>
 						<td>
-							<?php echo $this->Html->link($lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan['Lan']['id'])); ?>
-							<?php if (isset($lan['LanInvite']['Student'])): ?>
+							<?php echo $this->Html->link($lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug'])); ?>
+
+							<?php if ($is_you && $lan['Lan']['sign_up_open']): ?>
+								<br /><?php
+					echo $this->Html->link(
+							$this->Html->image('16x16_GIF/reply.gif') . ' Edit your signup', array('controller' => 'lan_signups', 'action' => 'edit', $lan['Lan']['id']), array('escape' => false)
+					);
+								?>
 							<?php endif; ?>
 							<?php if (isset($lan['LanInvite']['Student'])): ?>
 								<br />
@@ -137,22 +143,18 @@
 							<?php endif; ?>
 						</td>
 						<td>
-							<ul>
-
-
-								<?php foreach ($lan['LanSignupDay'] as $day): ?>
-									<li><?php echo $this->Time->format('D M jS', $day['LanDay']['date']); ?></li>
-								<?php endforeach; ?>
-							</ul>
+							<?php foreach ($lan['LanSignupDay'] as $day): ?>
+								<?php echo $this->Time->format('D M jS', $day['LanDay']['date']); ?><br />
+							<?php endforeach; ?>
 						</td>
+
 						<?php if ($is_you): ?>
 							<td>
-								<?php if ($lan['Lan']['sign_up_open']): ?>
-									<?php
-									echo $this->Html->link(
-											$this->Html->image('16x16_GIF/reply.gif') . ' Edit your signup', array('controller' => 'lan_signups', 'action' => 'edit', $lan['Lan']['id']), array('escape' => false)
-									);
-									?>
+								<?php if (isset($lan_invites_accepted) && count($lan_invites_accepted)): ?>
+								<strong>Guests of you:</strong>
+									<?php foreach ($lan_invites_accepted as $invite_accepted): ?>
+										<?php echo $invite_accepted['Guest']['name']; ?><br />
+									<?php endforeach; ?>
 								<?php endif; ?>
 							</td>
 						<?php endif; ?>
