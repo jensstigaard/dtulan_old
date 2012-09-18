@@ -126,9 +126,10 @@ class PizzaOrdersController extends AppController {
 			'conditions' => array(
 				'PizzaOrderItem.pizza_order_id' => $id
 			)
-				));
+				)
+		);
 
-		$sum = $sum['PizzaOrderItem']['sum'];
+		$sum = $sum[0][0]['ctotal'];
 
 		$this->PizzaOrder->User->id = $this->Auth->user('id');
 		$this->PizzaOrder->User->read(array('balance'));
