@@ -79,7 +79,7 @@
 				<div id="sponsors">
 					<?php echo $this->element('sponsors', array()); ?>
 					<div id="copyright">
-						<p>DTU LAN Party &bull; Copyright &copy; 2012 &bull; <?php echo $this->Html->link('contact@dtu-lan.dk', 'mailto:contact@dtu-lan.dk'); ?></p>
+						<p>DTU LAN Party &bull; Copyright &copy; 2012 &bull; <?php echo $this->Html->link('Contact', 'mailto:contact@dtu-lan.dk'); ?></p>
 					</div>
 				</div>
 			</div>
