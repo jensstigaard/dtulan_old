@@ -119,16 +119,24 @@ class UsersController extends AppController {
 		);
 
 		if ($user['User']['type'] == 'student') {
-			// Lan invites made by user
+			// Lan invites (accepted) made by user
+			$lan_invites_accepted = array();
 			$this->User->LanInvite->recursive = 1;
-			$this->set('lan_invites_accepted', $this->User->LanInvite->find('all', array(
-						'conditions' => array(
-							'LanInvite.user_student_id' => $id,
-							'LanInvite.accepted' => 1
+			foreach ($lans as $lan) {
+				$lan_invites_accepted[$lan['Lan']['id']] = $this->User->LanInvite->find('all', array(
+					'conditions' => array(
+						'LanInvite.user_student_id' => $id,
+						'LanInvite.accepted' => 1,
+						'LanInvite.lan_id' => $lan['Lan']['id']
+					)
 						)
-							)
-					));
+				);
+			}
+
+			$this->set(compact('lan_invites_accepted'));
 		}
+
+
 
 
 		$this->set(compact(

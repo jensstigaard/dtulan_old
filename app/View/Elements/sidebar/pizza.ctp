@@ -1,6 +1,6 @@
 <?php if (isset($waves) && count($waves)): ?>
 	<div id="pizza_waves">
-		<h1 style="padding:0;">Pizza Waves available</h1>
+		<h1 style="padding:0;">Pizza Waves available:</h1>
 		<?php if ($current_wave == ''): ?>
 			<div class="notice" style="font-size:11pt; padding:5px;">
 				Choose a wave below to order pizzas.
@@ -18,7 +18,7 @@
 				</div>
 			<?php endif; ?>
 			<div>
-				<h2>
+				<h3>
 					<?php
 					if ($this->Time->isToday($wave['PizzaWave']['time_start'])) {
 						echo'Today';
@@ -30,7 +30,7 @@
 						echo $this->Time->format('D, M jS', $wave['PizzaWave']['time_start']);
 					}
 					?>
-				</h2>
+				</h3>
 				<ul>
 					<?php $last_date = $this_date; ?>
 				<?php endif; ?>

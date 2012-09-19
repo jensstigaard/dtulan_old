@@ -99,6 +99,10 @@ class PizzaOrdersController extends AppController {
 	}
 
 	public function delete($id) {
+		if (!$this->request->is('post')) {
+			throw new BadRequestException('Bad request from client');
+		}
+
 		$this->PizzaOrder->id = $id;
 
 		if (!$this->PizzaOrder->exists()) {
@@ -111,8 +115,8 @@ class PizzaOrdersController extends AppController {
 			throw new NotFoundException(__('Pizza order not found'));
 		}
 
-		if ($this->Pizzaorder->data['PizzaOrder']['status'] > 0) {
-			throw new UnauthorizedException(__('Pizza order already'));
+		if ($this->PizzaOrder->data['PizzaOrder']['status'] > 0) {
+			throw new UnauthorizedException(__('Pizza order already delivered'));
 		}
 
 		if (!$this->PizzaOrder->PizzaWave->isOrderable($this->PizzaOrder->data['PizzaOrder']['pizza_wave_id'])) {

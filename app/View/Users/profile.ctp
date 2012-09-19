@@ -152,7 +152,7 @@
 						<?php if ($is_auth): ?>
 							<td>
 								<?php if (isset($lan_invites_accepted) && count($lan_invites_accepted)): ?>
-									<?php foreach ($lan_invites_accepted as $invite_accepted): ?>
+									<?php foreach ($lan_invites_accepted[$lan['Lan']['id']] as $invite_accepted): ?>
 										<?php echo $this->Html->link($invite_accepted['Guest']['name'], array('controller' => 'users', 'action' => 'profile', $invite_accepted['Guest']['id'])); ?><br />
 									<?php endforeach; ?>
 								<?php endif; ?>

@@ -31,6 +31,7 @@ class PizzaOrderItem extends AppModel {
 			return false;
 		}
 	}
+
 }
 
 ?>
