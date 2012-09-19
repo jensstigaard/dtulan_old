@@ -20,7 +20,11 @@
 					<td>Participants:</td>
 					<td><?php echo ($count_lan_signups - $count_lan_signups_guests) . 's + ' . $count_lan_signups_guests . 'g = ' . $count_lan_signups; ?></td>
 				</tr>
+                                
 				<?php if ($is_admin): ?>
+                                <tr>
+                                    <td rowspan="1" colspan="2"></td>
+                                </tr>
                                 <tr>
                                     <th colspan="2">Crew only</th>
                                 </tr>
