@@ -20,14 +20,14 @@
 					<td>Participants:</td>
 					<td><?php echo ($count_lan_signups - $count_lan_signups_guests) . 's + ' . $count_lan_signups_guests . 'g = ' . $count_lan_signups; ?></td>
 				</tr>
-                                
+
 				<?php if ($is_admin): ?>
-                                <tr>
-                                    <td rowspan="1" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">Crew only</th>
-                                </tr>
+					<tr>
+						<td rowspan="1" colspan="2"></td>
+					</tr>
+					<tr>
+						<th colspan="2">Crew only</th>
+					</tr>
 					<tr>
 						<td>Invited (not accepted):</td>
 						<td><?php echo count($lan_invites); ?></td>
@@ -44,14 +44,24 @@
 						<td>Sign up open:</td>
 						<td><?php echo $lan['Lan']['sign_up_open'] ? 'Yes' : 'No'; ?></td>
 					</tr>
-                                        <tr>
-                                            <td>Guests:</td>
-                                            <td><?php echo floor($count_lan_signups_guests / $count_lan_signups * 100)." %"?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Students:</td>
-                                            <td><?php echo floor(($count_lan_signups - $count_lan_signups_guests) / $count_lan_signups * 100)." %"?></td>
-                                        </tr>
+					<tr>
+						<td>Guests:</td>
+						<td><?php echo floor($count_lan_signups_guests / $count_lan_signups * 100) . " %" ?></td>
+					</tr>
+					<tr>
+						<td>Students:</td>
+						<td><?php echo floor(($count_lan_signups - $count_lan_signups_guests) / $count_lan_signups * 100) . " %" ?></td>
+					</tr>
+					<?php $total_signup = 0;?>
+					<?php $max_signup = 0;?>
+					<?php foreach ($lan_days as $lan_day): ?>
+						<?php $total_signup += count($lan_day['LanSignupDay']); ?>
+						<?php $max_signup += $lan_day['Lan']['max_participants']; ?>
+					<?php endforeach; ?>
+					<tr>
+						<td>Sign up completion:</td>
+						<td><?php echo floor($total_signup / $max_signup * 100);?></td>
+					</tr>	
 				<?php endif; ?>
 			</tbody>
 		</table>
@@ -109,9 +119,9 @@
 	</div>
 <?php endif; ?>
 <?php if ($is_admin): ?>
-<div>
-    <h1>Crew only</h1>
-</div>
+	<div>
+		<h1>Crew only</h1>
+	</div>
 	<?php
 // Reset total
 	$total_lan = 0;
@@ -217,11 +227,11 @@
 		</table>
 	</div>
 <?php endif; ?>
-<?php if($is_admin):?>
-<div>
-    <h1>Viewable by users</h1>
-</div>
-<?php endif;?>
+<?php if ($is_admin): ?>
+	<div>
+		<h1>Viewable by users</h1>
+	</div>
+<?php endif; ?>
 <div>
 	<h2><?php echo $this->Html->image('32x32_PNG/users_two.png'); ?> Crew</h2>
 	<table>
@@ -355,7 +365,7 @@
 						<td><?php echo $this->Html->link($tournament['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $tournament['Tournament']['id'])); ?></td>
 						<td><?php echo $tournament['Game']['title'] ?></td>
 						<td style="text-align: center"><?php echo $tournament['Tournament']['team_size'] ?></td>
-						<td style="text-align: right"><?php //Participants	                              ?></td>
+						<td style="text-align: right"><?php //Participants	                                 ?></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
