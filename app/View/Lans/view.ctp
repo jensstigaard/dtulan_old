@@ -60,7 +60,7 @@
 					<?php endforeach; ?>
 					<tr>
 						<td>Sign up completion:</td>
-						<td><?php echo floor($total_signup / $max_signup * 100);?></td>
+						<td><?php echo floor($total_signup / $max_signup * 100)." %"?></td>
 					</tr>	
 				<?php endif; ?>
 			</tbody>
