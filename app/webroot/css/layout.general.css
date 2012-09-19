@@ -24,6 +24,7 @@ body{
 	background-repeat: repeat;
 	background-position: top left;
 	margin: 0;
+	overflow-y: scroll;
 }
 
 a {

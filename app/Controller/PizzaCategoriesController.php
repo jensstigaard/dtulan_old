@@ -30,7 +30,6 @@ class PizzaCategoriesController extends AppController {
 
 		$title_for_layout = 'Pizzas';
 
-
 		$this->loadModel('Lan');
 		if ($this->Lan->isCurrent($this->isAdmin())) {
 			$current_lan = $this->Lan->getCurrent($this->isAdmin());
@@ -94,7 +93,7 @@ class PizzaCategoriesController extends AppController {
 		}
 
 		$this->set('pizza_categories', $data_category);
-		$this->set('is_orderable', ($this->Auth->loggedIn() && isset($current_wave) && $current_wave != ''));
+		$this->set('is_orderable', ($this->Auth->loggedIn() && isset($current_wave['PizzaWave'])));
 	}
 
 	public function add() {

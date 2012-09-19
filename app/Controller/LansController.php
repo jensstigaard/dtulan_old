@@ -243,7 +243,7 @@ class LansController extends AppController {
 			$total_pizza_orders += count($wave['PizzaOrder']);
 			foreach ($wave['PizzaOrder'] as $order) {
 				foreach ($order['PizzaOrderItem'] as $item) {
-					$total_pizzas += $item['price'] * $item['amount'];
+					$total_pizzas += $item['price'] * $item['quantity'];
 				}
 			}
 		}

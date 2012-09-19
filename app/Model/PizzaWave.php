@@ -95,7 +95,7 @@ class PizzaWave extends AppModel {
 			$conditions['PizzaWave.lan_id'] = $lan_id;
 		}
 
-		$current_wave = $this->Lan->PizzaWave->find('all', array(
+		$current_wave = $this->find('all', array(
 			'conditions' => $conditions,
 			'order' => array(
 				'PizzaWave.time_start ASC'
@@ -104,6 +104,78 @@ class PizzaWave extends AppModel {
 		);
 
 		return $current_wave;
+	}
+
+	public function isOrderable($id) {
+		$this->id = $id;
+
+		if (!$this->exists()) {
+			throw new NotFoundException(__('Pizza wave not found'));
+		}
+
+		$this->read(array('time_end', 'lan_id'));
+
+		if ($this->Lan->isPublished($this->data['PizzaWave']['lan_id'])) {
+			if ($this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public function getItemList($id) {
+		$this->id = $id;
+
+		if (!$this->exists()) {
+			throw new NotFoundException(__('Pizza wave not found'));
+		}
+
+		$this->PizzaOrder->unbindModel(array('belongsTo' => array('User', 'PizzaWave')));
+		$this->PizzaOrder->PizzaOrderItem->unbindModel(array('belongsTo' => array('PizzaOrder')));
+		$this->PizzaOrder->PizzaOrderItem->PizzaPrice->unbindModel(array('hasMany' => array('PizzaOrderItem')));
+		$pizza_orders = $this->PizzaOrder->find('all', array(
+			'conditions' => array(
+				'PizzaOrder.pizza_wave_id' => $id
+			),
+			'recursive' => 3
+				)
+		);
+
+		$pizza_wave_items = array();
+
+		foreach ($pizza_orders as $pizza_order) {
+			foreach ($pizza_order['PizzaOrderItem'] as $pizza_order_item) {
+
+				if (!isset($pizza_wave_items[$pizza_order_item['id']])) {
+					$pizza_wave_items[$pizza_order_item['id']] = array(
+						'quantity' => 0,
+						'pizza_title' => $pizza_order_item['PizzaPrice']['Pizza']['title'],
+						'pizza_number' => $pizza_order_item['PizzaPrice']['Pizza']['number'],
+						'pizza_type' => $pizza_order_item['PizzaPrice']['PizzaType']['title']
+					);
+				}
+				$pizza_wave_items[$pizza_order_item['id']]['quantity'] += $pizza_order_item['quantity'];
+			}
+		}
+
+		function compare($a, $b) {
+			if (strcmp($a['pizza_number'], $b['pizza_number']) == 0) {
+				if (strcmp($a['pizza_title'], $b['pizza_title']) == 0) {
+					if (strcmp($a['pizza_type'], $b['pizza_type']) == 0) {
+						return 0;
+					}
+					return strcmp($a['pizza_type'], $b['pizza_type']);
+				}
+				return strcmp($a['pizza_title'], $b['pizza_title']);
+			}
+			return strcmp($a['pizza_number'], $b['pizza_number']);
+		}
+
+		// Sort the items
+		usort($pizza_wave_items, "compare");
+
+		return $pizza_wave_items;
 	}
 
 }

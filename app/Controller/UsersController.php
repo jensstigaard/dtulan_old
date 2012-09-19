@@ -83,7 +83,8 @@ class UsersController extends AppController {
 
 		$title_for_layout = 'Profile &bull; ' . $user['User']['name'];
 
-		/* Teams for user */
+
+		// Teams for user
 		$this->User->TeamUser->recursive = 2;
 		$this->User->TeamUser->Team->Tournament->unbindModel(array('belongsTo' => array('Lan')));
 
@@ -93,7 +94,7 @@ class UsersController extends AppController {
 				)
 		);
 
-		/* Pizza orders */
+		// Pizza orders
 		$this->User->PizzaOrder->recursive = 3;
 		$this->User->PizzaOrder->unbindModel(array('belongsTo' => array('User')));
 		$this->User->PizzaOrder->PizzaWave->unbindModel(array('hasMany' => array('PizzaOrder'), 'belongsTo' => array('Lan')));
@@ -105,7 +106,7 @@ class UsersController extends AppController {
 				)
 		);
 
-		/* Lan signups */
+		// Lan signups
 		$this->User->LanSignup->recursive = 2;
 		$this->User->LanSignup->unbindModel(array('belongsTo' => array('User')));
 		$this->User->LanSignup->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'PizzaWave')));
@@ -116,6 +117,27 @@ class UsersController extends AppController {
 			),
 				)
 		);
+
+		if ($user['User']['type'] == 'student') {
+			// Lan invites (accepted) made by user
+			$lan_invites_accepted = array();
+			$this->User->LanInvite->recursive = 1;
+			foreach ($lans as $lan) {
+				$lan_invites_accepted[$lan['Lan']['id']] = $this->User->LanInvite->find('all', array(
+					'conditions' => array(
+						'LanInvite.user_student_id' => $id,
+						'LanInvite.accepted' => 1,
+						'LanInvite.lan_id' => $lan['Lan']['id']
+					)
+						)
+				);
+			}
+
+			$this->set(compact('lan_invites_accepted'));
+		}
+
+
+
 
 		$this->set(compact(
 						'title_for_layout', 'is_you', 'is_auth', 'user', 'pizza_orders', 'lans', 'teams'
@@ -167,7 +189,7 @@ class UsersController extends AppController {
 				$email->send($msg);
 
 
-				$this->Session->setFlash(__('Your user has been registered. An email is sent to '.$email.'. Follow the instructions in the email to continue the activation process. Remember to check your spam folder'), 'default', array('class' => 'message success'), 'good');
+				$this->Session->setFlash(__('Your user has been registered. An email is sent to ' . $email . '. Follow the instructions in the email to continue the activation process. Remember to check your spam folder'), 'default', array('class' => 'message success'), 'good');
 				$this->redirect('/');
 			} else {
 				$this->Session->setFlash(__('The user could not be saved. Please try again.'), 'default', array(), 'bad');
@@ -200,9 +222,9 @@ class UsersController extends AppController {
 	}
 
 	public function activate($id = null) {
-		
+
 		$user = $this->User->read(array('id', 'activated', 'email', 'name'), $id);
-		
+
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
@@ -241,45 +263,45 @@ class UsersController extends AppController {
 				$this->Session->setFlash(__('Account was not activated'), 'default', array(), 'bad');
 			}
 		}
-		
-		
-	/**
-	 * @author Casper
-	 * Ask my if you have any questions. This is only an alternative.
-	
-		$this->User->read(array('id', 'activated', 'email', 'name'), $id);
-		if (!$this->User->exists()) {
-			throw new NotFoundException(__('Invalid user'));
-		}
-		if ($this->User->isActivated()) {
-			throw new NotFoundException(__('Invalid user'));
-		}
-		$this->set('title_for_layout', 'Activate user');
 
-		if ($this->request->is('post')) {
-			
-	 		$this->User->set('activated', 1);
-			$this->User->set('time_activated', date('Y-m-d H:i:s'));
-			$this->User->set('password', $this->request->data['User']['password']);
-			$this->User->set('password_confirmation', $this->request->data['User']['password_confirmation']);
-			
-			if ($this->User->save()) {
-				 // Logs user in after successful activation
-				unset($this->request->data['User']);
-				$this->request->data['User']['email'] = $this->User->getEmail();
-				$this->request->data['User']['password'] = $this->User->data['User']['password'];
-				if ($this->Auth->login()) {
-					$this->Session->setFlash(__('Your account is activated. Welcome ' . $this->User->getName()), 'default', array('class' => 'message success'), 'good');
-					$this->redirect('/');
-				} else {
-					$this->Session->setFlash(__('Your account is activated. Please log in.'), 'default', array('class' => 'message success'), 'good');
-					$this->redirect(array('action' => 'login'));
-				}
-			} else {
-				$this->Session->setFlash(__('Account was not activated'), 'default', array(), 'bad');
-			}
-		}
-	 */
+
+		/**
+		 * @author Casper
+		 * Ask my if you have any questions. This is only an alternative.
+
+		  $this->User->read(array('id', 'activated', 'email', 'name'), $id);
+		  if (!$this->User->exists()) {
+		  throw new NotFoundException(__('Invalid user'));
+		  }
+		  if ($this->User->isActivated()) {
+		  throw new NotFoundException(__('Invalid user'));
+		  }
+		  $this->set('title_for_layout', 'Activate user');
+
+		  if ($this->request->is('post')) {
+
+		  $this->User->set('activated', 1);
+		  $this->User->set('time_activated', date('Y-m-d H:i:s'));
+		  $this->User->set('password', $this->request->data['User']['password']);
+		  $this->User->set('password_confirmation', $this->request->data['User']['password_confirmation']);
+
+		  if ($this->User->save()) {
+		  // Logs user in after successful activation
+		  unset($this->request->data['User']);
+		  $this->request->data['User']['email'] = $this->User->getEmail();
+		  $this->request->data['User']['password'] = $this->User->data['User']['password'];
+		  if ($this->Auth->login()) {
+		  $this->Session->setFlash(__('Your account is activated. Welcome ' . $this->User->getName()), 'default', array('class' => 'message success'), 'good');
+		  $this->redirect('/');
+		  } else {
+		  $this->Session->setFlash(__('Your account is activated. Please log in.'), 'default', array('class' => 'message success'), 'good');
+		  $this->redirect(array('action' => 'login'));
+		  }
+		  } else {
+		  $this->Session->setFlash(__('Account was not activated'), 'default', array(), 'bad');
+		  }
+		  }
+		 */
 	}
 
 	public function login() {
@@ -318,12 +340,22 @@ class UsersController extends AppController {
 
 		if ($this->request->is('post')) {
 			$email = $this->request->data['User']['email'];
-			$user = $this->User->findByEmail($email);
 
-			if ($user) {
+			$this->User->find('first', array(
+				'conditions' => array(
+					'User.email' => $email
+				),
+				'recursive' => 0
+					)
+			);
+
+			if (!$this->User->exists()) {
+				throw new NotFoundException(__('Could not send email'));
+			} elseif (isset($this->User->data['UserPasswordTicket']['time']) && $this->User->data['UserPasswordTicket']['time'] < date('Y-m-d H:i:s', strtotime('-1 day'))) {
+				throw new UnauthorizedException(__('Ticket for user already sent'));
+			} else {
 				$this->request->data['UserPasswordTicket']['user_id'] = $user['User']['id'];
 				$this->request->data['UserPasswordTicket']['time'] = date('Y-m-d H:i:s');
-
 
 				if (!$this->User->UserPasswordTicket->save($this->request->data)) {
 					$this->Session->setFlash(__('Fatal error during database call. Please try again'), 'default', array(), 'bad');
@@ -399,8 +431,8 @@ class UsersController extends AppController {
 
 			$input_string = $this->request->data['search_startsWith'];
 
-			$this->User->recursive = 0;
 			$users = $this->User->find('all', array(
+				'recursive' => -1,
 				'conditions' => array(
 					'OR' => array(
 						array(

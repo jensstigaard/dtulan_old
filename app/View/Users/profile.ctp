@@ -111,8 +111,8 @@
 			<tr>
 				<th>Title</th>
 				<th>Days attending</th>
-				<?php if ($is_you): ?>
-					<th>Actions</th>
+				<?php if ($is_auth): ?>
+					<th>Guests of you</th>
 				<?php endif; ?>
 			</tr>
 			<?php if (!count($lans)): ?>
@@ -126,7 +126,14 @@
 					<tr>
 						<td>
 							<?php echo $this->Html->link($lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug'])); ?>
-							<?php if (isset($lan['LanInvite']['Student'])): ?>
+
+							<?php if ($is_you && $lan['Lan']['sign_up_open']): ?>
+								<br />
+								<?php
+								echo $this->Html->link(
+										$this->Html->image('16x16_GIF/reply.gif') . ' Edit your signup', array('controller' => 'lan_signups', 'action' => 'edit', $lan['Lan']['id']), array('escape' => false)
+								);
+								?>
 							<?php endif; ?>
 							<?php if (isset($lan['LanInvite']['Student'])): ?>
 								<br />
@@ -137,22 +144,17 @@
 							<?php endif; ?>
 						</td>
 						<td>
-							<ul>
-
-
-								<?php foreach ($lan['LanSignupDay'] as $day): ?>
-									<li><?php echo $this->Time->format('D M jS', $day['LanDay']['date']); ?></li>
-								<?php endforeach; ?>
-							</ul>
+							<?php foreach ($lan['LanSignupDay'] as $day): ?>
+								<?php echo $this->Time->format('D M jS', $day['LanDay']['date']); ?><br />
+							<?php endforeach; ?>
 						</td>
-						<?php if ($is_you): ?>
+
+						<?php if ($is_auth): ?>
 							<td>
-								<?php if ($lan['Lan']['sign_up_open']): ?>
-									<?php
-									echo $this->Html->link(
-											$this->Html->image('16x16_GIF/reply.gif') . ' Edit your signup', array('controller' => 'lan_signups', 'action' => 'edit', $lan['Lan']['id']), array('escape' => false)
-									);
-									?>
+								<?php if (isset($lan_invites_accepted) && count($lan_invites_accepted)): ?>
+									<?php foreach ($lan_invites_accepted[$lan['Lan']['id']] as $invite_accepted): ?>
+										<?php echo $this->Html->link($invite_accepted['Guest']['name'], array('controller' => 'users', 'action' => 'profile', $invite_accepted['Guest']['id'])); ?><br />
+									<?php endforeach; ?>
 								<?php endif; ?>
 							</td>
 						<?php endif; ?>
@@ -232,15 +234,19 @@
 								<td><?php foreach ($pizza_order['PizzaOrderItem'] as $item): ?>
 										<div>
 											<div style="float:right"><?php echo $item['price']; ?> DKK =</div>
-											<?php echo $item['amount']; ?> x <?php echo $item['PizzaPrice']['Pizza']['title']; ?>
+											<?php echo $item['quantity']; ?> x <?php echo $item['PizzaPrice']['Pizza']['title']; ?>
 											<small>(<?php echo $item['PizzaPrice']['PizzaType']['title']; ?>)</small>
 										</div>
-										<?php $order_balance += $item['amount'] * $item['price']; ?>
+										<?php $order_balance += $item['quantity'] * $item['price']; ?>
 									<?php endforeach; ?></td>
 								<td><?php echo $order_balance; ?> DKK</td>
 								<?php if ($is_you): ?>
 									<td>
-										Cancel order
+										<?php
+										echo $this->Form->postLink(
+												$this->Html->image('16x16_PNG/cancel.png') . ' Cancel order', array('controller' => 'pizza_orders', 'action' => 'delete', $pizza_order['PizzaOrder']['id']), array('confirm' => "Are You sure you will delete this order?", 'escape' => false)
+										);
+										?>
 									</td>
 								<?php endif; ?>
 							</tr>
