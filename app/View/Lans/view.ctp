@@ -37,6 +37,14 @@
 						<td>Sign up open:</td>
 						<td><?php echo $lan['Lan']['sign_up_open'] ? 'Yes' : 'No'; ?></td>
 					</tr>
+                                        <tr>
+                                            <td>Guests:</td>
+                                            <td><?php echo floor($count_lan_signups_guests / $count_lan_signups * 100)." %"?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Students:</td>
+                                            <td><?php echo floor(($count_lan_signups - $count_lan_signups_guests) / $count_lan_signups * 100)." %"?></td>
+                                        </tr>
 				<?php endif; ?>
 			</tbody>
 		</table>
