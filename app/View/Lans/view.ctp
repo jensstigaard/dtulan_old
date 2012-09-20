@@ -46,11 +46,11 @@
 					</tr>
 					<tr>
 						<td>Guests:</td>
-						<td><?php echo floor($count_lan_signups_guests / $count_lan_signups * 100) . " %" ?></td>
+						<td><?php echo $count_lan_signups === 0 ? 0 : floor($count_lan_signups_guests / $count_lan_signups * 100) . " %" ?></td>
 					</tr>
 					<tr>
 						<td>Students:</td>
-						<td><?php echo floor(($count_lan_signups - $count_lan_signups_guests) / $count_lan_signups * 100) . " %" ?></td>
+						<td><?php echo $count_lan_signups_guests === 0 ? 0 : floor(($count_lan_signups - $count_lan_signups_guests) / $count_lan_signups * 100) . " %" ?></td>
 					</tr>
 					<?php $total_signup = 0;?>
 					<?php $max_signup = 0;?>
@@ -59,8 +59,8 @@
 						<?php $max_signup += $lan_day['Lan']['max_participants']; ?>
 					<?php endforeach; ?>
 					<tr>
-						<td>Sign up completion:</td>
-						<td><?php echo floor($total_signup / $max_signup * 100)." %"?></td>
+						<td>Fill rate:</td>
+						<td><?php echo $max_signup === 0 ? 0 : floor(($total_signup / $max_signup) * 100)." %"?></td>
 					</tr>	
 				<?php endif; ?>
 			</tbody>
