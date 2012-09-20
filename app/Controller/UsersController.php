@@ -341,7 +341,7 @@ class UsersController extends AppController {
 		if ($this->request->is('post')) {
 			$email = $this->request->data['User']['email'];
 
-			$this->User->find('first', array(
+			$user = $this->User->find('first', array(
 				'conditions' => array(
 					'User.email' => $email
 				),
@@ -349,7 +349,7 @@ class UsersController extends AppController {
 					)
 			);
 
-			if (!$this->User->exists()) {
+			if (!$user) {
 				throw new NotFoundException(__('Could not send email'));
 			} elseif (isset($this->User->data['UserPasswordTicket']['time']) && $this->User->data['UserPasswordTicket']['time'] < date('Y-m-d H:i:s', strtotime('-1 day'))) {
 				throw new UnauthorizedException(__('Ticket for user already sent'));
