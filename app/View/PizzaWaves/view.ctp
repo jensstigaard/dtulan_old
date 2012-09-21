@@ -12,7 +12,13 @@
 			</tr>
 			<tr>
 				<td>Status</td>
-				<td><?php echo $pizza_wave['PizzaWave']['status']; ?></td>
+				<td>
+					<?php if (!$pizza_wave['PizzaWave']['status'] && $pizza_wave['PizzaWave']['time_end'] < date('Y-m-d H:i:s') && count($pizza_wave_items)): ?>
+						<?php echo $this->Html->link('Send email to pizzaria now', array('action' => 'send_email', $pizza_wave['PizzaWave']['id'])); ?>
+					<?php else: ?>
+						<?php echo $pizza_wave['PizzaWave']['status']; ?>
+					<?php endif; ?>
+				</td>
 			</tr>
 		</tbody>
 

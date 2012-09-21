@@ -75,6 +75,9 @@ class PizzaWavesController extends AppController {
 	}
 
 	public function send_email($id) {
+
+		App::uses('CakeEmail', 'Network/Email');
+		
 		$this->PizzaWave->id = $id;
 
 		if (!$this->PizzaWave->exists()) {
@@ -87,7 +90,7 @@ class PizzaWavesController extends AppController {
 			throw new MethodNotAllowedException(__('Email for pizza wave already sent'));
 		}
 
-		$pizza_wave_items = $this->PizzaWave->getItemList();
+		$pizza_wave_items = $this->PizzaWave->getItemList($id);
 
 		if(!count($pizza_wave_items)){
 			throw new NotFoundException(__('No items found in pizza wave'));

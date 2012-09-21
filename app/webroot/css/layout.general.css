@@ -102,7 +102,7 @@ hr{
 	height:40px;
 }
 
-#header > div, #footer > div{
+#header > div{
 	width:950px;
 	margin: 0 auto;
 }

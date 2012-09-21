@@ -31,22 +31,22 @@
 				?>
 			</td>
 
-<!--								<td>
-			<?php
-//								echo $this->Html->link(
-//										$this->Html->image('steelseries.png', array('alt' => 'SteelSeries - Gaming equipment')), 'http://steelseries.com/', array('target' => '_blank', 'escape' => false)
-//								);
-			?>
-								</td>
+			<td>
+				<?php
+				echo $this->Html->link(
+						$this->Html->image('steelseries.png', array('alt' => 'SteelSeries - Gaming equipment')), 'http://steelseries.com/', array('target' => '_blank', 'escape' => false)
+				);
+				?>
+			</td>
 
-								<td>
-			<?php
-//									echo $this->Html->link(
-//											$this->Html->image('fucapo.png', array('alt' => 'Fucapo - Energy gum and drops')), 'http://fucapo.com/', array('target' => '_blank', 'escape' => false)
-//									);
-			?>
-								</td>
-			-->
+<!--			<td>
+				<?php
+//				echo $this->Html->link(
+//						$this->Html->image('fucapo.png', array('alt' => 'Fucapo - Energy gum and drops')), 'http://fucapo.com/', array('target' => '_blank', 'escape' => false)
+//				);
+				?>
+			</td>-->
+
 			<td>
 				<?php
 				echo $this->Html->link(

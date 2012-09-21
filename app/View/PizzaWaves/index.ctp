@@ -20,6 +20,7 @@
 				<th>
 					<small>Status</small>
 				</th>
+				<th></th>
 			</tr>
 			<?php foreach ($pizza_waves as $pizza_wave): ?>
 				<tr>
@@ -27,14 +28,32 @@
 					<td><?php echo $this->Time->nice($pizza_wave['PizzaWave']['time_start']); ?></td>
 					<td><?php echo $this->Time->nice($pizza_wave['PizzaWave']['time_end']); ?></td>
 					<td>
-						<?php if (!$pizza_wave['PizzaWave']['status'] && $pizza_wave['PizzaWave']['time_end'] < date('Y-m-d H:i:s')): ?>
-							<?php echo $this->Html->link('Send email to pizzaria now', array('action' => 'view', $pizza_wave['PizzaWave']['id'])); ?>
-						<?php else: ?>
-							<?php echo $pizza_wave['PizzaWave']['status']; ?>
-						<?php endif; ?>
+						<?php
+						switch ($pizza_wave['PizzaWave']['status']) {
+							case 1:
+								echo'Waiting for delivering';
+								break;
+							case 2:
+								echo'Pizza wave received';
+								break;
+							default:
+								echo'Not proceded';
+								break;
+						}
+						?>
+					</td>
+					<td>
+						<?php
+						echo $this->Html->link(
+								'View', array(
+							'action' => 'view',
+							$pizza_wave['PizzaWave']['id']
+								)
+						);
+						?>
 					</td>
 				</tr>
-			<?php endforeach; ?>
+		<?php endforeach; ?>
 		</table>
-	<?php endif; ?>
+<?php endif; ?>
 </div>
