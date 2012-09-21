@@ -77,7 +77,7 @@ class PizzaWavesController extends AppController {
 	public function send_email($id) {
 
 		App::uses('CakeEmail', 'Network/Email');
-		
+
 		$this->PizzaWave->id = $id;
 
 		if (!$this->PizzaWave->exists()) {
@@ -91,6 +91,7 @@ class PizzaWavesController extends AppController {
 		}
 
 		$pizza_wave_items = $this->PizzaWave->getItemList($id);
+		$content_for_email = $this->PizzaWave->getItemListPrintable($pizza_wave_items);
 
 		if(!count($pizza_wave_items)){
 			throw new NotFoundException(__('No items found in pizza wave'));
@@ -99,11 +100,17 @@ class PizzaWavesController extends AppController {
 		$email = new CakeEmail();
 		$email->config('smtp');
 		$email->emailFormat('html');
-		$email->template('pizza_wave_items_to_pizzaria');
+		$email->template('pizza_wave_to_pizzaria');
 		$email->from(array('no-reply@dtu-lan.dk' => 'DTU LAN site - No reply'));
 		$email->to('jens@stigaard.info');
 		$email->subject('DTU LAN Party - Ny pizza liste');
-		$email->send($pizza_wave_items);
+
+		if($email->send($content_for_email)){
+			$this->Session->setFlash('Your email has been send', 'default', array('class' => 'message success'), 'good');
+		}
+
+		$this->Session->setFlash('Unable to send email for this PizzaWave.', 'default', array(), 'bad');
+		$this->redirect(array('action' => 'index'));
 	}
 
 }
