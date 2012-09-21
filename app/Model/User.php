@@ -174,12 +174,13 @@ class User extends AppModel {
 	public function getGuestNumber() {
 		$guestNumber = 'g' . date('ym');
 
-		$count = $this->find('count', array(
-			'conditions' => array(
-				'User.id_number LIKE' => $guestNumber . '%'
-			)
+		$count = $this->find('first', array(
+			'order' => array(
+				'id_number' => 'DESC'
 				)
+			)
 		);
+		$count = intval(substr($count, 5));
 		if ($count >= 99) {
 			throw new TooManyGuestSignUps();
 		}
