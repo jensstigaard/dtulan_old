@@ -16,7 +16,8 @@
 					<?php
 					switch ($pizza_wave['PizzaWave']['status']) {
 						case 0:
-							echo'Not open';
+							echo'Not open<br />';
+							echo $this->Html->link('Mark as public', array('action' => 'mark_open', $pizza_wave['PizzaWave']['id']));
 							break;
 						case 1:
 							echo'Open ';

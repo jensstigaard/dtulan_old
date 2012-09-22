@@ -53,7 +53,8 @@ class PizzaWave extends AppModel {
 		$current_wave = $this->Lan->PizzaWave->find('count', array(
 			'conditions' => array(
 				'PizzaWave.time_end >' => $current_time,
-				'PizzaWave.time_start <' => $current_time
+				'PizzaWave.time_start <' => $current_time,
+				'PizzaWave.status' => 1
 			)
 				)
 		);
@@ -66,7 +67,8 @@ class PizzaWave extends AppModel {
 
 		$conditions = array(
 			'PizzaWave.time_end >' => $current_time,
-			'PizzaWave.time_start <' => $current_time
+			'PizzaWave.time_start <' => $current_time,
+			'PizzaWave.status' => 1
 		);
 
 		if ($lan_id != null) {
@@ -89,6 +91,7 @@ class PizzaWave extends AppModel {
 
 		$conditions = array(
 			'PizzaWave.time_end >' => $current_time,
+			'PizzaWave.status' => 1
 		);
 
 		if ($lan_id != null) {
@@ -113,10 +116,10 @@ class PizzaWave extends AppModel {
 			throw new NotFoundException(__('Pizza wave not found'));
 		}
 
-		$this->read(array('time_end', 'lan_id'));
+		$this->read(array('time_end', 'lan_id', 'status'));
 
 		if ($this->Lan->isPublished($this->data['PizzaWave']['lan_id'])) {
-			if ($this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
+			if ($this->data['PizzaWave']['status'] && $this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
 				return true;
 			}
 		}
@@ -192,6 +195,26 @@ class PizzaWave extends AppModel {
 		}
 
 		return $content;
+	}
+
+	public function getStatus($id){
+		$this->id = $id;
+
+		if(!$this->exists()){
+			throw new NotFoundException('Pizza wave not found');
+		}
+
+		$this->read(array('status'));
+
+		return $this->data['PizzaWave']['status'];
+	}
+
+	public function isDelivered($id){
+		return $this->getStatus($id) == 3;
+	}
+
+	public function isCompleted($id){
+		return $this->getStatus($id) == 4;
 	}
 
 }
