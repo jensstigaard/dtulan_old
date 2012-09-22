@@ -30,11 +30,20 @@
 					<td>
 						<?php
 						switch ($pizza_wave['PizzaWave']['status']) {
+							case 0:
+								echo'Not open';
+								break;
 							case 1:
-								echo'Waiting for delivering';
+								echo'Open';
 								break;
 							case 2:
+								echo'Waiting for delivering';
+								break;
+							case 3:
 								echo'Pizza wave received';
+								break;
+							case 4:
+								echo'Finished';
 								break;
 							default:
 								echo'Not proceded';

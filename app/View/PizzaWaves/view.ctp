@@ -13,11 +13,28 @@
 			<tr>
 				<td>Status</td>
 				<td>
-					<?php if (!$pizza_wave['PizzaWave']['status'] && $pizza_wave['PizzaWave']['time_end'] < date('Y-m-d H:i:s') && count($pizza_wave_items)): ?>
-						<?php echo $this->Html->link('Send email to pizzaria now', array('action' => 'send_email', $pizza_wave['PizzaWave']['id'])); ?>
-					<?php else: ?>
-						<?php echo $pizza_wave['PizzaWave']['status']; ?>
-					<?php endif; ?>
+					<?php
+					switch ($pizza_wave['PizzaWave']['status']) {
+						case 1:
+							echo'Waiting for delivering.<br />';
+							echo $this->Html->link('Mark as received', array('action' => 'mark_received', $pizza_wave['PizzaWave']['id']));
+							break;
+						case 2:
+							echo'Pizza wave received';
+							break;
+						default:
+							if($pizza_wave['PizzaWave']['time_end'] < date('Y-m-d H:i:s') && count($pizza_wave_items)){
+								echo $this->Html->link('Send email to pizzaria now', array('action' => 'send_email', $pizza_wave['PizzaWave']['id']));
+							}
+							elseif(count($pizza_wave_items)){
+								echo'No pizzas in wave';
+							}
+							else{
+								echo'Not proceded';
+							}
+							break;
+					}
+					?>
 				</td>
 			</tr>
 		</tbody>
