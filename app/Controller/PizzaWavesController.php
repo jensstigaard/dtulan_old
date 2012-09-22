@@ -111,7 +111,7 @@ class PizzaWavesController extends AppController {
 		$email->emailFormat('html');
 		$email->template('pizza_wave_to_pizzaria');
 		$email->from(array('no-reply@dtu-lan.dk' => 'DTU LAN site - No reply'));
-		$email->to('jens@stigaard.info');
+		$email->to('dengalepirat@gmail.com');
 		$email->viewVars(array('info' => $content_for_email));
 		$email->subject('DTU LAN Party - Ny pizza liste');
 
