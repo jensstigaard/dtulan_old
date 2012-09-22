@@ -15,23 +15,30 @@
 				<td>
 					<?php
 					switch ($pizza_wave['PizzaWave']['status']) {
+						case 0:
+							echo'Not open';
+							break;
 						case 1:
-							echo'Waiting for delivering.<br />';
-							echo $this->Html->link('Mark as received', array('action' => 'mark_received', $pizza_wave['PizzaWave']['id']));
-							break;
-						case 2:
-							echo'Pizza wave received';
-							break;
-						default:
-							if($pizza_wave['PizzaWave']['time_end'] < date('Y-m-d H:i:s') && count($pizza_wave_items)){
+							echo'Open ';
+							if ($pizza_wave['PizzaWave']['time_end'] >= date('Y-m-d H:i:s')) {
+								echo' (Still taking orders)';
+							} elseif (!count($pizza_wave_items)) {
+								echo'(No pizzas in wave)';
+							} else {
 								echo $this->Html->link('Send email to pizzaria now', array('action' => 'send_email', $pizza_wave['PizzaWave']['id']));
 							}
-							elseif(count($pizza_wave_items)){
-								echo'No pizzas in wave';
-							}
-							else{
-								echo'Not proceded';
-							}
+							break;
+						case 2:
+							echo'Waiting for delivering<br />';
+							echo $this->Html->link('Mark as received', array('action' => 'mark_received', $pizza_wave['PizzaWave']['id']));
+							break;
+						case 3:
+							echo'Pizza wave received';
+							break;
+						case 4:
+							echo'Finished';
+							break;
+						default:
 							break;
 					}
 					?>

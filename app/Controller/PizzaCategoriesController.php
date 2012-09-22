@@ -59,7 +59,7 @@ class PizzaCategoriesController extends AppController {
 		$this->PizzaCategory->Pizza->PizzaPrice->unbindModel(array('belongsTo' => array('Pizza'), 'hasMany' => array('PizzaOrderItem')));
 
 		$conditions = array();
-		if (!$this->isAdmin($this->Auth->user())) {
+		if (!$this->isAdmin()) {
 			$conditions['PizzaCategory.available'] = 1;
 		}
 		$conditions =

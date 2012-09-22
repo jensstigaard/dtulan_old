@@ -127,28 +127,4 @@ class PagesController extends AppController {
 		$this->set(compact('id', 'parents'));
 		$this->request->data['Page']['latest_update_by_id'] = $this->Auth->user('id');
 	}
-
-	public function menu() {
-		$this->Page->recursive = 2;
-		$pages = $this->Page->find('all', array('conditions' => array(
-						'Page.parent_id' => 0,
-						'Page.public' => 1
-					),
-			'fields' => array(
-				'Page.id',
-				'Page.title',
-				'Page.slug',
-				'Page.public',
-				'Page.parent_id',
-				'Page.command',
-				'Page.command_value',
-			)
-						)
-		);
-
-//		debug($pages);
-
-		return $pages;
-	}
-
 }

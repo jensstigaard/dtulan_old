@@ -21,11 +21,22 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-/**
- * Here, we are connecting '/' (base path) to controller called 'Pages',
- * its action called 'display', and we pass a param to select the view file
- * to use (in this case, /app/View/Pages/home.ctp)...
- */
+Router::parseExtensions('json');
+
+
+// Let CakePHP take care of setting up the routes. This keeps the code clean and compact.
+Router::mapResources(array(':controller'), array('prefix' => '/api/'));
+// Iterate through each of the routes and for any that start with "/api/", setup the prefix properly.
+$router = Router::getInstance();
+foreach ($router->routes as &$route)
+	if (strpos($route->template, '/api/') === 0)
+		$route->defaults = Set::merge($route->defaults, array(
+					'prefix' => 'api',
+					'api' => true
+						)
+		);
+
+
 Router::connect('/', array(
 	'controller' => 'pages',
 	'action' => 'view',

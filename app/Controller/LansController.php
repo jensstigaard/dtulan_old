@@ -63,7 +63,7 @@ class LansController extends AppController {
 
 		$cond = array('Lan.slug' => $slug);
 
-		if (!$this->Auth->loggedIn() || !$this->Lan->LanSignup->User->isAdmin($this->Auth->user())) {
+		if (!$this->Auth->loggedIn() || !$this->Lan->LanSignup->User->isAdmin()) {
 			$cond['published'] = 1;
 		} elseif($this->Auth->loggedIn()) {
 			$user = $this->Auth->user();

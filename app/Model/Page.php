@@ -49,6 +49,27 @@ class Page extends AppModel {
 		return $str;
 	}
 
+	public function getMenuItems() {
+		$pages = $this->find('all', array('conditions' => array(
+				'Page.parent_id' => 0,
+				'Page.public' => 1
+			),
+			'recursive' => 2,
+			'fields' => array(
+				'Page.id',
+				'Page.title',
+				'Page.slug',
+				'Page.public',
+				'Page.parent_id',
+				'Page.command',
+				'Page.command_value',
+			)
+				)
+		);
+
+		return $pages;
+	}
+
 }
 
 ?>

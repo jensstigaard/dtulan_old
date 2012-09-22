@@ -74,11 +74,15 @@ class PizzaWavesController extends AppController {
 		$this->set('pizza_wave_items', $this->PizzaWave->getItemList($id));
 	}
 
+	public function mark_open($id) {
+
+	}
+
 	public function send_email($id) {
 
 		App::uses('CakeEmail', 'Network/Email');
 
-		$this->PizzaWave->id = $id;
+		$this->PizzaWave->id = (int) $id;
 
 		if (!$this->PizzaWave->exists()) {
 			throw new NotFoundException(__('Pizza wave not found'));
@@ -86,7 +90,10 @@ class PizzaWavesController extends AppController {
 
 		$this->PizzaWave->read(array('status'));
 
-		if ($this->PizzaWave->data['PizzaWave']['status'] > 0) {
+		if ($this->PizzaWave->data['PizzaWave']['status'] < 1) {
+			throw new MethodNotAllowedException(__('Wave not open yet'));
+		}
+		if ($this->PizzaWave->data['PizzaWave']['status'] > 1) {
 			throw new MethodNotAllowedException(__('Email for pizza wave already sent'));
 		}
 
@@ -97,18 +104,25 @@ class PizzaWavesController extends AppController {
 			throw new NotFoundException(__('No items found in pizza wave'));
 		}
 
+//		debug($content_for_email);
+
 		$email = new CakeEmail();
 		$email->config('smtp');
 		$email->emailFormat('html');
 		$email->template('pizza_wave_to_pizzaria');
 		$email->from(array('no-reply@dtu-lan.dk' => 'DTU LAN site - No reply'));
 		$email->to('jens@stigaard.info');
+		$email->viewVars(array('info' => $content_for_email));
 		$email->subject('DTU LAN Party - Ny pizza liste');
 
+		$this->PizzaWave->set(array('status' => 2));
+
+//		debug($this->PizzaWave->data);
+
 		if (
-//				$email->send($content_for_email)
-//				&&
-				$this->PizzaWave->saveField('status', 1, true)
+				$this->PizzaWave->save()
+				&&
+				$email->send()
 		) {
 			$this->Session->setFlash('Your email has been send', 'default', array('class' => 'message success'), 'good');
 		} else {
@@ -128,13 +142,15 @@ class PizzaWavesController extends AppController {
 
 		$this->PizzaWave->read(array('status'));
 
-		if ($this->PizzaWave->data['PizzaWave']['status'] < 1) {
+		if ($this->PizzaWave->data['PizzaWave']['status'] < 2) {
 			throw new MethodNotAllowedException(__('Information not sent to pizzaria yet'));
-		} elseif ($this->PizzaWave->data['PizzaWave']['status'] > 1) {
+		} elseif ($this->PizzaWave->data['PizzaWave']['status'] > 2) {
 			throw new MethodNotAllowedException(__('Pizza wave already marked as received'));
 		}
 
-		if($this->PizzaWave->saveField('status', "2", true)) {
+		$this->PizzaWave->set(array('status' => 3));
+
+		if ($this->PizzaWave->save()) {
 			$this->Session->setFlash('Pizza wave marked as received', 'default', array('class' => 'message success'), 'good');
 		} else {
 			$this->Session->setFlash('Unable to mark pizza wave as received', 'default', array(), 'bad');
