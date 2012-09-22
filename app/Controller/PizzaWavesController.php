@@ -74,10 +74,6 @@ class PizzaWavesController extends AppController {
 		$this->set('pizza_wave_items', $this->PizzaWave->getItemList($id));
 	}
 
-	public function mark_open($id) {
-
-	}
-
 	public function send_email($id) {
 
 		App::uses('CakeEmail', 'Network/Email');
@@ -112,7 +108,7 @@ class PizzaWavesController extends AppController {
 		$email->template('pizza_wave_to_pizzaria');
 		$email->from(array('no-reply@dtu-lan.dk' => 'DTU LAN site - No reply'));
 		$email->to('dengalepirat@gmail.com');
-		$email->viewVars(array('info' => $content_for_email));
+		$email->viewVars(array('info' => $content_for_email, 'title_for_layout' => 'Pizza bestilling'));
 		$email->subject('DTU LAN Party - Ny pizza liste');
 
 		$this->PizzaWave->set(array('status' => 2));
@@ -129,7 +125,32 @@ class PizzaWavesController extends AppController {
 			$this->Session->setFlash('Unable to send email for this PizzaWave.', 'default', array(), 'bad');
 		}
 
-		$this->redirect(array('action' => 'index'));
+		$this->redirect(array('action' => 'view', $id));
+	}
+
+	public function mark_open($id) {
+
+		$this->PizzaWave->id = $id;
+
+		if (!$this->PizzaWave->exists()) {
+			throw new NotFoundException(__('Pizza wave not found'));
+		}
+
+		$this->PizzaWave->read(array('status'));
+
+		if ($this->PizzaWave->data['PizzaWave']['status'] > 0) {
+			throw new MethodNotAllowedException(__('Pizza wave already marked as open'));
+		}
+
+		$this->PizzaWave->set(array('status' => 3));
+
+		if ($this->PizzaWave->save()) {
+			$this->Session->setFlash('Pizza wave marked as received', 'default', array('class' => 'message success'), 'good');
+		} else {
+			$this->Session->setFlash('Unable to mark pizza wave as received', 'default', array(), 'bad');
+		}
+
+		$this->redirect(array('action' => 'view', $id));
 	}
 
 	public function mark_received($id) {
@@ -155,7 +176,7 @@ class PizzaWavesController extends AppController {
 		} else {
 			$this->Session->setFlash('Unable to mark pizza wave as received', 'default', array(), 'bad');
 		}
-		$this->redirect(array('action' => 'index'));
+		$this->redirect(array('action' => 'view', $id));
 	}
 
 }

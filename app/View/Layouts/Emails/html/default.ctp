@@ -16,10 +16,41 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!DOCTYPE html>
 <html>
 <head>
 	<title><?php echo $title_for_layout;?></title>
+
+	<style type="text/css">
+    table {
+        border: 1px solid #000;
+    }
+
+    table thead tr th {
+        text-align: center;
+    }
+
+    table thead tr th:first-child {
+        text-align: left;
+    }
+
+    table thead tr th:last-child {
+        text-align: right;
+    }
+
+    table tbody tr td {
+        text-align: center;
+    }
+
+    table tbody tr td:first-child {
+        text-align: left;
+    }
+
+    table tbody tr td:last-child {
+        text-align: right;
+    }
+</style>
+
 </head>
 <body>
 	<?php echo $content_for_layout; ?>
