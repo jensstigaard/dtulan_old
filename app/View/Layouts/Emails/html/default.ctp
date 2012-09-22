@@ -41,7 +41,6 @@
     }
 
     table tbody tr td {
-		padding: 3px;
 		border-top: 1px solid #000;
         text-align: center;
     }

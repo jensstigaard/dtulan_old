@@ -1,6 +1,6 @@
 <div>
 	<h1>DTU LAN Party - Pizza bestilling</h1>
-	<table style="width:100%" >
+	<table style="width:100%" cellspacing="0" cellpadding="5">
 		<thead>
 			<tr>
 				<th>Antal</th>
@@ -22,7 +22,7 @@
 				echo '<td></td>';
 				echo '</tr>';
 			} 
-		?>
+			?>
 		</tbody>
 	</table>
 </div>
