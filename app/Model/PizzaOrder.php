@@ -43,7 +43,7 @@ class PizzaOrder extends AppModel {
 		}
 	}
 
-	public function isCancelable($id){
+	public function isCancelable($id, $is_admin){
 		$this->id = $id;
 
 		if(!$this->exists()){
@@ -52,7 +52,7 @@ class PizzaOrder extends AppModel {
 
 		$this->read(array('pizza_wave_id', 'status'));
 
-		return $this->PizzaWave->isOrderable($this->data['PizzaOrder']['pizza_wave_id']);
+		return $this->PizzaWave->isOrderable($this->data['PizzaOrder']['pizza_wave_id'], $is_admin);
 	}
 
 }

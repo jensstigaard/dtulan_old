@@ -39,7 +39,7 @@ class PizzaOrdersController extends AppController {
 
 		$data = $this->request->data;
 
-		if (!$this->PizzaOrder->PizzaWave->isOrderable($data['wave_id'], $this->Auth->user('id'))) {
+		if (!$this->PizzaOrder->PizzaWave->isOrderable($data['wave_id'], $this->isAdmin())) {
 			$msg = 'Pizza wave not valid';
 		} else {
 			$this->request->data['PizzaOrder'] = array(
@@ -119,7 +119,7 @@ class PizzaOrdersController extends AppController {
 			throw new UnauthorizedException(__('Pizza order already delivered'));
 		}
 
-		if (!$this->PizzaOrder->PizzaWave->isOrderable($this->PizzaOrder->data['PizzaOrder']['pizza_wave_id'])) {
+		if (!$this->PizzaOrder->PizzaWave->isOrderable($this->PizzaOrder->data['PizzaOrder']['pizza_wave_id'], $this->isAdmin())) {
 			throw new UnauthorizedException(__('It is not possible to delete pizza order anymore'));
 		}
 
