@@ -39,7 +39,7 @@ class PizzaOrdersController extends AppController {
 
 		$data = $this->request->data;
 
-		if (!$this->PizzaOrder->PizzaWave->isOrderable($data['wave_id'], $this->Auth->user('id'))) {
+		if (!$this->PizzaOrder->PizzaWave->isOrderable($data['wave_id'], $this->isAdmin())) {
 			$msg = 'Pizza wave not valid';
 		} else {
 			$this->request->data['PizzaOrder'] = array(

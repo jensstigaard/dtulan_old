@@ -109,7 +109,7 @@ class PizzaWave extends AppModel {
 		return $current_wave;
 	}
 
-	public function isOrderable($id) {
+	public function isOrderable($id, $is_admin = false) {
 		$this->id = $id;
 
 		if (!$this->exists()) {
@@ -118,8 +118,8 @@ class PizzaWave extends AppModel {
 
 		$this->read(array('time_end', 'lan_id', 'status'));
 
-		if ($this->Lan->isPublished($this->data['PizzaWave']['lan_id'])) {
-			if ($this->data['PizzaWave']['status']==1 && $this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
+		if ($this->Lan->isPublished($this->data['PizzaWave']['lan_id'], $is_admin)) {
+			if ($this->data['PizzaWave']['status'] == 1 && $this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
 				return true;
 			}
 		}

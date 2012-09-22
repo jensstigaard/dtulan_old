@@ -157,7 +157,10 @@ class Lan extends AppModel {
 		$this->recursive = 1;
 
 		$data = $this->find('first', array(
-			'conditions' => $conditions
+			'conditions' => $conditions,
+			'order' => array(
+				'time_end ASC'
+			)
 				)
 		);
 
@@ -210,11 +213,15 @@ class Lan extends AppModel {
 		return $users;
 	}
 
-	public function isPublished($lan_id) {
+	public function isPublished($lan_id, $is_admin = false) {
 		$this->id = $lan_id;
 
 		if (!$this->exists()) {
 			throw new NotFoundException('Lan not found');
+		}
+
+		if($is_admin){
+			return true;
 		}
 
 		$this->read(array('published'));
