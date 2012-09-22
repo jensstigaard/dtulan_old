@@ -108,7 +108,7 @@ class UsersController extends AppController {
 
 		$pizza_order_cancelable = array();
 		foreach ($pizza_orders as $pizza_order) {
-			$pizza_orders_cancelable[$pizza_order['PizzaOrder']['id']] = $this->User->PizzaOrder->isCancelable($pizza_order['PizzaOrder']['id']);
+			$pizza_orders_cancelable[$pizza_order['PizzaOrder']['id']] = $this->User->PizzaOrder->isCancelable($pizza_order['PizzaOrder']['id'], $this->isAdmin());
 		}
 
 

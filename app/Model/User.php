@@ -37,7 +37,7 @@ class User extends AppModel {
 				'rule' => array('notEmpty'),
 				'message' => 'Full name is required'
 			),
-                        'required2' => array(
+			'required2' => array(
 				'rule' => array('validateName'),
 				'message' => 'Full name is required'
 			)
@@ -107,27 +107,31 @@ class User extends AppModel {
 			),
 		),
 		'balance' => array(
-			'balance' => array(
-				'rule' => array('between', -100, 999),
-				'message' => 'Your balance is too low'
+			'balance low' => array(
+				'rule' => 'validateBalanceLow',
+				'message' => 'Your balance is going to be too low'
+			),
+			'balance high' => array(
+				'rule' => 'validateBalanceHigh',
+				'message' => 'Your balance is going to be too high'
 			)
 		),
-                'email_gravatar' => array(
+		'email_gravatar' => array(
 			'required2' => array(
 				'rule' => array('email', true),
 				'message' => 'Please supply a valid email address',
-                                'allowEmpty' => true,
+				'allowEmpty' => true,
 			),
 		),
 	);
 
 	public function validateStudynumber($check) {
-          	if ($this->data['User']['type'] == 'student') {
-                    $this->data['User']['id_number'] = strtolower($this->data['User']['id_number']);
-                    return preg_match("/^s[0-9]{6}$/", $this->data['User']['id_number']);
+		if ($this->data['User']['type'] == 'student') {
+			$this->data['User']['id_number'] = strtolower($this->data['User']['id_number']);
+			return preg_match("/^s[0-9]{6}$/", $this->data['User']['id_number']);
 		} else {
-                    $this->data['User']['id_number'] = $this->getGuestNumber();
-                    return true;
+			$this->data['User']['id_number'] = $this->getGuestNumber();
+			return true;
 		}
 	}
 
@@ -139,37 +143,49 @@ class User extends AppModel {
 		return false;
 	}
 
-	public function validatePhonenumber($check){
-		if(!empty($check['phonenumber']) && !preg_match("/^[0-9]{8}$/", $check['phonenumber'])){
+	public function validatePhonenumber($check) {
+		if (!empty($check['phonenumber']) && !preg_match("/^[0-9]{8}$/", $check['phonenumber'])) {
 			return false;
 		}
 
 		return true;
 	}
 
-        public function validateName($check) {
-            $name = explode(' ', $check['name']);
-            if(count($name) > 1) {
-                return true;
-            }
-            return false;
-        }
-        
+	public function validateName($check) {
+		$name = explode(' ', $check['name']);
+		if (count($name) > 1) {
+			return true;
+		}
+		return false;
+	}
+
+	public function validateBalanceLow($check){
+		if($check['balance'] >= -50){
+			return true;
+		}
+		return false;
+	}
+
+	public function validateBalanceHigh($check){
+		if($check['balance'] <= 999){
+			return true;
+		}
+		return false;
+	}
+
 	public function beforeSave($options = array()) {
 		parent::beforeSave($options);
 		if (isset($this->data['User']['password'])) {
 			$this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
 		}
-                if(isset($this->data['User']['name'])) {
-                    $this->data['User']['name'] = ucwords(strtolower($this->data['User']['name']));
-                }
-                if(isset($this->data['User']['email'])) {
-                    $this->data['User']['email'] = strtolower($this->data['User']['email']);
-                }
+		if (isset($this->data['User']['name'])) {
+			$this->data['User']['name'] = ucwords(strtolower($this->data['User']['name']));
+		}
+		if (isset($this->data['User']['email'])) {
+			$this->data['User']['email'] = strtolower($this->data['User']['email']);
+		}
 		return true;
 	}
-
-
 
 	public function getGuestNumber() {
 		$guestNumber = 'g' . date('ym');
@@ -180,8 +196,8 @@ class User extends AppModel {
 			),
 			'order' => array(
 				'id_number' => 'DESC'
-				)
 			)
+				)
 		);
 		$count = intval(substr($count['User']['id_number'], 5));
 		if ($count >= 99) {
@@ -194,7 +210,7 @@ class User extends AppModel {
 		return isset($this->data['User']['activated']) && $this->data['User']['activated'];
 	}
 
-	public function isAdmin($user = null){
+	public function isAdmin($user = null) {
 		return isset($user['Admin']['user_id']);
 	}
 
@@ -205,6 +221,7 @@ class User extends AppModel {
 	public function getEmail() {
 		return $this->data['User']['email'];
 	}
+
 }
 
 ?>
