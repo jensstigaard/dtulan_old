@@ -12,7 +12,17 @@
 		</thead>
 
 		<tbody>
-			<?php echo $info; ?>
+			<?php 
+			foreach ($pizza_wave_items as $item) {
+				echo '<tr>';
+				echo '<td>' . $item['quantity'] . '</td>';
+				echo '<td>' . $item['pizza_number'] . '</td>';
+				echo '<td>' . $item['pizza_title'] . '</td>';
+				echo '<td>' . $item['pizza_type'] . '</td>';
+				echo '<td></td>';
+				echo '</tr>';
+			} 
+		?>
 		</tbody>
 	</table>
 </div>
