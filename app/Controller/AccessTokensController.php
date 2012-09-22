@@ -21,6 +21,8 @@ class AccessTokensController extends AppController {
 
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
+
+		return true;
 	}
 
     public function api_add() {

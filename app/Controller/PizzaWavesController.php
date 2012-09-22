@@ -145,9 +145,9 @@ class PizzaWavesController extends AppController {
 		$this->PizzaWave->set(array('status' => 3));
 
 		if ($this->PizzaWave->save()) {
-			$this->Session->setFlash('Pizza wave marked as received', 'default', array('class' => 'message success'), 'good');
+			$this->Session->setFlash('Pizza wave marked as open', 'default', array('class' => 'message success'), 'good');
 		} else {
-			$this->Session->setFlash('Unable to mark pizza wave as received', 'default', array(), 'bad');
+			$this->Session->setFlash('Unable to mark pizza wave as open', 'default', array(), 'bad');
 		}
 
 		$this->redirect(array('action' => 'view', $id));
