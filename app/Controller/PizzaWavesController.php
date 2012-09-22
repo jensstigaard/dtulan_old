@@ -142,7 +142,7 @@ class PizzaWavesController extends AppController {
 			throw new MethodNotAllowedException(__('Pizza wave already marked as open'));
 		}
 
-		$this->PizzaWave->set(array('status' => 3));
+		$this->PizzaWave->set(array('status' => 1));
 
 		if ($this->PizzaWave->save()) {
 			$this->Session->setFlash('Pizza wave marked as open', 'default', array('class' => 'message success'), 'good');
