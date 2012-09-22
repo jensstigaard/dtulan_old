@@ -181,22 +181,6 @@ class PizzaWave extends AppModel {
 		return $pizza_wave_items;
 	}
 
-	public function getItemListPrintable($pizza_wave_items) {
-
-		$content = '';
-
-		foreach ($pizza_wave_items as $item) {
-			$content.='<tr>';
-			$content.='<td>' . $item['quantity'] . '</td>';
-			$content.='<td>' . $item['pizza_number'] . '</td>';
-			$content.='<td>' . $item['pizza_title'] . '</td>';
-			$content.='<td>' . $item['pizza_type'] . '</td>';
-			$content.='</tr>';
-		}
-
-		return $content;
-	}
-
 	public function getStatus($id){
 		$this->id = $id;
 

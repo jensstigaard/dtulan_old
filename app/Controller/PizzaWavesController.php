@@ -94,7 +94,6 @@ class PizzaWavesController extends AppController {
 		}
 
 		$pizza_wave_items = $this->PizzaWave->getItemList($id);
-		$content_for_email = $this->PizzaWave->getItemListPrintable($pizza_wave_items);
 
 		if (!count($pizza_wave_items)) {
 			throw new NotFoundException(__('No items found in pizza wave'));
@@ -108,7 +107,7 @@ class PizzaWavesController extends AppController {
 		$email->template('pizza_wave_to_pizzaria');
 		$email->from(array('no-reply@dtu-lan.dk' => 'DTU LAN site - No reply'));
 		$email->to('dengalepirat@gmail.com');
-		$email->viewVars(array('info' => $content_for_email, 'title_for_layout' => 'Pizza bestilling'));
+		$email->viewVars(array('pizza_wave_items' => $pizza_wave_items, 'title_for_layout' => 'Pizza bestilling'));
 		$email->subject('DTU LAN Party - Ny pizza liste');
 
 		$this->PizzaWave->set(array('status' => 2));
