@@ -9,22 +9,24 @@ class UsersController extends AppController {
 
 	public $name = 'Users';
 	// Pass settings in $components array
-	public $components = array(
-		'Auth' => array(
-			'authenticate' => array(
-				'Form' => array(
-					'fields' => array('username' => 'email'),
-					'scope' => array(
-						'activated' => 1
-					)
-				)
-			),
-		)
-	);
+	 
+	
+	// This should be in AppController, else it has to be defined in each Controller
+//	public $components = array(
+//		'Auth' => array(
+//			'authenticate' => array(
+//				'Form' => array(
+//					'fields' => array('username' => 'email'),
+//					'scope' => array(
+//						'activated' => 1
+//					)
+//				)
+//			),
+//		)
+//	);
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-
 		$this->Auth->allow('login', 'add', 'activate', 'forgot_password', 'reset_password');
 	}
 
