@@ -425,7 +425,6 @@ class LansController extends AppController {
 					'LanSignup.id' => $lan_signups_id_crew
 				)
 			),
-			'limit' => 10,
 			'order' => array(
 				array('User.name' => 'asc')
 			)

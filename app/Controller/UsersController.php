@@ -119,8 +119,10 @@ class UsersController extends AppController {
 		$this->User->LanSignup->LanSignupDay->unbindModel(array('belongsTo' => array('LanSignup')));
 
 		$lans = $this->User->LanSignup->find('all', array('conditions' => array(
-				'LanSignup.user_id' => $id
+				'LanSignup.user_id' => $id,
 			),
+			'order' => array(
+			)
 				)
 		);
 
@@ -171,7 +173,7 @@ class UsersController extends AppController {
 
 				$id = $this->User->getLastInsertID();
 
-				
+
 				ini_set("SMTP", 'smtp.unoeuro.com');
 
 				$email = new CakeEmail();
@@ -367,9 +369,9 @@ class UsersController extends AppController {
 				if (!isset($saved)) {
 					$this->Session->setFlash(__('Fatal error during database call. Please try again'), 'default', array(), 'bad');
 				} else {
-					
+
 					ini_set("SMTP", 'smtp.unoeuro.com');
-					
+
 					$email = new CakeEmail();
 					$email->config('smtp');
 					$email->emailFormat('html');

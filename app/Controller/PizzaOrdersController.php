@@ -90,11 +90,16 @@ class PizzaOrdersController extends AppController {
 		$this->set(compact('msg'));
 	}
 
-	public function set_status($pizza_order_id = null) {
+	public function mark_completed($pizza_order_id = null) {
 		$this->PizzaOrder->id = $pizza_order_id;
 
 		if (!$this->PizzaOrder->exists()) {
 			throw new NotFoundException('Pizza order not found');
+		}
+
+		$this->PizzaOrder->read(array('status'));
+		if($this->PizzaOrder->data['PizzaOrder']['status'] != 2){
+			throw new NotFoundException('Pizza order not valid');
 		}
 	}
 
@@ -148,7 +153,6 @@ class PizzaOrdersController extends AppController {
 			$this->redirect(array('controller' => 'users', 'action' => 'profile'));
 		}
 	}
-
 }
 
 ?>

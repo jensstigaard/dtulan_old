@@ -21,48 +21,48 @@
 					<td><?php echo ($count_lan_signups - $count_lan_signups_guests) . 's + ' . $count_lan_signups_guests . 'g = ' . $count_lan_signups; ?></td>
 				</tr>
 
-				<?php if ($is_admin): ?>
-					<tr>
-						<td rowspan="1" colspan="2"></td>
-					</tr>
-					<tr>
-						<th colspan="2">Crew only</th>
-					</tr>
-					<tr>
-						<td>Invited (not accepted):</td>
-						<td><?php echo count($lan_invites); ?></td>
-					</tr>
-					<tr>
-						<td>Tournaments:</td>
-						<td><?php echo count($tournaments); ?></td>
-					</tr>
-					<tr>
-						<td>Public:</td>
-						<td><?php echo $lan['Lan']['published'] ? 'Yes' : 'No'; ?></td>
-					</tr>
-					<tr>
-						<td>Sign up open:</td>
-						<td><?php echo $lan['Lan']['sign_up_open'] ? 'Yes' : 'No'; ?></td>
-					</tr>
-					<tr>
-						<td>Guests:</td>
-						<td><?php echo $count_lan_signups === 0 ? 0 : floor($count_lan_signups_guests / $count_lan_signups * 100) ?> %</td>
-					</tr>
-					<tr>
-						<td>Students:</td>
-						<td><?php echo $count_lan_signups_guests === 0 ? 0 : floor(($count_lan_signups - $count_lan_signups_guests) / $count_lan_signups * 100) ?> %</td>
-					</tr>
-					<?php $total_signup = 0; ?>
-					<?php $max_signup = 0; ?>
-					<?php foreach ($lan_days as $lan_day): ?>
-						<?php $total_signup += count($lan_day['LanSignupDay']); ?>
-						<?php $max_signup += $lan_day['Lan']['max_participants']; ?>
-					<?php endforeach; ?>
-					<tr>
-						<td>Fill rate:</td>
-						<td><?php echo $max_signup === 0 ? 0 : floor(($total_signup / $max_signup) * 100) ?> %</td>
-					</tr>
-				<?php endif; ?>
+
+				<tr>
+					<td rowspan="1" colspan="2"></td>
+				</tr>
+				<tr>
+					<th colspan="2">Crew only</th>
+				</tr>
+				<tr>
+					<td>Invited (not accepted):</td>
+					<td><?php echo count($lan_invites); ?></td>
+				</tr>
+				<tr>
+					<td>Tournaments:</td>
+					<td><?php echo count($tournaments); ?></td>
+				</tr>
+				<tr>
+					<td>Public:</td>
+					<td><?php echo $lan['Lan']['published'] ? 'Yes' : 'No'; ?></td>
+				</tr>
+				<tr>
+					<td>Sign up open:</td>
+					<td><?php echo $lan['Lan']['sign_up_open'] ? 'Yes' : 'No'; ?></td>
+				</tr>
+				<tr>
+					<td>Guests:</td>
+					<td><?php echo $count_lan_signups === 0 ? 0 : floor($count_lan_signups_guests / $count_lan_signups * 100) ?> %</td>
+				</tr>
+				<tr>
+					<td>Students:</td>
+					<td><?php echo $count_lan_signups_guests === 0 ? 0 : floor(($count_lan_signups - $count_lan_signups_guests) / $count_lan_signups * 100) ?> %</td>
+				</tr>
+				<?php $total_signup = 0; ?>
+				<?php $max_signup = 0; ?>
+				<?php foreach ($lan_days as $lan_day): ?>
+					<?php $total_signup += count($lan_day['LanSignupDay']); ?>
+					<?php $max_signup += $lan_day['Lan']['max_participants']; ?>
+				<?php endforeach; ?>
+				<tr>
+					<td>Fill rate:</td>
+					<td><?php echo $max_signup === 0 ? 0 : floor(($total_signup / $max_signup) * 100) ?> %</td>
+				</tr>
+
 			</tbody>
 		</table>
 	</div>
@@ -110,7 +110,7 @@
 			<tr>
 				<th style="width:28px"></th>
 				<th>Name</th>
-				<th style="text-align: right">Telefon nummer</th>
+				<th>Telefon nummer</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -168,18 +168,20 @@
 						<?php echo $user['User']['phonenumber'] ?>
 					</td>
 					<?php $user_attending_days = array(); ?>
-					<?php foreach($user['LanSignupDay'] as $lan_day){
+					<?php
+					foreach ($user['LanSignupDay'] as $lan_day) {
 						$user_attending_days[] = $lan_day['lan_day_id'];
-					} ?>
-					<?php foreach ($lan_days as $lan_day): ?>
+					}
+					?>
+						<?php foreach ($lan_days as $lan_day): ?>
 						<td style="text-align: center">
-							<?php if(in_array($lan_day['LanDay']['id'], $user_attending_days)): ?>
-							X
-							<?php endif; ?>
+							<?php if (in_array($lan_day['LanDay']['id'], $user_attending_days)): ?>
+								X
+						<?php endif; ?>
 						</td>
-					<?php endforeach; ?>
+				<?php endforeach; ?>
 				</tr>
-			<?php endforeach; ?>
+<?php endforeach; ?>
 		</tbody>
 	</table>
 </div>

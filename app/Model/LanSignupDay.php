@@ -22,6 +22,11 @@ class LanSignupDay extends AppModel {
 		)
 	);
 
+	public $order = array(
+		'LanSignupDay.id' => 'desc',
+		
+	);
+
 	public function availableLanDay($check) {
 		if($this->LanDay->seatsLeft($check['lan_day_id']) > 0){
 			return true;
