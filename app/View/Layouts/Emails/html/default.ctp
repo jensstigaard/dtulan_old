@@ -23,10 +23,11 @@
 
 	<style type="text/css">
     table {
-        border: 1px solid #000;
+        border: 2px solid #000;
     }
 
     table thead tr th {
+		padding: 3px;
         text-align: center;
     }
 
@@ -35,10 +36,12 @@
     }
 
     table thead tr th:last-child {
-        text-align: right;
+        border-left: 1px solid #000;
+		text-align: right;
     }
 
     table tbody tr td {
+		border-top: 1px solid #000;
         text-align: center;
     }
 
@@ -48,6 +51,7 @@
 
     table tbody tr td:last-child {
         text-align: right;
+		border-left: 1px solid #000;
     }
 </style>
 

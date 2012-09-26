@@ -15,7 +15,7 @@ class Payment extends AppModel {
 				'message' => 'Amount is invalid'
 			),
 			'required2' => array(
-				'rule' => 'positiveInteger',
+				'rule' => 'validInteger',
 				'message' => 'Amount is invalid'
 			),
 		),
@@ -30,8 +30,8 @@ class Payment extends AppModel {
 		)
 	);
 
-	public function positiveInteger($check) {
-		if (is_numeric($check['amount']) && $check['amount'] > 0 && $check['amount'] <= 999) {
+	public function validInteger($check) {
+		if (is_numeric($check['amount']) && $check['amount'] >= -500 && $check['amount'] <= 999) {
 			return true;
 		} else {
 			return false;

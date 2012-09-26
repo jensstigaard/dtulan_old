@@ -94,7 +94,6 @@ class PizzaWavesController extends AppController {
 		}
 
 		$pizza_wave_items = $this->PizzaWave->getItemList($id);
-		$content_for_email = $this->PizzaWave->getItemListPrintable($pizza_wave_items);
 
 		if (!count($pizza_wave_items)) {
 			throw new NotFoundException(__('No items found in pizza wave'));
@@ -108,7 +107,7 @@ class PizzaWavesController extends AppController {
 		$email->template('pizza_wave_to_pizzaria');
 		$email->from(array('no-reply@dtu-lan.dk' => 'DTU LAN site - No reply'));
 		$email->to('dengalepirat@gmail.com');
-		$email->viewVars(array('info' => $content_for_email, 'title_for_layout' => 'Pizza bestilling'));
+		$email->viewVars(array('pizza_wave_items' => $pizza_wave_items, 'title_for_layout' => 'Pizza bestilling'));
 		$email->subject('DTU LAN Party - Ny pizza liste');
 
 		$this->PizzaWave->set(array('status' => 2));
@@ -142,12 +141,12 @@ class PizzaWavesController extends AppController {
 			throw new MethodNotAllowedException(__('Pizza wave already marked as open'));
 		}
 
-		$this->PizzaWave->set(array('status' => 3));
+		$this->PizzaWave->set(array('status' => 1));
 
 		if ($this->PizzaWave->save()) {
-			$this->Session->setFlash('Pizza wave marked as received', 'default', array('class' => 'message success'), 'good');
+			$this->Session->setFlash('Pizza wave marked as open', 'default', array('class' => 'message success'), 'good');
 		} else {
-			$this->Session->setFlash('Unable to mark pizza wave as received', 'default', array(), 'bad');
+			$this->Session->setFlash('Unable to mark pizza wave as open', 'default', array(), 'bad');
 		}
 
 		$this->redirect(array('action' => 'view', $id));

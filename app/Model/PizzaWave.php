@@ -109,17 +109,17 @@ class PizzaWave extends AppModel {
 		return $current_wave;
 	}
 
-	public function isOrderable($id) {
+	public function isOrderable($id, $is_admin = false) {
 		$this->id = $id;
 
 		if (!$this->exists()) {
-			throw new NotFoundException(__('Pizza wave not found'));
+			throw new NotFoundException(__('Pizza wave not found with ID: "'.$id.'" in function isOrderable'));
 		}
 
 		$this->read(array('time_end', 'lan_id', 'status'));
 
-		if ($this->Lan->isPublished($this->data['PizzaWave']['lan_id'])) {
-			if ($this->data['PizzaWave']['status'] && $this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
+		if ($this->Lan->isPublished($this->data['PizzaWave']['lan_id'], $is_admin)) {
+			if ($this->data['PizzaWave']['status'] == 1 && $this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
 				return true;
 			}
 		}
@@ -131,7 +131,7 @@ class PizzaWave extends AppModel {
 		$this->id = $id;
 
 		if (!$this->exists()) {
-			throw new NotFoundException(__('Pizza wave not found'));
+			throw new NotFoundException(__('Pizza wave not found with ID: '.$id));
 		}
 
 		$this->PizzaOrder->unbindModel(array('belongsTo' => array('User', 'PizzaWave')));
@@ -179,22 +179,6 @@ class PizzaWave extends AppModel {
 		usort($pizza_wave_items, "compare");
 
 		return $pizza_wave_items;
-	}
-
-	public function getItemListPrintable($pizza_wave_items) {
-
-		$content = '';
-
-		foreach ($pizza_wave_items as $item) {
-			$content.='<tr>';
-			$content.='<td>' . $item['quantity'] . '</td>';
-			$content.='<td>' . $item['pizza_number'] . '</td>';
-			$content.='<td>' . $item['pizza_title'] . '</td>';
-			$content.='<td>' . $item['pizza_type'] . '</td>';
-			$content.='</tr>';
-		}
-
-		return $content;
 	}
 
 	public function getStatus($id){

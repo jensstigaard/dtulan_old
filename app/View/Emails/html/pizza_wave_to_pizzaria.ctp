@@ -1,6 +1,6 @@
 <div>
 	<h1>DTU LAN Party - Pizza bestilling</h1>
-	<table style="width:100%" >
+	<table style="width:100%" cellspacing="0" cellpadding="5">
 		<thead>
 			<tr>
 				<th>Antal</th>
@@ -12,7 +12,17 @@
 		</thead>
 
 		<tbody>
-			<?php echo $info; ?>
+			<?php 
+			foreach ($pizza_wave_items as $item) {
+				echo '<tr>';
+				echo '<td>' . $item['quantity'] . '</td>';
+				echo '<td>' . $item['pizza_number'] . '</td>';
+				echo '<td>' . $item['pizza_title'] . '</td>';
+				echo '<td>' . $item['pizza_type'] . '</td>';
+				echo '<td></td>';
+				echo '</tr>';
+			} 
+			?>
 		</tbody>
 	</table>
 </div>
