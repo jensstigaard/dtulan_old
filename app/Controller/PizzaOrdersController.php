@@ -90,17 +90,27 @@ class PizzaOrdersController extends AppController {
 		$this->set(compact('msg'));
 	}
 
-	public function mark_completed($pizza_order_id = null) {
-		$this->PizzaOrder->id = $pizza_order_id;
+	public function mark_delivered($id = null) {
+		$this->PizzaOrder->id = $id;
 
 		if (!$this->PizzaOrder->exists()) {
 			throw new NotFoundException('Pizza order not found');
 		}
 
 		$this->PizzaOrder->read(array('status'));
-		if($this->PizzaOrder->data['PizzaOrder']['status'] != 2){
+		if (!$this->PizzaOrder->data['PizzaOrder']['status'] < 2) {
 			throw new NotFoundException('Pizza order not valid');
 		}
+
+		$this->PizzaOrder->set(array('status' => 2));
+
+		if ($this->PizzaOrder->save()) {
+			$this->Session->setFlash('Pizza order marked as delivered', 'default', array('class' => 'message success'), 'good');
+		} else {
+			$this->Session->setFlash('Unable to mark pizza order as delivered', 'default', array(), 'bad');
+		}
+
+		$this->redirect(array('action' => 'view', $id));
 	}
 
 	public function delete($id) {
@@ -153,6 +163,7 @@ class PizzaOrdersController extends AppController {
 			$this->redirect(array('controller' => 'users', 'action' => 'profile'));
 		}
 	}
+
 }
 
 ?>
