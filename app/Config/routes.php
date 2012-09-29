@@ -21,21 +21,9 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
 Router::parseExtensions('json');
-
-
-// Let CakePHP take care of setting up the routes. This keeps the code clean and compact.
-//Router::mapResources(array(':controller'), array('prefix' => '/api/'));
-//// Iterate through each of the routes and for any that start with "/api/", setup the prefix properly.
-//$router = Router::getInstance();
-//foreach ($router->routes as &$route)
-//	if (strpos($route->template, '/api/') === 0)
-//		$route->defaults = Set::merge($route->defaults, array(
-//					'prefix' => 'api',
-//					'api' => true
-//						)
-//		);
-
+Router::mapResources(array('access_tokens', 'qr_codes'));
 
 Router::connect('/', array(
 	'controller' => 'pages',
