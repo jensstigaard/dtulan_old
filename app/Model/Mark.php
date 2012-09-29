@@ -11,7 +11,7 @@
  * @author dengalepirat
  */
 class Mark extends AppModel {
-    public $useTable = 'crew_user_mark';
+    public $useTable = 'crew_user_marks';
     public $belongsTo = array('Crew');
     public $hasOne = array('User');
 }

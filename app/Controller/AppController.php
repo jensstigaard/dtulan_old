@@ -50,13 +50,12 @@ class AppController extends Controller {
                     )
                 ),
                 // Allow authentication by access token
-//                'Api' => array(
-//                    'userModel' => 'AccessToken',
-//                    'fields' => array(
-//                        'username' => 'id',
-//                        'password' => 'access_key'
-//                    ),
-//                ),
+                'Api' => array(
+                    'userModel' => 'AccessToken',
+                    'fields' => array(
+                        'username' => 'id',
+                    ),
+                ),
             )
         )
     );

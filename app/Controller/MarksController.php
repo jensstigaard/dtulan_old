@@ -12,14 +12,19 @@
  */
 class MarksController extends AppController {
 
+    public $components = array('RequestHandler');
+    
     public function beforeFilter() {
         parent::beforeFilter();
+//        $this->Auth->login();
         $this->Auth->allow(array('api_add', 'api_view'));
     }
     
     public function api_add() {
         if ($this->request->is('post')) {
             if ($this->isJsonRequest()) {
+                // TODO: This should be removed in final release. Hardcoded crew, only for testing
+                $this->request->data['Mark']['crew_id'] = 1;
                 if ($this->Mark->save($this->request->data)) {
                     $this->set('success', true);
                     $this->set('data', array('message' => 'Marked user'));
