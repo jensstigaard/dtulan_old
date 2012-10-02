@@ -406,8 +406,6 @@ class UsersController extends AppController {
 
 	public function lookup() {
 
-//		$this->layout = 'ajax';
-
 		$users = array();
 
 		if ($this->request->is('post')) {
