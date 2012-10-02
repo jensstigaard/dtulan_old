@@ -11,7 +11,9 @@
  * @author Jens
  */
 class QrCode extends AppModel {
-	public $useTable = false;
+	public $useTable = 'user_qr_codes';
+        public $belongsTo = array('User');
+    
 }
 
 ?>

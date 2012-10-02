@@ -13,7 +13,7 @@
 class User extends AppModel {
 
 	public $name = 'User';
-	public $hasOne = array('Admin', 'UserPasswordTicket');
+	public $hasOne = array('Admin', 'UserPasswordTicket', 'QrCode');
 	public $hasMany = array(
 		'Crew',
 		'LanSignup',

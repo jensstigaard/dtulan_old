@@ -15,6 +15,7 @@ class Crew extends AppModel {
 	public $belongsTo = array(
 		'User', 'Lan'
 	);
+        public $hasMany = array('Mark');
 
 }
 
