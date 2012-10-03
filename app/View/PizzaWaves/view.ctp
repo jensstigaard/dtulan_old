@@ -77,7 +77,7 @@
 					?>
 					<tr class="<?php echo $class_status; ?>">
 						<td></td>
-						
+
 						<td>
 							<?php
 							echo $this->Html->link($order['User']['name'], array(
@@ -90,12 +90,13 @@
 						</td>
 						<td>
 							<ul>
-									<?php foreach ($order['PizzaOrderItem'] as $item): ?>
-									<li><?php echo $item['quantity']; ?> x
-			<?php echo $item['PizzaPrice']['Pizza']['title']; ?>
+								<?php foreach ($order['PizzaOrderItem'] as $item): ?>
+									<li>
+										<?php echo $item['quantity']; ?> x
+										<?php echo $item['PizzaPrice']['Pizza']['title']; ?>
 										(<?php echo $item['PizzaPrice']['PizzaType']['title']; ?>)
 									</li>
-		<?php endforeach; ?>
+								<?php endforeach; ?>
 							</ul>
 						</td>
 						<td>
@@ -105,14 +106,14 @@
 									echo $this->Html->link('Mark as delivered', array(
 										'controller' => 'pizza_orders',
 										'action' => 'mark_delivered',
-										'id' => $order['PizzaOrder']['id']
+										$order['PizzaOrder']['id']
 											)
 									);
 									echo'<br />';
 									echo $this->Html->link('Mark as delivered with errors', array(
 										'controller' => 'pizza_orders',
 										'action' => 'mark_errors',
-										'id' => $order['PizzaOrder']['id']
+										$order['PizzaOrder']['id']
 											)
 									);
 									break;
@@ -129,7 +130,7 @@
 							?>
 						</td>
 					</tr>
-	<?php endforeach; ?>
+				<?php endforeach; ?>
 			</tbody>
 		</table>
 	</div>
@@ -148,14 +149,14 @@
 			</thead>
 
 			<tbody>
-	<?php foreach ($pizza_wave_items as $item): ?>
+				<?php foreach ($pizza_wave_items as $item): ?>
 					<tr>
 						<td><?php echo $item['quantity']; ?></td>
 						<td><?php echo $item['pizza_number']; ?></td>
 						<td><?php echo $item['pizza_title']; ?></td>
 						<td><?php echo $item['pizza_type']; ?></td>
 					</tr>
-	<?php endforeach; ?>
+				<?php endforeach; ?>
 			</tbody>
 		</table>
 	</div>
