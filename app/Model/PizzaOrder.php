@@ -43,11 +43,11 @@ class PizzaOrder extends AppModel {
 		}
 	}
 
-	public function isCancelable($id, $is_admin){
+	public function isCancelable($id, $is_admin) {
 		$this->id = $id;
 
-		if(!$this->exists()){
-			throw new NotFoundException('Pizza order not found! ID: '. $id);
+		if (!$this->exists()) {
+			throw new NotFoundException('Pizza order not found! ID: ' . $id);
 		}
 
 		$this->read(array('pizza_wave_id', 'status'));

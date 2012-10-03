@@ -98,16 +98,17 @@ class PizzaOrdersController extends AppController {
 		}
 
 		$this->PizzaOrder->read(array('status', 'pizza_wave_id'));
-		if (!$this->PizzaOrder->data['PizzaOrder']['status'] < 2) {
-			throw new NotFoundException('Pizza order not valid');
-		}
 
-		$this->PizzaOrder->set(array('status' => 2));
-
-		if ($this->PizzaOrder->save()) {
-			$this->Session->setFlash('Pizza order marked as delivered', 'default', array('class' => 'message success'), 'good');
+		if ($this->PizzaOrder->data['PizzaOrder']['status'] == 1) {
+			$this->Session->setFlash('Pizza order already marked as delivered', 'default', array('class' => 'message success'), 'good');
 		} else {
-			$this->Session->setFlash('Unable to mark pizza order as delivered', 'default', array(), 'bad');
+			$this->PizzaOrder->set(array('status' => 1));
+
+			if ($this->PizzaOrder->save()) {
+				$this->Session->setFlash('Pizza order marked as delivered', 'default', array('class' => 'message success'), 'good');
+			} else {
+				$this->Session->setFlash('Unable to mark pizza order as delivered', 'default', array(), 'bad');
+			}
 		}
 
 		$this->redirect(array(
