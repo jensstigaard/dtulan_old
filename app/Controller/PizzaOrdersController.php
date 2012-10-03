@@ -97,7 +97,7 @@ class PizzaOrdersController extends AppController {
 			throw new NotFoundException('Pizza order not found');
 		}
 
-		$this->PizzaOrder->read(array('status'));
+		$this->PizzaOrder->read(array('status', 'pizza_wave_id'));
 		if (!$this->PizzaOrder->data['PizzaOrder']['status'] < 2) {
 			throw new NotFoundException('Pizza order not valid');
 		}
@@ -110,7 +110,12 @@ class PizzaOrdersController extends AppController {
 			$this->Session->setFlash('Unable to mark pizza order as delivered', 'default', array(), 'bad');
 		}
 
-		$this->redirect(array('action' => 'view', $id));
+		$this->redirect(array(
+			'controller' => 'pizza_waves',
+			'action' => 'view',
+			$this->PizzaOrder->data['PizzaOrder']['pizza_wave_id']
+				)
+		);
 	}
 
 	public function delete($id) {
@@ -163,27 +168,28 @@ class PizzaOrdersController extends AppController {
 			$this->redirect(array('controller' => 'users', 'action' => 'profile'));
 		}
 	}
-        
-        public function api_view($id) {
-            if($this->request->is('get')) {
-                if($this->isJsonRequest()) {
-                    $this->PizzaOrder->id = $id;
-                    if($this->Pizzaorder->exists()) {
-                        $this->PizzaOrder->read();
-                        $pizza_order_items = debug($this->PizzaOrder->data);
-                        $this->set('success', true);
-                        $this->set('data', array('pizza_order_items' => $pizza_order_items));
-                        $this->set_status('_serialize', array('success', 'data'));
-                    } else {
-                        throw new NotFoundException(__('Invalid pizza order'));
-                    }
-                } else {
-                    throw new BadRequestException;
-                }
-            } else {
-                throw new MethodNotAllowedException;
-            }
-        }
+
+	public function api_view($id) {
+		if ($this->request->is('get')) {
+			if ($this->isJsonRequest()) {
+				$this->PizzaOrder->id = $id;
+				if ($this->Pizzaorder->exists()) {
+					$this->PizzaOrder->read();
+					$pizza_order_items = debug($this->PizzaOrder->data);
+					$this->set('success', true);
+					$this->set('data', array('pizza_order_items' => $pizza_order_items));
+					$this->set_status('_serialize', array('success', 'data'));
+				} else {
+					throw new NotFoundException(__('Invalid pizza order'));
+				}
+			} else {
+				throw new BadRequestException;
+			}
+		} else {
+			throw new MethodNotAllowedException;
+		}
+	}
+
 }
 
 ?>

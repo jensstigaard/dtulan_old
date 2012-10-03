@@ -19,7 +19,7 @@ class LanSignup extends AppModel {
 	public $hasMany = array('LanSignupDay');
 	public $validate = array(
 		'user_id' => array(
-			'validUser' => array(
+			'validateUser' => array(
 				'rule' => 'validateUser',
 				'message' => 'Invalid user'
 			),
@@ -51,7 +51,8 @@ class LanSignup extends AppModel {
 	}
 
 	public function validateUser($check) {
-		if ($this->User->find('count', array('conditions' => array(
+		if ($this->User->find('count', array(
+					'conditions' => array(
 						'User.id' => $check['user_id']
 					)
 						)

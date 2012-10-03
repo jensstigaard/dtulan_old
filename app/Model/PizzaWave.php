@@ -113,7 +113,7 @@ class PizzaWave extends AppModel {
 		$this->id = $id;
 
 		if (!$this->exists()) {
-			throw new NotFoundException(__('Pizza wave not found with ID: "'.$id.'" in function isOrderable'));
+			throw new NotFoundException(__('Pizza wave not found with ID: "' . $id . '" in function isOrderable'));
 		}
 
 		$this->read(array('time_end', 'lan_id', 'status'));
@@ -131,7 +131,7 @@ class PizzaWave extends AppModel {
 		$this->id = $id;
 
 		if (!$this->exists()) {
-			throw new NotFoundException(__('Pizza wave not found with ID: '.$id));
+			throw new NotFoundException(__('Pizza wave not found with ID: ' . $id));
 		}
 
 		$this->PizzaOrder->unbindModel(array('belongsTo' => array('User', 'PizzaWave')));
@@ -181,10 +181,32 @@ class PizzaWave extends AppModel {
 		return $pizza_wave_items;
 	}
 
-	public function getStatus($id){
+	public function getOrderList($id) {
 		$this->id = $id;
 
-		if(!$this->exists()){
+		if (!$this->exists()) {
+			throw new NotFoundException(__('Pizza wave not found with ID: ' . $id));
+		}
+
+		$this->PizzaOrder->unbindModel(array('belongsTo' => array('PizzaWave')));
+		$this->PizzaOrder->PizzaOrderItem->unbindModel(array('belongsTo' => array('PizzaOrder')));
+		$this->PizzaOrder->PizzaOrderItem->PizzaPrice->unbindModel(array('hasMany' => array('PizzaOrderItem')));
+
+		$pizza_orders = $this->PizzaOrder->find('all', array(
+			'conditions' => array(
+				'PizzaOrder.pizza_wave_id' => $id
+			),
+			'recursive' => 3
+				)
+		);
+
+		return $pizza_orders;
+	}
+
+	public function getStatus($id) {
+		$this->id = $id;
+
+		if (!$this->exists()) {
 			throw new NotFoundException('Pizza wave not found');
 		}
 
@@ -193,11 +215,11 @@ class PizzaWave extends AppModel {
 		return $this->data['PizzaWave']['status'];
 	}
 
-	public function isDelivered($id){
+	public function isDelivered($id) {
 		return $this->getStatus($id) == 3;
 	}
 
-	public function isCompleted($id){
+	public function isCompleted($id) {
 		return $this->getStatus($id) == 4;
 	}
 
