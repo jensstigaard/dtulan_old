@@ -444,10 +444,22 @@ class UsersController extends AppController {
 				$this->User->recursive = 2;
 				$this->User->unbindModel(
 						array('hasMany' => array(
+								'Crew',
 								'LanSignup',
 								'LanInvite',
 								'LanInviteSent',
 								'TeamUser',
+								'TeamInvite',
+								'Payment',
+							),
+							'hasOne' => array(
+								'UserPasswordTicket', 'QrCode', 'Admin'
+							)
+						)
+				);
+				$this->User->PizzaOrder->unbindModel(
+						array('belongsTo' => array(
+								'User'
 							)
 						)
 				);
