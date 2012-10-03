@@ -194,21 +194,21 @@ class PizzaWave extends AppModel {
 
 		$this->PizzaOrder->User->unbindModel(
 				array('hasMany' => array(
-					'Crew',
-					'LanSignup',
-					'LanInvite',
-					'LanInviteSent',
-					'Payment',
-					'PizzaOrder',
-					'TeamUser'
+						'Crew',
+						'LanSignup',
+						'LanInvite',
+						'LanInviteSent',
+						'Payment',
+						'PizzaOrder',
+						'TeamUser'
 					),
 					'hasOne' => array(
 						'Admin',
 						'UserPasswordTicket',
 						'QrCode'
 					)
-					)
-				);
+				)
+		);
 
 		$pizza_orders = $this->PizzaOrder->find('all', array(
 			'conditions' => array(
@@ -216,7 +216,8 @@ class PizzaWave extends AppModel {
 			),
 			'recursive' => 3,
 			'order' => array(
-				'status' => 'asc'
+				'status' => 'asc',
+				'time' => 'asc'
 			)
 				)
 		);
