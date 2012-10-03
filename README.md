@@ -5,7 +5,7 @@ This is the [DTU-LAN](http://dtu-lan.dk) source code.
 
 Contributors
 ------
-DenGalePirat - Initial API and Implementation
+DenGalePirat - Initial API and Implementation\n
 jensstigaard
 
 License
