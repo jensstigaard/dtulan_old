@@ -438,19 +438,20 @@ class UsersController extends AppController {
 
 	public function api_view($id) {
 		if ($this->request->is('get')) {
-			if ($this->isJsonRequest()) {
+//			if ($this->isJsonRequest()) {
 				$this->User->id = $id;
 				if ($this->User->exists()) {
 					$this->User->read();
+                                        $this->User->data['User']['email_gravatar'] = $this->User->data['User']['email_gravatar'] 
 					$this->set('success', true);
-					$this->set('data', array('pizza_orders' => $this->User->data['PizzaOrder']));
+					$this->set('data', array('user' => $this->User->data));
 					$this->set('_serialize', array('success', 'data'));
 				} else {
 					throw new InvalidArgumentException(__('Invalid user'));
 				}
-			} else {
-				throw new BadRequestException;
-			}
+//			} else {
+//				throw new BadRequestException;
+//			}
 		} else {
 			throw new MethodNotAllowedException;
 		}
