@@ -99,12 +99,12 @@ class PizzaOrdersController extends AppController {
 
 		$this->PizzaOrder->read(array('status', 'pizza_wave_id'));
 
+		$wave_id = $this->PizzaOrder->data['PizzaOrder']['pizza_wave_id'];
+
 		if ($this->PizzaOrder->data['PizzaOrder']['status'] == 1) {
 			$this->Session->setFlash('Pizza order already marked as delivered', 'default', array('class' => 'message success'), 'good');
 		} else {
-			$this->PizzaOrder->set(array('status' => 1));
-
-			if ($this->PizzaOrder->save()) {
+			if ($this->PizzaOrder->saveField('status', 1, true)) {
 				$this->Session->setFlash('Pizza order marked as delivered', 'default', array('class' => 'message success'), 'good');
 			} else {
 				$this->Session->setFlash('Unable to mark pizza order as delivered', 'default', array(), 'bad');
@@ -114,7 +114,7 @@ class PizzaOrdersController extends AppController {
 		$this->redirect(array(
 			'controller' => 'pizza_waves',
 			'action' => 'view',
-			$this->PizzaOrder->data['PizzaOrder']['pizza_wave_id']
+			$wave_id
 				)
 		);
 	}

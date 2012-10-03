@@ -55,7 +55,7 @@
 		<table class="pizza_order_list">
 			<thead>
 				<tr>
-					<th colspan="3">Orders</th>
+					<th colspan="4">Orders</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -75,8 +75,8 @@
 							break;
 					}
 					?>
-					<tr class="<?php echo $class_status; ?>">
-						<td></td>
+					<tr>
+						<td class="order_status <?php echo $class_status; ?>"></td>
 
 						<td>
 							<?php
@@ -118,7 +118,7 @@
 									);
 									break;
 								case 1:
-									echo'OK';
+									
 									break;
 								case 2:
 									echo'Marked as delivered with errors';

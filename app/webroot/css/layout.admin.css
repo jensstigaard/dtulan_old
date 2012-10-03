@@ -29,11 +29,17 @@
 	background: #CCC;
 }
 
-
-table.pizza_order_list tbody tr.order_status_yellow{
+table.pizza_order_list tbody tr td.order_status{
+	width:.3em;
+}
+table.pizza_order_list tbody tr td.order_status_yellow{
 	background-color: rgba(230, 255, 0, 0.15);
 }
 
-table.pizza_order_list tbody tr.order_status_green{
+table.pizza_order_list tbody tr td.order_status_green{
 	background-color: rgba(50, 200, 50, 0.5);
+}
+
+table.pizza_order_list tbody tr td.order_status_red{
+	background-color: rgba(250, 50, 50, 0.5);
 }
