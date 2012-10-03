@@ -1,66 +1,38 @@
 <div>
-	<h1><?php echo $lan['Lan']['title']; ?></h1>
+	<h1>Anmeldelse om overnatning: <?php echo $lan['Lan']['title']; ?></h1>
 	<div style="float:left; width:54%">
-		<h2 style="text-align: center"><?php echo $this->Html->image('32x32_PNG/globe.png'); ?> General info</h2>
+		<h2 style="text-align: center">General info</h2>
 		<table>
 			<tbody>
-				<tr style="font-size:110%">
-					<td>Price:</td>
-					<td><?php echo $lan['Lan']['price']; ?> DKK</td>
-				</tr>
 				<tr>
-					<td>Date start:</td>
-					<td><?php echo $this->Time->nice($lan['Lan']['time_start']); ?></td>
-				</tr>
-				<tr>
-					<td>Date end:</td>
-					<td><?php echo $this->Time->nice($lan['Lan']['time_end']); ?></td>
-				</tr>
-				<tr>
-					<td>Participants:</td>
-					<td><?php echo ($count_lan_signups - $count_lan_signups_guests) . 's + ' . $count_lan_signups_guests . 'g = ' . $count_lan_signups; ?></td>
+					<td>Lokation:</td>
+					<td>
+						Danmarks Tekniske Universitet<br />
+						Oticon salen, Anker Engelundsvej 1, 101E<br />
+						2800 Kgs. Lyngby
+					</td>
 				</tr>
 
+				<tr>
+					<td>Startdato:</td>
+					<td><?php echo $this->Time->format('j. M Y H:i', $lan['Lan']['time_start']); ?></td>
+				</tr>
+				<tr>
+					<td>Slutdato:</td>
+					<td><?php echo $this->Time->format('j. M Y H:i', $lan['Lan']['time_end']); ?></td>
+				</tr>
 
 				<tr>
-					<td rowspan="1" colspan="2"></td>
+					<td>Antal deltagere:</td>
+					<td><?php echo $count_lan_signups; ?></td>
 				</tr>
+
 				<tr>
-					<th colspan="2">Crew only</th>
-				</tr>
-				<tr>
-					<td>Invited (not accepted):</td>
-					<td><?php echo count($lan_invites); ?></td>
-				</tr>
-				<tr>
-					<td>Tournaments:</td>
-					<td><?php echo count($tournaments); ?></td>
-				</tr>
-				<tr>
-					<td>Public:</td>
-					<td><?php echo $lan['Lan']['published'] ? 'Yes' : 'No'; ?></td>
-				</tr>
-				<tr>
-					<td>Sign up open:</td>
-					<td><?php echo $lan['Lan']['sign_up_open'] ? 'Yes' : 'No'; ?></td>
-				</tr>
-				<tr>
-					<td>Guests:</td>
-					<td><?php echo $count_lan_signups === 0 ? 0 : floor($count_lan_signups_guests / $count_lan_signups * 100) ?> %</td>
-				</tr>
-				<tr>
-					<td>Students:</td>
-					<td><?php echo $count_lan_signups_guests === 0 ? 0 : floor(($count_lan_signups - $count_lan_signups_guests) / $count_lan_signups * 100) ?> %</td>
-				</tr>
-				<?php $total_signup = 0; ?>
-				<?php $max_signup = 0; ?>
-				<?php foreach ($lan_days as $lan_day): ?>
-					<?php $total_signup += count($lan_day['LanSignupDay']); ?>
-					<?php $max_signup += $lan_day['Lan']['max_participants']; ?>
-				<?php endforeach; ?>
-				<tr>
-					<td>Fill rate:</td>
-					<td><?php echo $max_signup === 0 ? 0 : floor(($total_signup / $max_signup) * 100) ?> %</td>
+					<td>Hovedansvarlig:</td>
+					<td>Jens Grønhøj Stigaard,<br />
+						+45 2172 1600<br />
+						jens@stigaard.info
+					</td>
 				</tr>
 
 			</tbody>
@@ -68,7 +40,7 @@
 	</div>
 
 	<div style="float:right; width:44%">
-		<h2 style="text-align: center"><?php echo $this->Html->image('32x32_PNG/clock.png'); ?> Dage</h2>
+		<h2 style="text-align: center">Dage</h2>
 		<table>
 			<thead>
 				<tr>
@@ -134,7 +106,7 @@
 
 					</td>
 
-					<td style="text-align: right">
+					<td>
 						<?php echo $user['User']['phonenumber'] ?>
 					</td>
 				</tr>
@@ -145,6 +117,10 @@
 
 <div>
 	<h2><?php echo $this->Html->image('32x32_PNG/users_two.png'); ?> Deltagerliste</h2>
+	<p>
+		Herunder ses en liste over deltagere. Folk har meldt sig til specifikke dage, men der er ingen garanti for at folk dukker op alle dage.
+	</p>
+
 	<table>
 		<thead>
 			<tr>
@@ -159,12 +135,12 @@
 			<?php foreach ($lan_signups as $user): ?>
 				<tr>
 					<td>
-						<?php echo $this->Html->link($user['User']['name'], array('controller' => 'users', 'action' => 'profile', $user['User']['id'])); ?>
-						<?php if ($user['User']['type'] == 'guest'): ?>
-							(g)
-						<?php endif; ?>
+						<?php
+						$find = array('"A bag with which one douches"', '"A bag with which one douches "');
+						$replace = array('', '');
+						echo $this->Html->link(str_replace($find,$replace,$user['User']['name']), array('controller' => 'users', 'action' => 'profile', $user['User']['id'])); ?>
 					</td>
-					<td style="text-align: right">
+					<td>
 						<?php echo $user['User']['phonenumber'] ?>
 					</td>
 					<?php $user_attending_days = array(); ?>
@@ -173,15 +149,17 @@
 						$user_attending_days[] = $lan_day['lan_day_id'];
 					}
 					?>
-						<?php foreach ($lan_days as $lan_day): ?>
+					<?php foreach ($lan_days as $lan_day): ?>
 						<td style="text-align: center">
 							<?php if (in_array($lan_day['LanDay']['id'], $user_attending_days)): ?>
-								X
-						<?php endif; ?>
+								<?php echo $this->Html->image('16x16_PNG/add.png'); ?>
+							<?php else: ?>
+								<?php // echo $this->Html->image('16x16_PNG/cancel.png'); ?>
+							<?php endif; ?>
 						</td>
-				<?php endforeach; ?>
+					<?php endforeach; ?>
 				</tr>
-<?php endforeach; ?>
+			<?php endforeach; ?>
 		</tbody>
 	</table>
 </div>
