@@ -64,7 +64,7 @@ class QrCodesController extends AppController {
                     'recursive' => -1
                         )
                 );
-                if (isset($qr_code['User'])) {
+                if (count($qr_code['QrCode'])) {
                     $this->set('success', true);
                     $this->set('data', array('user_id' => $qr_code['QrCode']['user_id']));
                 } else {
