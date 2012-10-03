@@ -439,17 +439,26 @@ class UsersController extends AppController {
 	public function api_view($id) {
 		if ($this->request->is('get')) {
 //			if ($this->isJsonRequest()) {
-				$this->User->id = $id;
-				if ($this->User->exists()) {
-                                    $this->User->recursive = 2;
-					$this->User->read();
-                                        $this->User->data['User']['image_url'] = 'http://www.gravatar.com/avatar/'.md5($this->User->data['User']['email_gravatar']).'?s=100&r=r';
-					$this->set('success', true);
-					$this->set('data', array('user' => $this->User->data));
-					$this->set('_serialize', array('success', 'data'));
-				} else {
-					throw new InvalidArgumentException(__('Invalid user'));
-				}
+			$this->User->id = $id;
+			if ($this->User->exists()) {
+				$this->User->recursive = 2;
+				$this->User->unbindModel(
+						array('hasMany' => array(
+								'LanSignup',
+								'LanInvite',
+								'LanInviteSent',
+								'TeamUser',
+							)
+						)
+				);
+				$this->User->read();
+				$this->User->data['User']['image_url'] = 'http://www.gravatar.com/avatar/' . md5($this->User->data['User']['email_gravatar']) . '?s=100&r=r';
+				$this->set('success', true);
+				$this->set('data', array('user' => $this->User->data));
+				$this->set('_serialize', array('success', 'data'));
+			} else {
+				throw new InvalidArgumentException(__('Invalid user'));
+			}
 //			} else {
 //				throw new BadRequestException;
 //			}
