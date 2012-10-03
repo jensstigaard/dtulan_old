@@ -60,17 +60,13 @@ class QrCodesController extends AppController {
                     'conditions' => array(
                         'QrCode.id' => $id
                     ),
-                    'recursive' => 0
+                    'fields' => array('QrCode.user_id'),
+                    'recursive' => -1
                         )
                 );
                 if (isset($qr_code['User'])) {
                     $this->set('success', true);
-                    $this->set('data', array(
-                        'id' => $qr_code['User']['id'], 
-                        'name' => $qr_code['User']['name'], 
-                        'email' => $qr_code['User']['email'], 
-                        'image_url' => 'http://www.gravatar.com/avatar/'.md5($qr_code['User']['email_gravatar']).'?s=100&r=r', 
-                        'id_number' => $qr_code['User']['id_number']));
+                    $this->set('data', array('user_id' => $qr_code['QrCode']['user_id']));
                 } else {
                     $this->set('success', false);
                     $this->set('data', array('message' => 'Unable to find a user for the given qr code'));

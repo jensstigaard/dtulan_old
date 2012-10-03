@@ -441,8 +441,9 @@ class UsersController extends AppController {
 //			if ($this->isJsonRequest()) {
 				$this->User->id = $id;
 				if ($this->User->exists()) {
+                                    $this->User->recursive = 2;
 					$this->User->read();
-                                        $this->User->data['User']['email_gravatar'] = $this->User->data['User']['email_gravatar'] 
+                                        $this->User->data['User']['image_url'] = 'http://www.gravatar.com/avatar/'.md5($this->User->data['User']['email_gravatar']).'?s=100&r=r';
 					$this->set('success', true);
 					$this->set('data', array('user' => $this->User->data));
 					$this->set('_serialize', array('success', 'data'));
