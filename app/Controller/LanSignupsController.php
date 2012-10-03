@@ -20,7 +20,6 @@ class LanSignupsController extends AppController {
 
 		App::uses('CakeTime', 'Utility');
 
-
 		$this->LanSignup->User->id = $this->Auth->user('id');
 
 		if (!$this->LanSignup->User->exists()) {
@@ -73,23 +72,24 @@ class LanSignupsController extends AppController {
 				$this->Session->setFlash('A day selected which is not available anymore', 'default', array(), 'bad');
 			} else {
 				$this->request->data['LanSignup']['lan_id'] = 0;
-				$this->request->data['LanSignup']['user_id'] = 0;
 
 				if (count($this->request->data['LanSignupDay'])) {
 					$this->request->data['LanSignup']['lan_id'] = $id;
-					$this->request->data['LanSignup']['user_id'] = $user['User']['id'];
 
 					if ($user['User']['type'] == 'guest') {
-						$this->LanSignup->LanInvite->recursive = 0;
 						$invite = $this->LanSignup->LanInvite->find('first', array('conditions' => array(
 								'LanInvite.lan_id' => $id,
 								'LanInvite.user_guest_id' => $user['User']['id'],
 								'LanInvite.accepted' => 0
-							)
+							),
+							'recursive' => 0
 								)
 						);
 
-						$this->request->data['LanInvite'] = array('id' => $invite['LanInvite']['id'], 'accepted' => 1);
+						$this->request->data['LanInvite'] = array(
+							'id' => $invite['LanInvite']['id'],
+							'accepted' => 1
+						);
 					}
 				}
 
@@ -101,6 +101,8 @@ class LanSignupsController extends AppController {
 					$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
 				} else {
 					$this->Session->setFlash('Unable to add your signup. Have You selected any days?', 'default', array(), 'bad');
+					debug($this->LanSignup->validationErrors);
+					debug($this->request->data);
 				}
 			}
 		}

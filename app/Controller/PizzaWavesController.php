@@ -71,7 +71,13 @@ class PizzaWavesController extends AppController {
 		$this->PizzaWave->recursive = 0;
 		$this->set('pizza_wave', $this->PizzaWave->read());
 
-		$this->set('pizza_wave_items', $this->PizzaWave->getItemList($id));
+		if($this->PizzaWave->data['PizzaWave']['status']==3){
+			$this->set('pizza_wave_orders', $this->PizzaWave->getOrderList($id));
+		}
+		else{
+			$this->set('pizza_wave_items', $this->PizzaWave->getItemList($id));
+		}
+
 	}
 
 	public function send_email($id) {
