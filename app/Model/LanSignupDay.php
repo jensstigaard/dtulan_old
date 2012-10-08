@@ -23,8 +23,8 @@ class LanSignupDay extends AppModel {
 	);
 
 	public $order = array(
-		'LanSignupDay.id' => 'desc',
-		
+		'LanDay.date' => 'asc',
+
 	);
 
 	public function availableLanDay($check) {

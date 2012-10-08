@@ -15,6 +15,8 @@ class LanDay extends AppModel {
 
 	public $hasMany = array('LanSignupDay');
 
+	public $order = array('LanDay.date' => 'asc');
+
 
 
 	public function seatsLeft($id){
