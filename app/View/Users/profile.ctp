@@ -151,7 +151,7 @@
 						</td>
 						<td>
 							<?php foreach ($lan['LanSignupDay'] as $day): ?>
-								<?php echo $this->Time->format('D M jS', $day['LanDay']['date']); ?><br />
+								<?php echo $this->Time->format('M jS (l)', $day['LanDay']['date']); ?><br />
 							<?php endforeach; ?>
 						</td>
 
@@ -194,7 +194,21 @@
 					<?php $total_balance = 0; ?>
 					<?php foreach ($user['Payment'] as $payment): ?>
 						<tr>
-							<td><?php echo $this->Time->isToday($payment['time']) ? 'Today, ' . $this->Time->format('H:i', $payment['time']) : $this->Time->nice($payment['time']); ?></td>
+							<td>
+								<?php
+									if ($this->Time->isToday($payment['time'])) {
+										echo'Today';
+									} elseif ($this->Time->isTomorrow($payment['time'])) {
+										echo'Tomorrow';
+									} elseif ($this->Time->isThisWeek($payment['time'])) {
+										echo $this->Time->format('l', $payment['time']);
+									} else {
+										echo $this->Time->format('D, M jS', $payment['time']);
+									}
+									?>
+									<?php echo $this->Time->format('H:i', $payment['time']); ?>
+
+							</td>
 							<td><?php echo $payment['amount']; ?> DKK</td>
 						</tr>
 						<?php $total_balance += $payment['amount'];
@@ -242,7 +256,21 @@
 						<?php foreach ($pizza_orders as $pizza_order): ?>
 							<?php $order_balance = 0; ?>
 							<tr>
-								<td><?php echo $this->Time->nice($pizza_order['PizzaOrder']['time']); ?></td>
+								<td>
+									<?php
+									if ($this->Time->isToday($pizza_order['PizzaOrder']['time'])) {
+										echo'Today';
+									} elseif ($this->Time->isTomorrow($pizza_order['PizzaOrder']['time'])) {
+										echo'Tomorrow';
+									} elseif ($this->Time->isThisWeek($pizza_order['PizzaOrder']['time'])) {
+										echo $this->Time->format('l', $pizza_order['PizzaOrder']['time']);
+									} else {
+										echo $this->Time->format('D, M jS', $pizza_order['PizzaOrder']['time']);
+									}
+									?>
+									<?php echo $this->Time->format('H:i', $pizza_order['PizzaOrder']['time']); ?>
+
+								</td>
 								<td><?php foreach ($pizza_order['PizzaOrderItem'] as $item): ?>
 										<div>
 											<div style="float:right"><?php echo $item['price']; ?> DKK =</div>
@@ -308,7 +336,20 @@
 						<?php foreach ($food_orders as $food_order): ?>
 							<?php $order_balance = 0; ?>
 							<tr>
-								<td><?php echo $this->Time->nice($food_order['FoodOrder']['time']); ?></td>
+								<td>
+									<?php
+									if ($this->Time->isToday($food_order['FoodOrder']['time'])) {
+										echo'Today';
+									} elseif ($this->Time->isTomorrow($food_order['FoodOrder']['time'])) {
+										echo'Tomorrow';
+									} elseif ($this->Time->isThisWeek($food_order['FoodOrder']['time'])) {
+										echo $this->Time->format('l', $food_order['FoodOrder']['time']);
+									} else {
+										echo $this->Time->format('D, M jS', $food_order['FoodOrder']['time']);
+									}
+									?>
+									<?php echo $this->Time->format('H:i', $food_order['FoodOrder']['time']); ?>
+								</td>
 								<td><?php foreach ($food_order['FoodOrderItem'] as $item): ?>
 										<div>
 											<div style="float:right"><?php echo $item['price']; ?> DKK =</div>

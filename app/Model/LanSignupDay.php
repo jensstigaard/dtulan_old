@@ -24,7 +24,6 @@ class LanSignupDay extends AppModel {
 
 	public $order = array(
 		'LanDay.date' => 'asc',
-
 	);
 
 	public function availableLanDay($check) {

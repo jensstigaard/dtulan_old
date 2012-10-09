@@ -119,6 +119,9 @@ class UsersController extends AppController {
 		$lans = $this->User->LanSignup->find('all', array('conditions' => array(
 				'LanSignup.user_id' => $id
 			),
+			'order' => array(
+				'Lan.time_start' => 'desc'
+			)
 				)
 		);
 
