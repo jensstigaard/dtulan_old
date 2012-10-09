@@ -8,7 +8,7 @@ if (!$is_loggedin) {
 } else {
 	echo $this->element('sidebar/user', array());
 	echo $this->element('sidebar/pizza', array());
-	echo $this->element('sidebar/sweets', array());
+	echo $this->element('sidebar/food', array());
 	if (isset($sidebar_current_lan)) {
 		echo $this->element('sidebar/current_lan', array(
 			'cache' => array(

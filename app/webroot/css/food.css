@@ -2,43 +2,43 @@
 	Styles for the right menu of the Sweets page
 */
 
-#sweets_order{
+#food_order{
 	padding:5px;
 }
 
-#sweets_order > h1{
+#food_order > h1{
 	text-align: center;
 }
 
 /*
 	Syles for Pizza-order
 */
-#sweets_order div.wave_selected_id{
+#food_order div.wave_selected_id{
 	display: none;
 }
 
-#sweets_order table tr:first-child th{
+#food_order table tr:first-child th{
 	text-align:center;
 }
 
-#sweets_order table td:nth-child(4), div#sweets_order table tr:last-child td:nth-child(2){
+#food_order table td:nth-child(4), div#food_order table tr:last-child td:nth-child(2){
 	text-align:right;
 }
 
-#sweets_order .order_buttons small{
+#food_order .order_buttons small{
 	float:right;
 	display:block;
 	margin-top:5px;
 }
 
-#sweets_order .order_buttons > a{
+#food_order .order_buttons > a{
 	font-weight: bold;
 	display: block;
 	float: left;
 	padding: 5px;
 }
 
-#pizza_order .order_buttons > a:hover{
+#food_order .order_buttons > a:hover{
 	background-color: rgba(0, 0, 0, 0.4);
 }
 

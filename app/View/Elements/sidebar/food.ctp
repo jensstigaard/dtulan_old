@@ -1,5 +1,5 @@
-<?php if (isset($sweets_current_lan_id)): ?>
-	<div id="sweets_order">
+<?php if (isset($foods_current_lan_id)): ?>
+	<div id="food_order">
 		<h1>Your order</h1>
 		<table>
 			<thead>
@@ -26,7 +26,7 @@
 			<?php
 			echo $this->Js->link(
 					$this->Html->image('16x16_GIF/action_add.gif'). ' Submit order', array(
-				'controller' => 'sweets_orders',
+				'controller' => 'food_orders',
 				'action' => 'add'
 					), array(
 				'class' => 'order_submit',
@@ -34,11 +34,11 @@
 					)
 			);
 			?>
-			<div class="hidden"><?php echo $sweets_current_lan_id; ?></div>
+			<div class="hidden"><?php echo $foods_current_lan_id; ?></div>
 			<div style="clear:both;"></div>
 		</div>
 		<div class="order_sending hidden"></div>
-		<div class="order_success hidden">Sweets order submitted</div>
+		<div class="order_success hidden">Order submitted</div>
 		<div class="order_errors hidden"></div>
 	</div>
 <?php endif; ?>

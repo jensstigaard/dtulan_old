@@ -6,14 +6,12 @@
  */
 
 /**
- * Description of SweetOrderItem
+ * Description of SweetModel
  *
  * @author Jens
  */
-class SweetOrderItem extends AppModel {
-	public $belongsTo = array(
-		'SweetOrder'
-	);
+class Food extends AppModel {
+
 }
 
 ?>

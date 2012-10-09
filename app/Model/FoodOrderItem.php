@@ -6,17 +6,13 @@
  */
 
 /**
- * Description of SweetOrder
+ * Description of SweetOrderItem
  *
  * @author Jens
  */
-class SweetOrder extends AppModel {
+class FoodOrderItem extends AppModel {
 	public $belongsTo = array(
-		'User'
-	);
-
-	public $hasMany = array(
-		'SweetOrderItem'
+		'Food', 'FoodOrder'
 	);
 }
 

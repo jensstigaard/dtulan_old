@@ -27,6 +27,7 @@ class User extends AppModel {
 		),
 		'Payment',
 		'PizzaOrder',
+		'FoodOrder',
 		'TeamInvite',
 		'TeamUser',
 	);

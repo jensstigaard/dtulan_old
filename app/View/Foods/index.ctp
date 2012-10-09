@@ -1,13 +1,13 @@
 <?php
 echo $this->Html->css('pizzas', null, array('inline' => false));
 
-if (isset($sweets_current_lan_id)) {
-	echo $this->Html->script(array('jquery', 'sweets_orderable'), FALSE);
+if (isset($foods_current_lan_id)) {
+	echo $this->Html->script(array('jquery', 'food_orderable'), FALSE);
 }
 ?><div>
 	<?php if ($is_admin): ?>
 		<div style="float:right;">
-			<?php echo $this->Html->link('New sweet', array('action' => 'add')); ?>
+			<?php echo $this->Html->link('New fooditem', array('action' => 'add')); ?>
 		</div>
 	<?php endif; ?>
 
@@ -15,8 +15,8 @@ if (isset($sweets_current_lan_id)) {
 	<h1>Sweets and soda</h1>
 	<p>A list of available sweets and soda will appear below.</p>
 
-	<?php if (isset($sweets)): ?>
-		<table class="sweets_list">
+	<?php if (isset($foods)): ?>
+		<table class="food_list">
 			<thead>
 				<tr>
 					<th>Item</th>
@@ -24,21 +24,21 @@ if (isset($sweets_current_lan_id)) {
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($sweets as $sweet): ?>
+				<?php foreach ($foods as $food): ?>
 					<?php
 					$if_admin_and_unavailable = '';
-					if (!$sweet['Sweet']['available']) {
+					if (!$food['Food']['available']) {
 						$if_admin_and_unavailable = ' gray';
 					}
 					?>
 					<tr class="<?php echo $if_admin_and_unavailable; ?>">
 						<td>
-							<span><?php echo $sweet['Sweet']['title']; ?></span>
-							<small class="description"><?php echo $sweet['Sweet']['description']; ?></small>
+							<span><?php echo $food['Food']['title']; ?></span>
+							<small class="description"><?php echo $food['Food']['description']; ?></small>
 						</td>
 						<td class="price">
-							<span><?php echo $sweet['Sweet']['price']; ?></span> DKK
-							<span class="hidden item_id"><?php echo $sweet['Sweet']['id']; ?></span>
+							<span><?php echo $food['Food']['price']; ?></span> DKK
+							<span class="hidden item_id"><?php echo $food['Food']['id']; ?></span>
 						</td>
 					</tr>
 				<?php endforeach; ?>

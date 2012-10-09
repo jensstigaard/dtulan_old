@@ -27,15 +27,15 @@ function orderListSize(){
 $(document).ready(
 	function() {
 
-		$sweets_order = $("#sweets_order");
+		$food_order = $("#food_order");
 
-		$table_body = $sweets_order.find('table tbody');
+		$table_body = $food_order.find('table tbody');
 
 		$last_row = $table_body.find('tr:last-child');
 
 		$order_total = $last_row.find('.order_total');
 
-		$order_buttons = $sweets_order.find('.order_buttons');
+		$order_buttons = $food_order.find('.order_buttons');
 
 		var url_image_add = $('.hidden_images .image_add').attr('src');
 
@@ -57,11 +57,11 @@ $(document).ready(
 				var price = $(this).parent().find(
 					'span:not(".hidden")').text();
 
-				var sweets_id = $(this).parent().find(
+				var id = $(this).parent().find(
 					'span.hidden.item_id').text();
 
 				var item = {
-					'sweets_id' : sweets_id,
+					'id' : id,
 					'title' : title,
 					'desc' : desc,
 					'price' : price
@@ -71,11 +71,11 @@ $(document).ready(
 			});
 
 
-		$sweets_orderable_span = $('table.sweets_list tbody tr td:last-child span');
+		$food_orderable_span = $('table.food_list tbody tr td:last-child span');
 
-		$sweets_orderable = $sweets_orderable_span.closest('td');
+		$food_orderable = $food_orderable_span.closest('td');
 
-		$sweets_orderable.append($link);
+		$food_orderable.append($link);
 
 
 
@@ -92,7 +92,7 @@ $(document).ready(
 					'lan_id': lan_id
 				}, function(data) {
 					if(data.trim()=='SUCCESS'){
-						$sweets_order.find(".order_success").show().delay(2000).hide("slow");
+						$food_order.find(".order_success").show().delay(2000).hide("slow");
 
 						// Clear order visually
 						clearOrder();
@@ -101,7 +101,7 @@ $(document).ready(
 					// showLatestActivities();
 					}
 					else{
-						$sweets_order.find(".order_errors").text(data).show();
+						$food_order.find(".order_errors").text(data).show();
 					}
 				});
 			}
@@ -127,19 +127,19 @@ $(document).ready(
 
 //			console.log($row);
 
-			var sweets_id	= $row.find('td:first-child').attr('class');
+			var id = $row.find('td:first-child').attr('class');
 			var price = $row.find('td:nth-child(4)').text()/$row.find('td:first-child').text();
 
 			decreaseTotal(price);
-			order_list[sweets_id].quantity--;
+			order_list[id].quantity--;
 
-			if(order_list[sweets_id].quantity>0){
-				$row.find('td:first-child').text(order_list[sweets_id].quantity);
-				$row.find('td:nth-child(4)').text(price * order_list[sweets_id].quantity);
+			if(order_list[id].quantity>0){
+				$row.find('td:first-child').text(order_list[id].quantity);
+				$row.find('td:nth-child(4)').text(price * order_list[id].quantity);
 			}
 			else{
-				delete order_list[sweets_id];
-				removeItemFromOrderList(sweets_id);
+				delete order_list[id];
+				removeItemFromOrderList(id);
 
 				if(orderListSize()==0){
 					// Hide text and submit-button
@@ -195,7 +195,7 @@ function addItemToOrderList(item){
 }
 
 function updateOrderRow(id){
-	var row = $sweets_order.find("tr.order_" + id);
+	var row = $food_order.find("tr.order_" + id);
 
 	if(row.length==1)
 		row.stop().hide().show(80);
