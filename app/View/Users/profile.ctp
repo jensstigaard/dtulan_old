@@ -61,116 +61,6 @@
 <?php endif; ?>
 
 
-<div>
-	<?php
-	/*
-	  Teams that this profile is part of
-	 */
-	?>
-	<div>
-		<h2>
-			<?php echo $this->Html->image('32x32_PNG/trophy_gold.png'); ?>
-			Tournaments
-		</h2>
-		<table>
-			<tr>
-				<th>Tournament</th>
-				<th>Name</th>
-				<th>Leader</th>
-				<th>Members</th>
-			</tr>
-			<?php if (!count($teams)): ?>
-				<tr>
-					<td colspan="4">
-						Do not participate in any tournaments
-					</td>
-				</tr>
-			<?php else: ?>
-				<?php foreach ($teams as $team): ?>
-					<tr>
-						<td><?php echo $this->Html->link($team['Team']['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $team['Team']['Tournament']['id'])); ?></td>
-						<td><?php echo $this->Html->link($team['Team']['name'], array('controller' => 'teams', 'action' => 'view', $team['Team']['id'])); ?></td>
-						<td><?php echo $team['TeamUser']['is_leader'] ? 'Is leader' : ''; ?></td>
-						<td><?php echo count($team['Team']['TeamUser']); ?> </td>
-					</tr>
-				<?php endforeach; ?>
-			<?php endif; ?>
-
-		</table>
-	</div>
-
-
-</div>
-
-<div>
-	<?php
-	/*
-	  Lans that this profile is part of
-	 */
-	?>
-	<div>
-		<h2>
-			<?php echo $this->Html->image('32x32_PNG/games.png'); ?>
-			LANs
-		</h2>
-		<table>
-			<tr>
-				<th>Title</th>
-				<th>Days attending</th>
-				<?php if ($is_auth): ?>
-					<th>Guests of you</th>
-				<?php endif; ?>
-			</tr>
-			<?php if (!count($lans)): ?>
-				<tr>
-					<td colspan="3">
-						Not signed up for any LANs
-					</td>
-				</tr>
-			<?php else: ?>
-				<?php foreach ($lans as $lan): ?>
-					<tr>
-						<td>
-							<?php echo $this->Html->link($lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug'])); ?>
-
-							<?php if ($is_you && $lan['Lan']['sign_up_open']): ?>
-								<br />
-								<?php
-								echo $this->Html->link(
-										$this->Html->image('16x16_GIF/reply.gif') . ' Edit your signup', array('controller' => 'lan_signups', 'action' => 'edit', $lan['Lan']['id']), array('escape' => false)
-								);
-								?>
-							<?php endif; ?>
-							<?php if (isset($lan['LanInvite']['Student'])): ?>
-								<br />
-								<small>Invited by: <?php echo $this->Html->link($lan['LanInvite']['Student']['name'], array('controller' => 'users', 'action' => 'profile', $lan['LanInvite']['Student']['id'])); ?></small>
-							<?php endif; ?>
-							<?php if ($is_auth && count($lan['Lan']['LanInvite'])): ?>
-
-							<?php endif; ?>
-						</td>
-						<td>
-							<?php foreach ($lan['LanSignupDay'] as $day): ?>
-								<?php echo $this->Time->format('M jS (l)', $day['LanDay']['date']); ?><br />
-							<?php endforeach; ?>
-						</td>
-
-						<?php if ($is_auth): ?>
-							<td>
-								<?php if (isset($lan_invites_accepted) && count($lan_invites_accepted)): ?>
-									<?php foreach ($lan_invites_accepted[$lan['Lan']['id']] as $invite_accepted): ?>
-										<?php echo $this->Html->link($invite_accepted['Guest']['name'], array('controller' => 'users', 'action' => 'profile', $invite_accepted['Guest']['id'])); ?><br />
-									<?php endforeach; ?>
-								<?php endif; ?>
-							</td>
-						<?php endif; ?>
-					</tr>
-				<?php endforeach; ?>
-			<?php endif; ?>
-		</table>
-	</div>
-</div>
-
 
 <?php if ($is_auth): ?>
 	<div>
@@ -179,34 +69,34 @@
 				<?php echo $this->Html->image('32x32_PNG/payment_cash.png'); ?>
 				Payments
 			</h2>
-			<table>
-				<tr>
-					<th>Time</th>
-					<th>Amount</th>
-				</tr>
-				<?php if (!count($user['Payment'])): ?>
+
+			<?php if (!count($user['Payment'])): ?>
+				<p>
+					No payments registered
+				</p>
+			<?php else: ?>
+				<table>
 					<tr>
-						<td colspan="2">
-							No payments registered
-						</td>
+						<th>Time</th>
+						<th>Amount</th>
 					</tr>
-				<?php else: ?>
+
 					<?php $total_balance = 0; ?>
 					<?php foreach ($user['Payment'] as $payment): ?>
 						<tr>
 							<td>
 								<?php
-									if ($this->Time->isToday($payment['time'])) {
-										echo'Today';
-									} elseif ($this->Time->isTomorrow($payment['time'])) {
-										echo'Tomorrow';
-									} elseif ($this->Time->isThisWeek($payment['time'])) {
-										echo $this->Time->format('l', $payment['time']);
-									} else {
-										echo $this->Time->format('D, M jS', $payment['time']);
-									}
-									?>
-									<?php echo $this->Time->format('H:i', $payment['time']); ?>
+								if ($this->Time->isToday($payment['time'])) {
+									echo'Today';
+								} elseif ($this->Time->isTomorrow($payment['time'])) {
+									echo'Tomorrow';
+								} elseif ($this->Time->isThisWeek($payment['time'])) {
+									echo $this->Time->format('l', $payment['time']);
+								} else {
+									echo $this->Time->format('D, M jS', $payment['time']);
+								}
+								?>
+								<?php echo $this->Time->format('H:i', $payment['time']); ?>
 
 							</td>
 							<td><?php echo $payment['amount']; ?> DKK</td>
@@ -222,8 +112,8 @@
 						</td>
 						<td><?php echo $total_balance; ?> DKK</td>
 					</tr>
-				<?php endif; ?>
-			</table>
+				</table>
+			<?php endif; ?>
 		</div>
 	</div>
 
@@ -233,25 +123,24 @@
 				<?php echo $this->Html->image('32x32_PNG/pizza.png'); ?>
 				Pizza orders
 			</h2>
-			<table>
-				<thead>
-					<tr>
-						<th>Time</th>
-						<th>Items</th>
-						<th>Price</th>
-						<?php if ($is_you): ?>
-							<th>Actions</th>
-						<?php endif; ?>
-					</tr>
-				</thead>
-				<tbody>
-					<?php if (!count($pizza_orders)): ?>
+			<?php if (!count($pizza_orders)): ?>
+				<p>
+					No orders registered
+				</p>
+			<?php else: ?>
+				<table>
+					<thead>
 						<tr>
-							<td colspan="4">
-								No orders registered
-							</td>
+							<th>Time</th>
+							<th>Items</th>
+							<th>Price</th>
+							<?php if ($is_you): ?>
+								<th>Actions</th>
+							<?php endif; ?>
 						</tr>
-					<?php else: ?>
+					</thead>
+					<tbody>
+
 						<?php $total_balance = 0; ?>
 						<?php foreach ($pizza_orders as $pizza_order): ?>
 							<?php $order_balance = 0; ?>
@@ -302,9 +191,9 @@
 								<td></td>
 							<?php endif; ?>
 						</tr>
-					<?php endif; ?>
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			<?php endif; ?>
 		</div>
 	</div>
 
@@ -312,26 +201,26 @@
 		<div>
 			<h2>
 				<?php // echo $this->Html->image('32x32_PNG/clock.png'); ?>
-				Food orders</h2>
-			<table>
-				<thead>
-					<tr>
-						<th>Time</th>
-						<th>Items</th>
-						<th>Price</th>
-						<?php if ($is_you): ?>
-							<th>Actions</th>
-						<?php endif; ?>
-					</tr>
-				</thead>
-				<tbody>
-					<?php if (!count($food_orders)): ?>
+				Food orders
+			</h2>
+			<?php if (!count($food_orders)): ?>
+				<p>
+					No orders registered
+				</p>
+			<?php else: ?>
+				<table>
+					<thead>
 						<tr>
-							<td colspan="4">
-								No orders registered
-							</td>
+							<th>Time</th>
+							<th>Items</th>
+							<th>Price</th>
+							<?php if ($is_you): ?>
+								<th>Actions</th>
+							<?php endif; ?>
 						</tr>
-					<?php else: ?>
+					</thead>
+					<tbody>
+
 						<?php $total_balance = 0; ?>
 						<?php foreach ($food_orders as $food_order): ?>
 							<?php $order_balance = 0; ?>
@@ -381,9 +270,113 @@
 								<td></td>
 							<?php endif; ?>
 						</tr>
-					<?php endif; ?>
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			<?php endif; ?>
 		</div>
 	</div>
 <?php endif; ?>
+
+
+<div>
+	<?php
+	/*
+	  Teams that this profile is part of
+	 */
+	?>
+	<div>
+		<h2>
+			<?php echo $this->Html->image('32x32_PNG/trophy_gold.png'); ?>
+			Tournaments
+		</h2>
+		<?php if (!count($teams)): ?>
+			<p>You do not participate in any tournaments</p>
+		<?php else: ?>
+			<table>
+				<tr>
+					<th>Tournament</th>
+					<th>Name</th>
+					<th>Leader</th>
+					<th>Members</th>
+				</tr>
+
+				<?php foreach ($teams as $team): ?>
+					<tr>
+						<td><?php echo $this->Html->link($team['Team']['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $team['Team']['Tournament']['id'])); ?></td>
+						<td><?php echo $this->Html->link($team['Team']['name'], array('controller' => 'teams', 'action' => 'view', $team['Team']['id'])); ?></td>
+						<td><?php echo $team['TeamUser']['is_leader'] ? 'Is leader' : ''; ?></td>
+						<td><?php echo count($team['Team']['TeamUser']); ?> </td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		<?php endif; ?>
+	</div>
+</div>
+
+
+<div>
+	<?php
+	/*
+	  Lans that this profile is part of
+	 */
+	?>
+	<div>
+		<h2>
+			<?php echo $this->Html->image('32x32_PNG/games.png'); ?>
+			LANs
+		</h2>
+		<?php if (!count($lans)): ?>
+			<p>Not signed up for any LANs</p>
+		<?php else: ?>
+			<table>
+				<tr>
+					<th>Title</th>
+					<th>Days attending</th>
+					<?php if ($is_auth): ?>
+						<th>Guests of you</th>
+					<?php endif; ?>
+				</tr>
+
+
+				<?php foreach ($lans as $lan): ?>
+					<tr>
+						<td>
+							<?php echo $this->Html->link($lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug'])); ?>
+
+							<?php if ($is_you && $lan['Lan']['sign_up_open']): ?>
+								<br />
+								<?php
+								echo $this->Html->link(
+										$this->Html->image('16x16_GIF/reply.gif') . ' Edit your signup', array('controller' => 'lan_signups', 'action' => 'edit', $lan['Lan']['id']), array('escape' => false)
+								);
+								?>
+							<?php endif; ?>
+							<?php if (isset($lan['LanInvite']['Student'])): ?>
+								<br />
+								<small>Invited by: <?php echo $this->Html->link($lan['LanInvite']['Student']['name'], array('controller' => 'users', 'action' => 'profile', $lan['LanInvite']['Student']['id'])); ?></small>
+							<?php endif; ?>
+							<?php if ($is_auth && count($lan['Lan']['LanInvite'])): ?>
+
+							<?php endif; ?>
+						</td>
+						<td>
+							<?php foreach ($lan['LanSignupDay'] as $day): ?>
+								<?php echo $this->Time->format('M jS (l)', $day['LanDay']['date']); ?><br />
+							<?php endforeach; ?>
+						</td>
+
+						<?php if ($is_auth): ?>
+							<td>
+								<?php if (isset($lan_invites_accepted) && count($lan_invites_accepted)): ?>
+									<?php foreach ($lan_invites_accepted[$lan['Lan']['id']] as $invite_accepted): ?>
+										<?php echo $this->Html->link($invite_accepted['Guest']['name'], array('controller' => 'users', 'action' => 'profile', $invite_accepted['Guest']['id'])); ?><br />
+									<?php endforeach; ?>
+								<?php endif; ?>
+							</td>
+						<?php endif; ?>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		<?php endif; ?>
+	</div>
+</div>
