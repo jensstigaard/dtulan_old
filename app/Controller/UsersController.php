@@ -99,6 +99,17 @@ class UsersController extends AppController {
 		}
 
 
+		// Food orders
+		$this->User->FoodOrder->recursive = 2;
+		$this->User->FoodOrder->unbindModel(array('belongsTo' => array('User')));
+		$this->User->FoodOrder->FoodOrderItem->unbindModel(array('belongsTo' => array('FoodOrder')));
+		$food_orders = $this->User->FoodOrder->find('all', array('conditions' => array(
+				'FoodOrder.user_id' => $id
+			)
+				)
+		);
+
+
 		// Lan signups
 		$this->User->LanSignup->recursive = 2;
 		$this->User->LanSignup->unbindModel(array('belongsTo' => array('User')));
@@ -108,6 +119,9 @@ class UsersController extends AppController {
 		$lans = $this->User->LanSignup->find('all', array('conditions' => array(
 				'LanSignup.user_id' => $id
 			),
+			'order' => array(
+				'Lan.time_start' => 'desc'
+			)
 				)
 		);
 
@@ -133,7 +147,7 @@ class UsersController extends AppController {
 
 
 		$this->set(compact(
-						'title_for_layout', 'is_you', 'is_auth', 'user', 'pizza_orders', 'pizza_orders_cancelable', 'lans', 'teams'
+						'title_for_layout', 'is_you', 'is_auth', 'user', 'pizza_orders', 'pizza_orders_cancelable', 'food_orders', 'lans', 'teams'
 				)
 		);
 	}

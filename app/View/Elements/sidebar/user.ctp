@@ -16,13 +16,16 @@
 		<div>
 			<p>Balance:
 				<?php
-				$color = 'white';
+				$color = '';
 
 				if ($current_user['balance'] < 0) {
-					$color = 'red';
+					$color = 'color: #FF0000;';
+				}
+				elseif($current_user['balance'] > 0) {
+					$color = 'color: #00CC00;';
 				}
 				?>
-				<strong style="color: <?php echo $color; ?>">
+				<strong style="<?php echo $color; ?>">
 					<?php echo $current_user_balance; ?>
 				</strong>
 			</p>

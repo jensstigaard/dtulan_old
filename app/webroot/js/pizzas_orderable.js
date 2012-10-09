@@ -115,7 +115,7 @@ $(document).ready(
 				});
 			}
 			else{
-				console.log('No pizzas in order. ', orderListSize());
+//				console.log('No pizzas in order. ', orderListSize());
 			}
 			return false;
 		});
@@ -134,7 +134,7 @@ $(document).ready(
 
 			$row = $(this).closest('tr');
 
-			console.log($row);
+//			console.log($row);
 
 			var price_id	= $row.find('td:first-child').attr('class');
 			var price_value = $row.find('td:nth-child(4)').text()/$row.find('td:first-child').text();

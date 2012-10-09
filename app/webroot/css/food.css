@@ -1,0 +1,74 @@
+/*
+	Styles for the right menu of the Sweets page
+*/
+
+#food_order{
+	padding:5px;
+}
+
+#food_order > h1{
+	text-align: center;
+}
+
+/*
+	Syles for Pizza-order
+*/
+#food_order div.wave_selected_id{
+	display: none;
+}
+
+#food_order table tr:first-child th{
+	text-align:center;
+}
+
+#food_order table td:nth-child(4), div#food_order table tr:last-child td:nth-child(2){
+	text-align:right;
+}
+
+#food_order .order_buttons small{
+	float:right;
+	display:block;
+	margin-top:5px;
+}
+
+#food_order .order_buttons > a{
+	font-weight: bold;
+	display: block;
+	float: left;
+	padding: 5px;
+}
+
+#food_order .order_buttons > a:hover{
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+
+
+/*
+	Styles for Pizza List
+
+	Each Pizza-category has a table with it's pizzas within
+*/
+table.sweets_list{
+	margin-bottom:25px;
+}
+
+table.sweets_list tbody tr td .hidden{
+	display: none;
+}
+table.sweets_list tbody tr td{
+	cursor: default;
+}
+
+
+table.sweets_list tbody tr.item.gray{
+	color: #888;
+}
+
+
+/*
+	Hidden images is used for the orderable state of the pizza list (Javascript)
+*/
+.hidden_images{
+	display: none;
+}

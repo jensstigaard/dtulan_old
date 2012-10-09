@@ -24,8 +24,8 @@
 		<?php // echo $this->Form->input('LanDay'); ?>
 		<?php
 		$x = 0;
-		foreach ($lan_days as $day_id => $day):
-			$conditions = array('value' => $day_id);
+		foreach ($lan_days as $x => $day):
+			$conditions = array('value' => $day['id']);
 
 			if (!$day['seats_left']) {
 				$conditions['disabled'] = 'disabled';
@@ -38,7 +38,6 @@
 				<label>
 					<?php echo $this->Form->checkbox('LanSignupDay.' . $x . '.lan_day_id', $conditions); ?>
 					<?php echo $day['value']; ?> (<?php echo ($day['seats_left']); ?> seats left)
-					<?php $x++; ?>
 				</label>
 			</div>
 		<?php endforeach; ?>

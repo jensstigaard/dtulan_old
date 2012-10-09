@@ -111,10 +111,14 @@ class LanSignupsController extends AppController {
 		foreach ($lan['LanDay'] as $lan_day) {
 			$seats_left = $this->LanSignup->LanSignupDay->LanDay->seatsLeft($lan_day['id']);
 
-			$lan_days[$lan_day['id']] = array(
+			$lan_days[CakeTime::format('Y-m-d', $lan_day['date'])] = array(
+				'id' => $lan_day['id'],
 				'value' => CakeTime::format('D, M jS Y', $lan_day['date']),
-				'seats_left' => $seats_left
+				'seats_left' => $seats_left,
+
 			);
+
+			ksort($lan_days);
 		}
 
 		$this->set(compact('lan', 'lan_days', 'user'));
@@ -174,7 +178,10 @@ class LanSignupsController extends AppController {
 			}
 
 			foreach ($days_wanted as $day_wanted) {
-				$this->request->data['LanSignupDay'][]['lan_day_id'] = $day_wanted;
+				$this->request->data[] = array(
+					'lan_day_id' => $day_wanted,
+					'lan_signup_id' => $id
+				);
 			}
 
 			if (count($lan_signup['LanSignupDay']) + count($days_wanted) - count($days_delete) == 0) {
@@ -187,10 +194,10 @@ class LanSignupsController extends AppController {
 					}
 				}
 
-				$this->LanSignup->id = $id;
+//				$this->LanSignup->id = $id;
 
 				if (count($days_wanted) && !isset($not_ok)) {
-					if ($this->LanSignup->saveAssociated($this->request->data)) {
+					if ($this->LanSignup->LanSignupDay->saveMany($this->request->data)) {
 						$saved = 1;
 					} else {
 						$this->Session->setFlash('Unable to add your signup. Have You selected any days?', 'default', array(), 'bad');
@@ -217,13 +224,15 @@ class LanSignupsController extends AppController {
 		foreach ($lan_signup2['Lan']['LanDay'] as $lan_day) {
 			$seats_left = $this->LanSignup->LanSignupDay->LanDay->seatsLeft($lan_day['id']);
 
-			$lan_days[] = array(
+			$lan_days[CakeTime::format('Y-m-d', $lan_day['date'])] = array(
 				'id' => $lan_day['id'],
 				'value' => CakeTime::format('D, M jS Y', $lan_day['date']),
 				'seats_left' => $seats_left,
 				'checked' => in_array($lan_day['id'], $days_selected)
 			);
 		}
+
+		ksort($lan_days);
 
 		$this->set(compact('lan_signup', 'lan_days', 'user'));
 	}

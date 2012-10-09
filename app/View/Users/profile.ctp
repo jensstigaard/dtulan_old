@@ -68,7 +68,10 @@
 	 */
 	?>
 	<div>
-		<h2><?php echo $this->Html->image('32x32_PNG/trophy_gold.png'); ?> Tournaments</h2>
+		<h2>
+			<?php echo $this->Html->image('32x32_PNG/trophy_gold.png'); ?>
+			Tournaments
+		</h2>
 		<table>
 			<tr>
 				<th>Tournament</th>
@@ -106,7 +109,10 @@
 	 */
 	?>
 	<div>
-		<h2><?php echo $this->Html->image('32x32_PNG/games.png'); ?> LANs</h2>
+		<h2>
+			<?php echo $this->Html->image('32x32_PNG/games.png'); ?>
+			LANs
+		</h2>
 		<table>
 			<tr>
 				<th>Title</th>
@@ -145,7 +151,7 @@
 						</td>
 						<td>
 							<?php foreach ($lan['LanSignupDay'] as $day): ?>
-								<?php echo $this->Time->format('D M jS', $day['LanDay']['date']); ?><br />
+								<?php echo $this->Time->format('M jS (l)', $day['LanDay']['date']); ?><br />
 							<?php endforeach; ?>
 						</td>
 
@@ -169,7 +175,10 @@
 <?php if ($is_auth): ?>
 	<div>
 		<div>
-			<h2><?php echo $this->Html->image('32x32_PNG/payment_cash.png'); ?> Payments</h2>
+			<h2>
+				<?php echo $this->Html->image('32x32_PNG/payment_cash.png'); ?>
+				Payments
+			</h2>
 			<table>
 				<tr>
 					<th>Time</th>
@@ -185,7 +194,21 @@
 					<?php $total_balance = 0; ?>
 					<?php foreach ($user['Payment'] as $payment): ?>
 						<tr>
-							<td><?php echo $this->Time->isToday($payment['time']) ? 'Today, ' . $this->Time->format('H:i', $payment['time']) : $this->Time->nice($payment['time']); ?></td>
+							<td>
+								<?php
+									if ($this->Time->isToday($payment['time'])) {
+										echo'Today';
+									} elseif ($this->Time->isTomorrow($payment['time'])) {
+										echo'Tomorrow';
+									} elseif ($this->Time->isThisWeek($payment['time'])) {
+										echo $this->Time->format('l', $payment['time']);
+									} else {
+										echo $this->Time->format('D, M jS', $payment['time']);
+									}
+									?>
+									<?php echo $this->Time->format('H:i', $payment['time']); ?>
+
+							</td>
 							<td><?php echo $payment['amount']; ?> DKK</td>
 						</tr>
 						<?php $total_balance += $payment['amount'];
@@ -206,7 +229,10 @@
 
 	<div>
 		<div>
-			<h2><?php echo $this->Html->image('32x32_PNG/pizza.png'); ?> Pizza orders</h2>
+			<h2>
+				<?php echo $this->Html->image('32x32_PNG/pizza.png'); ?>
+				Pizza orders
+			</h2>
 			<table>
 				<thead>
 					<tr>
@@ -230,7 +256,21 @@
 						<?php foreach ($pizza_orders as $pizza_order): ?>
 							<?php $order_balance = 0; ?>
 							<tr>
-								<td><?php echo $this->Time->nice($pizza_order['PizzaOrder']['time']); ?></td>
+								<td>
+									<?php
+									if ($this->Time->isToday($pizza_order['PizzaOrder']['time'])) {
+										echo'Today';
+									} elseif ($this->Time->isTomorrow($pizza_order['PizzaOrder']['time'])) {
+										echo'Tomorrow';
+									} elseif ($this->Time->isThisWeek($pizza_order['PizzaOrder']['time'])) {
+										echo $this->Time->format('l', $pizza_order['PizzaOrder']['time']);
+									} else {
+										echo $this->Time->format('D, M jS', $pizza_order['PizzaOrder']['time']);
+									}
+									?>
+									<?php echo $this->Time->format('H:i', $pizza_order['PizzaOrder']['time']); ?>
+
+								</td>
 								<td><?php foreach ($pizza_order['PizzaOrderItem'] as $item): ?>
 										<div>
 											<div style="float:right"><?php echo $item['price']; ?> DKK =</div>
@@ -246,6 +286,85 @@
 										if ($pizza_orders_cancelable[$pizza_order['PizzaOrder']['id']]) {
 											echo $this->Form->postLink(
 													$this->Html->image('16x16_PNG/cancel.png') . ' Cancel order', array('controller' => 'pizza_orders', 'action' => 'delete', $pizza_order['PizzaOrder']['id']), array('confirm' => "Are You sure you will delete this order?", 'escape' => false)
+											);
+										}
+										?>
+									</td>
+								<?php endif; ?>
+							</tr>
+							<?php $total_balance += $order_balance; ?>
+						<?php endforeach; ?>
+						<tr>
+							<td>Orders: <?php echo count($pizza_orders); ?></td>
+							<td style="text-align:right;">Total amount spend on pizzas:</td>
+							<td style="text-decoration: underline"><?php echo $total_balance; ?> DKK</td>
+							<?php if ($is_you): ?>
+								<td></td>
+							<?php endif; ?>
+						</tr>
+					<?php endif; ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div>
+		<div>
+			<h2>
+				<?php // echo $this->Html->image('32x32_PNG/clock.png'); ?>
+				Food orders</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>Time</th>
+						<th>Items</th>
+						<th>Price</th>
+						<?php if ($is_you): ?>
+							<th>Actions</th>
+						<?php endif; ?>
+					</tr>
+				</thead>
+				<tbody>
+					<?php if (!count($food_orders)): ?>
+						<tr>
+							<td colspan="4">
+								No orders registered
+							</td>
+						</tr>
+					<?php else: ?>
+						<?php $total_balance = 0; ?>
+						<?php foreach ($food_orders as $food_order): ?>
+							<?php $order_balance = 0; ?>
+							<tr>
+								<td>
+									<?php
+									if ($this->Time->isToday($food_order['FoodOrder']['time'])) {
+										echo'Today';
+									} elseif ($this->Time->isTomorrow($food_order['FoodOrder']['time'])) {
+										echo'Tomorrow';
+									} elseif ($this->Time->isThisWeek($food_order['FoodOrder']['time'])) {
+										echo $this->Time->format('l', $food_order['FoodOrder']['time']);
+									} else {
+										echo $this->Time->format('D, M jS', $food_order['FoodOrder']['time']);
+									}
+									?>
+									<?php echo $this->Time->format('H:i', $food_order['FoodOrder']['time']); ?>
+								</td>
+								<td><?php foreach ($food_order['FoodOrderItem'] as $item): ?>
+										<div>
+											<div style="float:right"><?php echo $item['price']; ?> DKK =</div>
+											<?php echo $item['quantity']; ?> x <?php echo $item['Food']['title']; ?>
+											<small>(<?php echo $item['Food']['description']; ?>)</small>
+										</div>
+										<?php $order_balance += $item['quantity'] * $item['price']; ?>
+									<?php endforeach; ?></td>
+								<td><?php echo $order_balance; ?> DKK</td>
+								<?php if ($is_you): ?>
+									<td>
+										<?php
+										if ($food_order['FoodOrder']['status'] == 0) {
+											echo $this->Form->postLink(
+													$this->Html->image('16x16_PNG/cancel.png') . ' Cancel order', array('controller' => 'food_orders', 'action' => 'delete', $food_order['FoodOrder']['id']), array('confirm' => "Are You sure you will delete this order?", 'escape' => false)
 											);
 										}
 										?>

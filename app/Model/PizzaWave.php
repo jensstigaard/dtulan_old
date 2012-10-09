@@ -192,11 +192,33 @@ class PizzaWave extends AppModel {
 		$this->PizzaOrder->PizzaOrderItem->unbindModel(array('belongsTo' => array('PizzaOrder')));
 		$this->PizzaOrder->PizzaOrderItem->PizzaPrice->unbindModel(array('hasMany' => array('PizzaOrderItem')));
 
+		$this->PizzaOrder->User->unbindModel(
+				array('hasMany' => array(
+						'Crew',
+						'LanSignup',
+						'LanInvite',
+						'LanInviteSent',
+						'Payment',
+						'PizzaOrder',
+						'TeamUser'
+					),
+					'hasOne' => array(
+						'Admin',
+						'UserPasswordTicket',
+						'QrCode'
+					)
+				)
+		);
+
 		$pizza_orders = $this->PizzaOrder->find('all', array(
 			'conditions' => array(
 				'PizzaOrder.pizza_wave_id' => $id
 			),
-			'recursive' => 3
+			'recursive' => 3,
+			'order' => array(
+				'status' => 'asc',
+				'time' => 'asc'
+			)
 				)
 		);
 

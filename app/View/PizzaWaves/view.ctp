@@ -86,7 +86,14 @@
 								$order['User']['id']
 									)
 							);
-							?>
+							?><br />
+							<?php if ($this->Time->isToday($order['PizzaOrder']['time'])): ?>
+								Today
+							<?php elseif ($this->Time->wasYesterday($order['PizzaOrder']['time'])): ?>
+								Yesterday
+								<?php echo $this->Time->format('D, M jS', $order['PizzaOrder']['time']); ?>
+							<?php endif; ?>
+							<?php echo $this->Time->format('H:i', $order['PizzaOrder']['time']); ?>
 						</td>
 						<td>
 							<ul>
@@ -103,22 +110,26 @@
 							<?php
 							switch ($order['PizzaOrder']['status']) {
 								case 0:
-									echo $this->Html->link('Mark as delivered', array(
+									echo $this->Html->link($this->Html->image('16x16_PNG/add.png') . ' Mark delivered', array(
 										'controller' => 'pizza_orders',
 										'action' => 'mark_delivered',
 										$order['PizzaOrder']['id']
+											), array(
+										'escape' => false
 											)
 									);
 									echo'<br />';
-									echo $this->Html->link('Mark as delivered with errors', array(
+									echo $this->Html->link($this->Html->image('16x16_PNG/cancel.png') . ' With errors', array(
 										'controller' => 'pizza_orders',
 										'action' => 'mark_errors',
 										$order['PizzaOrder']['id']
+											), array(
+										'escape' => false
 											)
 									);
 									break;
 								case 1:
-									
+
 									break;
 								case 2:
 									echo'Marked as delivered with errors';
