@@ -29,6 +29,7 @@
     table thead tr th {
 		padding: 3px;
         text-align: center;
+		border-bottom: 2px solid #000;
     }
 
     table thead tr th:first-child {
@@ -41,7 +42,7 @@
     }
 
     table tbody tr td {
-		border-top: 1px solid #000;
+		border-bottom: 1px solid #000;
         text-align: center;
     }
 
