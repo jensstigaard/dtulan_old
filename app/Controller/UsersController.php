@@ -501,11 +501,8 @@ class UsersController extends AppController {
 				$this->set('data', array('user' => $this->User->data));
 				$this->set('_serialize', array('success', 'data'));
 			} else {
-				throw new InvalidArgumentException(__('Invalid user'));
+				throw new BadRequestException;
 			}
-//			} else {
-//				throw new BadRequestException;
-//			}
 		} else {
 			throw new MethodNotAllowedException;
 		}

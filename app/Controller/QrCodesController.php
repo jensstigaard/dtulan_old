@@ -28,23 +28,41 @@ class QrCodesController extends AppController {
     public function api_add() {
         if ($this->request->is('post')) {
             if ($this->isJsonRequest()) {
-                $user = $this->QrCode->User->find('first', array(
-                    'conditions' => array(
-                        'email' => $this->request->data['QrCode']['email']
-                    ),
-                    'fiels' => array('User.id')
-                )
-                        );
-                unset($this->request->data['QrCode']['email']);
-                $this->request->data['QrCode']['user_id'];
-                if (isset($user['User']['id']) && $this->QrCode->save($this->request->data)) {
-                    $this->set('success', true);
-                    $this->set('data', array('QR code is connected to user'));
-                } else {
-                    $this->set('success', false);
-                    $this->set('data', array('message' => 'Unable to bind user to QR code'));
-                }
-                $this->set('_serialize', array('data', 'succes'));
+				if(!isset($this->request->data['QrCode'])) {
+					throw new BadFunctionCallException('Missing resource');
+				}
+				if(!isset($this->request->data['QrCode'])) {
+					throw new BadFunctionCallException('Please supply a valid qr code');
+				}
+				
+				$conditions = array();
+				if(isset($this->request->data['QrCode']['email'])) {
+					$conditions['conditions']['email'] = $this->request->data['QrCode']['email'];
+				}
+				if(isset($this->request->data['QrCode']['id_number'])) {
+					$conditions['conditions']['id_number'] = $this->request->data['QrCode']['id_number'];
+				}
+				
+				$conditions['fields'] = array('User.id');
+                $user = $this->QrCode->User->find('first', $conditions);
+				if(count($user)) {
+					 $data = array();
+					$data['QrCode']['id'] = $this->request->data['QrCode']['qr_code'];
+					$data['QrCode']['user_id'] = $user['User']['id'];
+
+					if (isset($user['User']['id']) && $this->QrCode->save($data)) {
+						$this->set('success', true);
+						$this->set('data', array('QR code is connected to user'));
+					} else {
+						$this->set('success', false);
+						$this->set('data', array('message' => 'Unable to bind user to QR code'));
+					}
+					
+				} else {
+					$this->set('success', false);
+					$this->set('data', array('message' => 'Unable to find user with given information'));
+				}
+				$this->set('_serialize', array('data', 'succes'));
             } else {
                 throw new BadRequestException('Invalid request from client');
             }

@@ -19,7 +19,7 @@
 				echo '<td>' . $item['pizza_number'] . '</td>';
 				echo '<td>' . $item['pizza_title'] . '</td>';
 				echo '<td>' . $item['pizza_type'] . '</td>';
-				echo '<td></td>';
+				echo '<td>&nbsp; </td>';
 				echo '</tr>';
 			} 
 			?>
