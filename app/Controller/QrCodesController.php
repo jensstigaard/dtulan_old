@@ -28,31 +28,29 @@ class QrCodesController extends AppController {
     public function api_add() {
         if ($this->request->is('post')) {
             if ($this->isJsonRequest()) {
-				if(!isset($this->request->data['QrCode'])) {
-					throw new BadFunctionCallException('Missing resource');
-				}
-				if(!isset($this->request->data['QrCode'])) {
+				if(!isset($this->request->data['QrCode']) || !isset($this->request->data['QrCode']['qr_code'])) {
 					throw new BadFunctionCallException('Please supply a valid qr code');
 				}
 				
 				$conditions = array();
 				if(isset($this->request->data['QrCode']['email'])) {
 					$conditions['conditions']['email'] = $this->request->data['QrCode']['email'];
-				}
-				if(isset($this->request->data['QrCode']['id_number'])) {
+				}else if(isset($this->request->data['QrCode']['id_number'])) {
 					$conditions['conditions']['id_number'] = $this->request->data['QrCode']['id_number'];
+				} else {
+					throw new BadFunctionCallException('Please supply either a E-mail or ID number');
 				}
 				
 				$conditions['fields'] = array('User.id');
                 $user = $this->QrCode->User->find('first', $conditions);
 				if(count($user)) {
-					 $data = array();
+					$data = array();
 					$data['QrCode']['id'] = $this->request->data['QrCode']['qr_code'];
 					$data['QrCode']['user_id'] = $user['User']['id'];
 
 					if (isset($user['User']['id']) && $this->QrCode->save($data)) {
 						$this->set('success', true);
-						$this->set('data', array('QR code is connected to user'));
+						$this->set('data', array('message' =>'QR code is connected to user'));
 					} else {
 						$this->set('success', false);
 						$this->set('data', array('message' => 'Unable to bind user to QR code'));
@@ -62,7 +60,7 @@ class QrCodesController extends AppController {
 					$this->set('success', false);
 					$this->set('data', array('message' => 'Unable to find user with given information'));
 				}
-				$this->set('_serialize', array('data', 'succes'));
+				$this->set('_serialize', array('data', 'success'));
             } else {
                 throw new BadRequestException('Invalid request from client');
             }
