@@ -1,6 +1,12 @@
 <div>
 	<h1>Food orders</h1>
 
+	<?php if(!count($orders)): ?>
+
+	<p>No orders yet</p>
+
+	<?php else: ?>
+
 	<table class="order_list">
 		<thead>
 			<tr>
@@ -90,4 +96,5 @@
 <?php endforeach; ?>
 		</tbody>
 	</table>
+	<?php endif; ?>
 </div>

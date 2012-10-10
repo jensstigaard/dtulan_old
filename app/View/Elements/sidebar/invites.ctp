@@ -1,6 +1,6 @@
 <?php if (isset($sidebar_next_lan['Lan']['title'])): ?>
 	<div class="unsigned_lan">
-		<h1><?php echo $this->Html->image('24x24_PNG/001_01.png'); ?> New event!</h1>
+		<h1><?php echo $this->Html->image('24x24_PNG/001_15.png'); ?> New event!</h1>
 		<h2><?php
 	echo $this->Html->link($sidebar_next_lan['Lan']['title'], array(
 		'controller' => 'lans',
@@ -24,7 +24,7 @@
 
 <?php if (isset($sidebar_lan_invites['Lan']['title'])): ?>
 	<div class="invite">
-		<h1><?php echo $this->Html->image('24x24_PNG/001_01.png'); ?> Personal invite</h1>
+		<h1><?php echo $this->Html->image('24x24_PNG/001_15.png'); ?> Personal invite</h1>
 		<p>You are invited to <strong><?php echo $sidebar_lan_invites['Lan']['title']; ?></strong> by <strong><?php echo $sidebar_lan_invites['Student']['name']; ?></strong>!</p>
 		<ul>
 			<li><?php

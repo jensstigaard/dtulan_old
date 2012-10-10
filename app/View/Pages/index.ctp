@@ -21,10 +21,12 @@
 						case'uri':
 							$img = 'application';
 							$title = 'URI';
+							$url = $page['Page']['command_value'];
 							break;
 						default:
 							$img = 'file';
 							$title = 'Text';
+							$url = array('action' => 'view', $page['Page']['slug']);
 							break;
 					}
 					echo $this->Html->image('16x16_GIF/' . $img . '.gif', array('title' => $title));
@@ -43,7 +45,7 @@
 					?>
 				</td>
 				<td>
-					<?php echo $this->Html->link($page['Page']['title'], array('action' => 'view', $page['Page']['id'])); ?>
+					<?php echo $this->Html->link($page['Page']['title'], $url); ?>
 				</td>
 
 
