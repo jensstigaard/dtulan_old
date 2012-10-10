@@ -69,6 +69,6 @@ table tr:hover a img{
 	opacity:.6;
 }
 
-table tr a img:hover{
+table tr a:hover img{
 	opacity: 1;
 }
