@@ -451,8 +451,7 @@ class UsersController extends AppController {
 	}
 
 	public function api_view($id) {
-		if ($this->request->is('get')) {
-//			if ($this->isJsonRequest()) {
+		if ($this->request->is('get') && $this->isJsonRequest()) {
 			$this->User->id = $id;
 			if ($this->User->exists()) {
 				$this->User->recursive = 4;
@@ -490,7 +489,6 @@ class UsersController extends AppController {
 						array('belongsTo' => array(
 								'Lan',
 								''
-
 							)
 						)
 				);
