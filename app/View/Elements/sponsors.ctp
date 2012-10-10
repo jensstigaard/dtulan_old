@@ -39,13 +39,13 @@
 				?>
 			</td>
 
-<!--			<td>
+			<td>
 				<?php
-//				echo $this->Html->link(
-//						$this->Html->image('fucapo.png', array('alt' => 'Fucapo - Energy gum and drops')), 'http://fucapo.com/', array('target' => '_blank', 'escape' => false)
-//				);
+				echo $this->Html->link(
+						$this->Html->image('logos/sponsors/fucapo.png', array('alt' => 'Fucapo - Energy gum and drops')), 'http://fucapo.com/', array('target' => '_blank', 'escape' => false)
+				);
 				?>
-			</td>-->
+			</td>
 
 			<td>
 				<?php
