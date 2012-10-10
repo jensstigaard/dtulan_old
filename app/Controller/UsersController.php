@@ -455,7 +455,7 @@ class UsersController extends AppController {
 //			if ($this->isJsonRequest()) {
 			$this->User->id = $id;
 			if ($this->User->exists()) {
-				$this->User->recursive = 2;
+				$this->User->recursive = 4;
 				$this->User->unbindModel(
 						array('hasMany' => array(
 								'Crew',
@@ -471,12 +471,30 @@ class UsersController extends AppController {
 							)
 						)
 				);
+
 				$this->User->PizzaOrder->unbindModel(
 						array('belongsTo' => array(
 								'User'
 							)
 						)
 				);
+
+				$this->User->PizzaOrder->PizzaOrderItem->unbindModel(
+						array('belongsTo' => array(
+								'PizzaOrder'
+							)
+						)
+				);
+
+				$this->User->PizzaOrder->PizzaWave->unbindModel(
+						array('belongsTo' => array(
+								'Lan',
+								''
+
+							)
+						)
+				);
+
 				$this->User->read();
 				$this->User->data['User']['image_url'] = 'http://www.gravatar.com/avatar/' . md5($this->User->data['User']['email_gravatar']) . '?s=100&r=r';
 				$this->set('success', true);
