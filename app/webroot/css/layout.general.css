@@ -133,6 +133,7 @@ hr{
 #sponsors table td{
 	border:none;
 	text-align: center;
+	padding:5px;
 }
 
 #sponsors table a{

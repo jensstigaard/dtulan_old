@@ -33,6 +33,21 @@ class FoodOrdersController extends AppController {
 		return false;
 	}
 
+	public function index() {
+		$orders = $this->FoodOrder->find('all', array(
+			'conditions' => array(
+
+			),
+			'order' => array(
+				'status' => 'asc'
+			),
+			'recursive' => 3
+				)
+		);
+
+		$this->set(compact('orders'));
+	}
+
 	public function add() {
 		if (!$this->request->is('ajax')) {
 			throw new BadRequestException('Bad request from client');
@@ -85,9 +100,9 @@ class FoodOrdersController extends AppController {
 	}
 
 	public function mark_delivered($id = null) {
-		$this->PizzaOrder->id = $id;
+		$this->FoodOrder->id = $id;
 
-		if (!$this->PizzaOrder->exists()) {
+		if (!$this->FoodOrder->exists()) {
 			throw new NotFoundException('Order not found');
 		}
 
@@ -96,10 +111,10 @@ class FoodOrdersController extends AppController {
 		if ($this->FoodOrder->data['FoodOrder']['status'] == 1) {
 			$this->Session->setFlash('Order already marked as delivered', 'default', array('class' => 'message success'), 'good');
 		} else {
-			if ($this->PizzaOrder->saveField('status', 1, true)) {
+			if ($this->FoodOrder->saveField('status', 1, true)) {
 				$this->Session->setFlash('Order marked as delivered', 'default', array('class' => 'message success'), 'good');
 			} else {
-				$this->Session->setFlash('Unable to mark pizza order as delivered', 'default', array(), 'bad');
+				$this->Session->setFlash('Unable to mark order as delivered', 'default', array(), 'bad');
 			}
 		}
 
@@ -128,7 +143,7 @@ class FoodOrdersController extends AppController {
 		}
 
 		if ($this->FoodOrder->data['FoodOrder']['status'] > 0) {
-			throw new UnauthorizedException(__('Pizza order already delivered'));
+			throw new UnauthorizedException(__('Order already delivered'));
 		}
 
 		$sum = $this->FoodOrder->FoodOrderItem->find('all', array(
@@ -156,6 +171,7 @@ class FoodOrdersController extends AppController {
 			$this->redirect(array('controller' => 'users', 'action' => 'profile'));
 		}
 	}
+
 }
 
 ?>

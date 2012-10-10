@@ -451,40 +451,53 @@ class UsersController extends AppController {
 	}
 
 	public function api_view($id) {
-		if ($this->request->is('get')) {
-			if ($this->isJsonRequest()) {
-				$this->User->id = $id;
-				if ($this->User->exists()) {
-					$this->User->recursive = 4;
-					$this->User->unbindModel(
-							array('hasMany' => array(
-									'Crew',
-									'LanSignup',
-									'LanInvite',
-									'LanInviteSent',
-									'TeamUser',
-									'TeamInvite',
-									'Payment',
-								),
-								'hasOne' => array(
-									'UserPasswordTicket', 'QrCode', 'Admin'
-								)
+		if ($this->request->is('get') && $this->isJsonRequest()) {
+			$this->User->id = $id;
+			if ($this->User->exists()) {
+				$this->User->recursive = 4;
+				$this->User->unbindModel(
+						array('hasMany' => array(
+								'Crew',
+								'LanSignup',
+								'LanInvite',
+								'LanInviteSent',
+								'TeamUser',
+								'TeamInvite',
+								'Payment',
+							),
+							'hasOne' => array(
+								'UserPasswordTicket', 'QrCode', 'Admin'
 							)
-					);
-					$this->User->PizzaOrder->unbindModel(
-							array('belongsTo' => array(
-									'User'
-								)
+						)
+				);
+
+				$this->User->PizzaOrder->unbindModel(
+						array('belongsTo' => array(
+								'User'
 							)
-					);
-					$this->User->read();
-					$this->User->data['User']['image_url'] = 'http://www.gravatar.com/avatar/' . md5($this->User->data['User']['email_gravatar']) . '?s=100&r=r';
-					$this->set('success', true);
-					$this->set('data', array('user' => $this->User->data));
-					$this->set('_serialize', array('success', 'data'));
-				} else {
-					throw new InvalidArgumentException(__('Invalid user'));
-				}
+						)
+				);
+
+				$this->User->PizzaOrder->PizzaOrderItem->unbindModel(
+						array('belongsTo' => array(
+								'PizzaOrder'
+							)
+						)
+				);
+
+				$this->User->PizzaOrder->PizzaWave->unbindModel(
+						array('belongsTo' => array(
+								'Lan',
+								''
+							)
+						)
+				);
+
+				$this->User->read();
+				$this->User->data['User']['image_url'] = 'http://www.gravatar.com/avatar/' . md5($this->User->data['User']['email_gravatar']) . '?s=100&r=r';
+				$this->set('success', true);
+				$this->set('data', array('user' => $this->User->data));
+				$this->set('_serialize', array('success', 'data'));
 			} else {
 				throw new BadRequestException;
 			}

@@ -29,17 +29,17 @@
 	background: #CCC;
 }
 
-table.pizza_order_list tbody tr td.order_status{
+table.pizza_order_list tbody tr td.order_status, table.order_list tbody tr td.order_status{
 	width:.3em;
 }
 table.pizza_order_list tbody tr td.order_status_yellow{
 	background-color: rgba(240, 255, 0, 0.4);
 }
 
-table.pizza_order_list tbody tr td.order_status_green{
+table.pizza_order_list tbody tr td.order_status_green, table.order_list tbody tr td.order_status_green{
 	background-color: rgba(50, 255, 50, 0.4);
 }
 
-table.pizza_order_list tbody tr td.order_status_red{
+table.pizza_order_list tbody tr td.order_status_red, table.order_list tbody tr td.order_status_red{
 	background-color: rgba(255, 50, 50, 0.4);
 }

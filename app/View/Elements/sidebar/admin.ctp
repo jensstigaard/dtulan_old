@@ -15,6 +15,7 @@
 		<li><?php echo $this->Html->link('Pages', array('controller' => 'pages', 'action' => 'index')); ?></li>
 		<li><?php echo $this->Html->link('Pizzas', array('controller' => 'pizza_categories', 'action' => 'index')); ?></li>
 		<li><?php echo $this->Html->link('Pizza waves', array('controller' => 'pizza_waves', 'action' => 'index')); ?></li>
+		<li><?php echo $this->Html->link('Food orders', array('controller' => 'food_orders', 'action' => 'index')); ?></li>
 		<li><?php echo $this->Html->link('Payments', array('controller' => 'payments', 'action' => 'index')); ?></li>
 		<li><?php echo $this->Html->link('New admin', array('controller' => 'admins', 'action' => 'add')); ?></li>
 	</ul>
