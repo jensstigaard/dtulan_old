@@ -26,11 +26,13 @@
 			<td>
 				<?php
 				echo $this->Html->link(
-						$this->Html->image('logos/sponsors/netcompany.png', array('alt' => 'NetCompany.com - IT and business consulting')), 'http://netcompany.com', array('target' => '_blank', 'escape' => false)
+						$this->Html->image('logos/sponsors/facebook.png', array('alt' => 'Facebook')), 'http://facebook.com/dtulanparty', array('target' => '_blank', 'escape' => false)
 				);
 				?>
 			</td>
+		</tr>
 
+		<tr style="background:none;">
 			<td>
 				<?php
 				echo $this->Html->link(
@@ -57,7 +59,7 @@
 			<td>
 				<?php
 				echo $this->Html->link(
-						$this->Html->image('logos/sponsors/facebook.png', array('alt' => 'Facebook')), 'http://facebook.com/dtulanparty', array('target' => '_blank', 'escape' => false)
+						$this->Html->image('logos/sponsors/netcompany.png', array('alt' => 'NetCompany.com - IT and business consulting')), 'http://netcompany.com', array('target' => '_blank', 'escape' => false)
 				);
 				?>
 			</td>
