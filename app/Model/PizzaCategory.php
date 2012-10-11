@@ -21,6 +21,11 @@ class PizzaCategory extends AppModel {
 			'joinTable' => 'pizza_category_types'
 		)
 	);
+
+	public $order = array(
+		'sorted' => 'asc'
+	);
+
 	public $validate = array(
 		'title' => array(
 			'not empty' => array(

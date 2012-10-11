@@ -71,6 +71,17 @@ class UsersController extends AppController {
 		$title_for_layout = 'Profile &bull; ' . $user['User']['name'];
 
 
+		if($this->User->LanSignup->Lan->isCurrent($this->isAdmin())){
+			$current_lan = $this->User->LanSignup->Lan->getCurrent($this->isAdmin());
+			$lan_id = $current_lan['Lan']['id'];
+
+			if($this->User->LanSignup->Lan->isUserAttending($lan_id, $user['User']['id']) &&
+					$this->User->Crew->isUserInCrew($lan_id, $this->Auth->user('id'))){
+					$this->set('make_payment_crew_id', $this->User->Crew->getCrewId($lan_id, $this->Auth->user('id')));
+			}
+		}
+
+
 		// Teams for user
 		$this->User->TeamUser->recursive = 2;
 		$this->User->TeamUser->Team->Tournament->unbindModel(array('belongsTo' => array('Lan')));

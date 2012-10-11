@@ -26,7 +26,15 @@ class TeamUser extends AppModel {
 	);
 
 	public function userNotInTournament($user_id, $tournament_id) {
-		
+		return $this->find('count', array(
+					'conditions' => array(
+						'user_id' => $user_id,
+						'NOT' => array(
+							'team_id' => $this->Tournament->getTeamIds($tournament_id)
+						)
+					)
+						)
+				) == 0;
 	}
 
 }

@@ -1,0 +1,22 @@
+/*
+    Document   : qr_codes
+    Created on : 11-10-2012, 12:50:44
+    Author     : Jens
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+body{
+
+	background: none;
+	font-size: 18pt;
+
+}
+
+table{
+	width: 100%;
+}
+
+body > table > tbody > tr > td{
+	border-bottom: 1px solid #999;
+}

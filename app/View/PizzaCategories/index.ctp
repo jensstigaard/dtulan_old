@@ -21,12 +21,12 @@ if ($is_orderable) {
 	<p>You'll see the list of available pizzas below</p>
 	<?php foreach ($pizza_categories as $pizza_category): ?>
 		<?php if (count($pizza_category['Pizza']) || $is_admin): ?>
+	<h3 style="padding-left:5px;margin-bottom:0;"><?php echo $pizza_category['PizzaCategory']['title']; ?></h3>
 			<table class="pizza_list">
 				<thead>
 					<tr class="pizza_category">
-
-						<th colspan="3"><?php echo $pizza_category['PizzaCategory']['title']; ?><br />
-							<small><?php echo $pizza_category['PizzaCategory']['description'] ?></small>
+						<th colspan="3" style="font-weight:normal;">
+							<?php echo nl2br($pizza_category['PizzaCategory']['description']); ?>
 						</th>
 						<?php foreach ($pizza_category['PizzaType'] as $type): ?>
 							<th style="vertical-align: bottom; text-align: center;">

@@ -30,8 +30,28 @@ class Tournament extends AppModel {
 		)
 	);
 
-	public function ag(){
-		
+	public function getTeamIds($id) {
+		$this->Tournament->id = $id;
+		if (!$this->Tournament->exists()) {
+			throw new NotFoundException('Tournament not found');
+		}
+
+		$team_ids = $this->Team->find('all', array(
+			'conditions' => array(
+				'Team.tournament_id' => $id
+			),
+			'fields' => array(
+				'id'
+			)
+				)
+		);
+
+		$team_ids_formatted = array();
+		foreach($team_ids['Team'] as $team){
+			$team_ids_formatted[] = $team['id'];
+		}
+
+		return $team_ids_formatted;
 	}
 }
 

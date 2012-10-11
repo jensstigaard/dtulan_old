@@ -101,6 +101,7 @@ $(document).ready(
 					'wave_id': wave_id
 				}, function(data) {
 					if(data.trim()=='SUCCESS'){
+						$pizza_order.find('.pizza_order_errors').hide();
 						$pizza_order.find(".pizza_order_success").show().delay(2000).hide("slow");
 
 						// Clear order visually

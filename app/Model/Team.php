@@ -23,6 +23,29 @@ class Team extends AppModel {
 		)
 	);
 
+	public function isLeader($team_id, $user_id) {
+		$this->id = $team_id;
+
+		if (!$this->exists()) {
+			throw new NotFoundException('Team not found');
+		}
+
+		$this->TeamUser->User->id = $user_id;
+
+		if (!$this->TeamUser->User->exists()) {
+			throw new NotFoundException('User not found');
+		}
+
+		return $this->TeamUser->find('count', array(
+					'conditions' => array(
+						'team_id' => $team_id,
+						'user_id' => $user_id,
+						'is_leader' => true
+					)
+						)
+				) == 1;
+	}
+
 	public function getInviteableUsers($team_id = null) {
 		$this->id = $team_id;
 
@@ -45,7 +68,7 @@ class Team extends AppModel {
 		$users_list = array();
 
 		// Only the max team size is it possible to invite
-		if (count($user_ids) < $team['Tournament']['max_team_size']) {
+		if (count($user_ids) < $team['Tournament']['team_size']) {
 
 			$users = $this->Tournament->Lan->LanSignup->find('all', array('conditions' => array(
 					'NOT' => array(
