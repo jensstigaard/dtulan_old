@@ -1,23 +1,117 @@
 <?php if ($is_admin): ?>
-<div>
-	<h1>User lookup</h1>
-	<div id="user_lookup">
-		<?php echo $this->Form->input('string', array('label' => false)); ?>
-		<div class="hidden" id="urlLookup"><?php echo $this->Html->link('#', array('controller' => 'users', 'action' => 'lookup')); ?></div>
-		<div class="hidden" id="urlRedirect"><?php echo $this->Html->link('#', array('controller' => 'users', 'action' => 'profile')); ?></div>
+	<div>
+		<h1>User lookup</h1>
+		<div id="user_lookup">
+			<?php echo $this->Form->input('string', array('label' => false)); ?>
+			<div class="hidden" id="urlLookup"><?php echo $this->Html->link('#', array('controller' => 'users', 'action' => 'lookup')); ?></div>
+			<div class="hidden" id="urlRedirect"><?php echo $this->Html->link('#', array('controller' => 'users', 'action' => 'profile')); ?></div>
+		</div>
 	</div>
-</div>
-<div>
-	<h1>Admin menu</h1>
-	<ul>
-		<li><?php echo $this->Html->link('LANS', array('controller' => 'lans', 'action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link('Users', array('controller' => 'users', 'action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link('Pages', array('controller' => 'pages', 'action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link('Pizzas', array('controller' => 'pizza_categories', 'action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link('Pizza waves', array('controller' => 'pizza_waves', 'action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link('Food orders', array('controller' => 'food_orders', 'action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link('Payments', array('controller' => 'payments', 'action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link('New admin', array('controller' => 'admins', 'action' => 'add')); ?></li>
-	</ul>
-</div>
+	<div>
+		<h1>Admin menu</h1>
+		<ul>
+			<li>
+				<?php
+				echo $this->Html->link(
+						$this->Html->image('24x24_PNG/candy.png') . ' Food orders', array(
+					'controller' => 'food_orders',
+					'action' => 'index'
+						), array(
+					'escape' => false
+						)
+				);
+				?>
+			</li>
+
+			<li>
+				<?php
+				echo $this->Html->link(
+						$this->Html->image('24x24_PNG/games.png') . ' LANS', array(
+					'controller' => 'lans',
+					'action' => 'index'
+						), array(
+					'escape' => false
+						)
+				);
+				?>
+			</li>
+
+			<li>
+				<?php
+				echo $this->Html->link(
+						$this->Html->image('24x24_PNG/001_55.png') . ' New admin', array(
+					'controller' => 'admins',
+					'action' => 'add'
+						), array(
+					'escape' => false
+						)
+				);
+				?>
+			</li>
+
+			<li>
+				<?php
+				echo $this->Html->link(
+						$this->Html->image('24x24_PNG/001_43.png') . ' Pages', array(
+					'controller' => 'pages',
+					'action' => 'index'
+						), array(
+					'escape' => false
+						)
+				);
+				?>
+			</li>
+
+			<li>
+				<?php
+				echo $this->Html->link(
+						$this->Html->image('24x24_PNG/payment_cash.png') . ' Payments', array(
+					'controller' => 'payments',
+					'action' => 'index'
+						), array(
+					'escape' => false
+						)
+				);
+				?>
+			</li>
+
+			<li>
+				<?php
+				echo $this->Html->link(
+						$this->Html->image('24x24_PNG/pizza.png') . ' Pizza', array(
+					'controller' => 'pizza_categories',
+					'action' => 'index'
+						), array(
+					'escape' => false
+						)
+				);
+				?>
+			</li>
+			<li>
+				<?php
+				echo $this->Html->link(
+						$this->Html->image('24x24_PNG/pizza.png') . ' Pizza waves', array(
+					'controller' => 'pizza_waves',
+					'action' => 'index'
+						), array(
+					'escape' => false
+						)
+				);
+				?>
+			</li>
+
+			<li>
+				<?php
+				echo $this->Html->link(
+						$this->Html->image('24x24_PNG/001_57.png') . ' Users', array(
+					'controller' => 'users',
+					'action' => 'index'
+						), array(
+					'escape' => false
+						)
+				);
+				?>
+			</li>
+		</ul>
+	</div>
 <?php endif; ?>
