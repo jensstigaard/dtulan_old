@@ -90,6 +90,34 @@ class PizzaOrdersController extends AppController {
 		$this->set(compact('msg'));
 	}
 
+	public function api_edit($id = '') {
+		if($this->request->is('put')) {
+			if($this->isJsonRequest()) {
+				$this->PizzaOrder->id = $id;
+				if($this->PizzaOrder->exists() && isset($this->request->params['status'])) {
+					$this->PizzaOrder->recursive = 0;
+					$this->PizzaOrder->read();
+					$this->PizzaOrder->data['PizzaOrder']['status'] = $this->request->params['status'];
+					if($this->PizzaOrder->save()) {
+						$this->set('success', true);
+						$this->set('data', array('message' => __('Pizza order status: '.$this->request->params['status'])));
+					} else {
+						$this->set('success', false);
+						$this->set('data', array('message' => __('Unable to update pizza order')));
+					}
+					$this->set('_serialize', array('success', 'data'));
+				} else {
+					throw new HttpInvalidParamException;
+				}
+			} else {
+				throw new BadRequestException;
+			}
+		} else {
+			throw new MethodNotAllowedException;
+		}
+	}
+	
+	
 	public function mark_delivered($id = null) {
 		$this->PizzaOrder->id = $id;
 
