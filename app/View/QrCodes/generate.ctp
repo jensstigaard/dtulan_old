@@ -10,7 +10,7 @@ echo $this->Html->css('qr_codes', null, array('inline' => false));
 				<?php endif; ?>
 				<tr>
 				<?php endif; ?>
-				<td style="padding: 35px;">
+				<td style="padding: 45px 35px;">
 					<table>
 						<tr>
 							<td rowspan="2" style="padding-right: 10px;">
@@ -22,7 +22,7 @@ echo $this->Html->css('qr_codes', null, array('inline' => false));
 						</tr>
 						<tr>
 							<td>
-								# <?php echo $i + 1; ?>
+								# <?php echo $offset + $i + 1; ?>
 							</td>
 						</tr>
 					</table>
@@ -34,7 +34,7 @@ echo $this->Html->css('qr_codes', null, array('inline' => false));
 				</tbody>
 			</table>
 			<div style="clear:both;"></div>
-			<div class="breakhere"></div>
+			<div></div>
 		<?php endif; ?>
 	<?php endif; ?>
 

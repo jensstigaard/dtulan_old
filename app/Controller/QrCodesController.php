@@ -31,7 +31,7 @@ class QrCodesController extends AppController {
 				if(!isset($this->request->data['QrCode']) || !isset($this->request->data['QrCode']['qr_code'])) {
 					throw new BadFunctionCallException('Please supply a valid qr code');
 				}
-				
+
 				$conditions = array();
 				if(isset($this->request->data['QrCode']['email'])) {
 					$conditions['conditions']['email'] = $this->request->data['QrCode']['email'];
@@ -40,7 +40,7 @@ class QrCodesController extends AppController {
 				} else {
 					throw new BadFunctionCallException('Please supply either a E-mail or ID number');
 				}
-				
+
 				$conditions['fields'] = array('User.id');
                 $user = $this->QrCode->User->find('first', $conditions);
 				if(count($user)) {
@@ -55,7 +55,7 @@ class QrCodesController extends AppController {
 						$this->set('success', false);
 						$this->set('data', array('message' => 'Unable to bind user to QR code'));
 					}
-					
+
 				} else {
 					$this->set('success', false);
 					$this->set('data', array('message' => 'Unable to find user with given information'));
@@ -118,6 +118,7 @@ class QrCodesController extends AppController {
 
         $this->set(compact('qr_codes'));
 
+		$this->set('offset', 10);
         $this->set('per_page', 10);
         $this->set('per_line', 2);
     }
