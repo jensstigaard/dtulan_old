@@ -50,8 +50,8 @@ $(document).ready(
 				$span = $(this).find('span');
 
 				var title = $item.find(
-					"td.title").html();
-				var desc = $item.find("td.desc")
+					"td span.title").html();
+				var desc = $item.find("td small.desc")
 				.html();
 
 				var price_value = $(this).parent().find(

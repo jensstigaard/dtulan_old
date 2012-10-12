@@ -55,12 +55,13 @@
 					<tr>
 						<td><?php echo $invite['User']['gamertag']; ?></td>
 						<td><?php
-			echo $this->Form->postLink('Cancel invite', array(
+			echo $this->Form->postLink($this->Html->image('16x16_PNG/cancel.png') . ' Cancel invite', array(
 				'controller' => 'team_invites',
 				'action' => 'delete',
 				$invite['id']
 					), array(
-				'confirm' => 'Are you sure?'
+				'confirm' => 'Are you sure?',
+				'escape' => false
 					)
 			);
 					?></td>

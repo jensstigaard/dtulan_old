@@ -19,7 +19,9 @@ class TeamInvitesController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin()) {
+		if (in_array($this->action, array('delete'))) {
+			return true;
+		} elseif ($this->isAdmin()) {
 			return true;
 		}
 		return false;
@@ -29,6 +31,8 @@ class TeamInvitesController extends AppController {
 		if (!$this->request->is('post')) {
 			throw new BadRequestException;
 		}
+
+		$this->request->data['user_invited_by_id'] = $this->Auth->user('id');
 
 		if ($this->TeamInvite->save($this->request->data)) {
 			$this->Session->setFlash('Your invite has been sent', 'default', array('class' => 'message success'), 'good');
@@ -54,7 +58,7 @@ class TeamInvitesController extends AppController {
 
 		$team_id = $this->TeamInvite->data['Team']['id'];
 
-		if (!$this->TeamInvite->Team->isLeader($team_id, $this->Auth->user('id'))) {
+		if (!($this->TeamInvite->Team->isLeader($team_id, $this->Auth->user('id')) || $this->TeamInvite->data['TeamInvite']['user_id'] == $this->Auth->user('id'))) {
 			throw new MethodNotAllowedException('You are not allowed to cancel invites');
 		}
 
@@ -64,7 +68,7 @@ class TeamInvitesController extends AppController {
 			$this->Session->setFlash('FAILED to cancel team invite', 'default', array(), 'bad');
 		}
 
-		$this->redirect(array('controller' => 'teams', 'action' => 'view', $team_id));
+		$this->redirect($this->referer());
 	}
 
 }

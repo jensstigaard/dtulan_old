@@ -31,8 +31,8 @@ class Tournament extends AppModel {
 	);
 
 	public function getTeamIds($id) {
-		$this->Tournament->id = $id;
-		if (!$this->Tournament->exists()) {
+		$this->id = $id;
+		if (!$this->exists()) {
 			throw new NotFoundException('Tournament not found');
 		}
 
@@ -41,14 +41,15 @@ class Tournament extends AppModel {
 				'Team.tournament_id' => $id
 			),
 			'fields' => array(
-				'id'
-			)
+				'Team.id'
+			),
+			'recursive' => -1
 				)
 		);
 
 		$team_ids_formatted = array();
-		foreach($team_ids['Team'] as $team){
-			$team_ids_formatted[] = $team['id'];
+		foreach($team_ids as $team){
+			$team_ids_formatted[] = $team['Team']['id'];
 		}
 
 		return $team_ids_formatted;

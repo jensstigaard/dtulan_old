@@ -21,15 +21,15 @@ if ($is_orderable) {
 	<p>You'll see the list of available pizzas below</p>
 	<?php foreach ($pizza_categories as $pizza_category): ?>
 		<?php if (count($pizza_category['Pizza']) || $is_admin): ?>
-	<h3 style="padding-left:5px;margin-bottom:0;"><?php echo $pizza_category['PizzaCategory']['title']; ?></h3>
+			<h3 style="padding-left:5px;margin-bottom:0;"><?php echo $pizza_category['PizzaCategory']['title']; ?></h3>
 			<table class="pizza_list">
 				<thead>
 					<tr class="pizza_category">
-						<th colspan="3" style="font-weight:normal;">
+						<th colspan="2" style="font-weight:normal;">
 							<?php echo nl2br($pizza_category['PizzaCategory']['description']); ?>
 						</th>
 						<?php foreach ($pizza_category['PizzaType'] as $type): ?>
-							<th style="vertical-align: bottom; text-align: center;">
+							<th style="vertical-align: bottom; text-align: center;" title="<?php echo $type['title']; ?>">
 								<?php echo $type['title_short']; ?>
 							</th>
 						<?php endforeach; ?>
@@ -81,8 +81,10 @@ if ($is_orderable) {
 								?>
 								<tr class="pizza_item<?php echo $if_admin_and_unavailable; ?>">
 									<td class="number"><?php echo $pizza['number']; ?></td>
-									<td class="title"><?php echo $pizza['title']; ?></td>
-									<td class="desc"><?php echo $pizza['description']; ?></td>
+									<td>
+										<span class="title"><?php echo $pizza['title']; ?></span><br />
+										<small class="desc"><?php echo $pizza['description']; ?></small>
+									</td>
 									<?php
 									if (isset($pizza['Prices'])) {
 										foreach ($pizza['Prices'] as $price_type_id => $price_info):

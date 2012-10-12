@@ -19,7 +19,9 @@ class TeamsController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin()) {
+		if (in_array($this->action, array('view'))) {
+			return true;
+		} elseif ($this->isAdmin()) {
 			return true;
 		}
 		return false;
@@ -39,17 +41,33 @@ class TeamsController extends AppController {
 
 		if ($this->request->is('post')) {
 
-			$this->request->data['Team']['tournament_id'] = $tournament_id;
-			$this->request->data['TeamUser']['user_id'] = $this->Auth->user('id');
-			$this->request->data['TeamUser']['is_leader'] = 1;
+			$this->request->data['TeamUser'][] = array(
+				'tournament_id' => $tournament_id,
+				'user_id' => $this->Auth->user('id'),
+				'is_leader' => 1,
+				'Team' => array(
+					'tournament_id' => $tournament_id
+				)
+			);
 
 
 			if ($this->Team->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your team has been created', 'default', array('class' => 'message success'), 'good');
+				$this->redirect(array('controller'=>'teams', 'action'=>'view', $this->Team->getInsertID()));
 			} else {
-				$this->Session->setFlash('Unable to create your team', 'default', array(), 'bad');
+				$errors = $this->Team->invalidFields();
+
+				if(isset($errors['TeamUser'][0]['user_id'][0])){
+					$this->Session->setFlash($errors['TeamUser'][0]['user_id'][0], 'default', array(), 'bad');
+				}
+				else{
+					$this->Session->setFlash('Unable to create your team', 'default', array(), 'bad');
+				}
+
 			}
 		}
+
+
 
 		$this->set('tournament', $this->Team->Tournament->read());
 	}
@@ -70,4 +88,5 @@ class TeamsController extends AppController {
 
 		$this->set('users', $this->Team->getInviteableUsers($id));
 	}
+
 }
