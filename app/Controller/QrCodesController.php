@@ -47,20 +47,39 @@ class QrCodesController extends AppController {
                     $data = array();
                     $data['QrCode']['id'] = $this->request->data['QrCode']['qr_code'];
                     $data['QrCode']['user_id'] = $user['User']['id'];
-
-                    if (isset($user['User']['id']) && $this->QrCode->save($data)) {
-                        $this->set('success', true);
-                        $this->set('data', array('message' => 'QR code is connected to user'));
-                    } else {
-                        $user = find('first', array(
-                            'conditions' => array('user_id' => $user['User']['id'])
+                    try {
+                        if (isset($user['User']['id']) && $this->QrCode->save($data)) {
+                            $this->set('success', true);
+                            $this->set('data', array('message' => 'QR code is connected to user'));
+                        } else {
+                            $user = $this->QrCode->User->find('first', array(
+                                'conditions' => array('user_id' => $user['User']['id'])
+                                    )
+                            );
+                            if (count($user)) {
+                                $this->set('success', false);
+                                $this->set('data', array('message' => 'User already registered'));
+                            } else {
+                                $qr_code = $this->QrCode->find('first', array('conditions' => array('id' => $this->request->data['QrCode']['qr_code'])));
+                                if (count($qr_code)) {
+                                    $this->set('success', false);
+                                    $this->set('data', array('message' => 'QR code already in use'));
+                                } else {
+                                    $this->set('success', false);
+                                    $this->set('data', array('message' => 'Something went seriously wrong'));
+                                }
+                            }
+                        }
+                    } catch (PDOException $e) {
+                        $user = $this->QrCode->User->find('first', array(
+                            'conditions' => array('User.id' => $user['User']['id'])
                                 )
                         );
                         if (count($user)) {
                             $this->set('success', false);
                             $this->set('data', array('message' => 'User already registered'));
                         } else {
-                            $qr_code = find('first', array('conditions' => array('id' => $this->request->data['QrCode']['qr_code'])));
+                            $qr_code = $this->QrCode->find('first', array('conditions' => array('QrCode.id' => $this->request->data['QrCode']['qr_code'])));
                             if (count($qr_code)) {
                                 $this->set('success', false);
                                 $this->set('data', array('message' => 'QR code already in use'));
