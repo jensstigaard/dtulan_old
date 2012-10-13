@@ -107,12 +107,14 @@ class PizzaWavesController extends AppController {
 
 //		debug($content_for_email);
 
+                
 		$email = new CakeEmail();
 		$email->config('smtp');
 		$email->emailFormat('html');
+//                $email->addHeaders(array('x-Content-Type' => 'multipart/alternative'));
 		$email->template('pizza_wave_to_pizzaria');
 		$email->from(array('no-reply@dtu-lan.dk' => 'DTU LAN site - No reply'));
-		$email->to('jens@stigaard.info');
+		$email->to('kristoffer.la.cour@gmail.com');
 		$email->viewVars(array('pizza_wave_items' => $pizza_wave_items, 'title_for_layout' => 'Pizza bestilling'));
 		$email->subject('DTU LAN Party - Ny pizza liste');
 
