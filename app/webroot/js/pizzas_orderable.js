@@ -64,7 +64,7 @@ $(document).ready(
 
 				//				console.log('column:' + column);
 
-				$type_info = $item.closest('table').find('thead tr th:nth-child('+(column-1)+')');
+				$type_info = $item.closest('table').find('thead tr th:nth-child('+(column)+')');
 
 				var type_title = $type_info.text();
 
