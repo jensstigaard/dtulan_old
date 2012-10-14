@@ -14,7 +14,7 @@ class TournamentsController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin($user)) {
+		if (in_array($this->action, array('view')) || $this->isAdmin($user)) {
 			return true;
 		}
 		return false;
