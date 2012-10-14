@@ -150,15 +150,15 @@ class PizzaWave extends AppModel {
 		foreach ($pizza_orders as $pizza_order) {
 			foreach ($pizza_order['PizzaOrderItem'] as $pizza_order_item) {
 
-				if (!isset($pizza_wave_items[$pizza_order_item['id']])) {
-					$pizza_wave_items[$pizza_order_item['id']] = array(
+				if (!isset($pizza_wave_items[$pizza_order_item['PizzaPrice']['id']])) {
+					$pizza_wave_items[$pizza_order_item['PizzaPrice']['id']] = array(
 						'quantity' => 0,
 						'pizza_title' => $pizza_order_item['PizzaPrice']['Pizza']['title'],
 						'pizza_number' => $pizza_order_item['PizzaPrice']['Pizza']['number'],
 						'pizza_type' => $pizza_order_item['PizzaPrice']['PizzaType']['title']
 					);
 				}
-				$pizza_wave_items[$pizza_order_item['id']]['quantity'] += $pizza_order_item['quantity'];
+				$pizza_wave_items[$pizza_order_item['PizzaPrice']['id']]['quantity'] += $pizza_order_item['quantity'];
 			}
 		}
 
