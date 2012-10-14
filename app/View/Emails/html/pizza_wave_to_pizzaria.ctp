@@ -1,5 +1,11 @@
 <div>
 	<h1>DTU LAN Party - Pizza bestilling</h1>
+	<p>Adresse:</p>
+	<p>
+		Oticon salen<br />
+		Anker Engelundsvej 1 (101 E)<br />
+		2800 Kgs. Lyngby
+	</p>
 	<table style="width:100%;border: 1px solid #999;" cellspacing="0" cellpadding="5">
 		<thead>
 			<tr>
