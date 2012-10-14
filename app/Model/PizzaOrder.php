@@ -57,7 +57,9 @@ class PizzaOrder extends AppModel {
 
     public function getPizzaOrdersByUser($id = '') {
         return $this->find('all', array(
-                    'conditions' => array('PizzaOrder.user_id' => $id
+                    'conditions' => array(
+                        'PizzaOrder.user_id' => $id,
+                        'PizzaWave.status' => 3
                     ),
                     'recursive' => 3
                         )
