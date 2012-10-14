@@ -270,7 +270,7 @@
 						<?php endforeach; ?>
 						<tr>
 							<td>Orders: <?php echo count($pizza_orders); ?></td>
-							<td style="text-align:right;">Sweets n' soda:</td>
+							<td style="text-align:right;">Total amount spend on Sweets n' soda:</td>
 							<td style="text-decoration: underline"><?php echo $total_balance; ?> DKK</td>
 							<?php if ($is_you): ?>
 								<td></td>
