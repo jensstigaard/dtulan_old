@@ -10,8 +10,8 @@
 		echo $this->Form->input('title');
 		echo $this->Form->input('team_size');
 		echo $this->Form->input('time_start', array('timeFormat' => '24'));
-		echo $this->Form->input('description', array('class' => 'ckeditor', 'value' => '<p>No description available</p>'));
-		echo $this->Form->input('rules', array('class' => 'ckeditor', 'value' => '<p>Rules not defined yet</p>'));
+		echo $this->Form->input('description', array('class' => 'ckeditor'));
+		echo $this->Form->input('rules', array('class' => 'ckeditor'));
 		?>
     </fieldset>
 	<?php echo $this->Form->end(__('Submit')); ?>

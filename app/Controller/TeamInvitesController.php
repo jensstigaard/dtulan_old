@@ -19,9 +19,7 @@ class TeamInvitesController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if (in_array($this->action, array('delete'))) {
-			return true;
-		} elseif ($this->isAdmin()) {
+		if (in_array($this->action, array('add', 'delete')) || $this->isAdmin()) {
 			return true;
 		}
 		return false;

@@ -12,7 +12,14 @@
  */
 class Team extends AppModel {
 
-	public $hasMany = array('TeamUser', 'TeamInvite');
+	public $hasMany = array(
+		'TeamUser' => array(
+			'dependent' => true
+		),
+		'TeamInvite' => array(
+			'dependent' => true
+		)
+	);
 	public $belongsTo = array('Tournament');
 	public $validate = array(
 		'name' => array(
