@@ -19,7 +19,7 @@ class TeamsController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if (in_array($this->action, array('view', 'add')) || $this->isAdmin()) {
+		if (in_array($this->action, array('view', 'add', 'delete')) || $this->isAdmin()) {
 			return true;
 		}
 		return false;

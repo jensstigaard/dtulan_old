@@ -38,9 +38,6 @@ class FoodOrdersController extends AppController {
 			'conditions' => array(
 
 			),
-			'order' => array(
-				'status' => 'asc'
-			),
 			'recursive' => 3
 				)
 		);

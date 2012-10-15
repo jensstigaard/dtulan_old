@@ -172,7 +172,7 @@ class PizzaWave extends AppModel {
 				}
 				return strcmp($a['pizza_title'], $b['pizza_title']);
 			}
-			return strcmp($a['pizza_number'], $b['pizza_number']);
+			return intval($a['pizza_number']) > intval($b['pizza_number']);
 		}
 
 		// Sort the items

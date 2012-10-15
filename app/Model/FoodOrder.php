@@ -18,6 +18,11 @@ class FoodOrder extends AppModel {
 	public $hasMany = array(
 		'FoodOrderItem'
 	);
+
+	public $order = array(
+		'status' => 'asc',
+		'time' => 'desc'
+	);
 }
 
 ?>

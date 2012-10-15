@@ -41,7 +41,11 @@
 				<?php foreach ($team['TeamUser'] as $user): ?>
 					<tr>
 						<td><?php echo $user['User']['name']; ?></td>
-						<td><?php echo $user['is_leader']; ?></td>
+						<td>
+							<?php if($user['is_leader']){
+								echo $this->Html->image('16x16_PNG/star.png');
+							} ?>
+						</td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
