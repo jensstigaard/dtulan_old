@@ -66,7 +66,7 @@ class PizzaOrder extends AppModel {
                         'PizzaOrder.user_id' => $id,
                         'PizzaWave.status' => 3
                     ),
-                    'recursive' => 3
+                    'recursive' => 4
                         )
         );
     }
