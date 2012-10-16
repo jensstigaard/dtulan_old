@@ -18,6 +18,11 @@ class PizzaOrder extends AppModel {
         )
     );
     public $belongsTo = array('User', 'PizzaWave');
+
+	public $order = array(
+		'time' => 'desc'
+	);
+
     public $validate = array(
         'pizza_wave_id' => array(
             'exists' => array(

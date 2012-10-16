@@ -22,7 +22,7 @@
 				</td>
 
 				<td>
-					(coming)
+					<?php echo $this->Html->link($payment['Crew']['User']['name'], array('controller' => 'users', 'action' => 'profile', $payment['Crew']['User']['id'])); ?>
 				</td>
 
 

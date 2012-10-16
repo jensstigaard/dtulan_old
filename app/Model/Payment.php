@@ -7,7 +7,7 @@
  */
 class Payment extends AppModel {
 
-	public $belongsTo = array('User');
+	public $belongsTo = array('User', 'Crew');
 	public $validate = array(
 		'amount' => array(
 			'required1' => array(
@@ -26,8 +26,10 @@ class Payment extends AppModel {
 			)
 		),
 		'crew_id' => array(
-
 		)
+	);
+	public $order = array(
+		'Payment.time' => 'asc'
 	);
 
 	public function validInteger($check) {
@@ -44,7 +46,7 @@ class Payment extends AppModel {
 						'User.activated' => 1
 					)
 						)
-		) == 1;
+				) == 1;
 	}
 
 }

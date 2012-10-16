@@ -34,13 +34,12 @@ class FoodOrdersController extends AppController {
 	}
 
 	public function index() {
-		$orders = $this->FoodOrder->find('all', array(
-			'conditions' => array(
-
-			),
+		$this->paginate = array(
+			'limit' => 5,
 			'recursive' => 3
-				)
 		);
+
+		$orders = $this->paginate('FoodOrder');
 
 		$this->set(compact('orders'));
 	}

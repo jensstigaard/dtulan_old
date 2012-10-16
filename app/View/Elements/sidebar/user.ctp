@@ -18,10 +18,10 @@
 				<?php
 				$color = '';
 
-				if ($current_user['balance'] < 0) {
+				if ($current_user_balance < 0) {
 					$color = 'color: #FF0000;';
 				}
-				elseif($current_user['balance'] > 0) {
+				elseif($current_user_balance > 0) {
 					$color = 'color: #00CC00;';
 				}
 				?>

@@ -19,14 +19,17 @@ class PaymentsController extends AppController {
 	}
 
 	public function index() {
-		$this->set('payments', $this->Payment->find('all'));
+		$this->set('payments', $this->Payment->find('all', array(
+					'recursive' => 2
+						)
+				)
+		);
 	}
 
 	public function add() {
 		if (!$this->request->is('post')) {
 			throw new BadRequestException('Invalid request');
-		}
-		else{
+		} else {
 			$this->Payment->User->read(array('balance'), $this->request->data['Payment']['user_id']);
 
 			$this->request->data['User']['id'] = $this->request->data['Payment']['user_id'];
@@ -41,6 +44,7 @@ class PaymentsController extends AppController {
 
 		$this->redirect($this->referer());
 	}
+
 }
 
 ?>

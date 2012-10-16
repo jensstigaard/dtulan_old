@@ -176,7 +176,7 @@
 								<?php if ($is_you): ?>
 									<td>
 										<?php
-										if ($pizza_orders_cancelable[$pizza_order['PizzaOrder']['id']]) {
+										if ($pizza_order['is_cancelable']) {
 											echo $this->Form->postLink(
 													$this->Html->image('16x16_PNG/cancel.png') . ' Cancel order', array('controller' => 'pizza_orders', 'action' => 'delete', $pizza_order['PizzaOrder']['id']), array('confirm' => "Are You sure you will delete this order?", 'escape' => false)
 											);
@@ -269,7 +269,7 @@
 							<?php $total_balance += $order_balance; ?>
 						<?php endforeach; ?>
 						<tr>
-							<td>Orders: <?php echo count($pizza_orders); ?></td>
+							<td>Orders: <?php echo count($food_orders); ?></td>
 							<td style="text-align:right;">Total amount spend on Sweets n' soda:</td>
 							<td style="text-decoration: underline"><?php echo $total_balance; ?> DKK</td>
 							<?php if ($is_you): ?>
@@ -310,7 +310,7 @@
 					<tr>
 						<td><?php echo $this->Html->link($team['Team']['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $team['Team']['Tournament']['id'])); ?></td>
 						<td><?php echo $this->Html->link($team['Team']['name'], array('controller' => 'teams', 'action' => 'view', $team['Team']['id'])); ?></td>
-						<td><?php echo $team['TeamUser']['is_leader'] ? 'Is leader' : ''; ?></td>
+						<td><?php echo $team['TeamUser']['is_leader'] ? $this->Html->image('16x16_PNG/star.png') : ''; ?></td>
 						<td><?php echo count($team['Team']['TeamUser']); ?> </td>
 					</tr>
 				<?php endforeach; ?>

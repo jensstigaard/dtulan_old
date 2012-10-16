@@ -57,7 +57,7 @@ class UsersController extends AppController {
             throw new NotFoundException(__('Invalid user'));
         }
 
-        $this->User->unbindModel(array('hasMany' => array('PizzaOrder', 'LanSignup')));
+        $this->User->unbindModel(array('hasMany' => array('PizzaOrder', 'FoodOrder',  'LanSignup')));
         $user = $this->User->read();
 
         if ($user['User']['id'] == $this->Auth->user('id')) {
@@ -104,9 +104,8 @@ class UsersController extends AppController {
                 )
         );
 
-        $pizza_order_cancelable = array();
         foreach ($pizza_orders as $pizza_order) {
-            $pizza_orders_cancelable[$pizza_order['PizzaOrder']['id']] = $this->User->PizzaOrder->isCancelable($pizza_order['PizzaOrder']['id'], $this->isAdmin());
+            $pizza_order['is_cancelable'] = $this->User->PizzaOrder->isCancelable($pizza_order['PizzaOrder']['id'], $this->isAdmin());
         }
 
 

@@ -4,6 +4,9 @@ class PizzaWave extends AppModel {
 
 	public $hasMany = array('PizzaOrder' => array('foreignKey' => 'pizza_wave_id'));
 	public $belongsTo = array('Lan');
+	public $order = array(
+		'PizzaWave.time_start' => 'desc'
+	);
 	public $validate = array(
 		'time_start' => array(
 			'bigger than end' => array(
