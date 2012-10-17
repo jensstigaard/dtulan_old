@@ -157,7 +157,7 @@ class FoodOrdersController extends AppController {
 		$this->FoodOrder->User->id = $this->Auth->user('id');
 		$this->FoodOrder->User->read(array('balance'));
 
-		$new_balance = $this->Foodrder->User->data['User']['balance'] + $sum;
+		$new_balance = $this->FoodOrder->User->data['User']['balance'] + $sum;
 
 		if ($this->FoodOrder->User->saveField('balance', $new_balance, true) && $this->FoodOrder->delete()) {
 			$this->Session->setFlash('Order cancelled', 'default', array('class' => 'message success'), 'good');
