@@ -94,13 +94,13 @@ class PizzaOrdersController extends AppController {
 		if($this->request->is('put')) {
 			if($this->isJsonRequest()) {
 				$this->PizzaOrder->id = $id;
-				if($this->PizzaOrder->exists() && isset($this->request->params['status'])) {
+				if($this->PizzaOrder->exists() && isset($this->request->data['PizzaOrder']['status'])) {
 					$this->PizzaOrder->recursive = 0;
 					$this->PizzaOrder->read();
-					$this->PizzaOrder->data['PizzaOrder']['status'] = $this->request->params['status'];
+					$this->PizzaOrder->data['PizzaOrder']['status'] = $this->request->data['PizzaOrder']['status'];
 					if($this->PizzaOrder->save()) {
 						$this->set('success', true);
-						$this->set('data', array('message' => __('Pizza order status: '.$this->request->params['status'])));
+						$this->set('data', array('message' => __('Pizza order status: '.$this->request->data['PizzaOrder']['status'])));
 					} else {
 						$this->set('success', false);
 						$this->set('data', array('message' => __('Unable to update pizza order')));
