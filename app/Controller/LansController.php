@@ -216,6 +216,9 @@ class LansController extends AppController {
 			}
 		}
 
+		$this->set('food_orders_count', $this->Lan->getCountFoodOrders($lan_id));
+		$this->set('food_orders_total', $this->Lan->getFoodOrdersTotal($lan_id));
+
 		$this->set(compact('total_pizzas', 'total_pizza_orders'));
 
 
