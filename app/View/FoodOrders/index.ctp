@@ -44,18 +44,7 @@
 							?>
 						</td>
 						<td>
-							<?php
-							if ($this->Time->isToday($order['FoodOrder']['time'])) {
-								echo'Today';
-							} elseif ($this->Time->isTomorrow($order['FoodOrder']['time'])) {
-								echo'Tomorrow';
-							} elseif ($this->Time->isThisWeek($order['FoodOrder']['time'])) {
-								echo $this->Time->format('l', $order['FoodOrder']['time']);
-							} else {
-								echo $this->Time->format('D, M jS', $order['FoodOrder']['time']);
-							}
-							?>
-							<?php echo $this->Time->format('H:i', $order['FoodOrder']['time']); ?>
+							<?php echo $order['FoodOrder']['time_nice']; ?>
 						</td>
 						<td>
 							<?php
@@ -99,8 +88,8 @@
 
 		<div style="text-align:center;">
 			<?php
-	echo $this->Paginator->numbers();
-	?>
+			echo $this->Paginator->numbers();
+			?>
 		</div>
 
 

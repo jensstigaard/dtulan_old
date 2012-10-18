@@ -108,6 +108,8 @@ class UsersController extends AppController {
             $pizza_orders[$pizza_order_nr]['PizzaOrder']['is_cancelable'] = $this->User->PizzaOrder->isCancelable($pizza_order['PizzaOrder']['id'], $this->isAdmin());
         }
 
+		$this->User->dateToNiceArray($pizza_orders, 'PizzaOrder');
+
 
         // Food orders
         $this->User->FoodOrder->recursive = 2;
@@ -118,6 +120,8 @@ class UsersController extends AppController {
             )
                 )
         );
+
+		$this->User->dateToNiceArray($food_orders, 'FoodOrder');
 
 
         // Lan signups
@@ -155,6 +159,7 @@ class UsersController extends AppController {
 
 
 
+		$this->User->dateToNiceArray($user['Payment']);
 
         $this->set(compact(
                         'title_for_layout', 'is_you', 'is_auth', 'user', 'pizza_orders', 'pizza_orders_cancelable', 'food_orders', 'lans', 'teams'

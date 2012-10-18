@@ -87,13 +87,8 @@
 									)
 							);
 							?><br />
-							<?php if ($this->Time->isToday($order['PizzaOrder']['time'])): ?>
-								Today
-							<?php elseif ($this->Time->wasYesterday($order['PizzaOrder']['time'])): ?>
-								Yesterday
-								<?php echo $this->Time->format('D, M jS', $order['PizzaOrder']['time']); ?>
-							<?php endif; ?>
-							<?php echo $this->Time->format('H:i', $order['PizzaOrder']['time']); ?>
+
+							<?php echo $order['PizzaOrder']['time_nice']; ?>
 						</td>
 						<td>
 							<ul>

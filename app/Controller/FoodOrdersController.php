@@ -41,6 +41,8 @@ class FoodOrdersController extends AppController {
 
 		$orders = $this->paginate('FoodOrder');
 
+		$this->FoodOrder->dateToNiceArray($orders, 'FoodOrder');
+
 		$this->set(compact('orders'));
 	}
 
