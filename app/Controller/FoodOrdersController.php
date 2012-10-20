@@ -86,6 +86,8 @@ class FoodOrdersController extends AppController {
 		if (count($this->request->data['FoodOrderItem'])) {
 			if ($this->FoodOrder->saveAssociated($this->request->data)) {
 				$msg = 'SUCCESS';
+			} elseif (isset($this->FoodOrder->validationErrors['User']['balance'][0])) {
+				$msg = $this->FoodOrder->validationErrors['User']['balance'][0];
 			} else {
 				$msg = $this->FoodOrder->validationErrors;
 			}

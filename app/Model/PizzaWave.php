@@ -228,6 +228,43 @@ class PizzaWave extends AppModel {
 		return $pizza_orders;
 	}
 
+	public function getOrdersSum($id) {
+
+		$this->id = $id;
+
+		if (!$this->exists()) {
+			throw new NotFoundException(__('Pizza wave not found with ID: ' . $id));
+		}
+
+		$pizza_orders = $this->PizzaOrder->find('all', array(
+			'conditions' => array(
+				'PizzaOrder.pizza_wave_id' => $id
+			),
+			'fields' => array(
+				'PizzaOrder.id'
+			)
+				)
+		);
+
+		$pizza_order_ids = array();
+
+		foreach($pizza_orders as $pizza_order){
+			$pizza_order_ids[] = $pizza_order['PizzaOrder']['id'];
+		}
+
+		$sum = $this->PizzaOrder->PizzaOrderItem->find('all', array(
+			'fields' => array(
+				'sum(PizzaOrderItem.quantity * PizzaOrderItem.price) AS ctotal'
+			),
+			'conditions' => array(
+				'PizzaOrderItem.pizza_order_id' => $pizza_order_ids
+			)
+				)
+		);
+
+		return $sum[0][0]['ctotal'];
+	}
+
 	public function getStatus($id) {
 		$this->id = $id;
 

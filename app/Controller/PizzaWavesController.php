@@ -32,6 +32,11 @@ class PizzaWavesController extends AppController {
 				)
 		);
 
+		foreach($pizza_waves as $pizza_wave_nr => $pizza_wave_content){
+			$pizza_waves[$pizza_wave_nr]['PizzaWave']['pizza_order_total'] = $this->PizzaWave->getOrdersSum($pizza_wave_content['PizzaWave']['id']);
+		}
+
+
 		$this->set(compact('pizza_waves'));
 	}
 
