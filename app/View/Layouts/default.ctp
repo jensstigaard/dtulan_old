@@ -3,7 +3,7 @@
 	<head>
 		<?php echo $this->Html->charset(); ?>
 		<title>
-			DTU LAN site &bull;
+			DTU LAN &bull;
 			<?php echo $title_for_layout; ?>
 		</title>
 		<?php
