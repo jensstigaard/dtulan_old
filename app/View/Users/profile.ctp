@@ -9,12 +9,12 @@
 		?>
 	</h1>
 
-	<?php if ($is_admin): ?>
+	<?php if (isset($make_payment_crew_id)): ?>
 		<div style="float:right;width:200px;background-color:rgba(0,0,0,.2);padding:10px;">
 			<?php echo $this->Form->create('Payment', array('controller' => 'payments', 'action' => 'add')); ?>
 			<?php echo $this->Form->input('amount', array('label' => 'Make payment')); ?>
-			<?php echo $this->Form->input('user_id', array('value' => $user['User']['id'], 'type' => 'hidden')); ?>
-			<?php echo $this->Form->input('crew_id', array('value' => $current_user['id'], 'type' => 'hidden')); ?>
+			<?php echo $this->Form->hidden('user_id', array('value' => $user['User']['id'])); ?>
+			<?php echo $this->Form->hidden('crew_id', array('value' => $make_payment_crew_id)); ?>
 			<?php echo $this->Form->end(__('Submit')); ?>
 		</div>
 	<?php endif; ?>
@@ -90,6 +90,8 @@
 									echo'Today';
 								} elseif ($this->Time->isTomorrow($payment['time'])) {
 									echo'Tomorrow';
+								} elseif ($this->Time->wasYesterday($payment['time'])) {
+									echo'Yesterday';
 								} elseif ($this->Time->isThisWeek($payment['time'])) {
 									echo $this->Time->format('l', $payment['time']);
 								} else {
@@ -151,6 +153,8 @@
 										echo'Today';
 									} elseif ($this->Time->isTomorrow($pizza_order['PizzaOrder']['time'])) {
 										echo'Tomorrow';
+									} elseif ($this->Time->wasYesterday($pizza_order['PizzaOrder']['time'])) {
+										echo'Yesterday';
 									} elseif ($this->Time->isThisWeek($pizza_order['PizzaOrder']['time'])) {
 										echo $this->Time->format('l', $pizza_order['PizzaOrder']['time']);
 									} else {
@@ -172,7 +176,7 @@
 								<?php if ($is_you): ?>
 									<td>
 										<?php
-										if ($pizza_orders_cancelable[$pizza_order['PizzaOrder']['id']]) {
+										if ($pizza_order['is_cancelable']) {
 											echo $this->Form->postLink(
 													$this->Html->image('16x16_PNG/cancel.png') . ' Cancel order', array('controller' => 'pizza_orders', 'action' => 'delete', $pizza_order['PizzaOrder']['id']), array('confirm' => "Are You sure you will delete this order?", 'escape' => false)
 											);
@@ -231,6 +235,8 @@
 										echo'Today';
 									} elseif ($this->Time->isTomorrow($food_order['FoodOrder']['time'])) {
 										echo'Tomorrow';
+									} elseif ($this->Time->wasYesterday($food_order['FoodOrder']['time'])) {
+										echo'Yesterday';
 									} elseif ($this->Time->isThisWeek($food_order['FoodOrder']['time'])) {
 										echo $this->Time->format('l', $food_order['FoodOrder']['time']);
 									} else {
@@ -263,8 +269,8 @@
 							<?php $total_balance += $order_balance; ?>
 						<?php endforeach; ?>
 						<tr>
-							<td>Orders: <?php echo count($pizza_orders); ?></td>
-							<td style="text-align:right;">Total amount spend on pizzas:</td>
+							<td>Orders: <?php echo count($food_orders); ?></td>
+							<td style="text-align:right;">Total amount spend on Sweets n' soda:</td>
 							<td style="text-decoration: underline"><?php echo $total_balance; ?> DKK</td>
 							<?php if ($is_you): ?>
 								<td></td>
@@ -304,7 +310,7 @@
 					<tr>
 						<td><?php echo $this->Html->link($team['Team']['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $team['Team']['Tournament']['id'])); ?></td>
 						<td><?php echo $this->Html->link($team['Team']['name'], array('controller' => 'teams', 'action' => 'view', $team['Team']['id'])); ?></td>
-						<td><?php echo $team['TeamUser']['is_leader'] ? 'Is leader' : ''; ?></td>
+						<td><?php echo $team['TeamUser']['is_leader'] ? $this->Html->image('16x16_PNG/star.png') : ''; ?></td>
 						<td><?php echo count($team['Team']['TeamUser']); ?> </td>
 					</tr>
 				<?php endforeach; ?>

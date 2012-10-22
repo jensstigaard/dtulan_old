@@ -32,6 +32,9 @@ class User extends AppModel {
 		'TeamUser',
 	);
 	public $helpers = array('Js');
+	public $order = array(
+		'name' => 'asc'
+	);
 	public $validate = array(
 		'name' => array(
 			'required1' => array(
@@ -160,15 +163,15 @@ class User extends AppModel {
 		return false;
 	}
 
-	public function validateBalanceLow($check){
-		if($check['balance'] >= -50){
+	public function validateBalanceLow($check) {
+		if ($check['balance'] >= -50) {
 			return true;
 		}
 		return false;
 	}
 
-	public function validateBalanceHigh($check){
-		if($check['balance'] <= 999){
+	public function validateBalanceHigh($check) {
+		if ($check['balance'] <= 999) {
 			return true;
 		}
 		return false;

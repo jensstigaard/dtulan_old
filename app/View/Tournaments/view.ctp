@@ -1,14 +1,20 @@
 <div>
 
-	<?php if($is_admin): ?>
-	<div style="float:right">
-		<?php echo $this->Html->link('Edit tournament', array('action' => 'edit', $tournament['Tournament']['id'])); ?>
-	</div>
+	<?php if ($is_admin): ?>
+		<div style="float:right">
+			<?php echo $this->Html->link('Edit tournament', array('action' => 'edit', $tournament['Tournament']['id'])); ?>
+		</div>
 	<?php endif; ?>
 
 	<h1><?php echo $tournament['Tournament']['title']; ?></h1>
 	<p>
-		<?php echo $this->Html->link($tournament['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $tournament['Lan']['id'])); ?>
+		In LAN: <?php
+	echo $this->Html->link($tournament['Lan']['title'], array(
+		'controller' => 'lans',
+		'action' => 'view', $tournament['Lan']['slug']
+			)
+	);
+	?>
 	</p>
 	<table>
 		<tbody>
@@ -19,13 +25,22 @@
 			<tr>
 				<td>Start time:</td>
 				<td>
-					<?php if ($this->Time->isToday($tournament['Tournament']['time_start'])): ?>
-						Today
-					<?php else: ?>
-						<?php echo $this->Time->format('D jM f', $tournament['Tournament']['time_start']); ?>
-					<?php endif; ?>
 
+					<?php
+					if ($this->Time->isToday($tournament['Tournament']['time_start'])) {
+						echo'Today';
+					} elseif ($this->Time->isTomorrow($tournament['Tournament']['time_start'])) {
+						echo'Tomorrow';
+					} elseif ($this->Time->wasYesterday($tournament['Tournament']['time_start'])) {
+						echo'Yesterday';
+					} elseif ($this->Time->isThisWeek($tournament['Tournament']['time_start'])) {
+						echo $this->Time->format('l', $tournament['Tournament']['time_start']);
+					} else {
+						echo $this->Time->format('D, M jS', $tournament['Tournament']['time_start']);
+					}
+					?>
 					<?php echo $this->Time->format('H:i', $tournament['Tournament']['time_start']); ?>
+
 				</td>
 			</tr>
 		</tbody>
@@ -47,12 +62,12 @@
 </div>
 
 <div>
-	<?php if($tournament['Tournament']['time_start'] > date('Y-m-d H:i:s')): ?>
-	<div style="float:right">
-		<?php echo $this->Html->link('Create team', array('controller' => 'teams', 'action' => 'add', $tournament['Tournament']['id'])); ?>
-	</div>
+	<?php if ($tournament['Tournament']['time_start'] > date('Y-m-d H:i:s')): ?>
+		<div style="float:right">
+			<?php echo $this->Html->link('Create team', array('controller' => 'teams', 'action' => 'add', $tournament['Tournament']['id'])); ?>
+		</div>
 	<?php endif; ?>
-	<h2>Teams participating</h2>
+	<h2>Teams participating (<?php echo count($tournament['Team']); ?>)</h2>
 	<?php if (!count($tournament['Team'])): ?>
 		<p>No teams participating in this tournament yet</p>
 	<?php else: ?>

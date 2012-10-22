@@ -20,12 +20,7 @@
 		);
 
 		echo $this->Html->css(array(
-			'layout.general',
-			'layout.tables',
-			'layout.menu',
-			'layout.sidebar',
-			'cake.errors',
-			'ui-darkness/jquery-ui'
+			'print'
 				)
 		);
 

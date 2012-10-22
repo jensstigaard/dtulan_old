@@ -154,13 +154,12 @@ class Lan extends AppModel {
 			$conditions['Lan.published'] = 1;
 		}
 
-		$this->recursive = 1;
-
 		$data = $this->find('first', array(
 			'conditions' => $conditions,
 			'order' => array(
 				'time_end ASC'
-			)
+			),
+			'recursive' => 1
 				)
 		);
 
@@ -220,7 +219,7 @@ class Lan extends AppModel {
 			throw new NotFoundException('Lan not found');
 		}
 
-		if($is_admin){
+		if ($is_admin) {
 			return true;
 		}
 

@@ -12,48 +12,64 @@
  */
 class PizzaOrder extends AppModel {
 
-	public $hasMany = array(
-		'PizzaOrderItem' => array(
-			'dependent' => true
-		)
-	);
-	public $belongsTo = array('User', 'PizzaWave');
-	public $validate = array(
-		'pizza_wave_id' => array(
-			'exists' => array(
-				'rule' => 'validWave',
-				'message' => 'Wave is not valid'
-			)
-		)
+    public $hasMany = array(
+        'PizzaOrderItem' => array(
+            'dependent' => true
+        )
+    );
+    public $belongsTo = array('User', 'PizzaWave');
+
+	public $order = array(
+		'time' => 'desc'
 	);
 
-	public function validWave($check) {
-		$count = $this->PizzaWave->find('count', array(
-			'conditions' => array(
-				'PizzaWave.id' => $check['pizza_wave_id'],
-				'PizzaWave.time_end >' => date('Y-m-d H:i:s'),
-			)
-				)
-		);
+    public $validate = array(
+        'pizza_wave_id' => array(
+            'exists' => array(
+                'rule' => 'validWave',
+                'message' => 'Wave is not valid'
+            )
+        )
+    );
 
-		if ($count == 1) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    public function validWave($check) {
+        $count = $this->PizzaWave->find('count', array(
+            'conditions' => array(
+                'PizzaWave.id' => $check['pizza_wave_id'],
+                'PizzaWave.time_end >' => date('Y-m-d H:i:s'),
+            )
+                )
+        );
 
-	public function isCancelable($id, $is_admin) {
-		$this->id = $id;
+        if ($count == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-		if (!$this->exists()) {
-			throw new NotFoundException('Pizza order not found! ID: ' . $id);
-		}
+    public function isCancelable($id, $is_admin) {
+        $this->id = $id;
 
-		$this->read(array('pizza_wave_id', 'status'));
+        if (!$this->exists()) {
+            throw new NotFoundException('Pizza order not found! ID: ' . $id);
+        }
 
-		return $this->PizzaWave->isOrderable($this->data['PizzaOrder']['pizza_wave_id'], $is_admin);
-	}
+        $this->read(array('pizza_wave_id', 'status'));
+
+        return $this->PizzaWave->isOrderable($this->data['PizzaOrder']['pizza_wave_id'], $is_admin);
+    }
+
+    public function getPizzaOrdersByUser($id = '') {
+        return $this->find('all', array(
+                    'conditions' => array(
+                        'PizzaOrder.user_id' => $id,
+                        'PizzaWave.status' => 3
+                    ),
+                    'recursive' => 4
+                        )
+        );
+    }
 
 }
 

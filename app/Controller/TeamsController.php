@@ -19,39 +19,54 @@ class TeamsController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin()) {
+		if (in_array($this->action, array('view', 'add', 'delete')) || $this->isAdmin()) {
 			return true;
 		}
 		return false;
 	}
 
-	//put your code here
 	public function add($tournament_id = null) {
 
 		if ($tournament_id == null) {
-			throw new NotFoundException('Category not found');
+			throw new NotFoundException('Team not found');
 		}
 
 		$this->Team->Tournament->id = $tournament_id;
 
 		if (!$this->Team->Tournament->exists()) {
-			throw new NotFoundException('Category not found');
+			throw new NotFoundException('Team not found');
 		}
 
 		if ($this->request->is('post')) {
 
-			$user = $this->Auth->user();
-
-			$this->request->data['Team']['user_id'] = $user['id'];
 			$this->request->data['Team']['tournament_id'] = $tournament_id;
 
-			if ($this->Team->save($this->request->data)) {
-				$this->Session->setFlash('Your Team has been created.', 'default', array('class' => 'message success'), 'good');
-				//$this->redirect(array('action' => 'index'));
+			$this->request->data['TeamUser'] = array(
+				0 => array(
+					'user_id' => $this->Auth->user('id'),
+					'is_leader' => 1,
+					'Team' => array(
+						'tournament_id' => $tournament_id
+					)
+				)
+			);
+
+
+			if ($this->Team->saveAssociated($this->request->data)) {
+				$this->Session->setFlash('Your team has been created', 'default', array('class' => 'message success'), 'good');
+				$this->redirect(array('controller' => 'teams', 'action' => 'view', $this->Team->getInsertID()));
 			} else {
-				$this->Session->setFlash('Unable to create your Team.', 'default', array(), 'bad');
+				$errors = $this->Team->invalidFields();
+
+				if (isset($errors['TeamUser'][0]['user_id'][0])) {
+					$this->Session->setFlash($errors['TeamUser'][0]['user_id'][0], 'default', array(), 'bad');
+				} else {
+					$this->Session->setFlash('Unable to create your team', 'default', array(), 'bad');
+				}
 			}
 		}
+
+
 
 		$this->set('tournament', $this->Team->Tournament->read());
 	}
@@ -64,59 +79,35 @@ class TeamsController extends AppController {
 			throw new NotFoundException('Team not found');
 		}
 
-		if ($this->request->is('post')) {
-			$this->request->data['TeamInvite']['team_id'] = $id;
-
-			if ($this->Team->TeamInvite->save($this->request->data)) {
-				$this->Session->setFlash('Your invites has been sent', 'default', array('class' => 'message success'), 'good');
-			} else {
-				$this->Session->setFlash('Unable to send your invites', 'default', array(), 'bad');
-			}
-		}
-
 		$this->Team->recursive = 2;
-		$team = $this->Team->read();
 
-		$this->set(compact('team'));
+		$this->set('team', $this->Team->read());
+
+		$this->set('is_leader', $this->Auth->loggedIn() && $this->Team->isLeader($id, $this->Auth->user('id')));
+
 		$this->set('users', $this->Team->getInviteableUsers($id));
 	}
 
-	public function deleteInvite($id) {
-		if ($this->request->is('get')) {
-			throw new MethodNotAllowedException();
+	public function delete($id) {
+		$this->Team->id = $id;
+
+		if (!$this->Team->exists()) {
+			throw new NotFoundException('Team not found');
 		}
 
-		$this->Team->TeamInvite->id = $id;
+		$team = $this->Team->read('tournament_id');
 
-		if (!$this->Team->TeamInvite->exists()) {
-			throw new NotFoundException('Invite not found');
+		if (!$this->Team->isLeader($id, $this->Auth->user('id'))) {
+			throw new UnauthorizedException('You are not allowed to do this');
 		}
 
-		$this->Team->TeamInvite->recursive = 2;
-		$invite = $this->Team->TeamInvite->read();
-
-		$leaders = array();
-
-		foreach ($invite['Team']['TeamUser'] as $user) {
-			if ($user['is_leader']) {
-				$leaders[] = $user['user_id'];
-			}
-		}
-
-		$current_user = $this->Auth->user();
-		if (!in_array($current_user['id'], $leaders)) {
-			throw new MethodNotAllowedException('You are not allowed to cancel invites');
-		}
-
-//		debug($invite);
-
-		if ($this->Team->TeamInvite->deleteAll(array('TeamInvite.id' => $id), false)) {
-			$this->Session->setFlash('Invite cancelled', 'default', array('class' => 'message success'), 'good');
+		if ($this->Team->delete()) {
+			$this->Session->setFlash('Team deleted', 'default', array(), 'bad');
 		} else {
-			$this->Session->setFlash('FAILED', 'default', array(), 'bad');
+			$this->Session->setFlash('Unable to delete your team', 'default', array('class' => 'message success'), 'good');
 		}
 
-		$this->redirect(array('action' => 'view', $invite['TeamInvite']['team_id']));
+		$this->redirect(array('controller' => 'tournaments', 'action' => 'view', $team['Team']['tournament_id']));
 	}
 
 }

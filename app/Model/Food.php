@@ -12,6 +12,9 @@
  */
 class Food extends AppModel {
 
+	public $order = array(
+		'sorted' => 'asc'
+	);
 }
 
 ?>

@@ -21,10 +21,12 @@
 						case'uri':
 							$img = 'application';
 							$title = 'URI';
+							$url = $page['Page']['command_value'];
 							break;
 						default:
 							$img = 'file';
 							$title = 'Text';
+							$url = array('action' => 'view', $page['Page']['slug']);
 							break;
 					}
 					echo $this->Html->image('16x16_GIF/' . $img . '.gif', array('title' => $title));
@@ -43,18 +45,52 @@
 					?>
 				</td>
 				<td>
-					<?php echo $this->Html->link($page['Page']['title'], array('action' => 'view', $page['Page']['id'])); ?>
+					<?php echo $this->Html->link($page['Page']['title'], $url); ?>
 				</td>
 
 
 				<td>
-					<?php echo $this->Time->nice($page['Page']['time_created']); ?>
+					<?php
+					$time = $page['Page']['time_created'];
+					if ($this->Time->isToday($time)) {
+						echo'Today';
+					} elseif ($this->Time->isTomorrow($time)) {
+						echo'Tomorrow';
+					} elseif ($this->Time->wasYesterday($time)) {
+						echo'Yesterday';
+					} elseif ($this->Time->isThisWeek($time)) {
+						echo $this->Time->format('l', $time);
+					} else {
+						echo $this->Time->format('D, M jS', $time);
+					}
+					?>
+					<?php echo $this->Time->format('H:i', $time); ?>
 					<br />
 					<small>
 						(<?php echo $page['CreatedBy']['name']; ?>)
 					</small>
 				</td>
-				<td><?php echo $this->Time->nice($page['Page']['time_latest_update']); ?><br /><small>(<?php echo $page['LatestUpdateBy']['name']; ?>)</small></td>
+				<td>
+					<?php
+					$time = $page['Page']['time_latest_update'];
+					if ($this->Time->isToday($time)) {
+						echo'Today';
+					} elseif ($this->Time->isTomorrow($time)) {
+						echo'Tomorrow';
+					} elseif ($this->Time->wasYesterday($time)) {
+						echo'Yesterday';
+					} elseif ($this->Time->isThisWeek($time)) {
+						echo $this->Time->format('l', $time);
+					} else {
+						echo $this->Time->format('D, M jS', $time);
+					}
+					?>
+					<?php echo $this->Time->format('H:i', $time); ?>
+					<br />
+					<small>
+						(<?php echo $page['LatestUpdateBy']['name']; ?>)
+					</small>
+				</td>
 			</tr>
 		<?php endforeach; ?>
 

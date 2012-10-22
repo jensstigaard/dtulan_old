@@ -101,7 +101,7 @@
 									<li>
 										<?php echo $item['quantity']; ?> x
 										<?php echo $item['PizzaPrice']['Pizza']['title']; ?>
-										(<?php echo $item['PizzaPrice']['PizzaType']['title']; ?>)
+										(<?php echo $item['PizzaPrice']['PizzaType']['title']; ?>) (<?php echo $item['PizzaPrice']['Pizza']['number']; ?>)
 									</li>
 								<?php endforeach; ?>
 							</ul>

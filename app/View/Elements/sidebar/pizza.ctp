@@ -40,7 +40,8 @@
 					if ($wave['PizzaWave']['id'] == $current_wave['PizzaWave']['id']) {
 						$content .= $this->Html->image('16x16_GIF/action_check.gif') . ' ';
 					}
-					$content.= $this->Time->format('H:i', $wave['PizzaWave']['time_start']) . ' - ' . $this->Time->format('H:i', $wave['PizzaWave']['time_end']);
+//					$content.= $this->Time->format('H:i', $wave['PizzaWave']['time_start']) . ' - ';
+					$content.= $this->Time->format('H:i', $wave['PizzaWave']['time_end']);
 					?>
 					<strong title="Currently selected wave">
 						<?php echo $this->Html->link($content, array('action' => 'index', 'wave_id' => $wave['PizzaWave']['id']), array('escape' => false)); ?>
