@@ -21,6 +21,7 @@
 					<small>Status</small>
 				</th>
 				<th></th>
+				<th></th>
 			</tr>
 			<?php foreach ($pizza_waves as $pizza_wave): ?>
 				<tr>
@@ -60,6 +61,9 @@
 								)
 						);
 						?>
+					</td>
+					<td>
+						<?php echo $pizza_wave['PizzaWave']['pizza_order_total']; ?> DKK
 					</td>
 				</tr>
 		<?php endforeach; ?>

@@ -19,11 +19,20 @@ class PaymentsController extends AppController {
 	}
 
 	public function index() {
-		$this->set('payments', $this->Payment->find('all', array(
-					'recursive' => 2
-						)
-				)
+
+		$this->paginate = array(
+			'limit' => 10,
+			'recursive' => 2,
+			'order' => array(
+				'time' => 'desc'
+			)
 		);
+
+		$payments = $this->paginate('Payment');
+
+		$this->Payment->dateToNiceArray($payments, 'Payment');
+
+		$this->set(compact('payments'));
 	}
 
 	public function add() {

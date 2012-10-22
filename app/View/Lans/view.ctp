@@ -61,7 +61,7 @@
 					<tr>
 						<td>Fill rate:</td>
 						<td><?php echo $max_signup === 0 ? 0 : floor(($total_signup / $max_signup) * 100)?> %</td>
-					</tr>	
+					</tr>
 				<?php endif; ?>
 			</tbody>
 		</table>
@@ -158,11 +158,11 @@
 				</tr>
 				<tr>
 					<td>Candy &amp; soda</td>
-					<td style="text-align: center">0</td>
+					<td style="text-align: center"><?php echo $food_orders_count; ?></td>
 					<td style="text-align: right">DKK</td>
-					<td style="text-align: right">0</td>
+					<td style="text-align: right">~ <?php echo $food_orders_count > 0 ? floor($food_orders_total / $food_orders_count) : 0; ?></td>
 					<td style="text-align: right">DKK</td>
-					<td style="text-align: right">0</td>
+					<td style="text-align: right"><?php echo $food_orders_total; ?></td>
 
 				</tr>
 				<tr>

@@ -61,11 +61,19 @@ class PagesController extends AppController {
 	}
 
 	public function index() {
-		$this->set('pages', $this->Page->find('all'));
+
+		$pages = $this->Page->find('all');
+
+		$this->Page->dateToNiceArray($pages, 'Page', 'time_created');
+		$this->Page->dateToNiceArray($pages, 'Page', 'time_latest_update');
+
+		$this->set(compact('pages'));
 	}
 
 	public function view($slug = 'welcome') {
 		$page = $this->Page->findBySlug($slug);
+
+		$page['Page']['time_latest_update_nice'] = $this->Page->dateTonice($page['Page']['time_latest_update']);
 
 		$title_for_layout = $page['Page']['title'];
 

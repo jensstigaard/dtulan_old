@@ -10,6 +10,7 @@ class Lan extends AppModel {
 		'LanInvite',
 		'Tournament',
 		'PizzaWave',
+		'FoodOrder'
 	);
 	public $validate = array(
 		'title' => array(
@@ -260,6 +261,68 @@ class Lan extends AppModel {
 		// to lowercase
 		$str = strtolower($str);
 		return $str;
+	}
+
+	public function getFoodOrderIds($id) {
+		$this->id = $id;
+
+		if (!$this->exists()) {
+			throw new NotFoundException('LAN not found with id ' . $id);
+		}
+
+		$food_orders = $this->FoodOrder->find('all', array(
+			'conditions' => array(
+				'lan_id' => $id
+			),
+			'fields' => array(
+				'id'
+			)
+				)
+		);
+
+		$food_order_ids = array();
+		foreach ($food_orders as $food_order) {
+			$food_order_ids[] = $food_order['FoodOrder']['id'];
+		}
+
+		return $food_order_ids;
+	}
+
+	public function getCountFoodOrders($id) {
+		$this->id = $id;
+
+		if (!$this->exists()) {
+			throw new NotFoundException('LAN not found with id ' . $id);
+		}
+
+		return $this->FoodOrder->find('count', array(
+			'conditions' => array(
+				'lan_id' => $id
+			)
+				)
+		);
+	}
+
+	public function getFoodOrdersTotal($id) {
+		$this->id = $id;
+
+		if (!$this->exists()) {
+			throw new NotFoundException('LAN not found with id ' . $id);
+		}
+
+		$sum = $this->FoodOrder->FoodOrderItem->find('all', array(
+			'fields' => array(
+				'sum(FoodOrderItem.quantity * FoodOrderItem.price) AS ctotal'
+			),
+			'conditions' => array(
+				'FoodOrderItem.food_order_id' => $this->getFoodOrderIds($id)
+			)
+				)
+		);
+
+		$sum = $sum[0][0]['ctotal'];
+
+		return $sum;
 	}
 
 }

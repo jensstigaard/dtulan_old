@@ -25,21 +25,7 @@
 			<tr>
 				<td>Start time:</td>
 				<td>
-
-					<?php
-					if ($this->Time->isToday($tournament['Tournament']['time_start'])) {
-						echo'Today';
-					} elseif ($this->Time->isTomorrow($tournament['Tournament']['time_start'])) {
-						echo'Tomorrow';
-					} elseif ($this->Time->wasYesterday($tournament['Tournament']['time_start'])) {
-						echo'Yesterday';
-					} elseif ($this->Time->isThisWeek($tournament['Tournament']['time_start'])) {
-						echo $this->Time->format('l', $tournament['Tournament']['time_start']);
-					} else {
-						echo $this->Time->format('D, M jS', $tournament['Tournament']['time_start']);
-					}
-					?>
-					<?php echo $this->Time->format('H:i', $tournament['Tournament']['time_start']); ?>
+					<?php echo $tournament['Tournament']['time_start_nice']; ?>
 
 				</td>
 			</tr>

@@ -50,42 +50,14 @@
 
 
 				<td>
-					<?php
-					$time = $page['Page']['time_created'];
-					if ($this->Time->isToday($time)) {
-						echo'Today';
-					} elseif ($this->Time->isTomorrow($time)) {
-						echo'Tomorrow';
-					} elseif ($this->Time->wasYesterday($time)) {
-						echo'Yesterday';
-					} elseif ($this->Time->isThisWeek($time)) {
-						echo $this->Time->format('l', $time);
-					} else {
-						echo $this->Time->format('D, M jS', $time);
-					}
-					?>
-					<?php echo $this->Time->format('H:i', $time); ?>
+					<?php echo $page['Page']['time_created_nice']; ?>
 					<br />
 					<small>
 						(<?php echo $page['CreatedBy']['name']; ?>)
 					</small>
 				</td>
 				<td>
-					<?php
-					$time = $page['Page']['time_latest_update'];
-					if ($this->Time->isToday($time)) {
-						echo'Today';
-					} elseif ($this->Time->isTomorrow($time)) {
-						echo'Tomorrow';
-					} elseif ($this->Time->wasYesterday($time)) {
-						echo'Yesterday';
-					} elseif ($this->Time->isThisWeek($time)) {
-						echo $this->Time->format('l', $time);
-					} else {
-						echo $this->Time->format('D, M jS', $time);
-					}
-					?>
-					<?php echo $this->Time->format('H:i', $time); ?>
+					<?php echo $page['Page']['time_latest_update_nice']; ?>
 					<br />
 					<small>
 						(<?php echo $page['LatestUpdateBy']['name']; ?>)

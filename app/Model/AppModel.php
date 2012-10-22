@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Application model for Cake.
  *
@@ -19,7 +20,6 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
 App::uses('Model', 'Model');
 
 /**
@@ -31,4 +31,40 @@ App::uses('Model', 'Model');
  * @package       app.Model
  */
 class AppModel extends Model {
+
+	public function dateToNiceArray(&$array, $model_name = null, $field_name_time = 'time'){
+		foreach($array as $index => $content){
+			if($model_name == null && isset($content[$field_name_time])){
+				$array[$index][$field_name_time.'_nice'] = $this->dateToNice($content[$field_name_time]);
+			}
+			else{
+				$array[$index][$model_name][$field_name_time.'_nice'] = $this->dateToNice($content[$model_name][$field_name_time]);
+			}
+
+		}
+	}
+
+	public function dateToNice($timestamp) {
+
+		App::uses('CakeTime', 'Utility');
+
+		$return = '';
+
+		if (CakeTime::isToday($timestamp)) {
+			$return .= 'Today';
+		} elseif (CakeTime::isTomorrow($timestamp)) {
+			$return .= 'Tomorrow';
+		} elseif (CakeTime::wasYesterday($timestamp)) {
+			$return .= 'Yesterday';
+		} elseif (CakeTime::isThisWeek($timestamp)) {
+			$return .= CakeTime::format('l', $timestamp);
+		} else {
+			$return .= CakeTime::format('D, M jS', $timestamp);
+		}
+
+		$return .= ' ';
+		$return .= CakeTime::format('H:i', $timestamp);
+
+		return $return;
+	}
 }

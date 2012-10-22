@@ -8,7 +8,8 @@
 
 	<p>
 		<small>
-			<em>Updated: <?php echo $this->Time->isToday($page['Page']['time_latest_update']) ? 'Today, '.$this->Time->format('H:i', $page['Page']['time_latest_update']) : $this->Time->nice($page['Page']['time_latest_update']); ?> by
+			<em>
+				Updated: <?php echo $page['Page']['time_latest_update_nice']; ?> by
 				<?php echo $this->Html->link($page['LatestUpdateBy']['name'], array('controller' => 'users', 'action' => 'profile', $page['LatestUpdateBy']['id'])); ?>
 			</em>
 		</small>

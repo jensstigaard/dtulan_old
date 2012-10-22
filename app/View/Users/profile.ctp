@@ -85,20 +85,7 @@
 					<?php foreach ($user['Payment'] as $payment): ?>
 						<tr>
 							<td>
-								<?php
-								if ($this->Time->isToday($payment['time'])) {
-									echo'Today';
-								} elseif ($this->Time->isTomorrow($payment['time'])) {
-									echo'Tomorrow';
-								} elseif ($this->Time->wasYesterday($payment['time'])) {
-									echo'Yesterday';
-								} elseif ($this->Time->isThisWeek($payment['time'])) {
-									echo $this->Time->format('l', $payment['time']);
-								} else {
-									echo $this->Time->format('D, M jS', $payment['time']);
-								}
-								?>
-								<?php echo $this->Time->format('H:i', $payment['time']); ?>
+								<?php echo $payment['time_nice']; ?>
 
 							</td>
 							<td><?php echo $payment['amount']; ?> DKK</td>
@@ -148,20 +135,8 @@
 							<?php $order_balance = 0; ?>
 							<tr>
 								<td>
-									<?php
-									if ($this->Time->isToday($pizza_order['PizzaOrder']['time'])) {
-										echo'Today';
-									} elseif ($this->Time->isTomorrow($pizza_order['PizzaOrder']['time'])) {
-										echo'Tomorrow';
-									} elseif ($this->Time->wasYesterday($pizza_order['PizzaOrder']['time'])) {
-										echo'Yesterday';
-									} elseif ($this->Time->isThisWeek($pizza_order['PizzaOrder']['time'])) {
-										echo $this->Time->format('l', $pizza_order['PizzaOrder']['time']);
-									} else {
-										echo $this->Time->format('D, M jS', $pizza_order['PizzaOrder']['time']);
-									}
-									?>
-									<?php echo $this->Time->format('H:i', $pizza_order['PizzaOrder']['time']); ?>
+
+									<?php echo $pizza_order['PizzaOrder']['time_nice']; ?>
 
 								</td>
 								<td><?php foreach ($pizza_order['PizzaOrderItem'] as $item): ?>
@@ -176,7 +151,7 @@
 								<?php if ($is_you): ?>
 									<td>
 										<?php
-										if ($pizza_order['is_cancelable']) {
+										if ($pizza_order['PizzaOrder']['is_cancelable']) {
 											echo $this->Form->postLink(
 													$this->Html->image('16x16_PNG/cancel.png') . ' Cancel order', array('controller' => 'pizza_orders', 'action' => 'delete', $pizza_order['PizzaOrder']['id']), array('confirm' => "Are You sure you will delete this order?", 'escape' => false)
 											);
@@ -230,20 +205,7 @@
 							<?php $order_balance = 0; ?>
 							<tr>
 								<td>
-									<?php
-									if ($this->Time->isToday($food_order['FoodOrder']['time'])) {
-										echo'Today';
-									} elseif ($this->Time->isTomorrow($food_order['FoodOrder']['time'])) {
-										echo'Tomorrow';
-									} elseif ($this->Time->wasYesterday($food_order['FoodOrder']['time'])) {
-										echo'Yesterday';
-									} elseif ($this->Time->isThisWeek($food_order['FoodOrder']['time'])) {
-										echo $this->Time->format('l', $food_order['FoodOrder']['time']);
-									} else {
-										echo $this->Time->format('D, M jS', $food_order['FoodOrder']['time']);
-									}
-									?>
-									<?php echo $this->Time->format('H:i', $food_order['FoodOrder']['time']); ?>
+									<?php echo $food_order['FoodOrder']['time_nice']; ?>
 								</td>
 								<td><?php foreach ($food_order['FoodOrderItem'] as $item): ?>
 										<div>
@@ -388,3 +350,4 @@
 		<?php endif; ?>
 	</div>
 </div>
+<?php pr($pizza_orders); ?>

@@ -28,7 +28,10 @@ class TournamentsController extends AppController {
 		$this->Tournament->Lan->unbindModel(array('hasMany' => array('LanSignup', 'LanDay', 'LanInvite', 'PizzaWave', 'Tournament')));
 		$this->Tournament->Game->unbindModel(array('hasMany' => array('Tournament')));
 
-		$this->set('tournament', $this->Tournament->read());
+		$tournament = $this->Tournament->read();
+		$tournament['Tournament']['time_start_nice'] = $this->Tournament->dateToNice($tournament['Tournament']['time_start']);
+
+		$this->set(compact('tournament'));
 	}
 
 	public function add($lan_id) {

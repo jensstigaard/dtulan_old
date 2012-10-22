@@ -32,6 +32,11 @@ class PizzaWavesController extends AppController {
 				)
 		);
 
+		foreach($pizza_waves as $pizza_wave_nr => $pizza_wave_content){
+			$pizza_waves[$pizza_wave_nr]['PizzaWave']['pizza_order_total'] = $this->PizzaWave->getOrdersSum($pizza_wave_content['PizzaWave']['id']);
+		}
+
+
 		$this->set(compact('pizza_waves'));
 	}
 
@@ -72,7 +77,9 @@ class PizzaWavesController extends AppController {
 		$this->set('pizza_wave', $this->PizzaWave->read());
 
 		if($this->PizzaWave->data['PizzaWave']['status']==3){
-			$this->set('pizza_wave_orders', $this->PizzaWave->getOrderList($id));
+			$pizza_wave_orders = $this->PizzaWave->getOrderList($id);
+			$this->PizzaWave->dateToNiceArray($pizza_wave_orders, 'PizzaOrder');
+			$this->set(compact('pizza_wave_orders'));
 		}
 		else{
 			$this->set('pizza_wave_items', $this->PizzaWave->getItemList($id));

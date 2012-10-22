@@ -33,6 +33,7 @@
 			<thead>
 				<tr>
 					<th>Gamertag</th>
+					<th>Name</th>
 					<th>Leader</th>
 				</tr>
 			</thead>
@@ -40,19 +41,35 @@
 			<tbody>
 				<?php foreach ($team['TeamUser'] as $user): ?>
 					<tr>
-						<td><?php echo $user['User']['name']; ?></td>
 						<td>
-							<?php if($user['is_leader']){
+							<?php
+							echo$user['User']['gamertag'];
+							?>
+						</td>
+						<td>
+							<?php
+							echo $this->Html->link($user['User']['name'], array(
+								'controller' => 'users',
+								'action' => 'profile',
+								$user['User']['id']
+									)
+							);
+							?>
+						</td>
+						<td>
+							<?php
+							if ($user['is_leader']) {
 								echo $this->Html->image('16x16_PNG/star.png');
-							} ?>
+							}
+							?>
 						</td>
 					</tr>
-				<?php endforeach; ?>
+		<?php endforeach; ?>
 			</tbody>
 		</table>
-	<?php endif; ?>
+<?php endif; ?>
 
-	<?php if (count($team['TeamInvite'])): ?>
+<?php if (count($team['TeamInvite'])): ?>
 		<h3>Invited to team</h3>
 		<table>
 			<thead>
@@ -63,7 +80,7 @@
 			</thead>
 
 			<tbody>
-				<?php foreach ($team['TeamInvite'] as $invite): ?>
+						<?php foreach ($team['TeamInvite'] as $invite): ?>
 					<tr>
 						<td><?php echo $invite['User']['name']; ?></td>
 						<td>
@@ -81,8 +98,8 @@
 							}
 							?></td>
 					</tr>
-				<?php endforeach; ?>
+	<?php endforeach; ?>
 			</tbody>
 		</table>
-	<?php endif; ?>
+<?php endif; ?>
 </div>
