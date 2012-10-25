@@ -20,6 +20,7 @@
 		);
 
 		echo $this->Html->css(array(
+			'normalize',
 			'layout.general',
 			'layout.tables',
 			'layout.menu',
@@ -34,14 +35,14 @@
 				'layout.admin'));
 		}
 
-		$this->Html->script(array('jquery', 'jquery-ui', 'generel'), false);
-
 		if ($is_admin) {
 			$this->Html->script(array('admin/user_lookup'), false);
 		}
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
+
+		echo $this->Html->script(array('jquery', 'jquery-ui', 'generel'), true);
 		echo $this->fetch('script');
 
 		echo $this->Js->writeBuffer(array('cache' => TRUE));

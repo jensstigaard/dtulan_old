@@ -4,12 +4,20 @@
 	<?php
 	if (!count($users)) {
 		?>
-	<p>No users to make admin.</p>
-	<?php
-	}
-	else{
+		<p>No users to make admin.</p>
+		<?php
+	} else {
 		echo $this->Form->create();
-		echo $this->Form->input('user_id');
+
+//		echo $this->Form->input('user_id');
+
+		echo $this->Chosen->select(
+				'user_id', $users, array(
+			'data-placeholder' => 'Pick user...',
+			//'default' => key($users),
+				)
+		);
+
 		echo $this->Form->hidden('user_by_id', array('value' => $current_user['id']));
 		echo $this->Form->end('Submit');
 	}
