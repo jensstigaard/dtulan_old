@@ -91,6 +91,14 @@ hr{
 	display:none;
 }
 
+.chzn-container{
+	color: #666;
+}
+
+.chzn-drop{
+	margin: 5px 0 0 5px;
+}
+
 
 /** Header **/
 #header, #footer{
