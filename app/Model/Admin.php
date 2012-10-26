@@ -20,6 +20,19 @@ class Admin extends AppModel {
 		)
 	);
 
+
+	public function getUserIDsAdmins() {
+		$this->recursive = -1;
+		$admins = $this->find('all');
+
+		$admin_user_ids = array();
+		foreach ($admins as $admin) {
+			$admin_user_ids[] = $admin['Admin']['user_id'];
+		}
+
+		return $admin_user_ids;
+	}
+
 }
 
 ?>

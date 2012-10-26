@@ -177,20 +177,6 @@ class User extends AppModel {
 		return false;
 	}
 
-	public function beforeSave($options = array()) {
-		parent::beforeSave($options);
-		if (isset($this->data['User']['password'])) {
-			$this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
-		}
-		if (isset($this->data['User']['name'])) {
-			$this->data['User']['name'] = ucwords(strtolower($this->data['User']['name']));
-		}
-		if (isset($this->data['User']['email'])) {
-			$this->data['User']['email'] = strtolower($this->data['User']['email']);
-		}
-		return true;
-	}
-
 	public function getGuestNumber() {
 		$guestNumber = 'g' . date('ym');
 
@@ -210,6 +196,18 @@ class User extends AppModel {
 		return $count < 9 ? $guestNumber . '0' . ($count + 1) : $guestNumber . ($count + 1);
 	}
 
+	public function getUserIDsNotAdmin() {
+		return $this->find('list', array(
+			'conditions' => array(
+				'User.activated' => 1,
+				'NOT' => array(
+					'User.id' => $this->Admin->getUserIDsAdmins()
+				)
+			)
+				)
+		);
+	}
+
 	public function isActivated() {
 		return isset($this->data['User']['activated']) && $this->data['User']['activated'];
 	}
@@ -224,6 +222,20 @@ class User extends AppModel {
 
 	public function getEmail() {
 		return $this->data['User']['email'];
+	}
+
+	public function beforeSave($options = array()) {
+		parent::beforeSave($options);
+		if (isset($this->data['User']['password'])) {
+			$this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
+		}
+		if (isset($this->data['User']['name'])) {
+			$this->data['User']['name'] = ucwords(strtolower($this->data['User']['name']));
+		}
+		if (isset($this->data['User']['email'])) {
+			$this->data['User']['email'] = strtolower($this->data['User']['email']);
+		}
+		return true;
 	}
 
 }
