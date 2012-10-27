@@ -50,6 +50,9 @@ class AppController extends Controller {
 					'fields' => array(
 						'username' => 'email',
 						'password' => 'password'
+					),
+					'scope' => array(
+						'User.activated' => 1
 					)
 				),
 				// Allow authentication by access token
