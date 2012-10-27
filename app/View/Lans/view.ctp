@@ -36,7 +36,7 @@
 					</tr>
 					<tr>
 						<td>Tournaments:</td>
-						<td><?php echo count($tournaments); ?></td>
+						<td><?php echo $count_tournaments; ?></td>
 					</tr>
 					<tr>
 						<td>Public:</td>
@@ -150,39 +150,10 @@
 
 
 		<div id="tab-tournaments">
-			<?php if ($is_admin): ?>
-				<div style="float:right">
-					<?php echo $this->Html->link('New tournament', array('controller' => 'tournaments', 'action' => 'add', $lan['Lan']['id'])); ?>
-				</div>
-			<?php endif; ?>
-			<table>
-				<thead>
-					<tr>
-						<th>Title</th>
-						<th>Game title</th>
-						<th style="text-align: center">Team size</th>
-						<th style="text-align: right">Participants</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php if (!count($tournaments)): ?>
-						<tr>
-							<td colspan="4">
-								No tournaments published yet
-							</td>
-						</tr>
-					<?php else: ?>
-						<?php foreach ($tournaments as $tournament): ?>
-							<tr>
-								<td><?php echo $this->Html->link($tournament['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $tournament['Tournament']['id'])); ?></td>
-								<td><?php echo $tournament['Game']['title'] ?></td>
-								<td style="text-align: center"><?php echo $tournament['Tournament']['team_size'] ?></td>
-								<td style="text-align: right"><?php //Participants	                                         ?></td>
-							</tr>
-						<?php endforeach; ?>
-					<?php endif; ?>
-				</tbody>
-			</table>
+			<div class="tournaments">
+				<?php echo $this->Html->image('misc/loading_indicator.gif'); ?>
+				<?php echo $this->Html->link('', array('controller' => 'tournaments', 'action' => 'index', $lan['Lan']['id'])); ?>
+			</div>
 		</div>
 
 		<?php if ($is_admin): ?>

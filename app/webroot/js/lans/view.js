@@ -12,5 +12,6 @@ $(document).ready(
 
 		make_ajax_area('.lan_signups');
 		make_ajax_area('.lan_signups_crew');
+		make_ajax_area('.tournaments');
 	}
 	);
