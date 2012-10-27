@@ -1,19 +1,19 @@
 <?php echo $this->Html->script(array('jquery', 'ajax/all_links')); ?>
 
-<div class="ajax_area" id="lan_signups">
+<div class="ajax_area" id="lan_signups_crew">
 	<table>
 		<thead>
 			<tr>
-				<th style="width:28px;"></th>
-				<th><?php echo $this->Paginator->sort('User.name', 'Name'); ?></th>
+				<th style="width:28px"></th>
+				<th>Name</th>
 				<?php if ($is_admin): ?>
 					<th style="text-align: center; font-size:90%;">Days attending</th>
-					<th style="text-align: right; font-size:90%;"><?php echo $this->Paginator->sort('User.phonenumber', 'Phone number'); ?></th>
+					<th style="text-align: right; font-size:90%;">Phone number</th>
 				<?php endif; ?>
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($lan_signups as $user): ?>
+			<?php foreach ($lan_signups_crew as $user): ?>
 				<tr>
 					<td style="padding:0 2px;text-align:center;">
 						<?php
@@ -30,9 +30,7 @@
 					</td>
 					<td>
 						<?php echo $this->Html->link($user['User']['name'], array('controller' => 'users', 'action' => 'profile', $user['User']['id'])); ?>
-						<?php if ($user['User']['type'] == 'guest'): ?>
-							(g)
-						<?php endif; ?>
+
 					</td>
 					<?php if ($is_admin): ?>
 						<td style="text-align: center">
@@ -46,7 +44,4 @@
 			<?php endforeach; ?>
 		</tbody>
 	</table>
-	<div style="text-align: center" class="pagination-link">
-		<?php echo $this->Paginator->numbers(); ?>
-	</div>
 </div>

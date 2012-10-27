@@ -2,7 +2,8 @@
 
 class LansController extends AppController {
 
-	public $helpers = array('Html', 'Form');
+	public $components = array('RequestHandler');
+	public $helpers = array('Html', 'Form', 'Js');
 
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -87,88 +88,6 @@ class LansController extends AppController {
 				));
 
 		$this->set(compact('tournaments'));
-
-		// Users signed up for LAN
-		$this->Lan->LanSignup->recursive = 2;
-		$this->Lan->LanSignup->unbindModel(array(
-			'belongsTo' => array(
-				'Lan'
-			),
-			'hasOne' => array(
-				'LanInvite'
-			),
-			'hasMany' => array(
-//				'LanSignupDay'
-			)
-				)
-		);
-		$this->Lan->LanSignup->User->unbindModel(array(
-			'hasOne' => array(
-				'UserPasswordTicket'
-			),
-			'hasMany' => array(
-				'LanSignup',
-				'LanInvite',
-				'LanInviteSent',
-				'Payment',
-				'PizzaOrder',
-				'TeamInvite',
-				'TeamUser'
-			)
-				)
-		);
-
-		$this->Lan->Crew->recursive = 0;
-		$lan_crews = $this->Lan->Crew->find('all', array('conditions' => array(
-				'Crew.lan_id' => $lan_id
-			),
-			'fields' => array(
-				'Crew.user_id'
-			),
-				)
-		);
-
-		$lan_crew_ids = array();
-		foreach ($lan_crews as $crew) {
-			$lan_crew_ids[] = $crew['Crew']['user_id'];
-		}
-
-		// Crew signed up for LAN
-		$lan_signups_crew = $this->Lan->LanSignup->find('all', array(
-			'conditions' => array(
-				'LanSignup.lan_id' => $lan_id,
-				'LanSignup.user_id' => $lan_crew_ids,
-			),
-			'order' => array(
-				'User.name'
-			)
-				)
-		);
-
-		$lan_signups_id_crew = array();
-
-		foreach ($lan_signups_crew as $lan_signup_crew) {
-			$lan_signups_id_crew[] = $lan_signup_crew['LanSignup']['id'];
-		}
-
-		$this->set(compact('lan_signups_crew'));
-
-		$this->paginate = array(
-			'LanSignup' => array(
-				'conditions' => array(
-					'LanSignup.lan_id' => $lan_id,
-					'NOT' => array(
-						'LanSignup.id' => $lan_signups_id_crew
-					)
-				),
-				'limit' => 10,
-				'order' => array(
-					array('User.name' => 'asc')
-				)
-			),
-		);
-
-		$lan_signups = $this->paginate('LanSignup');
 
 //		debug($lan_signups);
 

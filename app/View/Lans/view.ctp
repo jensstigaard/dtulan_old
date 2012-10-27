@@ -1,3 +1,5 @@
+<?php echo $this->Html->script('lans/view', FALSE); ?>
+
 <div>
 	<h1><?php echo $lan['Lan']['title']; ?></h1>
 	<div style="float:left; width:54%">
@@ -46,21 +48,21 @@
 					</tr>
 					<tr>
 						<td>Guests:</td>
-						<td><?php echo $count_lan_signups === 0 ? 0 : floor($count_lan_signups_guests / $count_lan_signups * 100)?> %</td>
+						<td><?php echo $count_lan_signups === 0 ? 0 : floor($count_lan_signups_guests / $count_lan_signups * 100) ?> %</td>
 					</tr>
 					<tr>
 						<td>Students:</td>
-						<td><?php echo $count_lan_signups_guests === 0 ? 0 : floor(($count_lan_signups - $count_lan_signups_guests) / $count_lan_signups * 100)?> %</td>
+						<td><?php echo $count_lan_signups_guests === 0 ? 0 : floor(($count_lan_signups - $count_lan_signups_guests) / $count_lan_signups * 100) ?> %</td>
 					</tr>
-					<?php $total_signup = 0;?>
-					<?php $max_signup = 0;?>
+					<?php $total_signup = 0; ?>
+					<?php $max_signup = 0; ?>
 					<?php foreach ($lan_days as $lan_day): ?>
 						<?php $total_signup += count($lan_day['LanSignupDay']); ?>
 						<?php $max_signup += $lan_day['Lan']['max_participants']; ?>
 					<?php endforeach; ?>
 					<tr>
 						<td>Fill rate:</td>
-						<td><?php echo $max_signup === 0 ? 0 : floor(($total_signup / $max_signup) * 100)?> %</td>
+						<td><?php echo $max_signup === 0 ? 0 : floor(($total_signup / $max_signup) * 100) ?> %</td>
 					</tr>
 				<?php endif; ?>
 			</tbody>
@@ -132,245 +134,176 @@
 // For pizzas
 	$total_lan += $total_pizzas;
 	?>
-	<div>
-		<h2>Economics</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>Post</th>
-					<th style="text-align: center">Quantity</th>
-					<th></th>
-					<th style="text-align: left">Price</th>
-					<th></th>
-					<th style="text-align: right">Total</th>
 
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>User signups</td>
-					<td style="text-align: center"><?php echo $count_lan_signups; ?></td>
-					<td style="text-align: right">DKK</td>
-					<td style="text-align: right"><?php echo $lan['Lan']['price']; ?></td>
-					<td style="text-align: right">DKK</td>
-					<td style="text-align: right"><?php echo $count_lan_signups * $lan['Lan']['price']; ?></td>
-
-				</tr>
-				<tr>
-					<td>Candy &amp; soda</td>
-					<td style="text-align: center"><?php echo $food_orders_count; ?></td>
-					<td style="text-align: right">DKK</td>
-					<td style="text-align: right">~ <?php echo $food_orders_count > 0 ? floor($food_orders_total / $food_orders_count) : 0; ?></td>
-					<td style="text-align: right">DKK</td>
-					<td style="text-align: right"><?php echo $food_orders_total; ?></td>
-
-				</tr>
-				<tr>
-					<td>Pizza orders</td>
-					<td style="text-align: center"><?php echo $total_pizza_orders; ?></td>
-					<td style="text-align: right">DKK</td>
-					<td style="text-align: right">~ <?php echo $total_pizza_orders > 0 ? floor($total_pizzas / $total_pizza_orders) : 0; ?></td>
-					<td style="text-align: right">DKK</td>
-					<td style="text-align: right"><?php echo $total_pizzas; ?></td>
-
-				</tr>
-				<tr>
-					<th>Total</th>
-					<th colspan="3"></th>
-					<th style="text-align: right">DKK</th>
-					<th style="text-align: right"><?php echo $total_lan; ?></th>
-
-				</tr>
-			</tbody>
-		</table>
-	</div>
 <?php endif; ?>
 
-<?php if ($is_admin && count($lan_invites)): ?>
-	<div>
-		<h2><?php echo $this->Html->image('32x32_PNG/users_two.png'); ?> Users invited (not accepted)</h2>
-		<table>
-			<thead>
-				<tr>
-					<th style="width:28px"></th>
-					<th>Name</th>
-					<th>Invited by</th>
-					<th>Time invited</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ($lan_invites as $invite): ?>
-					<tr>
-						<td style="padding:0 2px;text-align:center;">
-							<?php
-							if (!empty($invite['Guest']['email_gravatar'])) {
-								echo $this->Html->image(
-										'http://www.gravatar.com/avatar/' . md5(strtolower($invite['Guest']['email_gravatar'])) . '?s=24&amp;r=r', array(
-									'alt' => $invite['Guest']['name'],
-									'title' => $invite['Guest']['name'] . ' gravatar',
-									'style' => ''
-										)
-								);
-							}
-							?>
-						</td>
-						<td>
-							<?php echo $this->Html->link($invite['Guest']['name'], array('controller' => 'users', 'action' => 'profile', $invite['Guest']['id'])); ?>
-						</td>
-						<td>
-							<?php echo $this->Html->link($invite['Student']['name'], array('controller' => 'users', 'action' => 'profile', $invite['Student']['id'])); ?>
-						</td>
-						<td><?php echo $this->Time->nice($invite['LanInvite']['time_invited']); ?></td>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-	</div>
-<?php endif; ?>
 <?php if ($is_admin): ?>
 	<div>
 		<h1>Viewable by users</h1>
 	</div>
 <?php endif; ?>
-<div>
-	<h2><?php echo $this->Html->image('32x32_PNG/users_two.png'); ?> Crew</h2>
-	<table>
-		<thead>
-			<tr>
-				<th style="width:28px"></th>
-				<th>Name</th>
-				<th>Gamertag</th>
-				<?php if ($is_admin): ?>
-					<th style="text-align: center">Days attending</th>
-					<th style="text-align: right">Phone number</th>
-				<?php endif; ?>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach ($lan_signups_crew as $user): ?>
-				<tr>
-					<td style="padding:0 2px;text-align:center;">
-						<?php
-						if (!empty($user['User']['email_gravatar'])) {
-							echo $this->Html->image(
-									'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=24&amp;r=r', array(
-								'alt' => $user['User']['name'],
-								'title' => $user['User']['name'] . ' gravatar',
-								'style' => ''
-									)
-							);
-						}
-						?>
-					</td>
-					<td>
-						<?php echo $this->Html->link($user['User']['name'], array('controller' => 'users', 'action' => 'profile', $user['User']['id'])); ?>
-
-					</td>
-					<td><?php echo $user['User']['gamertag']; ?></td>
-					<?php if ($is_admin): ?>
-						<td style="text-align: center">
-							<?php echo count($user['LanSignupDay']); ?> days
-						</td>
-						<td style="text-align: right">
-							<?php echo $user['User']['phonenumber'] ?>
-						</td>
-					<?php endif; ?>
-				</tr>
-			<?php endforeach; ?>
-		</tbody>
-	</table>
-</div>
-
-<div>
-	<h2><?php echo $this->Html->image('32x32_PNG/users_two.png'); ?> Signups for this LAN</h2>
-	<table>
-		<thead>
-			<tr>
-				<th style="width:28px;"></th>
-				<th><?php echo $this->Paginator->sort('User.name', 'Name'); ?></th>
-				<th><?php echo $this->Paginator->sort('User.gamertag', 'Gamertag'); ?></th>
-				<?php if ($is_admin): ?>
-					<th style="text-align: center">Days attending</th>
-					<th style="text-align: right"><?php echo $this->Paginator->sort('User.phonenumber', 'Phone number'); ?></th>
-				<?php endif; ?>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach ($lan_signups as $user): ?>
-				<tr>
-					<td style="padding:0 2px;text-align:center;">
-						<?php
-						if (!empty($user['User']['email_gravatar'])) {
-							echo $this->Html->image(
-									'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=24&amp;r=r', array(
-								'alt' => $user['User']['name'],
-								'title' => $user['User']['name'] . ' gravatar',
-								'style' => ''
-									)
-							);
-						}
-						?>
-					</td>
-					<td>
-						<?php echo $this->Html->link($user['User']['name'], array('controller' => 'users', 'action' => 'profile', $user['User']['id'])); ?>
-						<?php if ($user['User']['type'] == 'guest'): ?>
-							(g)
-						<?php endif; ?>
-					</td>
-					<td><?php echo $user['User']['gamertag']; ?></td>
-					<?php if ($is_admin): ?>
-						<td style="text-align: center">
-							<?php echo count($user['LanSignupDay']); ?> days
-						</td>
-						<td style="text-align: right">
-							<?php echo $user['User']['phonenumber'] ?>
-						</td>
-					<?php endif; ?>
-				</tr>
-			<?php endforeach; ?>
-		</tbody>
-	</table>
-	<div style="text-align: center">
-		<?php echo $this->Paginator->numbers(); ?>
-	</div>
-</div>
 
 
 <div>
-	<?php if ($is_admin): ?>
-		<div style="float:right">
-			<?php echo $this->Html->link('New tournament', array('controller' => 'tournaments', 'action' => 'add', $lan['Lan']['id'])); ?>
-		</div>
-	<?php endif; ?>
-	<h2><?php echo $this->Html->image('32x32_PNG/trophy_gold.png'); ?> Tournaments (<?php echo count($tournaments); ?>)</h2>
-	<table>
-		<thead>
-			<tr>
-				<th>Title</th>
-				<th>Game title</th>
-				<th style="text-align: center">Team size</th>
-				<th style="text-align: right">Participants</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php if (!count($tournaments)): ?>
-				<tr>
-					<td colspan="4">
-						No tournaments published yet
-					</td>
-				</tr>
-			<?php else: ?>
-				<?php foreach ($tournaments as $tournament): ?>
-					<tr>
-						<td><?php echo $this->Html->link($tournament['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $tournament['Tournament']['id'])); ?></td>
-						<td><?php echo $tournament['Game']['title'] ?></td>
-						<td style="text-align: center"><?php echo $tournament['Tournament']['team_size'] ?></td>
-						<td style="text-align: right"><?php //Participants	                                 ?></td>
-					</tr>
-				<?php endforeach; ?>
+	<div class="tabs">
+		<ul>
+			<li><a href="#tab-crew"><?php echo $this->Html->image('24x24_PNG/001_55.png'); ?> Crew</a></li>
+			<li><a href="#tab-signups"><?php echo $this->Html->image('24x24_PNG/001_57.png'); ?> Signups</a></li>
+			<li><a href="#tab-tournaments"><?php echo $this->Html->image('24x24_PNG/trophy_gold.png'); ?> Tournaments</a></li>
+			<?php if ($is_admin): ?>
+				<li><a href="#tab-invites"><?php echo $this->Html->image('24x24_PNG/001_56.png'); ?> Invites</a></li>
+				<li><a href="#tab-economics"><?php echo $this->Html->image('24x24_PNG/payment_cash.png'); ?> Economics</a></li>
 			<?php endif; ?>
-		</tbody>
-	</table>
-</div>
+		</ul>
 
-<?php // pr($pizza_waves);  ?>
+		<div id="tab-crew">
+			<div class="lan_signups_crew">
+				<?php echo $this->Html->image('misc/loading_indicator.gif'); ?>
+				<?php echo $this->Html->link('', array('controller' => 'lan_signups', 'action' => 'index_crew', $lan['Lan']['id'])); ?>
+			</div>
+		</div>
+
+		<div id="tab-signups">
+			<div class="lan_signups">
+				<?php echo $this->Html->image('misc/loading_indicator.gif'); ?>
+				<?php echo $this->Html->link('', array('controller' => 'lan_signups', 'action' => 'index', $lan['Lan']['id'])); ?>
+			</div>
+		</div>
+
+
+		<div id="tab-tournaments">
+			<?php if ($is_admin): ?>
+				<div style="float:right">
+					<?php echo $this->Html->link('New tournament', array('controller' => 'tournaments', 'action' => 'add', $lan['Lan']['id'])); ?>
+				</div>
+			<?php endif; ?>
+			<table>
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Game title</th>
+						<th style="text-align: center">Team size</th>
+						<th style="text-align: right">Participants</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php if (!count($tournaments)): ?>
+						<tr>
+							<td colspan="4">
+								No tournaments published yet
+							</td>
+						</tr>
+					<?php else: ?>
+						<?php foreach ($tournaments as $tournament): ?>
+							<tr>
+								<td><?php echo $this->Html->link($tournament['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $tournament['Tournament']['id'])); ?></td>
+								<td><?php echo $tournament['Game']['title'] ?></td>
+								<td style="text-align: center"><?php echo $tournament['Tournament']['team_size'] ?></td>
+								<td style="text-align: right"><?php //Participants	                                       ?></td>
+							</tr>
+						<?php endforeach; ?>
+					<?php endif; ?>
+				</tbody>
+			</table>
+		</div>
+
+		<?php if ($is_admin): ?>
+
+			<div id="tab-economics">
+				<h2>Economics</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Post</th>
+							<th style="text-align: center">Quantity</th>
+							<th></th>
+							<th style="text-align: left">Price</th>
+							<th></th>
+							<th style="text-align: right">Total</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>User signups</td>
+							<td style="text-align: center"><?php echo $count_lan_signups; ?></td>
+							<td style="text-align: right">DKK</td>
+							<td style="text-align: right"><?php echo $lan['Lan']['price']; ?></td>
+							<td style="text-align: right">DKK</td>
+							<td style="text-align: right"><?php echo $count_lan_signups * $lan['Lan']['price']; ?></td>
+
+						</tr>
+						<tr>
+							<td>Candy &amp; soda</td>
+							<td style="text-align: center"><?php echo $food_orders_count; ?></td>
+							<td style="text-align: right">DKK</td>
+							<td style="text-align: right">~ <?php echo $food_orders_count > 0 ? floor($food_orders_total / $food_orders_count) : 0; ?></td>
+							<td style="text-align: right">DKK</td>
+							<td style="text-align: right"><?php echo $food_orders_total; ?></td>
+
+						</tr>
+						<tr>
+							<td>Pizza orders</td>
+							<td style="text-align: center"><?php echo $total_pizza_orders; ?></td>
+							<td style="text-align: right">DKK</td>
+							<td style="text-align: right">~ <?php echo $total_pizza_orders > 0 ? floor($total_pizzas / $total_pizza_orders) : 0; ?></td>
+							<td style="text-align: right">DKK</td>
+							<td style="text-align: right"><?php echo $total_pizzas; ?></td>
+
+						</tr>
+						<tr>
+							<th>Total</th>
+							<th colspan="3"></th>
+							<th style="text-align: right">DKK</th>
+							<th style="text-align: right"><?php echo $total_lan; ?></th>
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div id="tab-invites">
+				<h2><?php echo $this->Html->image('32x32_PNG/users_two.png'); ?> Users invited (not accepted)</h2>
+				<table>
+					<thead>
+						<tr>
+							<th style="width:28px"></th>
+							<th>Name</th>
+							<th>Invited by</th>
+							<th>Time invited</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ($lan_invites as $invite): ?>
+							<tr>
+								<td style="padding:0 2px;text-align:center;">
+									<?php
+									if (!empty($invite['Guest']['email_gravatar'])) {
+										echo $this->Html->image(
+												'http://www.gravatar.com/avatar/' . md5(strtolower($invite['Guest']['email_gravatar'])) . '?s=24&amp;r=r', array(
+											'alt' => $invite['Guest']['name'],
+											'title' => $invite['Guest']['name'] . ' gravatar',
+											'style' => ''
+												)
+										);
+									}
+									?>
+								</td>
+								<td>
+									<?php echo $this->Html->link($invite['Guest']['name'], array('controller' => 'users', 'action' => 'profile', $invite['Guest']['id'])); ?>
+								</td>
+								<td>
+									<?php echo $this->Html->link($invite['Student']['name'], array('controller' => 'users', 'action' => 'profile', $invite['Student']['id'])); ?>
+								</td>
+								<td><?php echo $this->Time->nice($invite['LanInvite']['time_invited']); ?></td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+		<?php endif; ?>
+	</div>
+
+
+
+</div>

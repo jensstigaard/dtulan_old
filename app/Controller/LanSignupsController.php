@@ -12,9 +12,54 @@
  */
 class LanSignupsController extends AppController {
 
+	public $components = array('RequestHandler');
+	public $helpers = array('Js');
+	
 	public function beforeFilter() {
 		parent::beforeFilter();
 	}
+
+
+	public function index_crew($lan_id){
+		$this->layout = 'ajax';
+
+		$this->LanSignup->Lan->id = $lan_id;
+		if (!$this->LanSignup->Lan->exists()) {
+			throw new NotFoundException('Lan not found with id #' . $lan_id);
+		}
+
+		$this->set('lan_signups_crew', $this->LanSignup->getLanSignupsCrew($lan_id));
+	}
+
+	public function index($lan_id){
+		$this->layout = 'ajax';
+
+		$this->LanSignup->Lan->id = $lan_id;
+		if (!$this->LanSignup->Lan->exists()) {
+			throw new NotFoundException('Lan not found with id #' . $lan_id);
+		}
+
+		$this->paginate = array(
+			'LanSignup' => array(
+				'conditions' => array(
+					'LanSignup.lan_id' => $lan_id,
+					'NOT' => array(
+						'LanSignup.id' => $this->LanSignup->getLanSignupsCrewIds($lan_id)
+					)
+				),
+				'recursive' => 2,
+				'limit' => 10,
+				'order' => array(
+					array('User.name' => 'asc')
+				)
+			),
+		);
+
+		$lan_signups = $this->paginate('LanSignup');
+
+		$this->set(compact('lan_signups'));
+	}
+
 
 	public function add($id = null) {
 
