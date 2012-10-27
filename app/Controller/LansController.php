@@ -52,6 +52,10 @@ class LansController extends AppController {
 		$this->set(compact('lan', 'title_for_layout'));
 
 
+		$this->set('count_tournaments', $this->Lan->countTournaments($lan_id));
+		$this->set('count_lan_signups', $this->Lan->countSignups($lan_id));
+		$this->set('count_lan_signups_guests', $this->Lan->countGuests($lan_id));
+
 		$this->set('lan_days', $this->Lan->LanDay->find('all', array(
 					'conditions' => array(
 						'LanDay.lan_id' => $lan_id
@@ -63,38 +67,17 @@ class LansController extends AppController {
 				)
 		);
 
-		$this->Lan->LanInvite->recursive = 2;
-
 		$this->set('lan_invites', $this->Lan->LanInvite->find('all', array(
 					'conditions' => array(
 						'LanInvite.lan_id' => $lan_id,
 						'LanInvite.accepted' => 0
-					)
+					),
+					'recursive' => 2
 						)
 				)
 		);
 
-		$this->set('count_lan_signups', $this->Lan->LanSignup->countTotalInLan($lan_id));
-		$this->set('count_lan_signups_guests', $this->Lan->LanInvite->countGuestsInLan($lan_id));
-
-		// Tournaments signed up for LAN
-		$conditions_tournaments = array(
-			'Tournament.lan_id' => $lan_id,
-		);
-
-		$this->Lan->Tournament->recursive = 2;
-		$tournaments = $this->Lan->Tournament->find('all', array(
-			'conditions' => $conditions_tournaments
-				));
-
-		$this->set(compact('tournaments'));
-
-//		debug($lan_signups);
-
-		$this->set(compact('lan_signups'));
-
 		// Pizza waves
-		$this->Lan->PizzaWave->recursive = 2;
 		$this->Lan->PizzaWave->unbindModel(array(
 			'belongsTo' => array(
 				'Lan'
@@ -120,7 +103,8 @@ class LansController extends AppController {
 		$pizza_waves = $this->Lan->PizzaWave->find('all', array(
 			'conditions' => array(
 				'PizzaWave.lan_id' => $lan_id,
-			)
+			),
+			'recursive' => 2
 				)
 		);
 
