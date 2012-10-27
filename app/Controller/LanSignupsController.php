@@ -14,24 +14,16 @@ class LanSignupsController extends AppController {
 
 	public $components = array('RequestHandler');
 	public $helpers = array('Js');
-	
+
 	public function beforeFilter() {
 		parent::beforeFilter();
 	}
 
-
-	public function index_crew($lan_id){
-		$this->layout = 'ajax';
-
-		$this->LanSignup->Lan->id = $lan_id;
-		if (!$this->LanSignup->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $lan_id);
+	public function index($lan_id) {
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
 		}
 
-		$this->set('lan_signups_crew', $this->LanSignup->getLanSignupsCrew($lan_id));
-	}
-
-	public function index($lan_id){
 		$this->layout = 'ajax';
 
 		$this->LanSignup->Lan->id = $lan_id;
@@ -60,6 +52,20 @@ class LanSignupsController extends AppController {
 		$this->set(compact('lan_signups'));
 	}
 
+	public function index_crew($lan_id) {
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->LanSignup->Lan->id = $lan_id;
+		if (!$this->LanSignup->Lan->exists()) {
+			throw new NotFoundException('Lan not found with id #' . $lan_id);
+		}
+
+		$this->set('lan_signups_crew', $this->LanSignup->getLanSignupsCrew($lan_id));
+	}
 
 	public function add($id = null) {
 
@@ -160,7 +166,6 @@ class LanSignupsController extends AppController {
 				'id' => $lan_day['id'],
 				'value' => CakeTime::format('D, M jS Y', $lan_day['date']),
 				'seats_left' => $seats_left,
-
 			);
 
 			ksort($lan_days);
