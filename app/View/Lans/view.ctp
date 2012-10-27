@@ -199,7 +199,7 @@
 								<td><?php echo $this->Html->link($tournament['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $tournament['Tournament']['id'])); ?></td>
 								<td><?php echo $tournament['Game']['title'] ?></td>
 								<td style="text-align: center"><?php echo $tournament['Tournament']['team_size'] ?></td>
-								<td style="text-align: right"><?php //Participants	                                       ?></td>
+								<td style="text-align: right"><?php //Participants	                                        ?></td>
 							</tr>
 						<?php endforeach; ?>
 					<?php endif; ?>
@@ -209,8 +209,47 @@
 
 		<?php if ($is_admin): ?>
 
+			<div id="tab-invites">
+				<table>
+					<thead>
+						<tr>
+							<th style="width:28px"></th>
+							<th>Name</th>
+							<th>Invited by</th>
+							<th>Time invited</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ($lan_invites as $invite): ?>
+							<tr>
+								<td style="padding:0 2px;text-align:center;">
+									<?php
+									if (!empty($invite['Guest']['email_gravatar'])) {
+										echo $this->Html->image(
+												'http://www.gravatar.com/avatar/' . md5(strtolower($invite['Guest']['email_gravatar'])) . '?s=24&amp;r=r', array(
+											'alt' => $invite['Guest']['name'],
+											'title' => $invite['Guest']['name'] . ' gravatar',
+											'style' => ''
+												)
+										);
+									}
+									?>
+								</td>
+								<td>
+									<?php echo $this->Html->link($invite['Guest']['name'], array('controller' => 'users', 'action' => 'profile', $invite['Guest']['id'])); ?>
+								</td>
+								<td>
+									<?php echo $this->Html->link($invite['Student']['name'], array('controller' => 'users', 'action' => 'profile', $invite['Student']['id'])); ?>
+								</td>
+								<td><?php echo $this->Time->nice($invite['LanInvite']['time_invited']); ?></td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+
+
 			<div id="tab-economics">
-				<h2>Economics</h2>
 				<table>
 					<thead>
 						<tr>
@@ -258,46 +297,6 @@
 							<th style="text-align: right"><?php echo $total_lan; ?></th>
 
 						</tr>
-					</tbody>
-				</table>
-			</div>
-
-			<div id="tab-invites">
-				<h2><?php echo $this->Html->image('32x32_PNG/users_two.png'); ?> Users invited (not accepted)</h2>
-				<table>
-					<thead>
-						<tr>
-							<th style="width:28px"></th>
-							<th>Name</th>
-							<th>Invited by</th>
-							<th>Time invited</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach ($lan_invites as $invite): ?>
-							<tr>
-								<td style="padding:0 2px;text-align:center;">
-									<?php
-									if (!empty($invite['Guest']['email_gravatar'])) {
-										echo $this->Html->image(
-												'http://www.gravatar.com/avatar/' . md5(strtolower($invite['Guest']['email_gravatar'])) . '?s=24&amp;r=r', array(
-											'alt' => $invite['Guest']['name'],
-											'title' => $invite['Guest']['name'] . ' gravatar',
-											'style' => ''
-												)
-										);
-									}
-									?>
-								</td>
-								<td>
-									<?php echo $this->Html->link($invite['Guest']['name'], array('controller' => 'users', 'action' => 'profile', $invite['Guest']['id'])); ?>
-								</td>
-								<td>
-									<?php echo $this->Html->link($invite['Student']['name'], array('controller' => 'users', 'action' => 'profile', $invite['Student']['id'])); ?>
-								</td>
-								<td><?php echo $this->Time->nice($invite['LanInvite']['time_invited']); ?></td>
-							</tr>
-						<?php endforeach; ?>
 					</tbody>
 				</table>
 			</div>

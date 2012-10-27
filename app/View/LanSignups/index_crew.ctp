@@ -7,8 +7,8 @@
 				<th style="width:28px"></th>
 				<th>Name</th>
 				<?php if ($is_admin): ?>
-					<th style="text-align: center; font-size:90%;">Days attending</th>
-					<th style="text-align: right; font-size:90%;">Phone number</th>
+					<th style="text-align: center;">Days attending</th>
+					<th style="text-align: right;">Phone number</th>
 				<?php endif; ?>
 			</tr>
 		</thead>
