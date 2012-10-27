@@ -45,16 +45,6 @@ class LanInvite extends AppModel {
 		return false;
 	}
 
-	public function countGuestsInLan($lan_id) {
-		return $this->find('count', array(
-					'conditions' => array(
-						'LanInvite.lan_id' => $lan_id,
-						'LanInvite.accepted' => 1
-					)
-						)
-		);
-	}
-
 }
 
 ?>

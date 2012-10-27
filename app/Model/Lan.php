@@ -65,6 +65,34 @@ class Lan extends AppModel {
 		return true;
 	}
 
+	public function countSignups($lan_id) {
+		return $this->LanSignup->find('count', array(
+					'conditions' => array(
+						'LanSignup.lan_id' => $lan_id
+					)
+						)
+		);
+	}
+
+	public function countGuests($lan_id) {
+		return $this->LanInvite->find('count', array(
+					'conditions' => array(
+						'LanInvite.lan_id' => $lan_id,
+						'LanInvite.accepted' => 1
+					)
+						)
+		);
+	}
+
+	public function countTournaments($lan_id) {
+		return $this->Tournament->find('count', array(
+					'conditions' => array(
+						'Tournament.lan_id' => $lan_id
+					)
+						)
+		);
+	}
+
 	public function getLanDays($start, $end) {
 		App::uses('CakeTime', 'Utility');
 
@@ -296,10 +324,10 @@ class Lan extends AppModel {
 		}
 
 		return $this->FoodOrder->find('count', array(
-			'conditions' => array(
-				'lan_id' => $id
-			)
-				)
+					'conditions' => array(
+						'lan_id' => $id
+					)
+						)
 		);
 	}
 

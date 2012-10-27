@@ -77,15 +77,6 @@ class LanSignup extends AppModel {
 		return false;
 	}
 
-	public function countTotalInLan($lan_id) {
-		return $this->find('count', array(
-					'conditions' => array(
-						'LanSignup.lan_id' => $lan_id
-					)
-						)
-		);
-	}
-
 	public function getLanSignupsCrew($lan_id) {
 		$this->Lan->id = $lan_id;
 		if (!$this->Lan->exists()) {
