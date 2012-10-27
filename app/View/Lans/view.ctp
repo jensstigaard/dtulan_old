@@ -120,28 +120,6 @@
 		<?php echo $this->Html->link('Sign up this LAN!', array('controller' => 'lan_signups', 'action' => 'add', $lan['Lan']['id'])); ?>
 	</div>
 <?php endif; ?>
-<?php if ($is_admin): ?>
-	<div>
-		<h1>Crew only</h1>
-	</div>
-	<?php
-// Reset total
-	$total_lan = 0;
-
-// For signups
-	$total_lan += $count_lan_signups * $lan['Lan']['price'];
-
-// For pizzas
-	$total_lan += $total_pizzas;
-	?>
-
-<?php endif; ?>
-
-<?php if ($is_admin): ?>
-	<div>
-		<h1>Viewable by users</h1>
-	</div>
-<?php endif; ?>
 
 
 <div>
@@ -199,7 +177,7 @@
 								<td><?php echo $this->Html->link($tournament['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $tournament['Tournament']['id'])); ?></td>
 								<td><?php echo $tournament['Game']['title'] ?></td>
 								<td style="text-align: center"><?php echo $tournament['Tournament']['team_size'] ?></td>
-								<td style="text-align: right"><?php //Participants	                                        ?></td>
+								<td style="text-align: right"><?php //Participants	                                         ?></td>
 							</tr>
 						<?php endforeach; ?>
 					<?php endif; ?>
@@ -250,6 +228,16 @@
 
 
 			<div id="tab-economics">
+				<?php
+				// Reset total
+				$total_lan = 0;
+
+				// For signups
+				$total_lan += $count_lan_signups * $lan['Lan']['price'];
+
+				// For pizzas
+				$total_lan += $total_pizzas;
+				?>
 				<table>
 					<thead>
 						<tr>
