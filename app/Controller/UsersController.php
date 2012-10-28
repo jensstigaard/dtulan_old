@@ -60,11 +60,8 @@ class UsersController extends AppController {
         $this->User->unbindModel(array('hasMany' => array('PizzaOrder', 'FoodOrder',  'LanSignup')));
         $user = $this->User->read();
 
-        if ($user['User']['id'] == $this->Auth->user('id')) {
+        if ($user['User']['id'] == $this->Auth->user('id') || $this->isAdmin()) {
             $is_you = true;
-        }
-
-        if ($is_you || $this->isAdmin()) {
             $is_auth = true;
         }
 
