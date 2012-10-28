@@ -195,13 +195,7 @@ class Lan extends AppModel {
         return $data;
     }
 
-    public function getInviteableUsers($lan_id, $user_id) {
-        $this->id = $lan_id;
-
-        if (!$this->exists()) {
-            throw new NotFoundException('Lan not found');
-        }
-
+    public function getInviteableUsers($user_id) {
         $this->recursive = 1;
         $lan = $this->read();
 
@@ -225,7 +219,7 @@ class Lan extends AppModel {
 
         // Only the max participants is it possible to invite
         // $lan['Lan']['max_participants'] > count($user_ids)
-        if ($this->isSignupPossible($lan_id) && $lan['Lan']['max_guests_per_student'] > $count_invites) {
+        if ($this->isSignupPossible($this->id) && $lan['Lan']['max_guests_per_student'] > $count_invites) {
 
             $users = $this->LanSignup->User->find('list', array('conditions' => array(
                     'NOT' => array(
@@ -333,15 +327,7 @@ class Lan extends AppModel {
     }
 
     public function getLanDays() {
-        return $this->LanDay->find('all', array(
-                    'conditions' => array(
-                        'LanDay.lan_id' => $this->id
-                    ),
-                    'order' => array(
-                        'LanDay.date ASC',
-                    )
-                        )
-        );
+        return $this->LanDay->getLanDaysFromLan($this->id);
     }
     
     public function getLanInvites() {

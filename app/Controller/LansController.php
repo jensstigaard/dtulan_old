@@ -49,7 +49,7 @@ class LansController extends AppController {
         if (!$this->Lan->exists()) {
             throw new NotFoundException('LAN not found with id ' . $this->Lan->id);
         }
-        
+
         $title_for_layout = 'Lan &bull; ' . $lan['Lan']['title'];
 
         $this->set(compact('lan', 'title_for_layout'));
@@ -58,57 +58,12 @@ class LansController extends AppController {
         $this->set('count_lan_signups_guests', $this->Lan->countGuests());
         $this->set('lan_days', $this->Lan->getLanDays());
         $this->set('lan_invites', $this->Lan->getLanInvites());
-
-        // Pizza waves
-        $this->Lan->PizzaWave->unbindModel(array(
-            'belongsTo' => array(
-                'Lan'
-            ),
-            'hasOne' => array(
-            ),
-            'hasMany' => array(
-            )
-                )
-        );
-
-        $this->Lan->PizzaWave->PizzaOrder->unbindModel(array(
-            'belongsTo' => array(
-                'User', 'PizzaWave'
-            ),
-            'hasOne' => array(
-            ),
-            'hasMany' => array(
-            )
-                )
-        );
-
-        $pizza_waves = $this->Lan->PizzaWave->find('all', array(
-            'conditions' => array(
-                'PizzaWave.lan_id' => $this->Lan->id,
-            ),
-            'recursive' => 2
-                )
-        );
-
-        $total_pizzas = 0;
-        $total_pizza_orders = 0;
-        foreach ($pizza_waves as $wave) {
-            $total_pizza_orders += count($wave['PizzaOrder']);
-            foreach ($wave['PizzaOrder'] as $order) {
-                foreach ($order['PizzaOrderItem'] as $item) {
-                    $total_pizzas += $item['price'] * $item['quantity'];
-                }
-            }
-        }
-
+        $this->set('total_pizzas', $this->Lan->PizzaWave->getTotalPizzasByLan($this->Lan->id));
+        $this->set('total_pizza_orders', $this->Lan->PizzaWave->getTotalPizzaOrdersByLan($this->Lan->id));
         $this->set('food_orders_count', $this->Lan->getCountFoodOrders());
         $this->set('food_orders_total', $this->Lan->getFoodOrdersTotal());
-
-        $this->set(compact('total_pizzas', 'total_pizza_orders'));
-
-
+        
         if ($lan['Lan']['sign_up_open'] && isset($user)) {
-
             if ($user['type'] == 'student') {
                 if (!$this->Lan->isUserAttending($this->Lan->id, $user['id'])) {
                     $this->set('is_not_attending', 1);
@@ -125,7 +80,7 @@ class LansController extends AppController {
                         }
                     }
 
-                    $user_guests = $this->Lan->getInviteableUsers($this->Lan->id, $this->Auth->user('id'));
+                    $user_guests = $this->Lan->getInviteableUsers($this->Auth->user('id'));
                     $this->set(compact('user_guests'));
                 }
             }
