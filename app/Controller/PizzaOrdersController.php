@@ -32,6 +32,48 @@ class PizzaOrdersController extends AppController {
 		return false;
 	}
 
+	public function index($user_id) {
+
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->PizzaOrder->User->id = $user_id;
+
+		if (!$this->PizzaOrder->User->exists()) {
+			throw new NotFoundException('User not found with ID #' . $user_id);
+		}
+
+		// Pizza orders
+		$this->PizzaOrder->unbindModel(array('belongsTo' => array('User')));
+		$this->PizzaOrder->PizzaWave->unbindModel(array('hasMany' => array('PizzaOrder'), 'belongsTo' => array('Lan')));
+		$this->PizzaOrder->PizzaOrderItem->unbindModel(array('belongsTo' => array('PizzaOrder')));
+//		$this->User->PizzaOrder->PizzaWave->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'LanDay', 'PizzaWave')));
+		$pizza_orders = $this->PizzaOrder->find('all', array(
+			'conditions' => array(
+				'PizzaOrder.user_id' => $user_id
+			),
+			'recursive' => 3,
+			'limit' => 10
+				)
+		);
+
+		foreach ($pizza_orders as $pizza_order_nr => $pizza_order) {
+			$pizza_orders[$pizza_order_nr]['PizzaOrder']['is_cancelable'] = $this->PizzaOrder->isCancelable($pizza_order['PizzaOrder']['id'], $this->isAdmin());
+		}
+
+		$this->PizzaOrder->dateToNiceArray($pizza_orders, 'PizzaOrder');
+
+
+		if ($user_id == $this->Auth->user('id')) {
+			$is_you = true;
+		}
+
+		$this->set(compact('pizza_orders', 'is_you'));
+	}
+
 	public function add() {
 		if (!$this->request->is('ajax')) {
 			throw new BadRequestException('Bad request from client');
@@ -91,16 +133,16 @@ class PizzaOrdersController extends AppController {
 	}
 
 	public function api_edit($id = '') {
-		if($this->request->is('put')) {
-			if($this->isJsonRequest()) {
+		if ($this->request->is('put')) {
+			if ($this->isJsonRequest()) {
 				$this->PizzaOrder->id = $id;
-				if($this->PizzaOrder->exists() && isset($this->request->data['PizzaOrder']['status'])) {
+				if ($this->PizzaOrder->exists() && isset($this->request->data['PizzaOrder']['status'])) {
 					$this->PizzaOrder->recursive = 0;
 					$this->PizzaOrder->read();
 					$this->PizzaOrder->data['PizzaOrder']['status'] = $this->request->data['PizzaOrder']['status'];
-					if($this->PizzaOrder->save()) {
+					if ($this->PizzaOrder->save()) {
 						$this->set('success', true);
-						$this->set('data', array('message' => __('Pizza order status: '.$this->request->data['PizzaOrder']['status'])));
+						$this->set('data', array('message' => __('Pizza order status: ' . $this->request->data['PizzaOrder']['status'])));
 					} else {
 						$this->set('success', false);
 						$this->set('data', array('message' => __('Unable to update pizza order')));
@@ -116,8 +158,7 @@ class PizzaOrdersController extends AppController {
 			throw new MethodNotAllowedException;
 		}
 	}
-	
-	
+
 	public function mark_delivered($id = null) {
 		$this->PizzaOrder->id = $id;
 
