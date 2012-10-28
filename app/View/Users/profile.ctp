@@ -1,3 +1,5 @@
+<?php echo $this->Html->script('users/profile', FALSE); ?>
+
 <div>
 	<h1>
 		<?php
@@ -54,194 +56,44 @@
 	<div style="clear:both"></div>
 </div>
 
+<div>
+	<div class="tabs">
+		<ul>
+			<li><a href="#tab-pizzaorders"><?php echo $this->Html->image('24x24_PNG/pizza.png'); ?></a></li>
+			<li><a href="#tab-payments"><?php echo $this->Html->image('24x24_PNG/payment_cash.png'); ?></a></li>
+			<li><a href="#tab-foodorders"><?php echo $this->Html->image('24x24_PNG/candy.png'); ?></a></li>
+		</ul>
+
+		<div id="tab-pizzaorders">
+			<div class="pizza_orders">
+				<?php echo $this->Html->image('misc/loading_indicator.gif'); ?>
+				<?php echo $this->Html->link('', array('controller' => 'pizza_orders', 'action' => 'index', $user['User']['id'])); ?>
+			</div>
+		</div>
+
+		<?php if ($is_auth): ?>
+			<div id="tab-payments">
+				<div class="payments">
+					<?php echo $this->Html->image('misc/loading_indicator.gif'); ?>
+					<?php echo $this->Html->link('', array('controller' => 'payments', 'action' => 'index_user', $user['User']['id'])); ?>
+				</div>
+			</div>
+
+			<div id="tab-foodorders">
+				<div class="food_orders">
+					<?php echo $this->Html->image('misc/loading_indicator.gif'); ?>
+					<?php echo $this->Html->link('', array('controller' => 'food_orders', 'action' => 'index_user', $user['User']['id'])); ?>
+				</div>
+			</div>
+		<?php endif; ?>
+
+	</div>
+</div>
+
+
 <?php if ($user['User']['activated'] != 1 && $is_admin): ?>
 	<div class="message">
 		This user is not activated!
-	</div>
-<?php endif; ?>
-
-
-
-<?php if ($is_auth): ?>
-	<div>
-		<div>
-			<h2>
-				<?php echo $this->Html->image('32x32_PNG/payment_cash.png'); ?>
-				Payments
-			</h2>
-
-			<?php if (!count($user['Payment'])): ?>
-				<p>
-					No payments registered
-				</p>
-			<?php else: ?>
-				<table>
-					<tr>
-						<th>Time</th>
-						<th>Amount</th>
-					</tr>
-
-					<?php $total_balance = 0; ?>
-					<?php foreach ($user['Payment'] as $payment): ?>
-						<tr>
-							<td>
-								<?php echo $payment['time_nice']; ?>
-
-							</td>
-							<td><?php echo $payment['amount']; ?> DKK</td>
-						</tr>
-						<?php $total_balance += $payment['amount'];
-						?>
-
-					<?php endforeach; ?>
-					<tr>
-						<td>
-							<div style="float:right">Total payments:</div>
-							Payments made: <?php echo count($user['Payment']); ?>
-						</td>
-						<td><?php echo $total_balance; ?> DKK</td>
-					</tr>
-				</table>
-			<?php endif; ?>
-		</div>
-	</div>
-
-	<div>
-		<div>
-			<h2>
-				<?php echo $this->Html->image('32x32_PNG/pizza.png'); ?>
-				Pizza orders
-			</h2>
-			<?php if (!count($pizza_orders)): ?>
-				<p>
-					No orders registered
-				</p>
-			<?php else: ?>
-				<table>
-					<thead>
-						<tr>
-							<th>Time</th>
-							<th>Items</th>
-							<th>Price</th>
-							<?php if ($is_you): ?>
-								<th>Actions</th>
-							<?php endif; ?>
-						</tr>
-					</thead>
-					<tbody>
-
-						<?php $total_balance = 0; ?>
-						<?php foreach ($pizza_orders as $pizza_order): ?>
-							<?php $order_balance = 0; ?>
-							<tr>
-								<td>
-
-									<?php echo $pizza_order['PizzaOrder']['time_nice']; ?>
-
-								</td>
-								<td><?php foreach ($pizza_order['PizzaOrderItem'] as $item): ?>
-										<div>
-											<div style="float:right"><?php echo $item['price']; ?> DKK =</div>
-											<?php echo $item['quantity']; ?> x <?php echo $item['PizzaPrice']['Pizza']['title']; ?>
-											<small>(<?php echo $item['PizzaPrice']['PizzaType']['title']; ?>)</small>
-										</div>
-										<?php $order_balance += $item['quantity'] * $item['price']; ?>
-									<?php endforeach; ?></td>
-								<td><?php echo $order_balance; ?> DKK</td>
-								<?php if ($is_you): ?>
-									<td>
-										<?php
-										if ($pizza_order['PizzaOrder']['is_cancelable']) {
-											echo $this->Form->postLink(
-													$this->Html->image('16x16_PNG/cancel.png') . ' Cancel order', array('controller' => 'pizza_orders', 'action' => 'delete', $pizza_order['PizzaOrder']['id']), array('confirm' => "Are You sure you will delete this order?", 'escape' => false)
-											);
-										}
-										?>
-									</td>
-								<?php endif; ?>
-							</tr>
-							<?php $total_balance += $order_balance; ?>
-						<?php endforeach; ?>
-						<tr>
-							<td>Orders: <?php echo count($pizza_orders); ?></td>
-							<td style="text-align:right;">Total amount spend on pizzas:</td>
-							<td style="text-decoration: underline"><?php echo $total_balance; ?> DKK</td>
-							<?php if ($is_you): ?>
-								<td></td>
-							<?php endif; ?>
-						</tr>
-					</tbody>
-				</table>
-			<?php endif; ?>
-		</div>
-	</div>
-
-	<div>
-		<div>
-			<h2>
-				<?php // echo $this->Html->image('32x32_PNG/clock.png'); ?>
-				Sweets n' soda - orders
-			</h2>
-			<?php if (!count($food_orders)): ?>
-				<p>
-					No orders registered
-				</p>
-			<?php else: ?>
-				<table>
-					<thead>
-						<tr>
-							<th>Time</th>
-							<th>Items</th>
-							<th>Price</th>
-							<?php if ($is_you): ?>
-								<th>Actions</th>
-							<?php endif; ?>
-						</tr>
-					</thead>
-					<tbody>
-
-						<?php $total_balance = 0; ?>
-						<?php foreach ($food_orders as $food_order): ?>
-							<?php $order_balance = 0; ?>
-							<tr>
-								<td>
-									<?php echo $food_order['FoodOrder']['time_nice']; ?>
-								</td>
-								<td><?php foreach ($food_order['FoodOrderItem'] as $item): ?>
-										<div>
-											<div style="float:right"><?php echo $item['price']; ?> DKK =</div>
-											<?php echo $item['quantity']; ?> x <?php echo $item['Food']['title']; ?>
-											<small>(<?php echo $item['Food']['description']; ?>)</small>
-										</div>
-										<?php $order_balance += $item['quantity'] * $item['price']; ?>
-									<?php endforeach; ?></td>
-								<td><?php echo $order_balance; ?> DKK</td>
-								<?php if ($is_you): ?>
-									<td>
-										<?php
-										if ($food_order['FoodOrder']['status'] == 0) {
-											echo $this->Form->postLink(
-													$this->Html->image('16x16_PNG/cancel.png') . ' Cancel order', array('controller' => 'food_orders', 'action' => 'delete', $food_order['FoodOrder']['id']), array('confirm' => "Are You sure you will delete this order?", 'escape' => false)
-											);
-										}
-										?>
-									</td>
-								<?php endif; ?>
-							</tr>
-							<?php $total_balance += $order_balance; ?>
-						<?php endforeach; ?>
-						<tr>
-							<td>Orders: <?php echo count($food_orders); ?></td>
-							<td style="text-align:right;">Total amount spend on Sweets n' soda:</td>
-							<td style="text-decoration: underline"><?php echo $total_balance; ?> DKK</td>
-							<?php if ($is_you): ?>
-								<td></td>
-							<?php endif; ?>
-						</tr>
-					</tbody>
-				</table>
-			<?php endif; ?>
-		</div>
 	</div>
 <?php endif; ?>
 
@@ -350,4 +202,3 @@
 		<?php endif; ?>
 	</div>
 </div>
-<?php pr($pizza_orders); ?>

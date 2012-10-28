@@ -18,6 +18,40 @@ class PaymentsController extends AppController {
 		return false;
 	}
 
+	public function index_user($user_id){
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->Payment->User->id = $user_id;
+
+		if (!$this->Payment->User->exists()) {
+			throw new NotFoundException('User not found with ID #' . $user_id);
+		}
+
+		$this->paginate = array(
+			'Payment' => array(
+				'conditions' => array(
+					'Payment.user_id' => $user_id,
+				),
+				'recursive' => 0,
+				'limit' => 10,
+				'order' => array(
+					array('Payment.time' => 'desc')
+				)
+			),
+		);
+
+		$payments = $this->paginate('Payment');
+
+		$this->Payment->dateToNiceArray($payments, 'Payment');
+
+		$this->set(compact('payments'));
+	}
+
+
 	public function index() {
 
 		$this->paginate = array(
