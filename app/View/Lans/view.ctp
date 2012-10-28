@@ -6,8 +6,8 @@
 	<div class="tabs">
 		<ul>
 			<li><a href="#tab-general"><?php echo $this->Html->image('24x24_PNG/001_40.png'); ?></a></li>
-			<li><a href="#tab-crew"><?php echo $this->Html->image('24x24_PNG/001_55.png'); ?> Crew</a></li>
-			<li><a href="#tab-signups"><?php echo $this->Html->image('24x24_PNG/001_57.png'); ?> Signups</a></li>
+			<li><a href="#tab-crew"><?php echo $this->Html->image('24x24_PNG/crew.png'); ?> Crew</a></li>
+			<li><a href="#tab-signups"><?php echo $this->Html->image('24x24_PNG/participants.png'); ?> Participants</a></li>
 			<li><a href="#tab-tournaments"><?php echo $this->Html->image('24x24_PNG/trophy_gold.png'); ?></a></li>
 			<?php if ($is_admin): ?>
 				<li><a href="#tab-invites"><?php echo $this->Html->image('24x24_PNG/001_13.png'); ?></a></li>

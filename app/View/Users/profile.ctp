@@ -62,6 +62,8 @@
 			<li><a href="#tab-pizzaorders"><?php echo $this->Html->image('24x24_PNG/pizza.png'); ?></a></li>
 			<li><a href="#tab-payments"><?php echo $this->Html->image('24x24_PNG/payment_cash.png'); ?></a></li>
 			<li><a href="#tab-foodorders"><?php echo $this->Html->image('24x24_PNG/candy.png'); ?></a></li>
+                        <li><a href="#tab-tournaments"><?php echo $this->Html->image('24x24_PNG/trophy_gold.png'); ?></a></li>
+                        <li><a href="#tab-lans"><?php echo $this->Html->image('24x24_PNG/games.png'); ?></a></li>
 		</ul>
 
 		<div id="tab-pizzaorders">
@@ -86,30 +88,8 @@
 				</div>
 			</div>
 		<?php endif; ?>
-
-	</div>
-</div>
-
-
-<?php if ($user['User']['activated'] != 1 && $is_admin): ?>
-	<div class="message">
-		This user is not activated!
-	</div>
-<?php endif; ?>
-
-
-<div>
-	<?php
-	/*
-	  Teams that this profile is part of
-	 */
-	?>
-	<div>
-		<h2>
-			<?php echo $this->Html->image('32x32_PNG/trophy_gold.png'); ?>
-			Tournaments
-		</h2>
-		<?php if (!count($teams)): ?>
+            <div id="tab-tournaments">
+                <?php if (!count($teams)): ?>
 			<p>You do not participate in any tournament</p>
 		<?php else: ?>
 			<table>
@@ -130,22 +110,9 @@
 				<?php endforeach; ?>
 			</table>
 		<?php endif; ?>
-	</div>
-</div>
-
-
-<div>
-	<?php
-	/*
-	  Lans that this profile is part of
-	 */
-	?>
-	<div>
-		<h2>
-			<?php echo $this->Html->image('32x32_PNG/games.png'); ?>
-			LANs
-		</h2>
-		<?php if (!count($lans)): ?>
+            </div>
+            <div id="tab-lans">
+                <?php if (!count($lans)): ?>
 			<p>Not signed up for any LANs</p>
 		<?php else: ?>
 			<table>
@@ -200,5 +167,13 @@
 				<?php endforeach; ?>
 			</table>
 		<?php endif; ?>
+            </div>
 	</div>
 </div>
+
+
+<?php if ($user['User']['activated'] != 1 && $is_admin): ?>
+	<div class="message">
+		This user is not activated!
+	</div>
+<?php endif; ?>
