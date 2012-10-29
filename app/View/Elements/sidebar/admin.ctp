@@ -87,18 +87,6 @@
 				);
 				?>
 			</li>
-			<li>
-				<?php
-				echo $this->Html->link(
-						$this->Html->image('24x24_PNG/pizza.png') . ' Pizza waves', array(
-					'controller' => 'pizza_waves',
-					'action' => 'index'
-						), array(
-					'escape' => false
-						)
-				);
-				?>
-			</li>
 
 			<li>
 				<?php

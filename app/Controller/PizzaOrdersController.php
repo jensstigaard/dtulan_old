@@ -21,11 +21,10 @@ class PizzaOrdersController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin($user)) {
-			return true;
-		} elseif (in_array($this->action, array(
+		if ($this->isAdmin($user) || in_array($this->action, array(
 					'add',
 					'delete',
+					'index'
 				))) {
 			return true;
 		}
@@ -67,6 +66,7 @@ class PizzaOrdersController extends AppController {
 		$this->PizzaOrder->dateToNiceArray($pizza_orders, 'PizzaOrder');
 
 
+		$is_you = false;
 		if ($user_id == $this->Auth->user('id')) {
 			$is_you = true;
 		}

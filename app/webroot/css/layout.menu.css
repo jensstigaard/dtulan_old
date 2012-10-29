@@ -64,6 +64,7 @@ div.menu > ul > li > ul {
 div.menu ul > li:hover > ul {
 	display: block;
 	position: absolute;
+	z-index: 2;
 }
 div.menu ul > li > ul li{
 	margin: 0;

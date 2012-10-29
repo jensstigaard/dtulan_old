@@ -9,6 +9,8 @@ class TournamentsController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
+
+		$this->Auth->allow(array('index'));
 	}
 
 	public function isAuthorized($user) {
@@ -54,14 +56,73 @@ class TournamentsController extends AppController {
 
 		$this->Tournament->id = $id;
 
-		$this->Tournament->recursive = 2;
-		$this->Tournament->Lan->unbindModel(array('hasMany' => array('LanSignup', 'LanDay', 'LanInvite', 'PizzaWave', 'Tournament')));
-		$this->Tournament->Game->unbindModel(array('hasMany' => array('Tournament')));
+		if(!$this->Tournament->exists()){
+			throw new NotFoundException('Tournament not found with id #'. $id);
+		}
+
+		$this->Tournament->recursive = 1;
 
 		$tournament = $this->Tournament->read();
 		$tournament['Tournament']['time_start_nice'] = $this->Tournament->dateToNice($tournament['Tournament']['time_start']);
 
-		$this->set(compact('tournament'));
+		$this->Tournament->Lan->id = $tournament['Tournament']['lan_id'];
+
+		$lan = $this->Tournament->Lan->read(array('slug','title'));
+
+		$this->set(compact('tournament', 'lan'));
+	}
+
+	public function view_description($id){
+		$this->Tournament->id = $id;
+
+		if(!$this->Tournament->exists()){
+			throw new NotFoundException('Tournament not found with id #'. $id);
+		}
+
+		$this->layout = 'ajax';
+
+		$this->set('tournament', $this->Tournament->read(array('description')));
+	}
+
+	public function view_rules($id){
+		$this->Tournament->id = $id;
+
+		if(!$this->Tournament->exists()){
+			throw new NotFoundException('Tournament not found with id #'. $id);
+		}
+
+		$this->layout = 'ajax';
+
+		$this->set('tournament', $this->Tournament->read(array('rules')));
+	}
+
+	public function view_bracket($id){
+		$this->Tournament->id = $id;
+
+		if(!$this->Tournament->exists()){
+			throw new NotFoundException('Tournament not found with id #'. $id);
+		}
+
+		$this->layout = 'ajax';
+
+		$this->set('tournament', $this->Tournament->read(array('bracket')));
+	}
+
+	public function view_teams($id){
+		$this->Tournament->id = $id;
+
+		if(!$this->Tournament->exists()){
+			throw new NotFoundException('Tournament not found with id #'. $id);
+		}
+
+		$this->layout = 'ajax';
+
+		$this->set('teams', $this->Tournament->Team->find('all', array(
+			'conditions' => array(
+				'Team.tournament_id' => $id
+			),
+			'recursive' => 1,
+		)));
 	}
 
 	public function add($lan_id) {

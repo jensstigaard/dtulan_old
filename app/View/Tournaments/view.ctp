@@ -1,5 +1,6 @@
-<div>
+<?php echo $this->Html->script('tournament/view', FALSE); ?>
 
+<div>
 	<?php if ($is_admin): ?>
 		<div style="float:right">
 			<?php echo $this->Html->link('Edit tournament', array('action' => 'edit', $tournament['Tournament']['id'])); ?>
@@ -9,9 +10,9 @@
 	<h1><?php echo $tournament['Tournament']['title']; ?></h1>
 	<p>
 		In LAN: <?php
-	echo $this->Html->link($tournament['Lan']['title'], array(
+	echo $this->Html->link($lan['Lan']['title'], array(
 		'controller' => 'lans',
-		'action' => 'view', $tournament['Lan']['slug']
+		'action' => 'view', $lan['Lan']['slug']
 			)
 	);
 	?>
@@ -34,41 +35,34 @@
 </div>
 
 <div>
-	<h2>Tournament description</h2>
-	<div>
-		<?php echo $tournament['Tournament']['description']; ?>
+	<div class="tabs">
+		<ul>
+			<li><a href="<?php
+					echo $this->Html->url(array(
+						'action' => 'view_description',
+						$tournament['Tournament']['id']
+					));
+					?>"><?php echo $this->Html->image('24x24_PNG/001_50.png'); ?></a></li>
+			<li><a href="<?php
+				   echo $this->Html->url(array(
+					   'action' => 'view_rules',
+					   $tournament['Tournament']['id']
+				   ));
+					?>"><?php echo $this->Html->image('24x24_PNG/001_34.png'); ?></a></li>
+			<li><a href="<?php
+				   echo $this->Html->url(array(
+					   'action' => 'view_teams',
+					   $tournament['Tournament']['id']
+				   ));
+					?>"><?php echo $this->Html->image('24x24_PNG/001_57.png'); ?></a></li>
+			<li><a href="<?php
+				   echo $this->Html->url(array(
+					   'action' => 'view_bracket',
+					   $tournament['Tournament']['id']
+				   ));
+					?>"><?php echo $this->Html->image('24x24_PNG/001_44.png'); ?></a></li>
+		</ul>
 	</div>
 </div>
-
-<div>
-	<h2>Rules</h2>
-	<div>
-		<?php echo $tournament['Tournament']['rules']; ?>
-	</div>
-</div>
-
-<div>
-	<?php if ($tournament['Tournament']['time_start'] > date('Y-m-d H:i:s')): ?>
-		<div style="float:right">
-			<?php echo $this->Html->link('Create team', array('controller' => 'teams', 'action' => 'add', $tournament['Tournament']['id'])); ?>
-		</div>
-	<?php endif; ?>
-	<h2>Teams participating (<?php echo count($tournament['Team']); ?>)</h2>
-	<?php if (!count($tournament['Team'])): ?>
-		<p>No teams participating in this tournament yet</p>
-	<?php else: ?>
-		<table>
-			<tr>
-				<th>Team Name</th>
-				<th>Member count</th>
-			</tr>
-			<?php foreach ($tournament['Team'] as $team): ?>
-				<tr>
-					<td><?php echo $this->Html->link($team['name'], array('controller' => 'teams', 'action' => 'view', $team['id'])); ?></td>
-					<td><?php echo count($team['TeamUser']); ?></td>
-				</tr>
-			<?php endforeach; ?>
-		</table>
-	<?php endif; ?>
-</div>
-<?php pr($tournament); ?>
+<?php
+// pr($tournament); ?>

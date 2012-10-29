@@ -42,7 +42,7 @@
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 
-		echo $this->Html->script(array('jquery', 'jquery-ui', 'generel'), true);
+		echo $this->Html->script(array('jquery', 'jquery-ui', 'general'), true);
 		echo $this->fetch('script');
 
 		echo $this->Js->writeBuffer(array('cache' => TRUE));

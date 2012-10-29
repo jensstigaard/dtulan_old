@@ -6,10 +6,35 @@
 	<div class="tabs">
 		<ul>
 			<li><a href="#tab-general"><?php echo $this->Html->image('24x24_PNG/001_40.png'); ?></a></li>
-			<li><a href="#tab-crew"><?php echo $this->Html->image('24x24_PNG/crew.png'); ?> Crew</a></li>
-			<li><a href="#tab-signups"><?php echo $this->Html->image('24x24_PNG/participants.png'); ?> Participants</a></li>
-			<li><a href="#tab-tournaments"><?php echo $this->Html->image('24x24_PNG/trophy_gold.png'); ?></a></li>
-			<?php if ($is_admin): ?>
+			<li><a href="<?php
+echo $this->Html->url(array(
+	'controller' => 'lan_signups',
+	'action' => 'index_crew',
+	$lan['Lan']['id']
+));
+?>"><?php echo $this->Html->image('24x24_PNG/crew.png'); ?></a></li>
+			<li><a href="<?php
+				   echo $this->Html->url(array(
+					   'controller' => 'lan_signups',
+					   'action' => 'index',
+					   $lan['Lan']['id']
+				   ));
+?>"><?php echo $this->Html->image('24x24_PNG/participants.png'); ?></a></li>
+			<li><a href="<?php
+				   echo $this->Html->url(array(
+					   'controller' => 'tournaments',
+					   'action' => 'index',
+					   $lan['Lan']['id']
+				   ));
+?>"><?php echo $this->Html->image('24x24_PNG/trophy_gold.png'); ?></a></li>
+				<?php if ($is_admin): ?>
+				<li><a href="<?php
+				echo $this->Html->url(array(
+					'controller' => 'pizza_waves',
+					'action' => 'index',
+					$lan['Lan']['id']
+				));
+					?>"><?php echo $this->Html->image('24x24_PNG/pizza.png'); ?></a></li>
 				<li><a href="#tab-invites"><?php echo $this->Html->image('24x24_PNG/001_13.png'); ?></a></li>
 				<li><a href="#tab-economics"><?php echo $this->Html->image('24x24_PNG/payment_cash.png'); ?></a></li>
 			<?php endif; ?>
@@ -115,28 +140,6 @@
 				</table>
 			</div>
 			<div style="clear:both;"></div>
-		</div>
-
-		<div id="tab-crew">
-			<div class="lan_signups_crew">
-				<?php echo $this->Html->image('misc/loading_indicator.gif'); ?>
-				<?php echo $this->Html->link('', array('controller' => 'lan_signups', 'action' => 'index_crew', $lan['Lan']['id'])); ?>
-			</div>
-		</div>
-
-		<div id="tab-signups">
-			<div class="lan_signups">
-				<?php echo $this->Html->image('misc/loading_indicator.gif'); ?>
-				<?php echo $this->Html->link('', array('controller' => 'lan_signups', 'action' => 'index', $lan['Lan']['id'])); ?>
-			</div>
-		</div>
-
-
-		<div id="tab-tournaments">
-			<div class="tournaments">
-				<?php echo $this->Html->image('misc/loading_indicator.gif'); ?>
-				<?php echo $this->Html->link('', array('controller' => 'tournaments', 'action' => 'index', $lan['Lan']['id'])); ?>
-			</div>
 		</div>
 
 		<?php if ($is_admin): ?>

@@ -5,7 +5,7 @@ if (isset($item['Page'])) {
 	$page = $item;
 }
 
-if ($page['public']) {
+if ($page['public'] && $page['in_menu']) {
 
 	if ($page['parent_id'] == 0) {
 		$class = 'menuItemTop';
