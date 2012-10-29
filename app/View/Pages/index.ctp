@@ -5,6 +5,7 @@
 		<tr>
 			<th><small>Type</small></th>
 			<th><small>Public</small></th>
+			<th><small>Menu</small></th>
 			<th>Actions</th>
 			<th>Title</th>
 			<th>Created</th>
@@ -34,6 +35,9 @@
 				</td>
 				<td style="text-align: center;">
 					<?php echo $page['Page']['public'] ? $this->Html->image('16x16_GIF/action_check.gif') : $this->Html->image('16x16_GIF/login.gif'); ?>
+				</td>
+				<td style="text-align: center;">
+					<?php echo $page['Page']['in_menu'] ? $this->Html->image('16x16_GIF/action_check.gif') : $this->Html->image('16x16_GIF/action_delete.gif'); ?>
 				</td>
 				<td style="text-align: center;">
 					<?php echo $this->Html->image('16x16_GIF/reply.gif', array('url' => array('action' => 'edit', $page['Page']['id']), 'title' => 'Edit this page')); ?>

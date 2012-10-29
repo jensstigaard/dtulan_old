@@ -1,4 +1,4 @@
-<?php echo $this->Html->script(array('jquery', 'pageEdit', 'ckeditor/ckeditor'), FALSE); ?>
+<?php echo $this->Html->script(array('pageEdit', 'ckeditor/ckeditor'), FALSE); ?>
 
 <div class="form">
 	<h1>Edit Page</h1>
@@ -27,6 +27,10 @@
 				<td>
 					<strong>Public page:</strong>
 					<?php echo $this->Form->input('public', array('label' => '')); ?>
+				</td>
+				<td>
+					<strong>In menu:</strong>
+					<?php echo $this->Form->input('in_menu', array('label' => '')); ?>
 				</td>
 			</tr>
 		</tbody>

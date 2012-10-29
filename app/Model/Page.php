@@ -52,7 +52,8 @@ class Page extends AppModel {
 	public function getMenuItems() {
 		$pages = $this->find('all', array('conditions' => array(
 				'Page.parent_id' => 0,
-				'Page.public' => 1
+				'Page.public' => 1,
+				'Page.in_menu' => 1,
 			),
 			'recursive' => 2,
 			'fields' => array(
@@ -60,6 +61,7 @@ class Page extends AppModel {
 				'Page.title',
 				'Page.slug',
 				'Page.public',
+				'Page.in_menu',
 				'Page.parent_id',
 				'Page.command',
 				'Page.command_value',

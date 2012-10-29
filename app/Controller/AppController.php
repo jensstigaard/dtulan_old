@@ -80,9 +80,6 @@ class AppController extends Controller {
 
 		$this->set(compact('current_user', 'is_loggedin', 'is_admin'));
 
-		$this->loadModel('Page');
-		$this->set('menu_items', $this->Page->getMenuItems());
-
 		if ($is_loggedin) {
 
 			$this->loadModel('User');
