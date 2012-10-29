@@ -45,16 +45,6 @@ class LanInvite extends AppModel {
         return false;
     }
 
-    public function getInvitesFromLan($id) {
-        return $this->find('all', array(
-                    'conditions' => array(
-                        'LanInvite.lan_id' => $id,
-                        'LanInvite.accepted' => 0
-                    ),
-                    'recursive' => 2
-                        )
-        );
-    }
 }
 
 ?>

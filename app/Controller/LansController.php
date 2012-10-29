@@ -228,14 +228,7 @@ class LansController extends AppController {
         );
 
         $this->Lan->Crew->recursive = 0;
-        $lan_crews = $this->Lan->Crew->find('all', array('conditions' => array(
-                'Crew.lan_id' => $lan_id
-            ),
-            'fields' => array(
-                'Crew.user_id'
-            ),
-                )
-        );
+        $lan_crews = $this->Lan->getCrew();
 
         $lan_crew_ids = array();
         foreach ($lan_crews as $crew) {
