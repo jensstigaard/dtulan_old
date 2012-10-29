@@ -1,16 +1,19 @@
-<div class="form">
+<div>
 	<div style="float:right;">
-		<?php echo $this->Html->link('New PizzaWave', array('action' => 'add')); ?>
+		<?php echo $this->Html->link('New PizzaWave', array(
+			'action' => 'add',
+			$lan_id
+			)); ?>
 	</div>
-
-	<h1>Pizza waves</h1>
 
 	<?php if (!count($pizza_waves)): ?>
 		<p>No pizza waves found</p>
 	<?php else: ?>
 		<table>
 			<tr>
-				<th>Lan</th>
+				<th>
+					<small>Date</small>
+				</th>
 				<th>
 					<small>Time Start</small>
 				</th>
@@ -21,13 +24,13 @@
 					<small>Status</small>
 				</th>
 				<th></th>
-				<th></th>
+				<th>Total</th>
 			</tr>
 			<?php foreach ($pizza_waves as $pizza_wave): ?>
 				<tr>
-					<td><?php echo $pizza_wave['Lan']['title']; ?></td>
-					<td><?php echo $this->Time->nice($pizza_wave['PizzaWave']['time_start']); ?></td>
-					<td><?php echo $this->Time->nice($pizza_wave['PizzaWave']['time_end']); ?></td>
+					<td><?php echo $pizza_wave['PizzaWave']['time_start_nice']; ?></td>
+					<td><?php echo $this->Time->format('H:i',$pizza_wave['PizzaWave']['time_start']); ?></td>
+					<td><?php echo $this->Time->format('H:i',$pizza_wave['PizzaWave']['time_end']); ?></td>
 					<td>
 						<?php
 						switch ($pizza_wave['PizzaWave']['status']) {
@@ -70,4 +73,4 @@
 		</table>
 <?php endif; ?>
 </div>
-<?php pr($pizza_waves); ?>
+<?php // pr($pizza_waves); ?>

@@ -32,19 +32,17 @@ App::uses('Model', 'Model');
  */
 class AppModel extends Model {
 
-	public function dateToNiceArray(&$array, $model_name = null, $field_name_time = 'time'){
-		foreach($array as $index => $content){
-			if($model_name == null && isset($content[$field_name_time])){
-				$array[$index][$field_name_time.'_nice'] = $this->dateToNice($content[$field_name_time]);
+	public function dateToNiceArray(&$array, $model_name = null, $field_name_time = 'time', $with_time = true) {
+		foreach ($array as $index => $content) {
+			if ($model_name == null && isset($content[$field_name_time])) {
+				$array[$index][$field_name_time . '_nice'] = $this->dateToNice($content[$field_name_time]);
+			} else {
+				$array[$index][$model_name][$field_name_time . '_nice'] = $this->dateToNice($content[$model_name][$field_name_time], $with_time);
 			}
-			else{
-				$array[$index][$model_name][$field_name_time.'_nice'] = $this->dateToNice($content[$model_name][$field_name_time]);
-			}
-
 		}
 	}
 
-	public function dateToNice($timestamp) {
+	public function dateToNice($timestamp, $with_time = true) {
 
 		App::uses('CakeTime', 'Utility');
 
@@ -62,9 +60,13 @@ class AppModel extends Model {
 			$return .= CakeTime::format('D, M jS', $timestamp);
 		}
 
-		$return .= ' ';
-		$return .= CakeTime::format('H:i', $timestamp);
+		if ($with_time) {
+			$return .= ' ';
+			$return .= CakeTime::format('H:i', $timestamp);
+		}
+
 
 		return $return;
 	}
+
 }

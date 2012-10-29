@@ -1,11 +1,6 @@
 <?php echo $this->Html->script('payments/index_user', FALSE); ?>
 
 <div>
-	<h2>
-		<?php echo $this->Html->image('32x32_PNG/payment_cash.png'); ?>
-		Payments
-	</h2>
-
 	<?php if (!count($payments)): ?>
 		<p>
 			No payments registered

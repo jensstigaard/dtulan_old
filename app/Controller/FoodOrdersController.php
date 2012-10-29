@@ -16,11 +16,10 @@ class FoodOrdersController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin($user)) {
-			return true;
-		} elseif (in_array($this->action, array(
+		if ($this->isAdmin($user) || in_array($this->action, array(
 					'add',
 					'delete',
+					'index_user'
 				))) {
 			return true;
 		}
@@ -28,7 +27,7 @@ class FoodOrdersController extends AppController {
 		return false;
 	}
 
-	public function index_user($user_id){
+	public function index_user($user_id) {
 //		if (!$this->request->is('ajax')) {
 //			throw new BadRequestException('Bad request');
 //		}
@@ -58,6 +57,7 @@ class FoodOrdersController extends AppController {
 
 		$this->FoodOrder->dateToNiceArray($food_orders, 'FoodOrder');
 
+		$is_you = false;
 		if ($user_id == $this->Auth->user('id')) {
 			$is_you = true;
 		}
