@@ -286,7 +286,7 @@ class Lan extends AppModel {
     }
 
     public function getFoodOrderIds() {
-       $food_orders = $this->FoodOrder->find('all', array(
+        $food_orders = $this->FoodOrder->find('all', array(
             'conditions' => array(
                 'lan_id' => $this->id
             ),
@@ -327,12 +327,39 @@ class Lan extends AppModel {
     }
 
     public function getLanDays() {
-        return $this->LanDay->getLanDaysFromLan($this->id);
+        return $this->LanDay->find('all', array(
+                    'conditions' => array(
+                        'LanDay.lan_id' => $this->id
+                    ),
+                    'order' => array(
+                        'LanDay.date ASC',
+                    )
+                        )
+        );
     }
-    
+
     public function getLanInvites() {
-        return $this->LanInvite->getInvitesFromLan($this->id);
+        return $this->LanInvite->find('all', array(
+                    'conditions' => array(
+                        'LanInvite.lan_id' => $this->id,
+                        'LanInvite.accepted' => 0
+                    ),
+                    'recursive' => 2
+                        )
+        );
     }
+
+    public function getCrew() {
+        return $this->Crew->find('all', array('conditions' => array(
+                        'Crew.lan_id' => $this->id
+                    ),
+                    'fields' => array(
+                        'Crew.user_id'
+                    ),
+                        )
+        );
+    }
+
 }
 
 ?>

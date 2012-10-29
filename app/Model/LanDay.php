@@ -30,18 +30,6 @@ class LanDay extends AppModel {
         return $lan_day['Lan']['max_participants'] - count($lan_day['LanSignupDay']);
     }
 
-    public function getLanDaysFromLan($id = '') {
-        return $this->find('all', array(
-                    'conditions' => array(
-                        'LanDay.lan_id' => $id
-                    ),
-                    'order' => array(
-                        'LanDay.date ASC',
-                    )
-                        )
-        );
-    }
-
 }
 
 ?>
