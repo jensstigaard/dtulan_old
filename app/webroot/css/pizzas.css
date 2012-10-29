@@ -75,9 +75,14 @@ table.pizza_list{
 	margin-bottom:25px;
 }
 
-table.pizza_list tr.pizza_category th{
+/*table.pizza_list tr.pizza_item td small.desc{
+	display: none;
+}*/
 
-}
+/*table.pizza_list tr.pizza_item:hover td small.desc{
+	display: block;
+}*/
+
 
 table.pizza_list tr.pizza_item td .hidden{
 	display: none;
@@ -97,4 +102,11 @@ table.pizza_list tr.pizza_item.gray{
 */
 .hidden_images{
 	display: none;
+}
+
+
+.custom-tooltip-styling{
+	display: inline-block;
+	background: rgba(0,0,0,0.8);
+	padding: 5px;
 }

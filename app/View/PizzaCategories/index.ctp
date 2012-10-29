@@ -32,8 +32,8 @@ if ($is_orderable) {
 									<?php echo nl2br($pizza_category['PizzaCategory']['description']); ?>
 								</th>
 								<?php foreach ($pizza_category['PizzaType'] as $type): ?>
-									<th style="vertical-align: bottom; text-align: center;" title="<?php echo $type['title']; ?>">
-										<?php echo $type['title_short']; ?>
+									<th style="vertical-align: bottom; text-align: center;">
+										<span title="<?php echo $type['title']; ?>"><?php echo $type['title_short']; ?></span>
 									</th>
 								<?php endforeach; ?>
 								<?php if ($is_admin): ?>
