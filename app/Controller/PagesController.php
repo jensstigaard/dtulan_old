@@ -73,6 +73,10 @@ class PagesController extends AppController {
 	public function view($slug = 'welcome') {
 		$page = $this->Page->findBySlug($slug);
 
+		if(!isset($page['Page']['public']) || (!$this->isAdmin() && !$page['Page']['public'])){
+			throw new NotFoundException('Page not found');
+		}
+
 		$page['Page']['time_latest_update_nice'] = $this->Page->dateTonice($page['Page']['time_latest_update']);
 
 		$title_for_layout = $page['Page']['title'];
