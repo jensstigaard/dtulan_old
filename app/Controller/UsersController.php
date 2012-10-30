@@ -24,6 +24,11 @@ class UsersController extends AppController {
 					'profile',
 					'logout',
 					'edit',
+					'view_pizzaorders',
+					'view_foodorders',
+					'view_payments',
+					'view_tournaments',
+					'view_lans'
 				))) {
 			return true;
 		}
@@ -85,120 +90,6 @@ class UsersController extends AppController {
 						'title_for_layout', 'is_you', 'is_auth', 'user'
 				)
 		);
-	}
-
-	public function view_payments($id) {
-		if (!$this->request->is('ajax')) {
-			throw new BadRequestException('Bad request');
-		}
-
-		$this->layout = 'ajax';
-
-		$this->User->id = $id;
-
-		if (!$this->User->exists()) {
-			throw new NotFoundException('User not found with ID #' . $id);
-		}
-
-		$this->paginate = array(
-			'Payment' => array(
-				'conditions' => array(
-					'Payment.user_id' => $id,
-				),
-				'recursive' => 0,
-				'limit' => 10,
-				'order' => array(
-					array('Payment.time' => 'desc')
-				)
-			),
-		);
-
-		$payments = $this->paginate('Payment');
-
-		$this->User->dateToNiceArray($payments, 'Payment');
-
-		$this->set(compact('payments'));
-	}
-
-	public function view_pizzaorders($id) {
-
-		if (!$this->request->is('ajax')) {
-			throw new BadRequestException('Bad request');
-		}
-
-		$this->layout = 'ajax';
-
-		$this->User->id = $id;
-
-		if (!$this->User->exists()) {
-			throw new NotFoundException('User not found with ID #' . $id);
-		}
-
-		// Pizza orders
-		$this->User->PizzaOrder->unbindModel(array('belongsTo' => array('User')));
-		$this->User->PizzaOrder->PizzaWave->unbindModel(array('hasMany' => array('PizzaOrder'), 'belongsTo' => array('Lan')));
-		$this->User->PizzaOrder->PizzaOrderItem->unbindModel(array('belongsTo' => array('PizzaOrder')));
-//		$this->User->PizzaOrder->PizzaWave->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'LanDay', 'PizzaWave')));
-		$pizza_orders = $this->User->PizzaOrder->find('all', array(
-			'conditions' => array(
-				'PizzaOrder.user_id' => $id
-			),
-			'recursive' => 3,
-			'limit' => 10
-				)
-		);
-
-		foreach ($pizza_orders as $pizza_order_nr => $pizza_order) {
-			$pizza_orders[$pizza_order_nr]['PizzaOrder']['is_cancelable'] = $this->User->PizzaOrder->isCancelable($pizza_order['PizzaOrder']['id'], $this->isAdmin());
-		}
-
-		$this->User->PizzaOrder->dateToNiceArray($pizza_orders, 'PizzaOrder');
-
-
-		$is_you = false;
-		if ($id == $this->Auth->user('id')) {
-			$is_you = true;
-		}
-
-		$this->set(compact('pizza_orders', 'is_you'));
-	}
-
-	public function view_foodorders($id) {
-		if (!$this->request->is('ajax')) {
-			throw new BadRequestException('Bad request');
-		}
-
-		$this->layout = 'ajax';
-
-		$this->User->id = $id;
-
-		if (!$this->User->exists()) {
-			throw new NotFoundException('User not found with ID #' . $id);
-		}
-
-		$this->paginate = array(
-			'FoodOrder' => array(
-				'conditions' => array(
-					'FoodOrder.user_id' => $id,
-				),
-				'recursive' => 3,
-				'limit' => 10,
-				'order' => array(
-					array('FoodOrder.time' => 'desc')
-				)
-			),
-		);
-
-		$food_orders = $this->paginate('FoodOrder');
-
-		$this->User->FoodOrder->dateToNiceArray($food_orders, 'FoodOrder');
-
-		$is_you = false;
-		if ($id == $this->Auth->user('id')) {
-			$is_you = true;
-		}
-
-		$this->set(compact('food_orders', 'is_you'));
 	}
 
 	public function view_tournaments($id) {
@@ -285,6 +176,129 @@ class UsersController extends AppController {
 		}
 
 		$this->set(compact('lans', 'is_you', 'is_auth'));
+	}
+
+	public function view_payments($id) {
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->User->id = $id;
+
+		if (!$this->User->exists()) {
+			throw new NotFoundException('User not found with ID #' . $id);
+		}
+		if ($id !== $this->Auth->user('id') && !$this->isAdmin()) {
+			throw new UnauthorizedException;
+		}
+
+		$this->paginate = array(
+			'Payment' => array(
+				'conditions' => array(
+					'Payment.user_id' => $id,
+				),
+				'recursive' => 0,
+				'limit' => 10,
+				'order' => array(
+					array('Payment.time' => 'desc')
+				)
+			),
+		);
+
+		$payments = $this->paginate('Payment');
+
+		$this->User->dateToNiceArray($payments, 'Payment');
+
+		$this->set(compact('payments'));
+	}
+
+	public function view_pizzaorders($id) {
+
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->User->id = $id;
+
+		if (!$this->User->exists()) {
+			throw new NotFoundException('User not found with ID #' . $id);
+		}
+		if ($id !== $this->Auth->user('id') && !$this->isAdmin()) {
+			throw new UnauthorizedException;
+		}
+
+		// Pizza orders
+		$this->User->PizzaOrder->unbindModel(array('belongsTo' => array('User')));
+		$this->User->PizzaOrder->PizzaWave->unbindModel(array('hasMany' => array('PizzaOrder'), 'belongsTo' => array('Lan')));
+		$this->User->PizzaOrder->PizzaOrderItem->unbindModel(array('belongsTo' => array('PizzaOrder')));
+//		$this->User->PizzaOrder->PizzaWave->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'LanDay', 'PizzaWave')));
+		$pizza_orders = $this->User->PizzaOrder->find('all', array(
+			'conditions' => array(
+				'PizzaOrder.user_id' => $id
+			),
+			'recursive' => 3,
+			'limit' => 10
+				)
+		);
+
+		foreach ($pizza_orders as $pizza_order_nr => $pizza_order) {
+			$pizza_orders[$pizza_order_nr]['PizzaOrder']['is_cancelable'] = $this->User->PizzaOrder->isCancelable($pizza_order['PizzaOrder']['id'], $this->isAdmin());
+		}
+
+		$this->User->PizzaOrder->dateToNiceArray($pizza_orders, 'PizzaOrder');
+
+
+		$is_you = false;
+		if ($id == $this->Auth->user('id')) {
+			$is_you = true;
+		}
+
+		$this->set(compact('pizza_orders', 'is_you'));
+	}
+
+	public function view_foodorders($id) {
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->User->id = $id;
+
+		if (!$this->User->exists()) {
+			throw new NotFoundException('User not found with ID #' . $id);
+		}
+		if ($id !== $this->Auth->user('id') && !$this->isAdmin()) {
+			throw new UnauthorizedException;
+		}
+
+		$this->paginate = array(
+			'FoodOrder' => array(
+				'conditions' => array(
+					'FoodOrder.user_id' => $id,
+				),
+				'recursive' => 3,
+				'limit' => 10,
+				'order' => array(
+					array('FoodOrder.time' => 'desc')
+				)
+			),
+		);
+
+		$food_orders = $this->paginate('FoodOrder');
+
+		$this->User->FoodOrder->dateToNiceArray($food_orders, 'FoodOrder');
+
+		$is_you = false;
+		if ($id == $this->Auth->user('id')) {
+			$is_you = true;
+		}
+
+		$this->set(compact('food_orders', 'is_you'));
 	}
 
 	public function add() {
