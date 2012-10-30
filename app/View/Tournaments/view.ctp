@@ -62,7 +62,9 @@
 				   ));
 					?>"><?php echo $this->Html->image('24x24_PNG/001_44.png'); ?></a></li>
 		</ul>
+
+		<div style="text-align:center;">
+			<?php echo $this->Html->image('ajax-loader.gif', array('class' => 'hidden', 'id' => 'loading_indicator', 'alt' => 'loading ...')); ?>
+		</div>
 	</div>
 </div>
-<?php
-// pr($tournament); ?>
