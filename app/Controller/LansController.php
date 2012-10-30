@@ -8,7 +8,7 @@ class LansController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 
-		$this->Auth->allow('view');
+		$this->Auth->allow('view', 'view_participants', 'view_crew', 'view_tournaments');
 	}
 
 	public function isAuthorized($user) {

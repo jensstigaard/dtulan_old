@@ -17,8 +17,6 @@ class LanSignupsController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-
-		$this->Auth->allow(array('index', 'index_crew'));
 	}
 
 	public function add($id = null) {

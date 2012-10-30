@@ -9,8 +9,6 @@ class TournamentsController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-
-		$this->Auth->allow(array('index'));
 	}
 
 	public function isAuthorized($user) {
