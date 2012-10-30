@@ -139,7 +139,10 @@ class Lan extends AppModel {
 					'conditions' => array(
 						'Lan.highlighted' => 1
 					),
-					'recursive' => 1
+					'recursive' => 1,
+			'order' => array(
+				'Lan.time_start' => 'asc'
+			)
 				));
 	}
 

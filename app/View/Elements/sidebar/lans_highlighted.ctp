@@ -7,10 +7,17 @@
 	$text.= '</strong><br />';
 	$text.= '<small style="padding-left:26px;">';
 	if ($lan['Lan']['time_start'] > date('Y-m-d H:i:s')) {
-		$text.= 'Starts in ';
+		$text.='<span style="color:yellow">';
+		$text.= 'Starts ';
+		$text.= (strpos($this->Time->timeAgoInWords($lan['Lan']['time_start']), 'on')>-1) ? '' : 'in ';
+		$text.='<strong>';
 		$text.= $this->Time->timeAgoInWords($lan['Lan']['time_start']);
-	} else {
-		$text.= '<strong style="color:green;">ON AIR!</strong>';
+		$text.='</strong></span>';
+	} elseif($lan['Lan']['time_end'] < date('Y-m-d H:i:s')) {
+		$text.= '<strong style="color:grey;">PREVIOUS EVENT</strong>';
+	}
+	else{
+		$text.= '<strong style="color:green;">EVENT ON AIR!</strong>';
 	}
 	$text.= '</small>';
 
