@@ -65,8 +65,15 @@ class AppModel extends Model {
 			$return .= CakeTime::format('H:i', $timestamp);
 		}
 
-
 		return $return;
+	}
+
+	public function stringToSlug($str) {
+		// turn into slug
+		$str = Inflector::slug($str);
+		// to lowercase
+		$str = strtolower($str);
+		return $str;
 	}
 
 }
