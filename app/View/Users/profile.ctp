@@ -66,13 +66,6 @@
 				$user['User']['id']
 			));
 				?>"><?php echo $this->Html->image('24x24_PNG/pizza.png'); ?></a></li>
-				<li><a href="<?php
-				   echo $this->Html->url(array(
-					   'action' => 'view_payments',
-					   $user['User']['id']
-				   ));
-				?>"><?php echo $this->Html->image('24x24_PNG/payment_cash.png'); ?></a></li>
-
 
 				<li><a href="<?php
 				   echo $this->Html->url(array(
@@ -81,13 +74,22 @@
 				   ));
 				?>"><?php echo $this->Html->image('24x24_PNG/candy.png'); ?></a></li>
 
+				<li><a href="<?php
+				   echo $this->Html->url(array(
+					   'action' => 'view_payments',
+					   $user['User']['id']
+				   ));
+				?>"><?php echo $this->Html->image('24x24_PNG/payment_cash.png'); ?></a></li>
+
 			<?php endif; ?>
+
 			<li><a href="<?php
 			echo $this->Html->url(array(
 				'action' => 'view_tournaments',
 				$user['User']['id']
 			));
 			?>"><?php echo $this->Html->image('24x24_PNG/trophy_gold.png'); ?></a></li>
+
 			<li><a href="<?php
 				   echo $this->Html->url(array(
 					   'action' => 'view_lans',
