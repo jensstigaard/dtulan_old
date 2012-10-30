@@ -2,17 +2,22 @@
 
 if (!$is_loggedin) {
 	echo $this->element('sidebar/user_notloggedin', array());
-	if (isset($sidebar_current_lan)) {
-		echo $this->element('sidebar/current_lan');
+	if (count($lans_highlighted)) {
+		echo $this->element('sidebar/lans_highlighted', array(
+			'cache' => array(
+				'lans_highlighted' => $lans_highlighted
+			)
+				)
+		);
 	}
 } else {
 	echo $this->element('sidebar/user', array());
 	echo $this->element('sidebar/pizza', array());
 	echo $this->element('sidebar/food', array());
-	if (isset($sidebar_current_lan)) {
-		echo $this->element('sidebar/current_lan', array(
+	if (count($lans_highlighted)) {
+		echo $this->element('sidebar/lans_highlighted', array(
 			'cache' => array(
-				'sidebar_current_lan' => $sidebar_current_lan
+				'lans_highlighted' => $lans_highlighted
 			)
 				)
 		);

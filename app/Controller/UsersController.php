@@ -76,15 +76,19 @@ class UsersController extends AppController {
 		$title_for_layout = 'Profile &bull; ' . $user['User']['name'];
 
 
-		if ($this->User->LanSignup->Lan->isCurrent($this->isAdmin())) {
-			$current_lan = $this->User->LanSignup->Lan->getCurrent($this->isAdmin());
-			$lan_id = $current_lan['Lan']['id'];
-
-			if ($this->User->LanSignup->Lan->isUserAttending($lan_id, $user['User']['id']) &&
-					$this->User->Crew->isUserInCrew($lan_id, $this->Auth->user('id'))) {
-				$this->set('make_payment_crew_id', $this->User->Crew->getCrewId($lan_id, $this->Auth->user('id')));
-			}
-		}
+		/*
+		 * Refactor this part!!!!!!!!
+		 * This part is allowing crew to add payments
+		 */
+//		if ($this->User->LanSignup->Lan->isCurrent($this->isAdmin())) {
+//			$current_lan = $this->User->LanSignup->Lan->getCurrent($this->isAdmin());
+//			$lan_id = $current_lan['Lan']['id'];
+//
+//			if ($this->User->LanSignup->Lan->isUserAttending($lan_id, $user['User']['id']) &&
+//					$this->User->Crew->isUserInCrew($lan_id, $this->Auth->user('id'))) {
+//				$this->set('make_payment_crew_id', $this->User->Crew->getCrewId($lan_id, $this->Auth->user('id')));
+//			}
+//		}
 
 		$this->set(compact(
 						'title_for_layout', 'is_you', 'is_auth', 'user'

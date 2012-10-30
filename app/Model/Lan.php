@@ -111,88 +111,13 @@ class Lan extends AppModel {
 		return $days;
 	}
 
-	public function isOnAir($is_admin) {
-		$currentTime = date('Y-m-d H:i:s');
-
-		$conditions = array(
-			'Lan.time_end >' => $currentTime,
-			'Lan.time_start <' => $currentTime
-		);
-
-		if (!$is_admin) {
-			$conditions['Lan.published'] = 1;
-		}
-
-		$count = $this->find('count', array(
-			'conditions' => $conditions
-				)
-		);
-
-		return $count;
-	}
-
-	public function getOnAir($is_admin) {
-		$currentTime = date('Y-m-d H:i:s');
-
-		$conditions = array(
-			'Lan.time_end >' => $currentTime,
-			'Lan.time_start <' => $currentTime
-		);
-
-		if (!$is_admin) {
-			$conditions['Lan.published'] = 1;
-		}
-
-		$this->recursive = 0;
-
-		$data = $this->find('first', array(
-			'conditions' => $conditions
-				)
-		);
-
-		return $data;
-	}
-
-	public function isCurrent($is_admin) {
-		$currentTime = date('Y-m-d H:i:s');
-
-		$conditions = array(
-			'Lan.time_end >' => $currentTime,
-		);
-
-		if (!$is_admin) {
-			$conditions['Lan.published'] = 1;
-		}
-
-		$count = $this->find('count', array(
-			'conditions' => $conditions
-				)
-		);
-
-		return $count;
-	}
-
-	public function getCurrent($is_admin) {
-		$currentTime = date('Y-m-d H:i:s');
-
-		$conditions = array(
-			'Lan.time_end >' => $currentTime,
-		);
-
-		if (!$is_admin) {
-			$conditions['Lan.published'] = 1;
-		}
-
-		$data = $this->find('first', array(
-			'conditions' => $conditions,
-			'order' => array(
-				'time_end ASC'
+	public function getHighlighted(){
+		return $this->find('all', array(
+			'conditions' => array(
+				'Lan.highlighted' => 1
 			),
 			'recursive' => 1
-				)
-		);
-
-		return $data;
+		));
 	}
 
 	public function getInviteableUsers($user_id) {

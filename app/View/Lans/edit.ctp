@@ -6,9 +6,8 @@
 		echo $this->Form->input('title');
 		echo $this->Form->input('max_participants');
 		echo $this->Form->input('max_guests_per_student');
-		echo $this->Form->input('time_start', array('timeFormat' => '24'));
-		echo $this->Form->input('time_end', array('timeFormat' => '24'));
 		echo $this->Form->input('published');
+		echo $this->Form->input('highlighted');
 		?>
     </fieldset>
 	<?php echo $this->Form->end(__('Submit')); ?>

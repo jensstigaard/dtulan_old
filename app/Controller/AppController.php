@@ -80,13 +80,11 @@ class AppController extends Controller {
 
 		$this->set(compact('current_user', 'is_loggedin', 'is_admin'));
 
+		$this->loadModel('User');
+
+		$this->set('lans_highlighted', $this->User->LanSignup->Lan->getHighlighted());
+
 		if ($is_loggedin) {
-
-			$this->loadModel('User');
-			if ($this->User->LanSignup->Lan->isCurrent($is_admin)) {
-				$this->set('sidebar_current_lan', $this->User->LanSignup->Lan->getCurrent($is_admin));
-			}
-
 
 			// For student: Find next lans / For guest: find invites
 			if (isset($current_user['type'])) {
@@ -145,7 +143,7 @@ class AppController extends Controller {
 
 	public function isAdmin($user = null) {
 		if ($user == null && $this->Auth->loggedIn()) {
-			$user = $this->Auth->user();
+			$user = $this->Auth->user('Admin.user_id');
 		}
 
 		return isset($user['Admin']['user_id']);
