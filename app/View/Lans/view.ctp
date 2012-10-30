@@ -8,30 +8,26 @@
 			<li><a href="#tab-general"><?php echo $this->Html->image('24x24_PNG/001_40.png'); ?></a></li>
 			<li><a href="<?php
 echo $this->Html->url(array(
-	'controller' => 'lan_signups',
-	'action' => 'index_crew',
+	'action' => 'view_crew',
 	$lan['Lan']['id']
 ));
 ?>"><?php echo $this->Html->image('24x24_PNG/crew.png'); ?></a></li>
 			<li><a href="<?php
 				   echo $this->Html->url(array(
-					   'controller' => 'lan_signups',
-					   'action' => 'index',
+					   'action' => 'view_participants',
 					   $lan['Lan']['id']
 				   ));
 ?>"><?php echo $this->Html->image('24x24_PNG/participants.png'); ?></a></li>
 			<li><a href="<?php
 				   echo $this->Html->url(array(
-					   'controller' => 'tournaments',
-					   'action' => 'index',
+					   'action' => 'view_tournaments',
 					   $lan['Lan']['id']
 				   ));
 ?>"><?php echo $this->Html->image('24x24_PNG/trophy_gold.png'); ?></a></li>
 				<?php if ($is_admin): ?>
 				<li><a href="<?php
 				echo $this->Html->url(array(
-					'controller' => 'pizza_waves',
-					'action' => 'index',
+					'action' => 'view_pizzawaves',
 					$lan['Lan']['id']
 				));
 					?>"><?php echo $this->Html->image('24x24_PNG/pizza.png'); ?></a></li>

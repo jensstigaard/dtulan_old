@@ -18,37 +18,6 @@ class PizzaWavesController extends AppController {
 		return false;
 	}
 
-	public function index($lan_id) {
-
-		if (!$this->request->is('ajax')) {
-			throw new BadRequestException('Bad request');
-		}
-
-		$this->layout = 'ajax';
-
-		$this->PizzaWave->Lan->id = $lan_id;
-
-		if (!$this->PizzaWave->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $lan_id);
-		}
-
-		$pizza_waves = $this->PizzaWave->find('all', array(
-			'conditions' => array(
-				'PizzaWave.lan_id' => $lan_id
-			)
-				)
-		);
-
-		$this->PizzaWave->dateToNiceArray($pizza_waves, 'PizzaWave', 'time_start', false);
-
-		foreach ($pizza_waves as $pizza_wave_nr => $pizza_wave_content) {
-			$pizza_waves[$pizza_wave_nr]['PizzaWave']['pizza_order_total'] = $this->PizzaWave->getOrdersSum($pizza_wave_content['PizzaWave']['id']);
-		}
-
-
-		$this->set(compact('pizza_waves', 'lan_id'));
-	}
-
 	public function add($lan_id = null) {
 		if ($lan_id == null) {
 			throw new NotFoundException('Invalid LAN id');

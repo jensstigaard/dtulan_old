@@ -1,9 +1,11 @@
 <div>
 	<div style="float:right;">
-		<?php echo $this->Html->link('New PizzaWave', array(
+		<?php
+		echo $this->Html->link('New PizzaWave', array(
 			'action' => 'add',
 			$lan_id
-			)); ?>
+		));
+		?>
 	</div>
 
 	<?php if (!count($pizza_waves)): ?>
@@ -15,22 +17,22 @@
 					<small>Date</small>
 				</th>
 				<th>
-					<small>Time Start</small>
-				</th>
-				<th>
-					<small>Time End</small>
+					<small>Time</small>
 				</th>
 				<th>
 					<small>Status</small>
 				</th>
-				<th></th>
 				<th>Total</th>
+				<th>Actions</th>
 			</tr>
 			<?php foreach ($pizza_waves as $pizza_wave): ?>
 				<tr>
 					<td><?php echo $pizza_wave['PizzaWave']['time_start_nice']; ?></td>
-					<td><?php echo $this->Time->format('H:i',$pizza_wave['PizzaWave']['time_start']); ?></td>
-					<td><?php echo $this->Time->format('H:i',$pizza_wave['PizzaWave']['time_end']); ?></td>
+					<td>
+						<?php echo $this->Time->format('H:i', $pizza_wave['PizzaWave']['time_start']); ?>
+						-
+						<?php echo $this->Time->format('H:i', $pizza_wave['PizzaWave']['time_end']); ?>
+					</td>
 					<td>
 						<?php
 						switch ($pizza_wave['PizzaWave']['status']) {
@@ -47,13 +49,16 @@
 								echo'Pizza wave received';
 								break;
 							case 4:
-								echo'Finished';
+								echo $this->Html->image('16x16_GIF/action_check.gif').' Finished';
 								break;
 							default:
 								echo'Not proceded';
 								break;
 						}
 						?>
+					</td>
+					<td>
+						<?php echo $pizza_wave['PizzaWave']['pizza_order_total']; ?> DKK
 					</td>
 					<td>
 						<?php
@@ -65,12 +70,10 @@
 						);
 						?>
 					</td>
-					<td>
-						<?php echo $pizza_wave['PizzaWave']['pizza_order_total']; ?> DKK
-					</td>
 				</tr>
-		<?php endforeach; ?>
+			<?php endforeach; ?>
 		</table>
-<?php endif; ?>
+	<?php endif; ?>
 </div>
-<?php // pr($pizza_waves); ?>
+<?php
+// pr($pizza_waves); ?>

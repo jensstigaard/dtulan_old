@@ -62,7 +62,7 @@ class LansController extends AppController {
         $this->set('total_pizza_orders', $this->Lan->PizzaWave->getTotalPizzaOrdersByLan($this->Lan->id));
         $this->set('food_orders_count', $this->Lan->getCountFoodOrders());
         $this->set('food_orders_total', $this->Lan->getFoodOrdersTotal());
-        
+
         if ($lan['Lan']['sign_up_open'] && isset($user)) {
             if ($user['type'] == 'student') {
                 if (!$this->Lan->isUserAttending($this->Lan->id, $user['id'])) {
@@ -86,6 +86,116 @@ class LansController extends AppController {
             }
         }
     }
+
+	public function view_crew($id){
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->Lan->id = $id;
+		if (!$this->Lan->exists()) {
+			throw new NotFoundException('Lan not found with id #' . $id);
+		}
+
+		$this->set('crew', $this->Lan->LanSignup->getLanSignupsCrew($id));
+	}
+
+	public function view_participants($id){
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->Lan->id = $id;
+		if (!$this->Lan->exists()) {
+			throw new NotFoundException('Lan not found with id #' . $id);
+		}
+
+		$this->paginate = array(
+			'LanSignup' => array(
+				'conditions' => array(
+					'LanSignup.lan_id' => $id,
+					'NOT' => array(
+						'LanSignup.id' => $this->Lan->LanSignup->getLanSignupsCrewIds($id)
+					)
+				),
+				'recursive' => 2,
+				'limit' => 10,
+				'order' => array(
+					array('User.name' => 'asc')
+				)
+			),
+		);
+
+		$participants = $this->paginate('LanSignup');
+
+		$this->set(compact('participants'));
+	}
+
+	public function view_tournaments($id){
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->Lan->id = $id;
+		if (!$this->Lan->exists()) {
+			throw new NotFoundException('Lan not found with id #' . $id);
+		}
+
+		$this->paginate = array(
+			'Tournament' => array(
+				'conditions' => array(
+					'Tournament.lan_id' => $id,
+				),
+				'recursive' => 2,
+				'limit' => 10,
+				'order' => array(
+					array('Tournament.time_start' => 'asc')
+				)
+			),
+		);
+
+		$this->set('tournaments', $this->paginate('Tournament'));
+
+		$this->set('lan_id', $id);
+	}
+
+	public function view_pizzawaves($id) {
+
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->Lan->id = $id;
+
+		if (!$this->Lan->exists()) {
+			throw new NotFoundException('Lan not found with id #' . $id);
+		}
+
+		$pizza_waves = $this->Lan->PizzaWave->find('all', array(
+			'conditions' => array(
+				'PizzaWave.lan_id' => $id
+			)
+				)
+		);
+
+		$this->Lan->PizzaWave->dateToNiceArray($pizza_waves, 'PizzaWave', 'time_start', false);
+
+		foreach ($pizza_waves as $pizza_wave_nr => $pizza_wave_content) {
+			$pizza_waves[$pizza_wave_nr]['PizzaWave']['pizza_order_total'] = $this->Lan->PizzaWave->getOrdersSum($pizza_wave_content['PizzaWave']['id']);
+		}
+
+
+		$this->set(compact('pizza_waves'));
+		$this->set('lan_id', $id);
+	}
 
     public function add() {
         if ($this->request->is('post')) {

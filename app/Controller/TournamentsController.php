@@ -22,36 +22,6 @@ class TournamentsController extends AppController {
 		return false;
 	}
 
-	public function index($lan_id){
-		if (!$this->request->is('ajax')) {
-			throw new BadRequestException('Bad request');
-		}
-
-		$this->layout = 'ajax';
-
-		$this->Tournament->Lan->id = $lan_id;
-		if (!$this->Tournament->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $lan_id);
-		}
-
-		$this->paginate = array(
-			'Tournament' => array(
-				'conditions' => array(
-					'Tournament.lan_id' => $lan_id,
-				),
-				'recursive' => 2,
-				'limit' => 10,
-				'order' => array(
-					array('Tournament.time_start' => 'asc')
-				)
-			),
-		);
-
-		$tournaments = $this->paginate('Tournament');
-
-		$this->set(compact('tournaments', 'lan_id'));
-	}
-
 	public function view($id = null) {
 
 		$this->Tournament->id = $id;

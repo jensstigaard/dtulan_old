@@ -21,54 +21,6 @@ class LanSignupsController extends AppController {
 		$this->Auth->allow(array('index', 'index_crew'));
 	}
 
-	public function index($lan_id) {
-		if (!$this->request->is('ajax')) {
-			throw new BadRequestException('Bad request');
-		}
-
-		$this->layout = 'ajax';
-
-		$this->LanSignup->Lan->id = $lan_id;
-		if (!$this->LanSignup->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $lan_id);
-		}
-
-		$this->paginate = array(
-			'LanSignup' => array(
-				'conditions' => array(
-					'LanSignup.lan_id' => $lan_id,
-					'NOT' => array(
-						'LanSignup.id' => $this->LanSignup->getLanSignupsCrewIds($lan_id)
-					)
-				),
-				'recursive' => 2,
-				'limit' => 10,
-				'order' => array(
-					array('User.name' => 'asc')
-				)
-			),
-		);
-
-		$lan_signups = $this->paginate('LanSignup');
-
-		$this->set(compact('lan_signups'));
-	}
-
-	public function index_crew($lan_id) {
-		if (!$this->request->is('ajax')) {
-			throw new BadRequestException('Bad request');
-		}
-
-		$this->layout = 'ajax';
-
-		$this->LanSignup->Lan->id = $lan_id;
-		if (!$this->LanSignup->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $lan_id);
-		}
-
-		$this->set('lan_signups_crew', $this->LanSignup->getLanSignupsCrew($lan_id));
-	}
-
 	public function add($id = null) {
 
 		App::uses('CakeTime', 'Utility');
