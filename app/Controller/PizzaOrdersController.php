@@ -31,49 +31,6 @@ class PizzaOrdersController extends AppController {
 		return false;
 	}
 
-	public function index($user_id) {
-
-		if (!$this->request->is('ajax')) {
-			throw new BadRequestException('Bad request');
-		}
-
-		$this->layout = 'ajax';
-
-		$this->PizzaOrder->User->id = $user_id;
-
-		if (!$this->PizzaOrder->User->exists()) {
-			throw new NotFoundException('User not found with ID #' . $user_id);
-		}
-
-		// Pizza orders
-		$this->PizzaOrder->unbindModel(array('belongsTo' => array('User')));
-		$this->PizzaOrder->PizzaWave->unbindModel(array('hasMany' => array('PizzaOrder'), 'belongsTo' => array('Lan')));
-		$this->PizzaOrder->PizzaOrderItem->unbindModel(array('belongsTo' => array('PizzaOrder')));
-//		$this->User->PizzaOrder->PizzaWave->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'LanDay', 'PizzaWave')));
-		$pizza_orders = $this->PizzaOrder->find('all', array(
-			'conditions' => array(
-				'PizzaOrder.user_id' => $user_id
-			),
-			'recursive' => 3,
-			'limit' => 10
-				)
-		);
-
-		foreach ($pizza_orders as $pizza_order_nr => $pizza_order) {
-			$pizza_orders[$pizza_order_nr]['PizzaOrder']['is_cancelable'] = $this->PizzaOrder->isCancelable($pizza_order['PizzaOrder']['id'], $this->isAdmin());
-		}
-
-		$this->PizzaOrder->dateToNiceArray($pizza_orders, 'PizzaOrder');
-
-
-		$is_you = false;
-		if ($user_id == $this->Auth->user('id')) {
-			$is_you = true;
-		}
-
-		$this->set(compact('pizza_orders', 'is_you'));
-	}
-
 	public function add() {
 		if (!$this->request->is('ajax')) {
 			throw new BadRequestException('Bad request from client');

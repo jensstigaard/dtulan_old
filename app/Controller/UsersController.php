@@ -81,57 +81,194 @@ class UsersController extends AppController {
 			}
 		}
 
+		$this->set(compact(
+						'title_for_layout', 'is_you', 'is_auth', 'user'
+				)
+		);
+	}
+
+	public function view_payments($id) {
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->User->id = $id;
+
+		if (!$this->User->exists()) {
+			throw new NotFoundException('User not found with ID #' . $id);
+		}
+
+		$this->paginate = array(
+			'Payment' => array(
+				'conditions' => array(
+					'Payment.user_id' => $id,
+				),
+				'recursive' => 0,
+				'limit' => 10,
+				'order' => array(
+					array('Payment.time' => 'desc')
+				)
+			),
+		);
+
+		$payments = $this->paginate('Payment');
+
+		$this->User->dateToNiceArray($payments, 'Payment');
+
+		$this->set(compact('payments'));
+	}
+
+	public function view_pizzaorders($id) {
+
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->User->id = $id;
+
+		if (!$this->User->exists()) {
+			throw new NotFoundException('User not found with ID #' . $id);
+		}
+
+		// Pizza orders
+		$this->User->PizzaOrder->unbindModel(array('belongsTo' => array('User')));
+		$this->User->PizzaOrder->PizzaWave->unbindModel(array('hasMany' => array('PizzaOrder'), 'belongsTo' => array('Lan')));
+		$this->User->PizzaOrder->PizzaOrderItem->unbindModel(array('belongsTo' => array('PizzaOrder')));
+//		$this->User->PizzaOrder->PizzaWave->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'LanDay', 'PizzaWave')));
+		$pizza_orders = $this->User->PizzaOrder->find('all', array(
+			'conditions' => array(
+				'PizzaOrder.user_id' => $id
+			),
+			'recursive' => 3,
+			'limit' => 10
+				)
+		);
+
+		foreach ($pizza_orders as $pizza_order_nr => $pizza_order) {
+			$pizza_orders[$pizza_order_nr]['PizzaOrder']['is_cancelable'] = $this->User->PizzaOrder->isCancelable($pizza_order['PizzaOrder']['id'], $this->isAdmin());
+		}
+
+		$this->User->PizzaOrder->dateToNiceArray($pizza_orders, 'PizzaOrder');
+
+
+		$is_you = false;
+		if ($id == $this->Auth->user('id')) {
+			$is_you = true;
+		}
+
+		$this->set(compact('pizza_orders', 'is_you'));
+	}
+
+	public function view_foodorders($id) {
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->User->id = $id;
+
+		if (!$this->User->exists()) {
+			throw new NotFoundException('User not found with ID #' . $id);
+		}
+
+		$this->paginate = array(
+			'FoodOrder' => array(
+				'conditions' => array(
+					'FoodOrder.user_id' => $id,
+				),
+				'recursive' => 3,
+				'limit' => 10,
+				'order' => array(
+					array('FoodOrder.time' => 'desc')
+				)
+			),
+		);
+
+		$food_orders = $this->paginate('FoodOrder');
+
+		$this->User->FoodOrder->dateToNiceArray($food_orders, 'FoodOrder');
+
+		$is_you = false;
+		if ($id == $this->Auth->user('id')) {
+			$is_you = true;
+		}
+
+		$this->set(compact('food_orders', 'is_you'));
+	}
+
+	public function view_tournaments($id) {
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->User->id = $id;
+
+		if (!$this->User->exists()) {
+			throw new NotFoundException('User not found with ID #' . $id);
+		}
 
 		// Teams for user
-		$this->User->TeamUser->recursive = 2;
 		$this->User->TeamUser->Team->Tournament->unbindModel(array('belongsTo' => array('Lan')));
 
-		$teams = $this->User->TeamUser->find('all', array('conditions' => array(
-				'TeamUser.user_id' => $id
-			)
-				)
-		);
+		$this->set('teams', $this->User->TeamUser->find('all', array(
+					'conditions' => array(
+						'TeamUser.user_id' => $id
+					),
+					'recursive' => 2,
+						)
+				));
+	}
 
+	public function view_lans($id) {
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
 
-		// Food orders
-		$this->User->FoodOrder->recursive = 2;
-		$this->User->FoodOrder->unbindModel(array('belongsTo' => array('User')));
-		$this->User->FoodOrder->FoodOrderItem->unbindModel(array('belongsTo' => array('FoodOrder')));
-		$food_orders = $this->User->FoodOrder->find('all', array('conditions' => array(
-				'FoodOrder.user_id' => $id
-			)
-				)
-		);
+		$this->layout = 'ajax';
 
-		$this->User->dateToNiceArray($food_orders, 'FoodOrder');
+		$this->User->id = $id;
+
+		if (!$this->User->exists()) {
+			throw new NotFoundException('User not found with ID #' . $id);
+		}
+
+		$this->User->read(array('type'));
 
 
 		// Lan signups
-		$this->User->LanSignup->recursive = 2;
 		$this->User->LanSignup->unbindModel(array('belongsTo' => array('User')));
 		$this->User->LanSignup->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'PizzaWave')));
 		$this->User->LanSignup->LanSignupDay->unbindModel(array('belongsTo' => array('LanSignup')));
 
-		$lans = $this->User->LanSignup->find('all', array('conditions' => array(
+		$lans = $this->User->LanSignup->find('all', array(
+			'conditions' => array(
 				'LanSignup.user_id' => $id
 			),
 			'order' => array(
 				'Lan.time_start' => 'desc'
-			)
+			),
+			'recursive' => 2
 				)
 		);
 
-		if ($user['User']['type'] == 'student') {
+		if ($this->User->data['User']['type'] == 'student') {
 			// Lan invites (accepted) made by user
 			$lan_invites_accepted = array();
-			$this->User->LanInvite->recursive = 1;
 			foreach ($lans as $lan) {
 				$lan_invites_accepted[$lan['Lan']['id']] = $this->User->LanInvite->find('all', array(
 					'conditions' => array(
 						'LanInvite.user_student_id' => $id,
 						'LanInvite.accepted' => 1,
 						'LanInvite.lan_id' => $lan['Lan']['id']
-					)
+					),
+					'recursive' => 1
 						)
 				);
 			}
@@ -139,10 +276,15 @@ class UsersController extends AppController {
 			$this->set(compact('lan_invites_accepted'));
 		}
 
-		$this->set(compact(
-						'title_for_layout', 'is_you', 'is_auth', 'user', 'pizza_orders', 'pizza_orders_cancelable', 'food_orders', 'lans', 'teams'
-				)
-		);
+		if ($id == $this->Auth->user('id')) {
+			$is_you = true;
+		}
+
+		if ($is_you || $this->isAdmin()) {
+			$is_auth = true;
+		}
+
+		$this->set(compact('lans', 'is_you', 'is_auth'));
 	}
 
 	public function add() {

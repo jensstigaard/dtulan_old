@@ -27,44 +27,6 @@ class FoodOrdersController extends AppController {
 		return false;
 	}
 
-	public function index_user($user_id) {
-//		if (!$this->request->is('ajax')) {
-//			throw new BadRequestException('Bad request');
-//		}
-
-		$this->layout = 'ajax';
-
-		$this->FoodOrder->User->id = $user_id;
-
-		if (!$this->FoodOrder->User->exists()) {
-			throw new NotFoundException('User not found with ID #' . $user_id);
-		}
-
-		$this->paginate = array(
-			'FoodOrder' => array(
-				'conditions' => array(
-					'FoodOrder.user_id' => $user_id,
-				),
-				'recursive' => 3,
-				'limit' => 10,
-				'order' => array(
-					array('FoodOrder.time' => 'desc')
-				)
-			),
-		);
-
-		$food_orders = $this->paginate('FoodOrder');
-
-		$this->FoodOrder->dateToNiceArray($food_orders, 'FoodOrder');
-
-		$is_you = false;
-		if ($user_id == $this->Auth->user('id')) {
-			$is_you = true;
-		}
-
-		$this->set(compact('food_orders', 'is_you'));
-	}
-
 	public function index() {
 		$this->paginate = array(
 			'limit' => 5,
