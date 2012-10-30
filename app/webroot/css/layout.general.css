@@ -99,6 +99,10 @@ hr{
 	margin: 5px 0 0 5px;
 }
 
+#loading_indicator{
+	margin:15px;
+}
+
 
 /** Header **/
 #header, #footer{

@@ -53,11 +53,6 @@ class LansController extends AppController {
 		$title_for_layout = 'Lan &bull; ' . $lan['Lan']['title'];
 
 		$this->set(compact('lan', 'title_for_layout'));
-		$this->set('count_tournaments', $this->Lan->countTournaments());
-		$this->set('count_lan_signups', $this->Lan->countSignups());
-		$this->set('count_lan_signups_guests', $this->Lan->countGuests());
-		$this->set('count_invites', $this->Lan->countInvites());
-		$this->set('lan_days', $this->Lan->getLanDays());
 
 		if ($lan['Lan']['sign_up_open'] && isset($user)) {
 			if ($user['type'] == 'student') {
@@ -81,6 +76,28 @@ class LansController extends AppController {
 				}
 			}
 		}
+	}
+
+	public function view_general($id) {
+
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
+		}
+
+		$this->layout = 'ajax';
+
+		$this->Lan->id = $id;
+		if (!$this->Lan->exists()) {
+			throw new NotFoundException('Lan not found with id #' . $id);
+		}
+
+		$this->set('lan', $this->Lan->read(array('price', 'time_start', 'time_end', 'published', 'sign_up_open')));
+
+		$this->set('count_tournaments', $this->Lan->countTournaments());
+		$this->set('count_lan_signups', $this->Lan->countSignups());
+		$this->set('count_lan_signups_guests', $this->Lan->countGuests());
+		$this->set('count_invites', $this->Lan->countInvites());
+		$this->set('lan_days', $this->Lan->getLanDays());
 	}
 
 	/* -- Crew tab -- */
