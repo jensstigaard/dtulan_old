@@ -19,7 +19,6 @@ class FoodOrdersController extends AppController {
 		if ($this->isAdmin($user) || in_array($this->action, array(
 					'add',
 					'delete',
-					'index_user'
 				))) {
 			return true;
 		}

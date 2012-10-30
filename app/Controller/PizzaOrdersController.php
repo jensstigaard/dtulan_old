@@ -24,7 +24,6 @@ class PizzaOrdersController extends AppController {
 		if ($this->isAdmin($user) || in_array($this->action, array(
 					'add',
 					'delete',
-					'index'
 				))) {
 			return true;
 		}

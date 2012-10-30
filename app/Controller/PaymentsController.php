@@ -11,7 +11,7 @@ class PaymentsController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if (in_array($this->action, array('add', 'view', 'index_user')) ||
+		if (in_array($this->action, array('add', 'view')) ||
 				$this->isAdmin($user)) {
 			return true;
 		}
