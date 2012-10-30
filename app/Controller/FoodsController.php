@@ -20,7 +20,7 @@ class FoodsController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin($user)) {
+		if ($this->Food->isYouAdmin()) {
 			return true;
 		}
 		return false;
@@ -33,7 +33,7 @@ class FoodsController extends AppController {
 
 		$conditions = array();
 
-		if (!$this->isAdmin()) {
+		if (!$this->Food->isYouAdmin()) {
 			$conditions['Food.available'] = 1;
 		}
 
@@ -43,8 +43,8 @@ class FoodsController extends AppController {
 		);
 
 		$this->loadModel('Lan');
-		if ($this->Lan->isCurrent($this->isAdmin())) {
-			$current_lan = $this->Lan->getCurrent($this->isAdmin());
+		if ($this->Lan->isCurrent()) {
+			$current_lan = $this->Lan->getCurrent();
 
 			if ($this->Lan->isUserAttending($current_lan['Lan']['id'], $this->Auth->user('id'))) {
 				$this->set('foods_current_lan_id', $current_lan['Lan']['id']);

@@ -1,49 +1,8 @@
 <?php
 
-/**
- * Static content controller.
- *
- * This file will render views from views/pages/
- *
- * PHP 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       app.Controller
- * @since         CakePHP(tm) v 0.2.9
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
- */
-App::uses('AppController', 'Controller');
-
-/**
- * Static content controller
- *
- * Override this controller by placing a copy in controllers directory of an application
- *
- * @package       app.Controller
- * @link http://book.cakephp.org/2.0/en/controllers/pages-controller.html
- */
 class PagesController extends AppController {
 
-	/**
-	 * Controller name
-	 *
-	 * @var string
-	 */
-	public $name = 'Pages';
-
-	/**
-	 * This controller does not use a model
-	 *
-	 * @var array
-	 */
-	public $helpers = array('Html', 'Form', 'Js', 'Fck');
+	public $helpers = array('Html', 'Form', 'Js');
 
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -53,7 +12,7 @@ class PagesController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin($user)) {
+		if ($this->Page->isYouAdmin()) {
 			return true;
 		}
 
@@ -73,7 +32,7 @@ class PagesController extends AppController {
 	public function view($slug = 'welcome') {
 		$page = $this->Page->findBySlug($slug);
 
-		if(!isset($page['Page']['public']) || (!$this->isAdmin() && !$page['Page']['public'])){
+		if (!isset($page['Page']['public']) || (!$this->Page->isYouAdmin() && !$page['Page']['public'])) {
 			throw new NotFoundException('Page not found');
 		}
 
@@ -139,4 +98,5 @@ class PagesController extends AppController {
 		$this->set(compact('id', 'parents'));
 		$this->request->data['Page']['latest_update_by_id'] = $this->Auth->user('id');
 	}
+
 }

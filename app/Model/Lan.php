@@ -2,15 +2,28 @@
 
 class Lan extends AppModel {
 
-	public $name = 'Lan';
 	public $hasMany = array(
-		'Crew',
-		'LanSignup',
-		'LanDay',
-		'LanInvite',
-		'Tournament',
-		'PizzaWave',
-		'FoodOrder'
+		'Crew' => array(
+			'dependent' => true
+		),
+		'LanSignup' => array(
+			'dependent' => true
+		),
+		'LanDay' => array(
+			'dependent' => true
+		),
+		'LanInvite' => array(
+			'dependent' => true
+		),
+		'Tournament' => array(
+			'dependent' => true
+		),
+		'PizzaWave' => array(
+			'dependent' => true
+		),
+		'FoodOrder' => array(
+			'dependent' => true
+		)
 	);
 	public $validate = array(
 		'title' => array(
@@ -84,6 +97,16 @@ class Lan extends AppModel {
 		);
 	}
 
+	public function countInvites() {
+		return $this->LanInvite->find('count', array(
+					'conditions' => array(
+						'LanInvite.lan_id' => $this->id,
+						'LanInvite.accepted' => 0
+					),
+						)
+		);
+	}
+
 	public function countTournaments() {
 		return $this->Tournament->find('count', array(
 					'conditions' => array(
@@ -111,13 +134,13 @@ class Lan extends AppModel {
 		return $days;
 	}
 
-	public function getHighlighted(){
+	public function getHighlighted() {
 		return $this->find('all', array(
-			'conditions' => array(
-				'Lan.highlighted' => 1
-			),
-			'recursive' => 1
-		));
+					'conditions' => array(
+						'Lan.highlighted' => 1
+					),
+					'recursive' => 1
+				));
 	}
 
 	public function getInviteableUsers($user_id) {
@@ -160,8 +183,7 @@ class Lan extends AppModel {
 		return $users;
 	}
 
-	public function isPublished($lan_id, $is_admin = false) {
-		$this->id = $lan_id;
+	public function isPublished($is_admin = false) {
 
 		if (!$this->exists()) {
 			throw new NotFoundException('Lan not found');
@@ -176,12 +198,16 @@ class Lan extends AppModel {
 		return $this->data['Lan']['published'];
 	}
 
-	public function isSignupPossible($lan_id) {
-		if ($this->isPublished($lan_id)) {
-			$max_participants = $this->read(array('max_participants'));
+	public function isSignupPossible() {
+		if ($this->isPublished()) {
 
-			$this->LanDay->recursive = 0;
-			$lan_days = $this->LanDay->find('all', array('conditions' => array('LanDay.lan_id' => $lan_id)));
+			$lan_days = $this->LanDay->find('all', array(
+				'conditions' => array(
+					'LanDay.lan_id' => $this->id
+				),
+				'recursive' => 0
+					)
+			);
 
 			foreach ($lan_days as $day) {
 				if ($this->LanDay->seatsLeft($day['LanDay']['id'])) {
@@ -193,10 +219,19 @@ class Lan extends AppModel {
 		return false;
 	}
 
-	public function isUserAttending($lan_id, $user_id) {
+	public function isUserAbleSignup() {
+
+		if ($this->LanSignup->User->isStudent() && !$this->isUserAttending()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function isUserAttending() {
 		return $this->LanSignup->find('count', array('conditions' => array(
-						'LanSignup.lan_id' => $lan_id,
-						'LanSignup.user_id' => $user_id
+						'LanSignup.lan_id' => $this->id,
+						'LanSignup.user_id' => $this->LanSignup->User->id
 					)
 						)
 				) == 1;
@@ -251,16 +286,6 @@ class Lan extends AppModel {
 					'order' => array(
 						'LanDay.date ASC',
 					)
-						)
-		);
-	}
-
-	public function countInvites() {
-		return $this->LanInvite->find('count', array(
-					'conditions' => array(
-						'LanInvite.lan_id' => $this->id,
-						'LanInvite.accepted' => 0
-					),
 						)
 		);
 	}

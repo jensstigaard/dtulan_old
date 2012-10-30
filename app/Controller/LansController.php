@@ -14,7 +14,7 @@ class LansController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin($user)) {
+		if ($this->Lan->isYouAdmin()) {
 			return true;
 		}
 		return false;
@@ -30,9 +30,8 @@ class LansController extends AppController {
 		$cond = array('Lan.slug' => $slug);
 
 		if ($this->Auth->loggedIn()) {
-			$user = $this->Auth->user();
 
-			if (!$this->Lan->LanSignup->User->isAdmin($user)) {
+			if (!$this->Lan->isYouAdmin()) {
 				$cond['published'] = 1;
 			}
 		} else {
@@ -54,28 +53,13 @@ class LansController extends AppController {
 
 		$this->set(compact('lan', 'title_for_layout'));
 
-		if ($lan['Lan']['sign_up_open'] && isset($user)) {
-			if ($user['type'] == 'student') {
-				if (!$this->Lan->isUserAttending($this->Lan->id, $user['id'])) {
-					$this->set('is_not_attending', 1);
-				} else {
-					if ($this->request->is('post')) {
-						$this->request->data['LanInvite']['lan_id'] = $this->Lan->id;
-						$this->request->data['LanInvite']['user_student_id'] = $user['id'];
-						$this->request->data['LanInvite']['time_invited'] = date('Y-m-d H:i:s');
+		if($this->Auth->loggedIn()){
+			$this->Lan->LanSignup->User->id = $this->Auth->user('id');
 
-						if ($this->Lan->LanInvite->save($this->request->data)) {
-							$this->Session->setFlash('Your invite has been sent', 'default', array('class' => 'message success'), 'good');
-						} else {
-							$this->Session->setFlash('Unable to send your invite', 'default', array(), 'bad');
-						}
-					}
-
-					$user_guests = $this->Lan->getInviteableUsers($this->Auth->user('id'));
-					$this->set(compact('user_guests'));
-				}
-			}
+			$this->set('signup_available', $this->Lan->isUserAbleSignup());
 		}
+
+
 	}
 
 	public function view_general($id) {
@@ -291,6 +275,8 @@ class LansController extends AppController {
 				$this->Session->setFlash(__('The Lan could not be saved. Please, try again.'), 'default', array(), 'bad');
 			}
 		}
+
+		$this->set(compact('id'));
 	}
 
 	public function openForSignup($id = null) {
@@ -440,6 +426,21 @@ class LansController extends AppController {
 		);
 
 		$this->set(compact('lan_signups', 'lan_signups_crew'));
+	}
+
+	public function delete($id) {
+		$this->Lan->id = $id;
+
+		if (!$this->Lan->exists()) {
+			throw new NotFoundException('Lan not found with id #' . $id);
+		}
+
+		if ($this->Lan->delete()) {
+			$this->Session->setFlash(__('The LAN has been deleted'), 'default', array('class' => 'message success'), 'good');
+		} else {
+			$this->Session->setFlash(__('The Lan could not be deleted'), 'default', array(), 'bad');
+		}
+		$this->redirect($this->referer());
 	}
 
 }

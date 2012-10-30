@@ -76,4 +76,13 @@ class AppModel extends Model {
 		return $str;
 	}
 
+
+	public function isYouAdmin() {
+		$admin_id = AuthComponent::user('Admin.id');
+		if($admin_id > 0){
+			return true;
+		}
+		return false;
+	}
+
 }

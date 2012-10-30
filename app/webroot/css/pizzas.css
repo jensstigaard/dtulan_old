@@ -103,10 +103,3 @@ table.pizza_list tr.pizza_item.gray{
 .hidden_images{
 	display: none;
 }
-
-
-.custom-tooltip-styling{
-	display: inline-block;
-	background: rgba(0,0,0,0.8);
-	padding: 5px;
-}

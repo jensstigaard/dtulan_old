@@ -20,5 +20,8 @@ $(document).ready(function(){
 		load:   function(event, ui) {
 			$('#loading_indicator').hide();
 		}
+	}).tooltip({
+		tooltipClass: "custom-tooltip-styling"
 	});
+
 });

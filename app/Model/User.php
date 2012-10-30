@@ -212,7 +212,13 @@ class User extends AppModel {
 		return isset($this->data['User']['activated']) && $this->data['User']['activated'];
 	}
 
-	public function isAdmin($user = null) {
+	public function isStudent(){
+		$this->read(array('type'));
+
+		return $this->data['User']['type'] === 'student';
+	}
+
+	public function isAdmin($user) {
 		return isset($user['Admin']['user_id']);
 	}
 

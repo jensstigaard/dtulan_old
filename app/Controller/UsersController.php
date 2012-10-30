@@ -18,7 +18,7 @@ class UsersController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin($user)) {
+		if ($this->User->isYouAdmin()) {
 			return true;
 		} elseif (in_array($this->action, array(
 					'profile',
@@ -69,7 +69,7 @@ class UsersController extends AppController {
 			$is_you = true;
 		}
 
-		if ($is_you || $this->isAdmin()) {
+		if ($is_you || $this->User->isYouAdmin()) {
 			$is_auth = true;
 		}
 
@@ -175,7 +175,7 @@ class UsersController extends AppController {
 			$is_you = true;
 		}
 
-		if ($is_you || $this->isAdmin()) {
+		if ($is_you || $this->User->isYouAdmin()) {
 			$is_auth = true;
 		}
 
@@ -194,7 +194,7 @@ class UsersController extends AppController {
 		if (!$this->User->exists()) {
 			throw new NotFoundException('User not found with ID #' . $id);
 		}
-		if ($id !== $this->Auth->user('id') && !$this->isAdmin()) {
+		if ($id !== $this->Auth->user('id') && !$this->User->isYouAdmin()) {
 			throw new UnauthorizedException;
 		}
 
@@ -231,7 +231,7 @@ class UsersController extends AppController {
 		if (!$this->User->exists()) {
 			throw new NotFoundException('User not found with ID #' . $id);
 		}
-		if ($id !== $this->Auth->user('id') && !$this->isAdmin()) {
+		if ($id !== $this->Auth->user('id') && !$this->User->isYouAdmin()) {
 			throw new UnauthorizedException;
 		}
 
@@ -250,7 +250,8 @@ class UsersController extends AppController {
 		);
 
 		foreach ($pizza_orders as $pizza_order_nr => $pizza_order) {
-			$pizza_orders[$pizza_order_nr]['PizzaOrder']['is_cancelable'] = $this->User->PizzaOrder->isCancelable($pizza_order['PizzaOrder']['id'], $this->isAdmin());
+			$this->User->PizzaOrder->id = $pizza_order['PizzaOrder']['id'];
+			$pizza_orders[$pizza_order_nr]['PizzaOrder']['is_cancelable'] = $this->User->PizzaOrder->isCancelable();
 		}
 
 		$this->User->PizzaOrder->dateToNiceArray($pizza_orders, 'PizzaOrder');

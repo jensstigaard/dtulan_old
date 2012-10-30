@@ -112,16 +112,17 @@ class PizzaWave extends AppModel {
         return $current_wave;
     }
 
-    public function isOrderable($id, $is_admin = false) {
-        $this->id = $id;
+    public function isOrderable() {
 
         if (!$this->exists()) {
-            throw new NotFoundException(__('Pizza wave not found with ID: "' . $id . '" in function isOrderable'));
+            throw new NotFoundException(__('Pizza wave not found with ID: "' . $this->id . '" in function isOrderable'));
         }
 
         $this->read(array('time_end', 'lan_id', 'status'));
 
-        if ($this->Lan->isPublished($this->data['PizzaWave']['lan_id'], $is_admin)) {
+		$this->Lan->id = $this->data['PizzaWave']['lan_id'];
+
+        if ($this->Lan->isPublished()) {
             if ($this->data['PizzaWave']['status'] == 1 && $this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
                 return true;
             }

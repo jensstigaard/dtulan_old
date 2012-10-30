@@ -16,7 +16,7 @@ class FoodOrdersController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin($user) || in_array($this->action, array(
+		if ($this->FoodOrder->isYouAdmin() || in_array($this->action, array(
 					'add',
 					'delete',
 				))) {

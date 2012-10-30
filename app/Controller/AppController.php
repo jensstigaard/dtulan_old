@@ -141,14 +141,6 @@ class AppController extends Controller {
 		}
 	}
 
-	public function isAdmin($user = null) {
-		if ($user == null && $this->Auth->loggedIn()) {
-			$user = $this->Auth->user('Admin.user_id');
-		}
-
-		return isset($user['Admin']['user_id']);
-	}
-
 	public function isJsonRequest() {
 		return $this->request->header('Accept') === 'application/json';
 	}
