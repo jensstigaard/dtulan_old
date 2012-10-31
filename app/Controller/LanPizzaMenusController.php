@@ -10,7 +10,7 @@ class LanPizzaMenusController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->PizzaMenu->isYouAdmin()) {
+		if ($this->LanPizzaMenu->isYouAdmin()) {
 			return true;
 		}
 		return false;
@@ -54,6 +54,36 @@ class LanPizzaMenusController extends AppController {
 		$this->set('pizza_waves', $this->LanPizzaMenu->getPizzaWavesAvailable());
 		$this->set('pizza_menu', $this->LanPizzaMenu->PizzaMenu->read());
 		$this->set('pizza_categories', $this->LanPizzaMenu->PizzaMenu->getList());
+	}
+
+	public function add($lan_id) {
+		$this->LanPizzaMenu->Lan->id = $lan_id;
+
+		if (!$this->LanPizzaMenu->Lan->exists()) {
+			throw new NotFoundException('Lan not found with ID #' . $lan_id);
+		}
+
+		if ($this->request->is('post')) {
+			$this->request->data['LanPizzaMenu']['lan_id'] = $lan_id;
+
+			if ($this->LanPizzaMenu->save($this->request->data)) {
+				$this->Session->setFlash('Your pizza menu has been connected', 'default', array('class' => 'message success'), 'good');
+			} else {
+				$this->Session->setFlash('Unable to connect pizza menu', 'default', array(), 'bad');
+			}
+		}
+
+		$this->LanPizzaMenu->Lan->read(array('title'));
+
+		$this->set('lan_title', $this->LanPizzaMenu->Lan->data['Lan']['title']);
+
+		$this->set('pizzaMenus', $this->LanPizzaMenu->PizzaMenu->find('list', array(
+					'conditions' => array(
+						'NOT' => array(
+							'PizzaMenu.id' => $this->LanPizzaMenu->Lan->getPizzaMenuIds()
+						)
+					)
+				)));
 	}
 
 }

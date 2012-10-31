@@ -12,36 +12,33 @@ class PizzaWavesController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin($user)) {
+		if ($this->PizzaWave->isYouAdmin()) {
 			return true;
 		}
 		return false;
 	}
 
-	public function add($lan_id = null) {
-		if ($lan_id == null) {
-			throw new NotFoundException('Invalid LAN id');
-		}
+	public function add($lan_pizza_menu_id) {
 
-		$this->PizzaWave->Lan->id = $lan_id;
+		$this->PizzaWave->LanPizzaMenu->id = $lan_pizza_menu_id;
 
-		if (!$this->PizzaWave->Lan->exists()) {
-			throw new NotFoundException('LAN not found with id ' . $lan_id);
+		if (!$this->PizzaWave->LanPizzaMenu->exists()) {
+			throw new NotFoundException('Lan pizza menu not found with id ' . $lan_pizza_menu_id);
 		}
 
 		if ($this->request->is('post')) {
 
-			$this->request->data['PizzaWave']['lan_id'] = $lan_id;
+			$this->request->data['PizzaWave']['lan_pizza_menu_id'] = $lan_pizza_menu_id;
 
 			if ($this->PizzaWave->save($this->request->data)) {
-				$this->Session->setFlash('Your PizzaWave has been added.', 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash('Pizza-wave has been added!', 'default', array('class' => 'message success'), 'good');
 			} else {
-				$this->Session->setFlash('Unable to add this PizzaWave.', 'default', array(), 'bad');
+				$this->Session->setFlash('Unable to add this pizza-wave', 'default', array(), 'bad');
 			}
+			$this->redirect($this->referer());
 		}
 
-		$this->set('lan', $this->PizzaWave->Lan->read());
+		$this->set('lan_pizza_menu', $this->PizzaWave->LanPizzaMenu->read(array('id', 'PizzaMenu.title', 'Lan.title')));
 	}
 
 	public function view($id) {

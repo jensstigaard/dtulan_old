@@ -332,6 +332,38 @@ class Lan extends AppModel {
 		);
 	}
 
+	public function getPizzaMenuIds() {
+		$lan_pizza_menus = $this->LanPizzaMenu->find('all', array(
+			'conditions' => array(
+				'LanPizzaMenu.lan_id' => $this->id
+			),
+			'fields' => array(
+				'LanPizzaMenu.pizza_menu_id'
+			),
+			'recursive' => -1
+				)
+		);
+
+		$ids = array();
+		foreach($lan_pizza_menus as $lan_pizza_menu){
+			$ids[] = $lan_pizza_menu['LanPizzaMenu']['pizza_menu_id'];
+		}
+
+		return $ids;
+	}
+
+	public function countPizzaOrders() {
+		$db = $this->getDataSource();
+		$total = $db->fetchAll("SELECT COUNT(PizzaOrder.id) AS PizzaOrders FROM `lan_pizza_menus` AS LanPizzaMenu INNER JOIN `pizza_waves` AS PizzaWave INNER JOIN `pizza_orders` AS PizzaOrder ON PizzaOrder.pizza_wave_id = PizzaWave.id WHERE LanPizzaMenu.lan_id = ?", array($this->id));
+		return $total[0][0]['PizzaOrders'];
+	}
+
+	public function getMoneyTotalPizzas() {
+		$db = $this->getDataSource();
+		$total = $db->fetchAll("SELECT SUM(PizzaOrderItem.price * PizzaOrderItem.quantity) AS Total FROM `lan_pizza_menus` AS LanPizzaMenu INNER JOIN `pizza_waves` AS PizzaWave ON PizzaWave.lan_pizza_menu_id = LanPizzaMenu.id INNER JOIN `pizza_orders` AS PizzaOrder ON PizzaOrder.pizza_wave_id = PizzaWave.id INNER JOIN pizza_order_items AS PizzaOrderItem ON PizzaOrderItem.pizza_order_id = PizzaOrder.id WHERE LanPizzaMenu.lan_id = ?", array($this->id));
+		return $total[0][0]['Total'];
+	}
+
 }
 
 ?>

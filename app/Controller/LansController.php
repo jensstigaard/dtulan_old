@@ -8,7 +8,7 @@ class LansController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 
-		$this->Auth->allow('view', 'view_participants', 'view_crew', 'view_tournaments');
+		$this->Auth->allow('view', 'view_general', 'view_participants', 'view_crew', 'view_tournaments');
 	}
 
 	public function isAuthorized($user) {
@@ -53,11 +53,13 @@ class LansController extends AppController {
 
 		$this->set(compact('lan', 'title_for_layout'));
 
+		$signup_available = false;
 		if ($this->Auth->loggedIn()) {
 			$this->Lan->LanSignup->User->id = $this->Auth->user('id');
 
-			$this->set('signup_available', $this->Lan->isUserAbleSignup());
+			$signup_available = $this->Lan->isUserAbleSignup();
 		}
+		$this->set(compact('signup_available'));
 	}
 
 	public function view_general($id) {
@@ -182,12 +184,25 @@ class LansController extends AppController {
 			throw new NotFoundException('Lan not found with id #' . $id);
 		}
 
-		$this->set('pizza_menus', $this->Lan->LanPizzaMenu->find('all', array(
-					'conditions' => array(
-						'LanPizzaMenu.lan_id' => $id
-					),
-					'recursive' => 2
-				)));
+		$this->Lan->LanPizzaMenu->unbindModel(array('belongsTo' => array('Lan')));
+		$this->Lan->LanPizzaMenu->PizzaMenu->unbindModel(array('hasMany' => array('PizzaCategory')));
+		$pizza_menus = $this->Lan->LanPizzaMenu->find('all', array(
+			'conditions' => array(
+				'LanPizzaMenu.lan_id' => $id
+			),
+			'recursive' => 2
+				));
+
+		foreach ($pizza_menus as $index => $pizza_menu_data) {
+			$this->Lan->dateToNiceArray($pizza_menus[$index]['PizzaWave'], null, 'time_start');
+
+			foreach ($pizza_menu_data['PizzaWave'] as $index_ => $pizza_wave_data) {
+				$this->Lan->LanPizzaMenu->PizzaWave->id = $pizza_wave_data['id'];
+				$pizza_menus[$index]['PizzaWave'][$index_]['pizza_orders_total'] = $this->Lan->LanPizzaMenu->PizzaWave->getOrdersSum();
+			}
+		}
+
+		$this->set(compact('pizza_menus', 'id'));
 	}
 
 	public function view_pizzamenu($lan_pizza_menu_id) {
@@ -215,12 +230,6 @@ class LansController extends AppController {
 		}
 
 		$this->set(compact('lan_pizza_menu_id'));
-		$this->set('pizza_menu', $this->Lan->LanPizzaMenu->PizzaMenu->read());
-		$this->set('pizza_waves', $this->Lan->LanPizzaMenu->PizzaWave->find('all', array(
-					'conditions' => array(
-						'PizzaWave.lan_pizza_menu_id' => $lan_pizza_menu_id
-					)
-				)));
 	}
 
 	/* -- Economics tab -- */
@@ -240,12 +249,19 @@ class LansController extends AppController {
 
 		$this->set('lan', $this->Lan->read());
 
-		$this->set('count_lan_signups', $this->Lan->countSignups());
+		$count_lan_signups = $this->Lan->countSignups();
+		$money_pizza_orders = $this->Lan->getMoneyTotalPizzas();
+		$money_food_orders = $this->Lan->getFoodOrdersTotal();
 		$this->set('count_lan_signups_guests', $this->Lan->countGuests());
-		$this->set('total_pizzas', $this->Lan->PizzaWave->getTotalPizzasByLan($this->Lan->id));
-		$this->set('total_pizza_orders', $this->Lan->PizzaWave->getTotalPizzaOrdersByLan($this->Lan->id));
-		$this->set('food_orders_count', $this->Lan->getCountFoodOrders());
-		$this->set('food_orders_total', $this->Lan->getFoodOrdersTotal());
+		$this->set('count_pizza_orders', $this->Lan->countPizzaOrders());
+		$this->set('count_food_orders', $this->Lan->getCountFoodOrders());
+
+		$money_total = 0;
+		$money_total += $count_lan_signups * $this->Lan->data['Lan']['price'];
+		$money_total += $money_pizza_orders;
+		$money_total += $money_food_orders;
+
+		$this->set(compact('count_lan_signups','money_total','money_pizza_orders', 'money_food_orders'));
 	}
 
 	public function view_invites($id) {

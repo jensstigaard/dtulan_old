@@ -47,6 +47,18 @@ class PizzaMenu extends AppModel {
 
 		return $data_category;
 	}
+
+	public function countCategories(){
+		return $this->PizzaCategory->find('count', array(
+			'conditions' => array(
+				'PizzaCategory.pizza_menu_id' => $this->id
+			)
+		));
+	}
+
+	public function countItems(){
+		return 0;
+	}
 }
 
 ?>

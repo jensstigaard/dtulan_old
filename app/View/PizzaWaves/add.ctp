@@ -2,16 +2,14 @@
 	<?php echo $this->Form->create(); ?>
 	<div style="float:right;">
 		<ul>
-			<li><?php echo $this->Html->link('Go to '. $lan['Lan']['title'], array('controller' => 'lans', 'action'=>'view', $lan['Lan']['id'])); ?></li>
-			<li><?php echo $this->Html->link('Go to Pizzas', array('controller' => 'pizza_categories', 'action'=>'index')); ?></li>
+			<li><?php echo $this->Html->link('View pizza menu', array('controller' => 'lan_pizza_menus', 'action'=>'view', $lan_pizza_menu['LanPizzaMenu']['id'])); ?></li>
 		</ul>
 	</div>
     <fieldset>
-        <legend><?php echo __('Create PizzaWave for '. $lan['Lan']['title']); ?></legend>
+        <legend><?php echo __('Add pizza wave for '. $lan_pizza_menu['PizzaMenu']['title'].' at '. $lan_pizza_menu['Lan']['title']); ?></legend>
 		<?php
 		echo $this->Form->input('time_start', array('timeFormat' => '24'));
 		echo $this->Form->input('time_end', array('timeFormat' => '24'));
-//		echo $this->Form->input('status');
 		?>
     </fieldset>
 	<?php echo $this->Form->end(__('Submit')); ?>
