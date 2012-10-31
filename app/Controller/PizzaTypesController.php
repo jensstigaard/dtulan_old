@@ -9,21 +9,27 @@ class PizzaTypesController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin($user)) {
+		if ($this->PizzaType->isYouAdmin()) {
 			return true;
 		}
 		return false;
 	}
 
-	public function add(){
+	public function index(){
+		$this->set('pizza_types', $this->PizzaType->find('all'));
+	}
+
+	public function add() {
 		if ($this->request->is('post')) {
 
 			if ($this->PizzaType->save($this->request->data)) {
 				$this->Session->setFlash('Pizza-type has been added.', 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('controller'=> 'pizza_categories' ,'action' => 'index'));
 			} else {
 				$this->Session->setFlash('Unable to add this pizza-type.', 'default', array(), 'bad');
 			}
+
+			$this->redirect($this->referer());
 		}
 	}
+
 }

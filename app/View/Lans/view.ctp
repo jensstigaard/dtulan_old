@@ -41,7 +41,7 @@
 
 				<li><a href="<?php
 			echo $this->Html->url(array(
-				'action' => 'view_pizzawaves',
+				'action' => 'view_pizzamenus',
 				$lan['Lan']['id']
 			));
 				?>"><?php echo $this->Html->image('24x24_PNG/pizza.png'); ?></a></li>

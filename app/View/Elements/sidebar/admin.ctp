@@ -78,8 +78,8 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						$this->Html->image('24x24_PNG/pizza.png') . ' Pizza', array(
-					'controller' => 'pizza_categories',
+						$this->Html->image('24x24_PNG/pizza.png') . ' Pizza types', array(
+					'controller' => 'pizza_types',
 					'action' => 'index'
 						), array(
 					'escape' => false

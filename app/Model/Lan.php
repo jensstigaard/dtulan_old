@@ -18,7 +18,7 @@ class Lan extends AppModel {
 		'Tournament' => array(
 			'dependent' => true
 		),
-		'PizzaWave' => array(
+		'LanPizzaMenu' => array(
 			'dependent' => true
 		),
 		'FoodOrder' => array(
@@ -140,12 +140,13 @@ class Lan extends AppModel {
 						'Lan.highlighted' => 1
 					),
 					'recursive' => 1,
-			'order' => array(
-				'Lan.time_start' => 'asc'
-			)
+					'order' => array(
+						'Lan.time_start' => 'asc'
+					)
 				));
 	}
 
+	// REFACTOR THIS METHOD
 	public function getInviteableUsers($user_id) {
 		$this->recursive = 1;
 		$lan = $this->read();
@@ -186,19 +187,26 @@ class Lan extends AppModel {
 		return $users;
 	}
 
-	public function isPublished($is_admin = false) {
+	public function isPublished() {
 
 		if (!$this->exists()) {
 			throw new NotFoundException('Lan not found');
 		}
 
-		if ($is_admin) {
+		if ($this->isYouAdmin()) {
 			return true;
 		}
 
 		$this->read(array('published'));
 
 		return $this->data['Lan']['published'];
+	}
+
+	public function isPast() {
+
+		$this->read(array('time_end'));
+
+		return $this->data['Lan']['time_end'] < date('Y-m-d H:i:s');
 	}
 
 	public function isSignupPossible() {
@@ -311,6 +319,15 @@ class Lan extends AppModel {
 					'fields' => array(
 						'Crew.user_id'
 					),
+						)
+		);
+	}
+
+	public function getPizzaMenus() {
+		return $this->LanPizzaMenu->find('all', array(
+					'conditions' => array(
+						'LanPizzaMenu.lan_id' => $this->id
+					)
 						)
 		);
 	}

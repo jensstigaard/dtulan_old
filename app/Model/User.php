@@ -218,8 +218,9 @@ class User extends AppModel {
 		return $this->data['User']['type'] === 'student';
 	}
 
-	public function isAdmin($user) {
-		return isset($user['Admin']['user_id']);
+	public function isAdmin() {
+		$this->read(array('Admin.user_id'));
+		return isset($this->data['Admin']['user_id']);
 	}
 
 	public function getName() {

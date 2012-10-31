@@ -21,7 +21,6 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
 Router::parseExtensions('json');
 Router::mapResources(array('access_tokens', 'qr_codes'));
 
@@ -76,18 +75,21 @@ Router::connect('/page/:slug', array(
 /**
  * ...and connect the rest of 'Pages' controller's urls.
  */
-Router::connect('/pizzas/:wave_id', array(
-	'controller' => 'pizza_categories',
-	'action' => 'index',
-	'wave_id' => null
-		), array(
-	'pass' => array(
-		'wave_id'
-	),
-	'wave_id' => '[0-9]+'
-		)
-);
-Router::connect('/pizzas', array('controller' => 'pizza_categories'));
+//Router::connect('/pizzas/:lan_id/:wave_id', array(
+//	'controller' => 'pizza_menus',
+//	'action' => 'view',
+//	'wave_id' => null,
+//	'lan_id' => null
+//		), array(
+//	'pass' => array(
+//		'wave_id',
+//		'lan_id'
+//	),
+//	'wave_id' => '[0-9]+',
+//	'lan_id' => '[0-9]+'
+//		)
+//);
+//Router::connect('/pizzas', array('controller' => 'pizza_menus'));
 
 /**
  * Load all plugin routes.  See the CakePlugin documentation on

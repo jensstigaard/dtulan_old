@@ -1,15 +1,5 @@
-<?php
+c<?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of PizzaCategoriesController
- *
- * @author Jens
- */
 class PizzaCategoriesController extends AppController {
 
 	public function beforeFilter() {
@@ -20,80 +10,10 @@ class PizzaCategoriesController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin($user)) {
+		if ($this->PizzaCategory->isYouAdmin()) {
 			return true;
 		}
 		return false;
-	}
-
-	public function index($wave_id = null) {
-
-		$title_for_layout = 'Pizzas';
-
-		$this->loadModel('Lan');
-		if ($this->Lan->isCurrent($this->isAdmin())) {
-			$current_lan = $this->Lan->getCurrent($this->isAdmin());
-
-			if ($this->Lan->isUserAttending($current_lan['Lan']['id'], $this->Auth->user('id'))) {
-				if ($wave_id != null) {
-					$this->Lan->PizzaWave->read(null, $wave_id);
-
-					if ($this->Lan->PizzaWave->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
-						$current_wave = $this->Lan->PizzaWave->read(null, $wave_id);
-					}
-				}
-
-				if (!isset($current_wave)) {
-					$current_wave = $this->Lan->PizzaWave->getOnAir($current_lan['Lan']['id']);
-				}
-
-				$waves = $this->Lan->PizzaWave->getAvailable($current_lan['Lan']['id']);
-
-				$this->set(compact('current_lan', 'current_wave', 'waves'));
-			}
-		}
-
-		$this->set(compact('title_for_layout'));
-
-		$this->PizzaCategory->Pizza->unbindModel(array('belongsTo' => array('PizzaCategory')));
-		$this->PizzaCategory->Pizza->PizzaPrice->unbindModel(array('belongsTo' => array('Pizza'), 'hasMany' => array('PizzaOrderItem')));
-
-		$conditions = array();
-		if (!$this->isAdmin()) {
-			$conditions['PizzaCategory.available'] = 1;
-		}
-		$conditions =
-				$data_category = $this->PizzaCategory->find('all', array('conditions' => $conditions,
-			'recursive' => 3)
-		);
-
-		$data_prices = array();
-		foreach ($data_category as $category_id => $category) {
-			foreach ($category['Pizza'] as $pizza_id => $pizza) {
-				foreach ($pizza['PizzaPrice'] as $price) {
-					$data_prices[$price['pizza_type_id']][$pizza['id']]['price'] = $price['price'];
-					$data_prices[$price['pizza_type_id']][$pizza['id']]['pizza_price_id'] = $price['id'];
-				}
-
-
-
-				foreach ($category['PizzaType'] as $type) {
-					$price = 0;
-					if (isset($data_prices[$type['id']][$pizza['id']])) {
-						$price = $data_prices[$type['id']][$pizza['id']]['price'];
-						$id = $data_prices[$type['id']][$pizza['id']]['pizza_price_id'];
-					}
-					$data_category[$category_id]['Pizza'][$pizza_id]['Prices'][$type['id']]['price'] = $price;
-
-					if (isset($id) && $id > 0) {
-						$data_category[$category_id]['Pizza'][$pizza_id]['Prices'][$type['id']]['id'] = $id;
-					}
-				}
-			}
-		}
-
-		$this->set('pizza_categories', $data_category);
-		$this->set('is_orderable', ($this->Auth->loggedIn() && isset($current_wave['PizzaWave'])));
 	}
 
 	public function add() {

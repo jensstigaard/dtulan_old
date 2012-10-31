@@ -1,11 +1,22 @@
 <div>
 	<div style="float:right;">
 		<?php
-		echo $this->Html->link('New PizzaWave', array(
+		echo $this->Html->link('New Pizza-wave', array(
 			'action' => 'add',
-			$lan_id
+			$lan_pizza_menu_id
 		));
 		?>
+		|
+		<?php
+		echo $this->Html->link('Back to pizza menus', array(
+			'action' => 'view_pizzamenus',
+			$lan_pizza_menu_id
+		));
+		?>
+	</div>
+
+	<div>
+		<h1><?php echo $pizza_menu['PizzaMenu']['title']; ?></h1>
 	</div>
 
 	<?php if (!count($pizza_waves)): ?>

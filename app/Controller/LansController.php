@@ -53,13 +53,11 @@ class LansController extends AppController {
 
 		$this->set(compact('lan', 'title_for_layout'));
 
-		if($this->Auth->loggedIn()){
+		if ($this->Auth->loggedIn()) {
 			$this->Lan->LanSignup->User->id = $this->Auth->user('id');
 
 			$this->set('signup_available', $this->Lan->isUserAbleSignup());
 		}
-
-
 	}
 
 	public function view_general($id) {
@@ -168,9 +166,9 @@ class LansController extends AppController {
 		$this->set('lan_id', $id);
 	}
 
-	/* -- Pizza waves tab -- */
+	/* -- Pizza menus tab -- */
 
-	public function view_pizzawaves($id) {
+	public function view_pizzamenus($id) {
 
 		if (!$this->request->is('ajax')) {
 			throw new BadRequestException('Bad request');
@@ -184,22 +182,45 @@ class LansController extends AppController {
 			throw new NotFoundException('Lan not found with id #' . $id);
 		}
 
-		$pizza_waves = $this->Lan->PizzaWave->find('all', array(
-			'conditions' => array(
-				'PizzaWave.lan_id' => $id
-			)
-				)
-		);
+		$this->set('pizza_menus', $this->Lan->LanPizzaMenu->find('all', array(
+					'conditions' => array(
+						'LanPizzaMenu.lan_id' => $id
+					),
+					'recursive' => 2
+				)));
+	}
 
-		$this->Lan->PizzaWave->dateToNiceArray($pizza_waves, 'PizzaWave', 'time_start', false);
+	public function view_pizzamenu($lan_pizza_menu_id) {
+//		if (!$this->request->is('ajax')) {
+//			throw new BadRequestException('Bad request');
+//		}
+//
+//		$this->layout = 'ajax';
 
-		foreach ($pizza_waves as $pizza_wave_nr => $pizza_wave_content) {
-			$pizza_waves[$pizza_wave_nr]['PizzaWave']['pizza_order_total'] = $this->Lan->PizzaWave->getOrdersSum($pizza_wave_content['PizzaWave']['id']);
+		$this->Lan->LanPizzaMenu->id = $lan_pizza_menu_id;
+
+		if (!$this->Lan->LanPizzaMenu->exists()) {
+			throw new NotFoundException('Lan Pizza Menu not found with id #' . $lan_pizza_menu_id);
 		}
 
+		$this->Lan->LanPizzaMenu->read(array('pizza_menu_id', 'lan_id'));
 
-		$this->set(compact('pizza_waves'));
-		$this->set('lan_id', $id);
+		$this->Lan->id = $this->Lan->LanPizzaMenu->data['LanPizzaMenu']['lan_id'];
+		$this->Lan->LanPizzaMenu->PizzaMenu->id = $this->Lan->LanPizzaMenu->data['LanPizzaMenu']['pizza_menu_id'];
+		if (!$this->Lan->exists()) {
+			throw new NotFoundException('Lan not found with id #' . $this->Lan->id);
+		}
+		if (!$this->Lan->LanPizzaMenu->PizzaMenu->exists()) {
+			throw new NotFoundException('Pizza menu not found with id #' . $this->Lan->LanPizzaMenu->PizzaMenu->id);
+		}
+
+		$this->set(compact('lan_pizza_menu_id'));
+		$this->set('pizza_menu', $this->Lan->LanPizzaMenu->PizzaMenu->read());
+		$this->set('pizza_waves', $this->Lan->LanPizzaMenu->PizzaWave->find('all', array(
+					'conditions' => array(
+						'PizzaWave.lan_pizza_menu_id' => $lan_pizza_menu_id
+					)
+				)));
 	}
 
 	/* -- Economics tab -- */

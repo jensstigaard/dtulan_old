@@ -3,7 +3,7 @@
 class PizzaWave extends AppModel {
 
     public $hasMany = array('PizzaOrder' => array('foreignKey' => 'pizza_wave_id'));
-    public $belongsTo = array('Lan');
+    public $belongsTo = array('LanPizzaMenu');
     public $order = array(
         'PizzaWave.time_start' => 'desc'
     );
@@ -58,53 +58,6 @@ class PizzaWave extends AppModel {
                 'PizzaWave.time_end >' => $current_time,
                 'PizzaWave.time_start <' => $current_time,
                 'PizzaWave.status' => 1
-            )
-                )
-        );
-
-        return $current_wave;
-    }
-
-    public function getOnAir($lan_id = null) {
-        $current_time = date('Y-m-d H:i:s');
-
-        $conditions = array(
-            'PizzaWave.time_end >' => $current_time,
-            'PizzaWave.time_start <' => $current_time,
-            'PizzaWave.status' => 1
-        );
-
-        if ($lan_id != null) {
-            $conditions['PizzaWave.lan_id'] = $lan_id;
-        }
-
-        $current_wave = $this->Lan->PizzaWave->find('first', array(
-            'conditions' => $conditions,
-            'order' => array(
-                'PizzaWave.time_start ASC'
-            )
-                )
-        );
-
-        return $current_wave;
-    }
-
-    public function getAvailable($lan_id = null) {
-        $current_time = date('Y-m-d H:i:s');
-
-        $conditions = array(
-            'PizzaWave.time_end >' => $current_time,
-            'PizzaWave.status' => 1
-        );
-
-        if ($lan_id != null) {
-            $conditions['PizzaWave.lan_id'] = $lan_id;
-        }
-
-        $current_wave = $this->find('all', array(
-            'conditions' => $conditions,
-            'order' => array(
-                'PizzaWave.time_start ASC'
             )
                 )
         );
