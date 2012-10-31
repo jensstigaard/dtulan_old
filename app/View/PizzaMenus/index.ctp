@@ -23,4 +23,4 @@
 		</table>
 	<?php endif; ?>
 </div>
-<?php pr($pizza_menus); ?>
+<?php // pr($pizza_menus); ?>

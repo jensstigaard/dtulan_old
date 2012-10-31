@@ -20,7 +20,7 @@ class PizzaMenusController extends AppController {
 			'recursive' => -1
 				));
 
-		foreach($pizza_menus as $index => $data){
+		foreach ($pizza_menus as $index => $data) {
 			$this->PizzaMenu->id = $data['PizzaMenu']['id'];
 			$pizza_menus[$index]['PizzaMenu']['count_categories'] = $this->PizzaMenu->countCategories();
 			$pizza_menus[$index]['PizzaMenu']['count_items'] = $this->PizzaMenu->countItems();

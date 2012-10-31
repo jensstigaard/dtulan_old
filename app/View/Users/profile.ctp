@@ -1,5 +1,3 @@
-<?php echo $this->Html->script('users/profile', FALSE); ?>
-
 <div>
 	<h1>
 		<?php

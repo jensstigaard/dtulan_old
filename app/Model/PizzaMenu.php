@@ -6,7 +6,6 @@ class PizzaMenu extends AppModel {
 		'PizzaCategory'
 	);
 
-
 	public function getList() {
 		$this->PizzaCategory->Pizza->unbindModel(array('belongsTo' => array('PizzaCategory')));
 		$this->PizzaCategory->Pizza->PizzaPrice->unbindModel(array('belongsTo' => array('Pizza'), 'hasMany' => array('PizzaOrderItem')));
@@ -48,17 +47,20 @@ class PizzaMenu extends AppModel {
 		return $data_category;
 	}
 
-	public function countCategories(){
+	public function countCategories() {
 		return $this->PizzaCategory->find('count', array(
-			'conditions' => array(
-				'PizzaCategory.pizza_menu_id' => $this->id
-			)
-		));
+					'conditions' => array(
+						'PizzaCategory.pizza_menu_id' => $this->id
+					)
+				));
 	}
 
-	public function countItems(){
-		return 0;
+	public function countItems() {
+		$db = $this->getDataSource();
+		$total = $db->fetchAll("SELECT COUNT(Pizza.id) AS countItems FROM `pizzas` AS Pizza INNER JOIN `pizza_categories` AS PizzaCategory ON Pizza.pizza_category_id = PizzaCategory.id WHERE PizzaCategory.pizza_menu_id = ?", array($this->id));
+		return $total[0][0]['countItems'];
 	}
+
 }
 
 ?>

@@ -78,14 +78,13 @@ class PizzaWave extends AppModel {
 			throw new NotFoundException(__('Pizza wave not found with ID: "' . $this->id . '" in function isOrderable'));
 		}
 
-		$this->read(array('time_end', 'lan_id', 'status'));
+		$this->read(array('time_end', 'lan_pizza_menu_id', 'status'));
 
-		$this->Lan->id = $this->data['PizzaWave']['lan_id'];
+		$this->LanPizzaMenu->id = $this->data['PizzaWave']['lan_pizza_menu_id'];
 
-		if ($this->Lan->isPublished()) {
-			if ($this->data['PizzaWave']['status'] == 1 && $this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
-				return true;
-			}
+
+		if ($this->data['PizzaWave']['status'] == 1 && $this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
+			return true;
 		}
 
 		return false;
