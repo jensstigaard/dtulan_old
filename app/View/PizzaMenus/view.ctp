@@ -1,15 +1,38 @@
 <?php
 echo $this->Html->css('pizzas', null, array('inline' => false));
 echo $this->Html->script(array('pizzas'), FALSE);
-
-if ($is_orderable) {
-	echo $this->Html->script(array('pizzas_orderable'), FALSE);
-}
 ?>
 
 <div>
+	<div style="float:right;">
+		<?php echo $this->Html->link('Edit pizza menu', array('action' => 'edit', $pizza_menu['PizzaMenu']['id'])); ?>
+	</div>
+
 	<h1><?php echo $pizza_menu['PizzaMenu']['title']; ?></h1>
 	<p><?php echo $pizza_menu['PizzaMenu']['description']; ?></p>
+
+</div>
+<div>
+	<h2>Used in LANS</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>LAN title</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach ($used_in_lans as $lan_pizza_menu): ?>
+				<tr>
+					<td><?php echo $this->Html->link($lan_pizza_menu['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan_pizza_menu['Lan']['slug'])); ?></td>
+					<td></td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+</div>
+<div>
+	<h2>Menu card</h2>
 	<div class="pizza_list">
 		<?php foreach ($pizza_categories as $pizza_category): ?>
 			<?php if (count($pizza_category['Pizza']) || $is_admin): ?>
@@ -26,6 +49,28 @@ if ($is_orderable) {
 										<span title="<?php echo $type['title']; ?>"><?php echo $type['title_short']; ?></span>
 									</th>
 								<?php endforeach; ?>
+								<?php if ($is_admin): ?>
+									<th>
+										<?php
+										echo $this->Html->image('16x16_GIF/reply.gif', array(
+											'alt' => 'Edit category',
+											'title' => 'Edit category',
+											'url' => array(
+												'controller' => 'pizza_categories',
+												'action' => 'edit', $pizza_category['PizzaCategory']['id'])
+												)
+										);
+										echo $this->Html->image('16x16_GIF/action_add.gif', array(
+											'alt' => 'Add pizza to category',
+											'title' => 'Add pizza to category',
+											'url' => array(
+												'controller' => 'pizzas',
+												'action' => 'add', $pizza_category['PizzaCategory']['id'])
+												)
+										);
+										?>
+									</th>
+								<?php endif; ?>
 							</tr>
 						</thead>
 						<?php if (!count($pizza_category['Pizza'])): ?>
@@ -62,14 +107,21 @@ if ($is_orderable) {
 													?>
 													<td class="price">
 														<?php if ($price_info['price'] != 0): ?>
-															<span<?php echo $pizza['available'] ? ' class="available"' : '' ?>><?php echo $price_info['price']; ?></span>,-
-															<span class="hidden price_id"><?php echo $price_info['id']; ?></span>
+															<span><?php echo $price_info['price']; ?></span>,-
 														<?php endif; ?>
 													</td>
 													<?php
 												endforeach;
 											}
 											?>
+											<?php if ($is_admin): ?>
+												<td><?php
+						echo $this->Html->image('16x16_GIF/reply.gif', array(
+							'alt' => 'Edit pizza',
+							'title' => 'Edit pizza',
+							'url' => array('controller' => 'pizzas', 'action' => 'edit', $pizza['id'])));
+												?></td>
+											<?php endif; ?>
 										</tr>
 									<?php endif; ?>
 								<?php endforeach; ?>
@@ -81,11 +133,4 @@ if ($is_orderable) {
 		<?php endforeach; ?>
 	</div>
 	<div style="clear:both;"></div>
-	<div class="hidden_images">
-		<?php
-		echo $this->Html->image('16x16_PNG/add.png', array('class' => 'image_add'));
-		echo $this->Html->image('16x16_PNG/cancel.png', array('class' => 'image_remove'));
-		?>
-	</div>
-	<?php // pr($pizza_categories); ?>
 </div>

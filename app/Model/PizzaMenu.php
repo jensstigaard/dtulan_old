@@ -3,10 +3,23 @@
 class PizzaMenu extends AppModel {
 
 	public $hasMany = array(
-		'PizzaCategory'
+		'PizzaCategory',
+		'LanPizzaMenu'
+	);
+	public $validate = array(
+		'title' => array(
+			'notEmpty' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Title cannot be empty'
+			),
+			'unique' => array(
+				'rule' => 'isUnique',
+				'message' => 'Title has to be unique'
+			)
+		)
 	);
 
-	public function getList() {
+	public function getPizzaList() {
 		$this->PizzaCategory->Pizza->unbindModel(array('belongsTo' => array('PizzaCategory')));
 		$this->PizzaCategory->Pizza->PizzaPrice->unbindModel(array('belongsTo' => array('Pizza'), 'hasMany' => array('PizzaOrderItem')));
 
@@ -59,6 +72,23 @@ class PizzaMenu extends AppModel {
 		$db = $this->getDataSource();
 		$total = $db->fetchAll("SELECT COUNT(Pizza.id) AS countItems FROM `pizzas` AS Pizza INNER JOIN `pizza_categories` AS PizzaCategory ON Pizza.pizza_category_id = PizzaCategory.id WHERE PizzaCategory.pizza_menu_id = ?", array($this->id));
 		return $total[0][0]['countItems'];
+	}
+
+	public function getUsedInLans() {
+		return $this->LanPizzaMenu->find('all', array(
+					'conditions' => array(
+						'LanPizzaMenu.pizza_menu_id' => $this->id
+					),
+					'recursive' => 1
+				));
+	}
+
+	public function countUsedInLans() {
+		return $this->LanPizzaMenu->find('count', array(
+					'conditions' => array(
+						'LanPizzaMenu.pizza_menu_id' => $this->id
+					)
+				));
 	}
 
 }
