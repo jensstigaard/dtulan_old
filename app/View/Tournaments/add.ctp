@@ -1,4 +1,4 @@
-<?php echo $this->Html->script(array('jquery', 'ckeditor/ckeditor'), FALSE); ?>
+<?php echo $this->Html->script(array('ckeditor/ckeditor'), FALSE); ?>
 <div>
 	<?php echo $this->Form->create(); ?>
     <fieldset>

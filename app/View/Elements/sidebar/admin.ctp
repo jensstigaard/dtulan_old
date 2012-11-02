@@ -13,6 +13,18 @@
 			<li>
 				<?php
 				echo $this->Html->link(
+						$this->Html->image('24x24_PNG/candy.png') . ' Food menus', array(
+					'controller' => 'food_menus',
+					'action' => 'index'
+						), array(
+					'escape' => false
+						)
+				);
+				?>
+			</li>
+			<li>
+				<?php
+				echo $this->Html->link(
 						$this->Html->image('24x24_PNG/candy.png') . ' Food orders', array(
 					'controller' => 'food_orders',
 					'action' => 'index'

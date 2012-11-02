@@ -1,4 +1,4 @@
-<?php echo $this->Html->script(array('jquery', 'ckeditor/ckeditor'), FALSE); ?>
+<?php echo $this->Html->script(array('ckeditor/ckeditor'), FALSE); ?>
 <div>
 	<div style="float:right">
 		<?php echo $this->Html->link('Back to tournament', array('action' => 'view', $tournament_id)); ?>

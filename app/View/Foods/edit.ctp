@@ -1,12 +1,12 @@
 <div>
 	<div style="float:right">
-		<?php echo $this->Html->link('Back to food', array('action' => 'index')); ?>
+		<?php echo $this->Html->link('Back to Food Menus', array('controller'=>'food_menus', 'action' => 'index')); ?>
 	</div>
 	<?php echo $this->Form->create(); ?>
 	<div>
 		<?php
 		echo $this->Form->inputs(array(
-			'legend' => 'New Food in '.$category['FoodCategory']['title'],
+			'legend' => 'Edit Food in '.$category['FoodCategory']['title'],
 			'title',
 			'description' => array('rows' => 2),
 			'price',

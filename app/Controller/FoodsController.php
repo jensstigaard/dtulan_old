@@ -1,20 +1,9 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of FoodsController
- *
- * @author Jens
- */
 class FoodsController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('index');
 	}
 
 	public function isAuthorized($user) {
@@ -26,36 +15,18 @@ class FoodsController extends AppController {
 		return false;
 	}
 
-	public function index() {
-		$title_for_layout = 'Foods and soda';
+	public function add($food_category_id) {
 
-		$foods = array();
-
-		$conditions = array();
-
-		if (!$this->Food->isYouAdmin()) {
-			$conditions['Food.available'] = 1;
+		$this->Food->FoodCategory->id = $food_category_id;
+		if(!$this->Food->FoodCategory->exists()){
+			throw new NotFoundException('Food Category not found with ID #'.$food_category_id);
 		}
 
-		$foods = $this->Food->find('all', array(
-			'conditions' => $conditions
-				)
-		);
+		$this->set('category', $this->Food->FoodCategory->read(array('id', 'title')));
 
-		$this->loadModel('Lan');
-		if ($this->Lan->isCurrent()) {
-			$current_lan = $this->Lan->getCurrent();
-
-			if ($this->Lan->isUserAttending($current_lan['Lan']['id'], $this->Auth->user('id'))) {
-				$this->set('foods_current_lan_id', $current_lan['Lan']['id']);
-			}
-		}
-
-		$this->set(compact('title_for_layout', 'foods'));
-	}
-
-	public function add() {
 		if ($this->request->is('post')) {
+
+			$this->request->data['Food']['food_category_id'] = $food_category_id;
 
 			if ($this->Food->save($this->request->data)) {
 				$this->Session->setFlash('Your food has been created', 'default', array('class' => 'message success'), 'good');
@@ -69,7 +40,7 @@ class FoodsController extends AppController {
 	public function edit($id) {
 		$this->Food->id = $id;
 		if (!$this->Food->exists()) {
-			throw new NotFoundException(__('food not found'));
+			throw new NotFoundException(__('Food not found with ID #'.$id));
 		}
 
 		if ($this->request->is('get')) {
@@ -82,6 +53,8 @@ class FoodsController extends AppController {
 				$this->Session->setFlash(__('The food could not be saved - please try again'), 'default', array(), 'bad');
 			}
 		}
+
+		$this->set('category', $this->Food->FoodCategory->read(array('id','title'), $this->Food->field('food_category_id')));
 	}
 
 	public function delete($id) {

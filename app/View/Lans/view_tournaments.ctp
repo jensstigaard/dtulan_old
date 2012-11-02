@@ -1,4 +1,4 @@
-<?php echo $this->Html->script(array('jquery', 'ajax/all_links')); ?>
+<?php echo $this->Html->script(array('ajax/all_links')); ?>
 
 <div class="ajax_area" id="tournaments">
 <?php if ($is_admin): ?>

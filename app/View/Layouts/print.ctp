@@ -29,7 +29,7 @@
 				'layout.admin'));
 		}
 
-		$this->Html->script(array('jquery', 'jquery-ui', 'generel'), false);
+		echo $this->Html->script(array('jquery', 'jquery-ui', 'generel'));
 
 		if ($is_admin) {
 			$this->Html->script(array('admin/user_lookup'), false);

@@ -2,7 +2,7 @@
 	<div style="float:right">
 		<?php
 		echo $this->Html->link($this->Html->image('16x16_PNG/add.png') . ' Add pizza-menu to LAN', array(
-			'controller' => 'lan_pizza_menu',
+			'controller' => 'lan_pizza_menus',
 			'action' => 'add',
 			$id
 				), array(
