@@ -13,7 +13,10 @@ if (!$is_loggedin) {
 } else {
 	echo $this->element('sidebar/user', array());
 	echo $this->element('sidebar/pizza', array());
-	echo $this->element('sidebar/food', array());
+	if (isset($is_orderable_food) && $is_orderable_food) {
+		echo $this->element('sidebar/order_food', array());
+	}
+
 	if (count($lans_highlighted)) {
 		echo $this->element('sidebar/lans_highlighted', array(
 			'cache' => array(

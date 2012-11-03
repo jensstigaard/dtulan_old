@@ -39,6 +39,13 @@
 
 			<?php if ($is_admin): ?>
 
+			<li><a href="<?php
+			echo $this->Html->url(array(
+				'action' => 'view_foodmenus',
+				$lan['Lan']['id']
+			));
+				?>"><?php echo $this->Html->image('24x24_PNG/candy.png'); ?></a></li>
+
 				<li><a href="<?php
 			echo $this->Html->url(array(
 				'action' => 'view_pizzamenus',

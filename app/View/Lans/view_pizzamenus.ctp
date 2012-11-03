@@ -17,6 +17,9 @@
 			<div>
 				<div>
 					<h1><?php echo $pizza_menu['PizzaMenu']['title']; ?></h1>
+					<ul>
+						<li>Orders made: coming</li>
+					</ul>
 				</div>
 
 				<div style="float:right">

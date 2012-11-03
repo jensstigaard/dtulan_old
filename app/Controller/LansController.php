@@ -205,31 +205,35 @@ class LansController extends AppController {
 		$this->set(compact('pizza_menus', 'id'));
 	}
 
-	public function view_pizzamenu($lan_pizza_menu_id) {
-//		if (!$this->request->is('ajax')) {
-//			throw new BadRequestException('Bad request');
-//		}
-//
-//		$this->layout = 'ajax';
+	public function view_foodmenus($id) {
 
-		$this->Lan->LanPizzaMenu->id = $lan_pizza_menu_id;
-
-		if (!$this->Lan->LanPizzaMenu->exists()) {
-			throw new NotFoundException('Lan Pizza Menu not found with id #' . $lan_pizza_menu_id);
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request');
 		}
 
-		$this->Lan->LanPizzaMenu->read(array('pizza_menu_id', 'lan_id'));
+		$this->layout = 'ajax';
 
-		$this->Lan->id = $this->Lan->LanPizzaMenu->data['LanPizzaMenu']['lan_id'];
-		$this->Lan->LanPizzaMenu->PizzaMenu->id = $this->Lan->LanPizzaMenu->data['LanPizzaMenu']['pizza_menu_id'];
+		$this->Lan->id = $id;
+
 		if (!$this->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $this->Lan->id);
-		}
-		if (!$this->Lan->LanPizzaMenu->PizzaMenu->exists()) {
-			throw new NotFoundException('Pizza menu not found with id #' . $this->Lan->LanPizzaMenu->PizzaMenu->id);
+			throw new NotFoundException('Lan not found with id #' . $id);
 		}
 
-		$this->set(compact('lan_pizza_menu_id'));
+		$this->Lan->LanFoodMenu->unbindModel(array('belongsTo' => array('Lan')));
+
+		$food_menus = $this->Lan->LanFoodMenu->find('all', array(
+			'conditions' => array(
+				'LanFoodMenu.lan_id' => $id
+			),
+			'recursive' => 1
+				));
+
+		foreach($food_menus as $index => $food_menu){
+			$this->Lan->LanFoodMenu->id = $food_menu['LanFoodMenu']['id'];
+			$food_menus[$index]['LanFoodMenu']['count_orders'] = $this->Lan->LanFoodMenu->countOrders();
+		}
+
+		$this->set(compact('food_menus', 'id'));
 	}
 
 	/* -- Economics tab -- */
@@ -251,17 +255,17 @@ class LansController extends AppController {
 
 		$count_lan_signups = $this->Lan->countSignups();
 		$money_pizza_orders = $this->Lan->getMoneyTotalPizzas();
-		$money_food_orders = $this->Lan->getFoodOrdersTotal();
+		$money_food_orders = $this->Lan->getMoneyTotalFoods();
 		$this->set('count_lan_signups_guests', $this->Lan->countGuests());
 		$this->set('count_pizza_orders', $this->Lan->countPizzaOrders());
-		$this->set('count_food_orders', $this->Lan->getCountFoodOrders());
+		$this->set('count_food_orders', $this->Lan->countFoodOrders());
 
 		$money_total = 0;
 		$money_total += $count_lan_signups * $this->Lan->data['Lan']['price'];
 		$money_total += $money_pizza_orders;
 		$money_total += $money_food_orders;
 
-		$this->set(compact('count_lan_signups','money_total','money_pizza_orders', 'money_food_orders'));
+		$this->set(compact('count_lan_signups', 'money_total', 'money_pizza_orders', 'money_food_orders'));
 	}
 
 	public function view_invites($id) {

@@ -21,7 +21,7 @@ class Lan extends AppModel {
 		'LanPizzaMenu' => array(
 			'dependent' => true
 		),
-		'FoodOrder' => array(
+		'LanFoodMenu' => array(
 			'dependent' => true
 		)
 	);
@@ -248,47 +248,6 @@ class Lan extends AppModel {
 				) == 1;
 	}
 
-	public function getFoodOrderIds() {
-		$food_orders = $this->FoodOrder->find('all', array(
-			'conditions' => array(
-				'lan_id' => $this->id
-			),
-			'fields' => array(
-				'id'
-			)
-				)
-		);
-
-		$food_order_ids = array();
-		foreach ($food_orders as $food_order) {
-			$food_order_ids[] = $food_order['FoodOrder']['id'];
-		}
-
-		return $food_order_ids;
-	}
-
-	public function getCountFoodOrders() {
-		return $this->FoodOrder->find('count', array(
-					'conditions' => array(
-						'lan_id' => $this->id
-					)
-						)
-		);
-	}
-
-	public function getFoodOrdersTotal() {
-		$sum = $this->FoodOrder->FoodOrderItem->find('all', array(
-			'fields' => array(
-				'sum(FoodOrderItem.quantity * FoodOrderItem.price) AS ctotal'
-			),
-			'conditions' => array(
-				'FoodOrderItem.food_order_id' => $this->getFoodOrderIds()
-			)
-				)
-		);
-		return $sum[0][0]['ctotal'];
-	}
-
 	public function getLanDays() {
 		return $this->LanDay->find('all', array(
 					'conditions' => array(
@@ -351,6 +310,25 @@ class Lan extends AppModel {
 
 		return $ids;
 	}
+	
+	public function getFoodMenuIds() {
+		$lan_food_menus = $this->FoodMenu->find('all', array(
+			'conditions' => array(
+				'LanFoodMenu.lan_id' => $this->id
+			),
+			'fields' => array(
+				'LanFoodMenu.food_menu_id'
+			)
+				)
+		);
+
+		$food_menu_ids = array();
+		foreach ($lan_food_menus as $lan_food_menu) {
+			$food_menu_ids[] = $lan_food_menu['LanFoodMenu']['food_menu_id'];
+		}
+
+		return $food_menu_ids;
+	}
 
 	public function countPizzaOrders() {
 		$db = $this->getDataSource();
@@ -361,6 +339,18 @@ class Lan extends AppModel {
 	public function getMoneyTotalPizzas() {
 		$db = $this->getDataSource();
 		$total = $db->fetchAll("SELECT SUM(PizzaOrderItem.price * PizzaOrderItem.quantity) AS Total FROM `lan_pizza_menus` AS LanPizzaMenu INNER JOIN `pizza_waves` AS PizzaWave ON PizzaWave.lan_pizza_menu_id = LanPizzaMenu.id INNER JOIN `pizza_orders` AS PizzaOrder ON PizzaOrder.pizza_wave_id = PizzaWave.id INNER JOIN pizza_order_items AS PizzaOrderItem ON PizzaOrderItem.pizza_order_id = PizzaOrder.id WHERE LanPizzaMenu.lan_id = ?", array($this->id));
+		return $total[0][0]['Total'];
+	}
+
+	public function countFoodOrders() {
+		$db = $this->getDataSource();
+		$total = $db->fetchAll("SELECT COUNT(FoodOrder.id) AS FoodOrders FROM `lan_food_menus` AS LanFoodMenu INNER JOIN `food_orders` AS FoodOrder ON FoodOrder.lan_food_menu_id = LanFoodMenu.id WHERE LanFoodMenu.lan_id = ?", array($this->id));
+		return $total[0][0]['FoodOrders'];
+	}
+
+	public function getMoneyTotalFoods() {
+		$db = $this->getDataSource();
+		$total = $db->fetchAll("SELECT SUM(FoodOrderItem.price * FoodOrderItem.quantity) AS Total FROM `lan_food_menus` AS LanFoodMenu INNER JOIN `food_orders` AS FoodOrder ON FoodOrder.lan_food_menu_id = LanFoodMenu.id INNER JOIN `food_order_items` AS FoodOrderItem ON FoodOrderItem.food_order_id = FoodOrder.id WHERE LanFoodMenu.lan_id = ?", array($this->id));
 		return $total[0][0]['Total'];
 	}
 
