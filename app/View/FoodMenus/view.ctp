@@ -1,6 +1,6 @@
 <div>
 	<div style="float:right;">
-		<?php echo $this->Html->link('Edit food menu', array('action' => 'edit', $food_menu['FoodMenu']['id'])); ?>
+		<?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif').' Edit food menu', array('action' => 'edit', $food_menu['FoodMenu']['id']),array('escape'=>false)); ?>
 	</div>
 
 	<h1><?php echo $food_menu['FoodMenu']['title']; ?></h1>
@@ -42,7 +42,7 @@
 						<th><?php echo $category['FoodCategory']['title']; ?></th>
 						<th>Description</th>
 						<th>Price</th>
-						<th><?php echo $this->Html->link('Edit category', array('controller' => 'food_categories', 'action' => 'edit', $category['FoodCategory']['id'])) ?></th>
+						<th><?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif'), array('controller' => 'food_categories', 'action' => 'edit', $category['FoodCategory']['id']),array('escape'=>false,'title'=>'Edit category')); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -59,7 +59,7 @@
 								<small><?php echo $food['description']; ?></small>
 							</td>
 							<td><?php echo $food['price']; ?> DKK</td>
-							<td><?php echo $this->Html->link('Edit item', array('controller'=>'foods','action'=>'edit',$food['id'])); ?></td>
+							<td><?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif'), array('controller'=>'foods','action'=>'edit',$food['id']), array('escape'=>false,'title'=>'Edit item')); ?></td>
 						</tr>
 					<?php endforeach; ?>
 					<tr>

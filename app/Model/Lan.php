@@ -310,9 +310,9 @@ class Lan extends AppModel {
 
 		return $ids;
 	}
-	
+
 	public function getFoodMenuIds() {
-		$lan_food_menus = $this->FoodMenu->find('all', array(
+		$lan_food_menus = $this->LanFoodMenu->find('all', array(
 			'conditions' => array(
 				'LanFoodMenu.lan_id' => $this->id
 			),

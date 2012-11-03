@@ -24,6 +24,36 @@ class LanFoodMenusController extends AppController {
 		$this->set('is_orderable_food', $this->LanFoodMenu->data['LanFoodMenu']['is_orderable']);
 	}
 
+	public function add($lan_id) {
+		$this->LanFoodMenu->Lan->id = $lan_id;
+
+		if (!$this->LanFoodMenu->Lan->exists()) {
+			throw new NotFoundException('Lan not found with ID #' . $lan_id);
+		}
+
+		if ($this->request->is('post')) {
+			$this->request->data['LanFoodMenu']['lan_id'] = $lan_id;
+
+			if ($this->LanFoodMenu->save($this->request->data)) {
+				$this->Session->setFlash('Your food menu has been connected', 'default', array('class' => 'message success'), 'good');
+			} else {
+				$this->Session->setFlash('Unable to connect pizza menu', 'default', array(), 'bad');
+			}
+		}
+
+		$this->LanFoodMenu->Lan->read(array('title'));
+
+		$this->set('lan_title', $this->LanFoodMenu->Lan->data['Lan']['title']);
+
+		$this->set('foodMenus', $this->LanFoodMenu->FoodMenu->find('list', array(
+					'conditions' => array(
+						'NOT' => array(
+							'FoodMenu.id' => $this->LanFoodMenu->Lan->getFoodMenuIds()
+						)
+					)
+				)));
+	}
+
 }
 
 ?>

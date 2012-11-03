@@ -30,7 +30,7 @@ class FoodsController extends AppController {
 
 			if ($this->Food->save($this->request->data)) {
 				$this->Session->setFlash('Your food has been created', 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('controller' => 'food_menus'));
 			} else {
 				$this->Session->setFlash('Unable to create food', 'default', array(), 'bad');
 			}
@@ -66,11 +66,11 @@ class FoodsController extends AppController {
 
 		if ($this->Food->delete()) {
 			$this->Session->setFlash('Food has been deleted', 'default', array('class' => 'message success'), 'good');
-			$this->redirect(array('action' => 'index'));
 		} else {
 			$this->Session->setFlash('Food could not be deleted', 'default', array(), 'bad');
-			$this->redirect(array('action' => 'index'));
 		}
+
+		$this->redirect($this->referer());
 	}
 
 }

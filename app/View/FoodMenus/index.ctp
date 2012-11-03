@@ -1,4 +1,7 @@
 <div>
+	<div style="float:right">
+		<?php echo $this->Html->link('Add Food Menu', array('action'=>'add')); ?>
+	</div>
 	<h1>Food Menus</h1>
 
 	<?php if(!count($food_menus)): ?>
