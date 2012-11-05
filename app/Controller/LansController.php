@@ -194,7 +194,7 @@ class LansController extends AppController {
 				));
 
 		foreach ($pizza_menus as $index => $pizza_menu_data) {
-			$this->Lan->dateToNiceArray($pizza_menus[$index]['PizzaWave'], null, 'time_start');
+			$this->Lan->dateToNiceArray($pizza_menus[$index]['PizzaWave'], null, 'time_start', false);
 
 			foreach ($pizza_menu_data['PizzaWave'] as $index_ => $pizza_wave_data) {
 				$this->Lan->LanPizzaMenu->PizzaWave->id = $pizza_wave_data['id'];

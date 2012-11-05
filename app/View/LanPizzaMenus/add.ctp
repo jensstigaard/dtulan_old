@@ -6,7 +6,13 @@
 		<?php if (!count($pizzaMenus)): ?>
 			<p>No pizza menus can be added</p>
 		<?php else: ?>
-			<?php echo $this->Form->input('LanPizzaMenu.pizza_menu_id'); ?>
+			<?php
+			echo $this->Chosen->select(
+					'pizza_menu_id', $pizzaMenus, array(
+				'data-placeholder' => 'Pick Pizza Menu...',
+					)
+			);
+			?>
 		<?php endif; ?>
 	</fieldset>
 	<?php echo $this->Form->end(__('Submit')); ?>

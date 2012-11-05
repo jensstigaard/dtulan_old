@@ -78,12 +78,17 @@ class PizzaWave extends AppModel {
 			throw new NotFoundException(__('Pizza wave not found with ID: "' . $this->id . '" in function isOrderable'));
 		}
 
-		$this->read(array('time_end', 'lan_pizza_menu_id', 'status'));
+		$this->read(array('status', 'time_end', 'lan_pizza_menu_id'));
 
 		$this->LanPizzaMenu->id = $this->data['PizzaWave']['lan_pizza_menu_id'];
 
+		$this->LanPizzaMenu->read(array('lan_id'));
 
-		if ($this->data['PizzaWave']['status'] == 1 && $this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
+		$this->LanPizzaMenu->Lan->id = $this->LanPizzaMenu->data['LanPizzaMenu']['lan_id'];
+
+		$this->LanPizzaMenu->Lan->LanSignup->User->id = CakeSession::read('Auth.User.id');
+
+		if ($this->LanPizzaMenu->Lan->isUserAttending() && $this->data['PizzaWave']['status'] == 1 && $this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
 			return true;
 		}
 

@@ -3,7 +3,7 @@ echo $this->Html->css('pizzas', null, array('inline' => false));
 echo $this->Html->script(array('pizzas'), FALSE);
 
 if ($is_orderable) {
-	echo $this->Html->script(array('pizzas_orderable'), FALSE);
+	echo $this->Html->script(array('order/pizza'), FALSE);
 }
 ?>
 
@@ -87,5 +87,5 @@ if ($is_orderable) {
 		echo $this->Html->image('16x16_PNG/cancel.png', array('class' => 'image_remove'));
 		?>
 	</div>
-	<?php // pr($pizza_categories); ?>
+	<?php pr($pizza_waves); ?>
 </div>

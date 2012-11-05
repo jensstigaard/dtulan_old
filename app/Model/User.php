@@ -223,12 +223,20 @@ class User extends AppModel {
 		return isset($this->data['Admin']['user_id']);
 	}
 
+	// Why this function?
 	public function getName() {
 		return $this->data['User']['name'];
 	}
 
+	// Why this function?
 	public function getEmail() {
 		return $this->data['User']['email'];
+	}
+
+
+	public function getBalance(){
+		$this->read(array('User.balance'));
+		return $this->data['User']['balance'];
 	}
 
 	public function beforeSave($options = array()) {

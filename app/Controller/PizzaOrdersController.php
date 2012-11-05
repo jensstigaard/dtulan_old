@@ -21,7 +21,7 @@ class PizzaOrdersController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin($user) || in_array($this->action, array(
+		if ($this->PizzaOrder->isYouAdmin() || in_array($this->action, array(
 					'add',
 					'delete',
 				))) {
@@ -37,19 +37,18 @@ class PizzaOrdersController extends AppController {
 
 		$data = $this->request->data;
 
-		if (!$this->PizzaOrder->PizzaWave->isOrderable($data['wave_id'], $this->isAdmin())) {
+		$this->PizzaOrder->PizzaWave->id = $this->request->data['wave_id'];
+
+		if (!$this->PizzaOrder->PizzaWave->isOrderable()) {
 			$msg = 'Pizza wave not valid';
 		} else {
 			$this->request->data['PizzaOrder'] = array(
-				'pizza_wave_id' => $data['wave_id'],
+				'pizza_wave_id' => $this->request->data['wave_id'],
 				'user_id' => $this->Auth->user('id')
 			);
 
 			// Get data from the pizza wave
 			$this->PizzaOrder->PizzaWave->read(null, $data['wave_id']);
-
-			// Get the user balance
-			$this->PizzaOrder->User->read(array('balance'), $this->Auth->user('id'));
 
 			// Used to calc the total price for pizzas
 			$pizza_sum = 0;
@@ -69,8 +68,9 @@ class PizzaOrdersController extends AppController {
 			unset($this->request->data['order_list'], $this->request->data['wave_id']);
 
 			// Edit the user balance
+			$this->PizzaOrder->User->id = $this->Auth->user('id');
 			$this->request->data['User']['id'] = $this->Auth->user('id');
-			$this->request->data['User']['balance'] = $this->PizzaOrder->User->data['User']['balance'] - $pizza_sum;
+			$this->request->data['User']['balance'] = $this->PizzaOrder->User->getBalance() - $pizza_sum;
 
 			// Is there any pizzas to order?
 			if (isset($this->request->data['PizzaOrderItem']) && count($this->request->data['PizzaOrderItem'])) {
@@ -78,7 +78,13 @@ class PizzaOrdersController extends AppController {
 				if ($this->PizzaOrder->saveAssociated($this->request->data)) {
 					$msg = 'SUCCESS';
 				} else {
-					$msg = $this->PizzaOrder->validationErrors;
+					if(isset($this->PizzaOrder->validationErrors['User']['balance'][0])){
+						$msg = $this->PizzaOrder->validationErrors['User']['balance'][0];
+					}
+					else{
+						$msg = $this->PizzaOrder->validationErrors;
+					}
+
 				}
 			} else {
 				$msg = 'Invalid pizza order';

@@ -9,12 +9,9 @@
 	} else {
 		echo $this->Form->create();
 
-//		echo $this->Form->input('user_id');
-
 		echo $this->Chosen->select(
 				'user_id', $users, array(
 			'data-placeholder' => 'Pick user...',
-			//'default' => key($users),
 				)
 		);
 

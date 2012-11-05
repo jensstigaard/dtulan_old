@@ -19,7 +19,7 @@ class PizzaOrderItem extends AppModel {
 				'rule' => 'isPizzaPriceId',
 				'message' => 'Invalid pizza or pizza type'
 			)
-		)
+		),
 	);
 
 	public function isPizzaPriceId($check) {

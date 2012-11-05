@@ -35,7 +35,7 @@ class AppModel extends Model {
 	public function dateToNiceArray(&$array, $model_name = null, $field_name_time = 'time', $with_time = true) {
 		foreach ($array as $index => $content) {
 			if ($model_name == null && isset($content[$field_name_time])) {
-				$array[$index][$field_name_time . '_nice'] = $this->dateToNice($content[$field_name_time]);
+				$array[$index][$field_name_time . '_nice'] = $this->dateToNice($content[$field_name_time], $with_time);
 			} else {
 				$array[$index][$model_name][$field_name_time . '_nice'] = $this->dateToNice($content[$model_name][$field_name_time], $with_time);
 			}
@@ -68,6 +68,7 @@ class AppModel extends Model {
 		return $return;
 	}
 
+
 	public function stringToSlug($str) {
 		// turn into slug
 		$str = Inflector::slug($str);
@@ -75,7 +76,6 @@ class AppModel extends Model {
 		$str = strtolower($str);
 		return $str;
 	}
-
 
 	public function isYouAdmin() {
 		$admin_id = AuthComponent::user('Admin.id');

@@ -2,7 +2,7 @@
 echo $this->Html->css('pizzas', null, array('inline' => false));
 
 if ($is_orderable_food) {
-	echo $this->Html->script(array('food_orderable'), FALSE);
+	echo $this->Html->script(array('order/food'), FALSE);
 }
 ?>
 <div>

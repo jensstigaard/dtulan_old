@@ -19,12 +19,21 @@ class FoodMenu extends AppModel {
 	public function getCategories() {
 		$this->FoodCategory->unbindModel(array('belongsTo' => array('FoodMenu')));
 
-		return $this->FoodCategory->find('all', array(
+		$categories = $this->FoodCategory->find('all', array(
 					'conditions' => array(
 						'food_menu_id' => $this->id
 					),
 					'recursive' => 1
 				));
+
+		foreach($categories as $index => $category){
+			foreach($category['Food'] as $index2 => $food){
+				$this->FoodCategory->Food->id = $food['id'];
+				$categories[$index]['Food'][$index2]['countTimesSold'] = $this->FoodCategory->Food->countTimesSold();
+			}
+		}
+
+		return $categories;
 	}
 
 	public function countCategories() {

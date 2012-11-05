@@ -84,12 +84,12 @@ $(document).ready(
 		$(".order_submit").click(function(event){
 			event.preventDefault();
 
-			var lan_id = $(this).parent().find('div.hidden').text();
+			var lan_food_menu_id = $(this).parent().find('div.hidden').text();
 
 			if(orderListSize() > 0){
 				$.post($(this).attr('href'), {
 					'order_list': order_list,
-					'lan_id': lan_id
+					'lan_food_menu_id': lan_food_menu_id
 				}, function(data) {
 					if(data.trim()=='SUCCESS'){
 						$food_order.find(".order_success").show().delay(2000).hide("slow");

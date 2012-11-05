@@ -33,7 +33,7 @@
 				)
 		);
 		?>
-		<div class="hidden"><?php echo $foods_current_lan_id; ?></div>
+		<div class="hidden"><?php echo $lan_food_menu_id; ?></div>
 		<div style="clear:both;"></div>
 	</div>
 	<div class="order_sending hidden"></div>

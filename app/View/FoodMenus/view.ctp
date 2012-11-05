@@ -42,6 +42,7 @@
 						<th><?php echo $category['FoodCategory']['title']; ?></th>
 						<th>Description</th>
 						<th>Price</th>
+						<th>Times sold</th>
 						<th><?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif'), array('controller' => 'food_categories', 'action' => 'edit', $category['FoodCategory']['id']),array('escape'=>false,'title'=>'Edit category')); ?></th>
 					</tr>
 				</thead>
@@ -59,6 +60,7 @@
 								<small><?php echo $food['description']; ?></small>
 							</td>
 							<td><?php echo $food['price']; ?> DKK</td>
+							<td><?php echo $food['countTimesSold']; ?></td>
 							<td><?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif'), array('controller'=>'foods','action'=>'edit',$food['id']), array('escape'=>false,'title'=>'Edit item')); ?></td>
 						</tr>
 					<?php endforeach; ?>

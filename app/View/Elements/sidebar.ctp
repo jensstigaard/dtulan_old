@@ -11,8 +11,15 @@ if (!$is_loggedin) {
 		);
 	}
 } else {
+
 	echo $this->element('sidebar/user', array());
-	echo $this->element('sidebar/pizza', array());
+
+	if (isset($pizza_waves) && count($pizza_waves)) {
+		echo $this->element('sidebar/pizza/waves', array());
+	}
+	if (isset($is_orderable) && $is_orderable) {
+		echo $this->element('sidebar/pizza/order', array());
+	}
 	if (isset($is_orderable_food) && $is_orderable_food) {
 		echo $this->element('sidebar/order_food', array());
 	}

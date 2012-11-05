@@ -62,16 +62,16 @@
 				<?php
 				switch ($pizza_wave['status']) {
 					case 0:
-						echo'Not open';
+						echo $this->Html->image('16x16_GIF/login.gif') . ' Not open';
 						break;
 					case 1:
-						echo'Open';
+						echo $this->Html->image('16x16_PNG/lock_open.png') . ' Open';
 						break;
 					case 2:
-						echo'Waiting for delivering';
+						echo $this->Html->image('16x16_GIF/time.gif') . ' Waiting for delivering';
 						break;
 					case 3:
-						echo'Pizza wave received';
+						echo $this->Html->image('16x16_GIF/download.gif') . ' Pizza wave received';
 						break;
 					case 4:
 						echo $this->Html->image('16x16_GIF/action_check.gif') . ' Finished';
@@ -83,7 +83,7 @@
 				?>
 								</td>
 								<td>
-				<?php echo $pizza_wave['pizza_orders_total']; ?> DKK
+				<?php echo $pizza_wave['pizza_orders_total'] > 0 ? $pizza_wave['pizza_orders_total'] : 0; ?> DKK
 								</td>
 								<td>
 				<?php

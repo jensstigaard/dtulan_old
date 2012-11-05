@@ -50,10 +50,12 @@ class LanPizzaMenusController extends AppController {
 			$is_orderable = true;
 		}
 
-		$this->set(compact('pizza_wave', 'is_orderable'));
+		$this->set('lan_pizza_menu_id', $id);
 		$this->set('pizza_waves', $this->LanPizzaMenu->getPizzaWavesAvailable());
 		$this->set('pizza_menu', $this->LanPizzaMenu->PizzaMenu->read());
 		$this->set('pizza_categories', $this->LanPizzaMenu->PizzaMenu->getPizzaList());
+
+		$this->set(compact('pizza_wave', 'is_orderable'));
 	}
 
 	public function add($lan_id) {

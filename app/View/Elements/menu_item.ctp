@@ -22,21 +22,9 @@ if ($page['public'] && $page['in_menu']) {
 		}
 	}
 
-
-	$page_url = '';
-	switch ($page['command']) {
-		case 'uri':
-			$page_url = $page['command_value'];
-			break;
-		default:
-			$page_model = ClassRegistry::init('Page');
-			$page_url = array(
-				'controller' => 'pages',
-				'action' => 'view',
-				'slug' => $page_model->stringToSlug($page['title'])
-			);
-			break;
-	}
+	$page_model = ClassRegistry::init('Page');
+	$page_url = $page_model->getUrl($page);
+	
 	?>
 	<li class="<?php echo $class; ?>">
 		<?php echo $this->Html->link($page['title'], $page_url); ?>

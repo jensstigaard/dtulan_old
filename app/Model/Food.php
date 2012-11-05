@@ -15,6 +15,11 @@ class Food extends AppModel {
 	public $belongsTo = array(
 		'FoodCategory'
 	);
+
+	public $hasMany = array(
+		'FoodOrderItem'
+	);
+
 	public $order = array(
 		'available' => 'desc',
 		'sorted' => 'asc'
@@ -39,6 +44,13 @@ class Food extends AppModel {
 		)
 	);
 
+	public function countTimesSold(){
+		return $this->FoodOrderItem->find('count', array(
+			'conditions' => array(
+				'food_id' => $this->id
+			)
+		));
+	}
 
 }
 

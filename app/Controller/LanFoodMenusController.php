@@ -16,12 +16,14 @@ class LanFoodMenusController extends AppController {
 		$this->LanFoodMenu->FoodMenu->id = $this->LanFoodMenu->data['LanFoodMenu']['food_menu_id'];
 		$this->LanFoodMenu->Lan->id = $this->LanFoodMenu->data['LanFoodMenu']['lan_id'];
 
+		$this->set('lan_food_menu_id', $id);
 		$this->set('food_menu', $this->LanFoodMenu->FoodMenu->read());
 		$this->set('lan', $this->LanFoodMenu->Lan->read());
 
 		$this->set('categories', $this->LanFoodMenu->getCategories());
 
 		$this->set('is_orderable_food', $this->LanFoodMenu->data['LanFoodMenu']['is_orderable']);
+
 	}
 
 	public function add($lan_id) {

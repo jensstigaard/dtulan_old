@@ -41,14 +41,6 @@ class Page extends AppModel {
 		)
 	);
 
-	public function stringToSlug($str) {
-		// turn into slug
-		$str = Inflector::slug($str);
-		// to lowercase
-		$str = strtolower($str);
-		return $str;
-	}
-
 	public function getMenuItems() {
 		$pages = $this->find('all', array('conditions' => array(
 				'Page.parent_id' => 0,
@@ -70,6 +62,35 @@ class Page extends AppModel {
 		);
 
 		return $pages;
+	}
+
+	/*
+	 * Params:
+	 * - $page is a array with variable of a given page in, following variables is required in array
+	 * 	- command
+	 * 	- command_value
+	 * 	- title
+	 */
+
+	public function getUrl($page) {
+
+		$return = '';
+
+		switch ($page['command']) {
+			case 'uri':
+				$return = $page['command_value'];
+				break;
+			default:
+
+				$return = array(
+					'controller' => 'pages',
+					'action' => 'view',
+					'slug' => $this->stringToSlug($page['title'])
+				);
+				break;
+		}
+
+		return $return;
 	}
 
 }

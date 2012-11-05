@@ -12,7 +12,7 @@
  */
 class FoodOrder extends AppModel {
 	public $belongsTo = array(
-		'User'
+		'User', 'LanFoodMenu'
 	);
 
 	public $hasMany = array(
@@ -23,6 +23,25 @@ class FoodOrder extends AppModel {
 		'status' => 'asc',
 		'time' => 'desc'
 	);
+
+	public $validate = array(
+		'lan_food_menu_id' => array(
+			'isValid' => array(
+				'rule' => 'validLanFoodMenu',
+				'message' => 'Invalid food menu'
+			)
+		)
+	);
+
+	public function validLanFoodMenu($check){
+		$this->LanFoodMenu->id = $check['lan_food_menu_id'];
+
+		if(!$this->LanFoodMenu->exists()){
+			throw new NotFoundException('Lan Food Menu not found with ID #'.$this->LanFoodMenu->id);
+		}
+
+		return $this->LanFoodMenu->isOrderable();
+	}
 }
 
 ?>

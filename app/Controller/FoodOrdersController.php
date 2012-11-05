@@ -47,7 +47,7 @@ class FoodOrdersController extends AppController {
 		$data = $this->request->data;
 
 		$this->request->data['FoodOrder'] = array(
-			'lan_id' => $data['lan_id'],
+			'lan_food_menu_id' => $data['lan_food_menu_id'],
 			'user_id' => $this->Auth->user('id')
 		);
 
@@ -87,7 +87,6 @@ class FoodOrdersController extends AppController {
 		} else {
 			$msg = 'Invalid order';
 		}
-
 
 		$this->set(compact('msg'));
 	}

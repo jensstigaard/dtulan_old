@@ -21,6 +21,16 @@ class LanFoodMenu extends AppModel {
 			)
 		));
 	}
+
+	public function isOrderable(){
+		$this->read(array('is_orderable'));
+
+		if($this->data['LanFoodMenu']['is_orderable']){
+			return true;
+		}
+
+		return false;
+	}
 }
 
 ?>
