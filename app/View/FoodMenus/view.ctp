@@ -1,6 +1,6 @@
 <div>
 	<div style="float:right;">
-		<?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif').' Edit food menu', array('action' => 'edit', $food_menu['FoodMenu']['id']),array('escape'=>false)); ?>
+		<?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif') . ' Edit food menu', array('action' => 'edit', $food_menu['FoodMenu']['id']), array('escape' => false)); ?>
 	</div>
 
 	<h1><?php echo $food_menu['FoodMenu']['title']; ?></h1>
@@ -43,7 +43,7 @@
 						<th>Description</th>
 						<th>Price</th>
 						<th>Times sold</th>
-						<th><?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif'), array('controller' => 'food_categories', 'action' => 'edit', $category['FoodCategory']['id']),array('escape'=>false,'title'=>'Edit category')); ?></th>
+						<th><?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif'), array('controller' => 'food_categories', 'action' => 'edit', $category['FoodCategory']['id']), array('escape' => false, 'title' => 'Edit category')); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -61,16 +61,23 @@
 							</td>
 							<td><?php echo $food['price']; ?> DKK</td>
 							<td><?php echo $food['countTimesSold']; ?></td>
-							<td><?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif'), array('controller'=>'foods','action'=>'edit',$food['id']), array('escape'=>false,'title'=>'Edit item')); ?></td>
+							<td>
+								<?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif'), array('controller' => 'foods', 'action' => 'edit', $food['id']), array('escape' => false, 'title' => 'Edit item')); ?>
+								<?php
+								if (!$food['countTimesSold']) {
+									echo $this->Html->link($this->Html->image('16x16_GIF/action_delete.gif'), array('controller' => 'foods', 'action' => 'delete', $food['id']), array('escape' => false, 'title' => 'Delete item', 'confirm' => 'Are you sure?'));
+								}
+								?>
+							</td>
 						</tr>
-					<?php endforeach; ?>
+		<?php endforeach; ?>
 					<tr>
-						<td colspan="4">
-							<?php echo $this->Html->link('Add item', array('controller' => 'foods', 'action' => 'add', $category['FoodCategory']['id'])) ?>
+						<td colspan="5">
+		<?php echo $this->Html->link('Add item', array('controller' => 'foods', 'action' => 'add', $category['FoodCategory']['id'])) ?>
 						</td>
 					</tr>
 				</tbody>
-			<?php endforeach; ?>
+		<?php endforeach; ?>
 		</table>
-	<?php endif; ?>
+<?php endif; ?>
 </div>

@@ -231,6 +231,7 @@ class LansController extends AppController {
 		foreach($food_menus as $index => $food_menu){
 			$this->Lan->LanFoodMenu->id = $food_menu['LanFoodMenu']['id'];
 			$food_menus[$index]['LanFoodMenu']['count_orders'] = $this->Lan->LanFoodMenu->countOrders();
+			$food_menus[$index]['LanFoodMenu']['count_orders_unhandled'] = $this->Lan->LanFoodMenu->countOrdersUnhandled();
 		}
 
 		$this->set(compact('food_menus', 'id'));

@@ -23,7 +23,39 @@ class LanFoodMenusController extends AppController {
 		$this->set('categories', $this->LanFoodMenu->getCategories());
 
 		$this->set('is_orderable_food', $this->LanFoodMenu->data['LanFoodMenu']['is_orderable']);
+	}
 
+	public function view_orders($id) {
+		$this->LanFoodMenu->id = $id;
+
+		if (!$this->LanFoodMenu->exists()) {
+			throw new NotFoundException('Lan Food Menu not found with ID #' . $id);
+		}
+
+		$this->set('lan_food_menu', $this->LanFoodMenu->read());
+
+		$this->paginate = array(
+			'FoodOrder' => array(
+				'conditions' => array(
+					'FoodOrder.lan_food_menu_id' => $id
+				),
+				'fields' => array(
+					'User.id',
+					'User.name',
+					'FoodOrder.id',
+					'FoodOrder.time',
+					'FoodOrder.status',
+				),
+				'recursive' => 2,
+				'limit' => 10
+			)
+		);
+
+		$orders = $this->paginate('FoodOrder');
+
+		$this->LanFoodMenu->dateToNiceArray($orders, 'FoodOrder');
+
+		$this->set(compact('orders'));
 	}
 
 	public function add($lan_id) {

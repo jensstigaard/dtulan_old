@@ -26,7 +26,7 @@
 			<td>
 				<?php
 				echo $this->Html->link(
-						$this->Html->image('logos/sponsors/facebook.png', array('alt' => 'Facebook')), 'http://facebook.com/dtulanparty', array('target' => '_blank', 'escape' => false)
+						$this->Html->image('logos/sponsors/facebook.png', array('alt' => 'Facebook')), 'http://facebook.com/dtu.lan.dk', array('target' => '_blank', 'escape' => false)
 				);
 				?>
 			</td>
