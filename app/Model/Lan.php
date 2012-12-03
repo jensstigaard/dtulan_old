@@ -332,7 +332,7 @@ class Lan extends AppModel {
 
 	public function countPizzaOrders() {
 		$db = $this->getDataSource();
-		$total = $db->fetchAll("SELECT COUNT(PizzaOrder.id) AS PizzaOrders FROM `lan_pizza_menus` AS LanPizzaMenu INNER JOIN `pizza_waves` AS PizzaWave INNER JOIN `pizza_orders` AS PizzaOrder ON PizzaOrder.pizza_wave_id = PizzaWave.id WHERE LanPizzaMenu.lan_id = ?", array($this->id));
+		$total = $db->fetchAll("SELECT COUNT(PizzaOrder.id) AS PizzaOrders FROM `lan_pizza_menus` AS LanPizzaMenu INNER JOIN `pizza_waves` AS PizzaWave ON PizzaWave.lan_pizza_menu_id = LanPizzaMenu.id INNER JOIN `pizza_orders` AS PizzaOrder ON PizzaOrder.pizza_wave_id = PizzaWave.id WHERE LanPizzaMenu.lan_id = ?", array($this->id));
 		return $total[0][0]['PizzaOrders'];
 	}
 
