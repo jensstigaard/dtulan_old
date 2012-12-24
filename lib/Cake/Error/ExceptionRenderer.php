@@ -23,6 +23,7 @@
 App::uses('Sanitize', 'Utility');
 App::uses('Router', 'Routing');
 App::uses('CakeResponse', 'Network');
+App::uses('Controller', 'Controller');
 
 /**
  * Exception Renderer.
@@ -141,16 +142,19 @@ class ExceptionRenderer {
  * @return Controller
  */
 	protected function _getController($exception) {
+		App::uses('AppController', 'Controller');
 		App::uses('CakeErrorController', 'Controller');
 		if (!$request = Router::getRequest(true)) {
 			$request = new CakeRequest();
 		}
 		$response = new CakeResponse(array('charset' => Configure::read('App.encoding')));
 		try {
-			if (class_exists('AppController')) {
-				$controller = new CakeErrorController($request, $response);
-			}
+			$controller = new CakeErrorController($request, $response);
+			$controller->startupProcess();
 		} catch (Exception $e) {
+			if (!empty($controller) && $controller->Components->enabled('RequestHandler')) {
+				$controller->RequestHandler->startup($controller);
+			}
 		}
 		if (empty($controller)) {
 			$controller = new Controller($request, $response);
@@ -289,11 +293,11 @@ class ExceptionRenderer {
 		$this->controller->layoutPath = null;
 		$this->controller->subDir = null;
 		$this->controller->viewPath = 'Errors/';
-		$this->controller->viewClass = 'View';
 		$this->controller->layout = 'error';
 		$this->controller->helpers = array('Form', 'Html', 'Session');
 
-		$this->controller->render($template);
+		$view = new View($this->controller);
+		$this->controller->response->body($view->render($template, 'error'));
 		$this->controller->response->type('html');
 		$this->controller->response->send();
 	}

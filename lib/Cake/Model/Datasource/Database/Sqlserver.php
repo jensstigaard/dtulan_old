@@ -129,7 +129,10 @@ class Sqlserver extends DboSource {
 			);
 			$this->connected = true;
 		} catch (PDOException $e) {
-			throw new MissingConnectionException(array('class' => $e->getMessage()));
+			throw new MissingConnectionException(array(
+				'class' => get_class($this),
+				'message' => $e->getMessage()
+			));
 		}
 
 		return $this->connected;
@@ -533,10 +536,8 @@ class Sqlserver extends DboSource {
 					}
 				}
 				return "CREATE TABLE {$table} (\n{$columns});\n{$indexes}";
-			break;
 			default:
 				return parent::renderStatement($type, $data);
-			break;
 		}
 	}
 
@@ -636,7 +637,7 @@ class Sqlserver extends DboSource {
 /**
  * Generate a database-native column schema string
  *
- * @param array $column An array structured like the 
+ * @param array $column An array structured like the
  *   following: array('name'=>'value', 'type'=>'value'[, options]),
  *   where options can be 'default', 'length', or 'key'.
  * @return string

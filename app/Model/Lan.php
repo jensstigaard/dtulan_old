@@ -3,71 +3,77 @@
 class Lan extends AppModel {
 
 	public $hasMany = array(
-		'Crew' => array(
-			'dependent' => true
-		),
-		'LanSignup' => array(
-			'dependent' => true
-		),
-		'LanDay' => array(
-			'dependent' => true
-		),
-		'LanInvite' => array(
-			'dependent' => true
-		),
-		'Tournament' => array(
-			'dependent' => true
-		),
-		'LanPizzaMenu' => array(
-			'dependent' => true
-		),
-		'LanFoodMenu' => array(
-			'dependent' => true
-		)
+		 'Crew' => array(
+			  'dependent' => true
+		 ),
+		 'LanSignup' => array(
+			  'dependent' => true
+		 ),
+		 'LanDay' => array(
+			  'dependent' => true
+		 ),
+		 'LanInvite' => array(
+			  'dependent' => true
+		 ),
+		 'Tournament' => array(
+			  'dependent' => true
+		 ),
+		 'LanPizzaMenu' => array(
+			  'dependent' => true
+		 ),
+		 'LanFoodMenu' => array(
+			  'dependent' => true
+		 )
 	);
 	public $validate = array(
-		'title' => array(
-			'required' => array(
-				'rule' => array('notEmpty'),
-				'message' => 'Title is required'
-			)
-		),
-		'slug' => array(
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'Lan has to have an unique title'
-			)
-		),
-		'max_participants' => array(
-			'required' => array(
-				'rule' => array('numeric'),
-				'message' => 'Has to be a number'
-			)
-		),
-		'max_guests_per_student' => array(
-			'required' => array(
-				'rule' => array('numeric'),
-				'message' => 'Has to be a number'
-			)
-		),
-		'published' => array(
-			'required' => array(
-				'rule' => array('between', 0, 1),
-				'message' => 'Valid publishing required'
-			)
-		),
-		'sign_up_open' => array(
-			'required' => array(
-				'rule' => array('between', 0, 1),
-				'message' => 'Valid Sign Up Open required'
-			)
-		),
-		'time_start' => array(
-			'bigger than end' => array(
-				'rule' => 'validateDates',
-				'message' => 'Invalid start-/end-time',
-			)
-		)
+		 'title' => array(
+			  'required' => array(
+					'rule' => array('notEmpty'),
+					'message' => 'Title is required'
+			  )
+		 ),
+		 'slug' => array(
+			  'isUnique' => array(
+					'rule' => 'isUnique',
+					'message' => 'Lan has to have an unique title'
+			  )
+		 ),
+		 'max_participants' => array(
+			  'required' => array(
+					'rule' => array('numeric'),
+					'message' => 'Has to be a number'
+			  )
+		 ),
+		 'max_guests_per_student' => array(
+			  'required' => array(
+					'rule' => array('numeric'),
+					'message' => 'Has to be a number'
+			  )
+		 ),
+		 'published' => array(
+			  'required' => array(
+					'rule' => array('between', 0, 1),
+					'message' => 'Valid publishing required'
+			  )
+		 ),
+		 'sign_up_open' => array(
+			  'required' => array(
+					'rule' => array('between', 0, 1),
+					'message' => 'Valid "sign up open" required'
+			  )
+		 ),
+		 'sign_up_specific_days' => array(
+			  'required' => array(
+					'rule' => array('between', 0, 1),
+					'message' => 'Valid type required'
+			  )
+		 ),
+		 'time_start' => array(
+			  'bigger than end' => array(
+					'rule' => 'validateDates',
+					'message' => 'Invalid start-/end-time',
+			  )
+		 )
 	);
 
 	public function validateDates($check) {
@@ -80,39 +86,39 @@ class Lan extends AppModel {
 
 	public function countSignups() {
 		return $this->LanSignup->find('count', array(
-					'conditions' => array(
-						'LanSignup.lan_id' => $this->id
-					)
+						'conditions' => array(
+							 'LanSignup.lan_id' => $this->id
 						)
+							 )
 		);
 	}
 
 	public function countGuests() {
 		return $this->LanInvite->find('count', array(
-					'conditions' => array(
-						'LanInvite.lan_id' => $this->id,
-						'LanInvite.accepted' => 1
-					)
+						'conditions' => array(
+							 'LanInvite.lan_id' => $this->id,
+							 'LanInvite.accepted' => 1
 						)
+							 )
 		);
 	}
 
 	public function countInvites() {
 		return $this->LanInvite->find('count', array(
-					'conditions' => array(
-						'LanInvite.lan_id' => $this->id,
-						'LanInvite.accepted' => 0
-					),
-						)
+						'conditions' => array(
+							 'LanInvite.lan_id' => $this->id,
+							 'LanInvite.accepted' => 0
+						),
+							 )
 		);
 	}
 
 	public function countTournaments() {
 		return $this->Tournament->find('count', array(
-					'conditions' => array(
-						'Tournament.lan_id' => $this->id
-					)
+						'conditions' => array(
+							 'Tournament.lan_id' => $this->id
 						)
+							 )
 		);
 	}
 
@@ -136,14 +142,14 @@ class Lan extends AppModel {
 
 	public function getHighlighted() {
 		return $this->find('all', array(
-					'conditions' => array(
-						'Lan.highlighted' => 1
-					),
-					'recursive' => 1,
-					'order' => array(
-						'Lan.time_start' => 'asc'
-					)
-				));
+						'conditions' => array(
+							 'Lan.highlighted' => 1
+						),
+						'recursive' => 1,
+						'order' => array(
+							 'Lan.time_start' => 'asc'
+						)
+				  ));
 	}
 
 	// REFACTOR THIS METHOD
@@ -174,13 +180,13 @@ class Lan extends AppModel {
 		if ($this->isSignupPossible($this->id) && $lan['Lan']['max_guests_per_student'] > $count_invites) {
 
 			$users = $this->LanSignup->User->find('list', array('conditions' => array(
-					'NOT' => array(
-						'User.id' => $user_ids,
-					),
-					'User.type' => 'guest',
-					'User.activated' => 1
-				)
-					)
+					  'NOT' => array(
+							'User.id' => $user_ids,
+					  ),
+					  'User.type' => 'guest',
+					  'User.activated' => 1
+				 )
+					  )
 			);
 		}
 
@@ -213,11 +219,11 @@ class Lan extends AppModel {
 		if ($this->isPublished()) {
 
 			$lan_days = $this->LanDay->find('all', array(
-				'conditions' => array(
-					'LanDay.lan_id' => $this->id
-				),
-				'recursive' => 0
-					)
+				 'conditions' => array(
+					  'LanDay.lan_id' => $this->id
+				 ),
+				 'recursive' => 0
+					  )
 			);
 
 			foreach ($lan_days as $day) {
@@ -241,70 +247,70 @@ class Lan extends AppModel {
 
 	public function isUserAttending() {
 		return $this->LanSignup->find('count', array('conditions' => array(
-						'LanSignup.lan_id' => $this->id,
-						'LanSignup.user_id' => $this->LanSignup->User->id
-					)
+							 'LanSignup.lan_id' => $this->id,
+							 'LanSignup.user_id' => $this->LanSignup->User->id
 						)
-				) == 1;
+							 )
+				  ) == 1;
 	}
 
 	public function getLanDays() {
 		return $this->LanDay->find('all', array(
-					'conditions' => array(
-						'LanDay.lan_id' => $this->id
-					),
-					'order' => array(
-						'LanDay.date ASC',
-					)
+						'conditions' => array(
+							 'LanDay.lan_id' => $this->id
+						),
+						'order' => array(
+							 'LanDay.date ASC',
 						)
+							 )
 		);
 	}
 
 	public function getInvites() {
 		return $this->LanInvite->find('all', array(
-					'conditions' => array(
-						'LanInvite.lan_id' => $this->id,
-						'LanInvite.accepted' => 0
-					),
-					'recursive' => 2
-						)
+						'conditions' => array(
+							 'LanInvite.lan_id' => $this->id,
+							 'LanInvite.accepted' => 0
+						),
+						'recursive' => 2
+							 )
 		);
 	}
 
 	public function getCrew() {
 		return $this->Crew->find('all', array('conditions' => array(
-						'Crew.lan_id' => $this->id
-					),
-					'fields' => array(
-						'Crew.user_id'
-					),
-						)
+							 'Crew.lan_id' => $this->id
+						),
+						'fields' => array(
+							 'Crew.user_id'
+						),
+							 )
 		);
 	}
 
 	public function getPizzaMenus() {
 		return $this->LanPizzaMenu->find('all', array(
-					'conditions' => array(
-						'LanPizzaMenu.lan_id' => $this->id
-					)
+						'conditions' => array(
+							 'LanPizzaMenu.lan_id' => $this->id
 						)
+							 )
 		);
 	}
 
 	public function getPizzaMenuIds() {
 		$lan_pizza_menus = $this->LanPizzaMenu->find('all', array(
-			'conditions' => array(
-				'LanPizzaMenu.lan_id' => $this->id
-			),
-			'fields' => array(
-				'LanPizzaMenu.pizza_menu_id'
-			),
-			'recursive' => -1
-				)
+			 'conditions' => array(
+				  'LanPizzaMenu.lan_id' => $this->id
+			 ),
+			 'fields' => array(
+				  'LanPizzaMenu.pizza_menu_id'
+			 ),
+			 'recursive' => -1
+				  )
 		);
 
 		$ids = array();
-		foreach($lan_pizza_menus as $lan_pizza_menu){
+		foreach ($lan_pizza_menus as $lan_pizza_menu) {
 			$ids[] = $lan_pizza_menu['LanPizzaMenu']['pizza_menu_id'];
 		}
 
@@ -313,13 +319,13 @@ class Lan extends AppModel {
 
 	public function getFoodMenuIds() {
 		$lan_food_menus = $this->LanFoodMenu->find('all', array(
-			'conditions' => array(
-				'LanFoodMenu.lan_id' => $this->id
-			),
-			'fields' => array(
-				'LanFoodMenu.food_menu_id'
-			)
-				)
+			 'conditions' => array(
+				  'LanFoodMenu.lan_id' => $this->id
+			 ),
+			 'fields' => array(
+				  'LanFoodMenu.food_menu_id'
+			 )
+				  )
 		);
 
 		$food_menu_ids = array();

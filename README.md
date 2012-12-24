@@ -1,26 +1,39 @@
-DTU LAN Site
-======
+CakePHP
+=======
 
-This is the [DTU-LAN](http://dtu-lan.dk) source code. 
+[![CakePHP](http://cakephp.org/img/cake-logo.png)](http://www.cakephp.org)
 
-Contributors
-------
-- DenGalePirat - Initial API implementation
-- Jensstigaard - Initial Implementation
+CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Active Record, Association Data Mapping, Front Controller and MVC.
+Our primary goal is to provide a structured framework that enables PHP users at all levels to rapidly develop robust web applications, without any loss to flexibility.
 
-License
-------
-Copyright © [DTU-LAN](http://www.dtu-lan.dk) - 2012
+Some Handy Links
+----------------
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+[CakePHP](http://www.cakephp.org) - The rapid development PHP framework
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+[Cookbook](http://book.cakephp.org) - THE Cake user documentation; start learning here!
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see [GNU.org](http://www.gnu.org/licenses).
+[Plugins](http://plugins.cakephp.org/) - A repository of extensions to the framework
+
+[The Bakery](http://bakery.cakephp.org) - Tips, tutorials and articles
+
+[API](http://api.cakephp.org) - A reference to Cake's classes
+
+[CakePHP TV](http://tv.cakephp.org) - Screen casts from events and video tutorials
+
+[The Cake Software Foundation](http://cakefoundation.org/) - promoting development related to CakePHP
+
+Get Support!
+------------
+
+[Our Google Group](http://groups.google.com/group/cake-php) - community mailing list and forum
+
+[#cakephp](http://webchat.freenode.net/?channels=#cakephp) on irc.freenode.net - Come chat with us, we have cake.
+
+[Q & A](http://ask.cakephp.org/) - Ask questions here, all questions welcome
+
+[Lighthouse](http://cakephp.lighthouseapp.com/) - Got issues? Please tell us!
+
+[![Bake Status](https://secure.travis-ci.org/cakephp/cakephp.png?branch=master)](http://travis-ci.org/cakephp/cakephp)
+
+![Cake Power](https://raw.github.com/cakephp/cakephp/master/lib/Cake/Console/Templates/skel/webroot/img/cake.power.gif)

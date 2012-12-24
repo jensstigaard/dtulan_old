@@ -25,7 +25,7 @@
 										'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=24&amp;r=r', array(
 									'alt' => $user['User']['name'],
 									'title' => $user['User']['name'] . ' gravatar',
-									'style' => ''
+									'style' => 'width:24px;height:24px;'
 										)
 								);
 							}

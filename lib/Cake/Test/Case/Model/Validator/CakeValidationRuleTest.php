@@ -73,6 +73,7 @@ class CakeValidationRuleTest extends CakeTestCase {
 		$Rule->process('fieldName', $data, $methods);
 		$this->assertTrue($Rule->isValid());
 	}
+
 /**
  * tests that passing custom validation methods work
  *
@@ -96,6 +97,24 @@ class CakeValidationRuleTest extends CakeTestCase {
 		$methods = array('mytestrule' => array($this, 'myTestRule3'));
 		$Rule->process('fieldName', $data, $methods);
 		$this->assertFalse($Rule->isValid());
+	}
+
+/**
+ * Make sure errors are triggered when validation is missing.
+ *
+ * @expectedException PHPUnit_Framework_Error_Warning
+ * @expectedExceptionMessage Could not find validation handler totallyMissing for fieldName
+ * @return void
+ */
+	public function testCustomMethodMissingError() {
+		$def = array('rule' => array('totallyMissing'));
+		$data = array(
+			'fieldName' => 'some data'
+		);
+		$methods = array('mytestrule' => array($this, 'myTestRule'));
+
+		$Rule = new CakeValidationRule($def);
+		$Rule->process('fieldName', $data, $methods);
 	}
 
 /**
@@ -152,4 +171,29 @@ class CakeValidationRuleTest extends CakeTestCase {
 		$Rule->isUpdate(true);
 		$this->assertTrue($Rule->isEmptyAllowed());
 	}
+
+/**
+ * Test checkRequired method
+ *
+ * @return void
+ */
+	public function testCheckRequiredWhenRequiredAndAllowEmpty() {
+		$Rule = $this->getMock('CakeValidationRule', array('isRequired'));
+		$Rule->expects($this->any())
+			->method('isRequired')
+			->will($this->returnValue(true));
+		$Rule->allowEmpty = true;
+
+		$fieldname = 'field';
+		$data = array(
+			$fieldname => null
+		);
+
+		$this->assertFalse($Rule->checkRequired($fieldname, $data), "A null but present field should not fail requirement check if allowEmpty is true");
+
+		$Rule->allowEmpty = false;
+
+		$this->assertTrue($Rule->checkRequired($fieldname, $data), "A null but present field should fail requirement check if allowEmpty is false");
+	}
+
 }

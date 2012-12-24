@@ -37,11 +37,11 @@
 					</tr>
 					<tr>
 						<td>Public:</td>
-						<td><?php echo $lan['Lan']['published'] ? 'Yes' : 'No'; ?></td>
+						<td><?php echo $lan['Lan']['published'] ? '<span class="text-bold text-green">Yes</span>' : '<span class="text-bold text-grey">No</span>'; ?></td>
 					</tr>
 					<tr>
 						<td>Sign up open:</td>
-						<td><?php echo $lan['Lan']['sign_up_open'] ? 'Yes' : 'No'; ?></td>
+						<td><?php echo $lan['Lan']['sign_up_open'] ? '<span class="text-bold text-green">Yes</span>' : '<span class="text-bold text-grey">No</span>'; ?></td>
 					</tr>
 					<tr>
 						<td>Guests:</td>

@@ -86,6 +86,21 @@ hr{
 	border-bottom: 1px dotted #999;
 }
 
+.text-bold{
+	font-weight: bold;
+}
+
+.text-green{
+	color: #3B8230;
+}
+
+.text-red{
+	color: #9E2424;
+}
+
+.text-grey{
+	color: #999;
+}
 
 .hidden{
 	display:none;

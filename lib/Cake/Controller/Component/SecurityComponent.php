@@ -23,7 +23,7 @@ App::uses('Hash', 'Utility');
 App::uses('Security', 'Utility');
 
 /**
- * The Security Component creates an easy way to integrate tighter security in 
+ * The Security Component creates an easy way to integrate tighter security in
  * your application. It provides methods for various tasks like:
  *
  * - Restricting which HTTP methods your application accepts.
@@ -229,7 +229,7 @@ class SecurityComponent extends Component {
 			}
 		}
 		$this->generateToken($controller->request);
-		if ($isPost) {
+		if ($isPost && is_array($controller->request->data)) {
 			unset($controller->request->data['_Token']);
 		}
 	}

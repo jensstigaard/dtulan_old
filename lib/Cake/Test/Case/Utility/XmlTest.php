@@ -177,6 +177,7 @@ class XmlTest extends CakeTestCase {
 			array(null),
 			array(false),
 			array(''),
+			array('http://localhost/notthere.xml'),
 		);
 	}
 
@@ -1037,6 +1038,28 @@ XML;
 		$obj = Xml::build($data);
 		$result = $obj->asXml();
 		$this->assertContains('mark &amp; mark', $result);
+	}
+
+/**
+ * Test that entity loading is disabled by default.
+ *
+ * @return void
+ */
+	public function testNoEntityLoading() {
+		$file = CAKE . 'VERSION.txt';
+		$xml = <<<XML
+<!DOCTYPE cakephp [
+  <!ENTITY payload SYSTEM "file://$file" >]>
+<request>
+  <xxe>&payload;</xxe>
+</request>
+XML;
+		try {
+			$result = Xml::build($xml);
+			$this->assertEquals('', (string)$result->xxe);
+		} catch (Exception $e) {
+			$this->assertTrue(true, 'A warning was raised meaning external entities were not loaded');
+		}
 	}
 
 }

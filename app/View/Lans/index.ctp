@@ -19,7 +19,7 @@
 				<td>
 					<?php
 					if ($lan['Lan']['highlighted']) {
-						echo $this->Html->image('16x16_PNG/star.png');
+						echo $this->Html->image('16x16_PNG/star.png', array('title' => 'Highlighted event'));
 					}
 					?>
 	<?php echo $this->Html->link($lan['Lan']['title'], array('action' => 'view', $lan['Lan']['slug'])); ?>

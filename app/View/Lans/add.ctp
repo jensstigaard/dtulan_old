@@ -1,17 +1,19 @@
-<div class="form">
-	<?php echo $this->Form->create('Lan'); ?>
-    <fieldset>
-        <legend><?php echo __('Create Lan'); ?></legend>
-		<?php
-		echo $this->Form->input('title');
-		echo $this->Form->input('max_participants');
-		echo $this->Form->input('max_guests_per_student');
-		echo $this->Form->input('time_start', array('timeFormat' => '24'));
-		echo $this->Form->input('time_end', array('timeFormat' => '24'));
-		echo $this->Form->input('price');
-		echo $this->Form->input('published');
-		echo $this->Form->input('sign_up_open');
-		?>
-    </fieldset>
-	<?php echo $this->Form->end(__('Submit')); ?>
+<div>
+	<?php
+	echo $this->Form->create();
+
+	echo $this->Form->inputs(array(
+		 'title',
+		 'max_participants',
+		 'max_guests_per_student',
+		 'time_start' => array('timeFormat' => '24'),
+		 'time_end' => array('timeFormat' => '24'),
+		 'price',
+		 'published',
+		 'sign_up_open',
+		 'sign_up_specific_days',
+	));
+
+	echo $this->Form->end(__('Submit'));
+	?>
 </div>

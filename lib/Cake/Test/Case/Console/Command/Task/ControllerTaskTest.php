@@ -117,10 +117,10 @@ class ControllerTaskTest extends CakeTestCase {
 
 		$this->Task->connection = 'test';
 		$this->Task->interactive = true;
-		$this->Task->expects($this->at(1))->method('out')->with('1. BakeArticles');
-		$this->Task->expects($this->at(2))->method('out')->with('2. BakeArticlesBakeTags');
-		$this->Task->expects($this->at(3))->method('out')->with('3. BakeComments');
-		$this->Task->expects($this->at(4))->method('out')->with('4. BakeTags');
+		$this->Task->expects($this->at(2))->method('out')->with(' 1. BakeArticles');
+		$this->Task->expects($this->at(3))->method('out')->with(' 2. BakeArticlesBakeTags');
+		$this->Task->expects($this->at(4))->method('out')->with(' 3. BakeComments');
+		$this->Task->expects($this->at(5))->method('out')->with(' 4. BakeTags');
 
 		$expected = array('BakeArticles', 'BakeArticlesBakeTags', 'BakeComments', 'BakeTags');
 		$result = $this->Task->listAll('test');
@@ -181,7 +181,7 @@ class ControllerTaskTest extends CakeTestCase {
 	public function testDoHelpersNo() {
 		$this->Task->expects($this->any())->method('in')->will($this->returnValue('n'));
 		$result = $this->Task->doHelpers();
-		$this->assertEquals(array(), $result);
+		$this->assertSame(array(), $result);
 	}
 
 /**
@@ -218,7 +218,7 @@ class ControllerTaskTest extends CakeTestCase {
 	public function testDoComponentsNo() {
 		$this->Task->expects($this->any())->method('in')->will($this->returnValue('n'));
 		$result = $this->Task->doComponents();
-		$this->assertEquals(array(), $result);
+		$this->assertSame(array(), $result);
 	}
 
 /**
