@@ -35,11 +35,7 @@ class PizzaCategoriesController extends AppController {
 		$this->set('types', $this->PizzaCategory->PizzaType->find('list'));
 	}
 
-	public function edit($id = null) {
-
-		if ($id == null) {
-			throw new NotFoundException('Pizza category not found');
-		}
+	public function edit($id) {
 
 		$this->PizzaCategory->id = $id;
 
@@ -47,8 +43,9 @@ class PizzaCategoriesController extends AppController {
 			throw new NotFoundException('Pizza category not found');
 		}
 
-		if ($this->request->is('post') || $this->request->is('put')) {
-
+		if ($this->request->is('get')) {
+			$this->request->data = $this->PizzaCategory->read(null, $id);
+		} else {
 			$this->request->data['PizzaCategory']['id'] = $id;
 
 			foreach ($this->request->data['PizzaType'] as $type_id_x => $type_data) {
@@ -65,8 +62,6 @@ class PizzaCategoriesController extends AppController {
 			} else {
 				$this->Session->setFlash('Unable to update category.', 'default', array(), 'bad');
 			}
-		} else {
-			$this->request->data = $this->PizzaCategory->read(null, $id);
 		}
 
 		$this->set('pizza_category', $this->request->data);

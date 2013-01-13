@@ -63,7 +63,7 @@ class Page extends AppModel {
 			throw new NotFoundException('Page not found');
 		}
 
-		$page['Page']['time_latest_update_nice'] = $this->Page->dateTonice($page['Page']['time_latest_update']);
+		$page['Page']['time_latest_update_nice'] = $this->dateToNice($page['Page']['time_latest_update']);
 
 		return $page;
 	}

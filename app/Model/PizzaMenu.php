@@ -18,6 +18,21 @@ class PizzaMenu extends AppModel {
 			)
 		)
 	);
+	
+	public function getIndexList(){
+		$pizza_menus = $this->find('all', array(
+			'recursive' => -1
+				));
+
+		foreach ($pizza_menus as $index => $data) {
+			$this->id = $data['PizzaMenu']['id'];
+			$pizza_menus[$index]['PizzaMenu']['count_categories'] = $this->countCategories();
+			$pizza_menus[$index]['PizzaMenu']['count_items'] = $this->countItems();
+			$pizza_menus[$index]['PizzaMenu']['count_used'] = $this->countUsedInLans();
+		}
+		
+		return $pizza_menus;
+	}
 
 	public function getPizzaList() {
 		$this->PizzaCategory->Pizza->unbindModel(array('belongsTo' => array('PizzaCategory')));

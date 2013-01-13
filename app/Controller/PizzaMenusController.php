@@ -16,18 +16,7 @@ class PizzaMenusController extends AppController {
 	}
 
 	public function index() {
-		$pizza_menus = $this->PizzaMenu->find('all', array(
-			'recursive' => -1
-				));
-
-		foreach ($pizza_menus as $index => $data) {
-			$this->PizzaMenu->id = $data['PizzaMenu']['id'];
-			$pizza_menus[$index]['PizzaMenu']['count_categories'] = $this->PizzaMenu->countCategories();
-			$pizza_menus[$index]['PizzaMenu']['count_items'] = $this->PizzaMenu->countItems();
-			$pizza_menus[$index]['PizzaMenu']['count_used'] = $this->PizzaMenu->countUsedInLans();
-		}
-
-		$this->set(compact('pizza_menus'));
+		$this->set('pizza_menus', $this->PizzaMenu->getIndexList());
 	}
 
 	public function view($id) {
@@ -67,7 +56,6 @@ class PizzaMenusController extends AppController {
 
 			$this->request->data = $this->PizzaMenu->read();
 		} else {
-
 			if ($this->PizzaMenu->save($this->request->data)) {
 				$this->Session->setFlash('Pizza menu has been saved', 'default', array('class' => 'message success'), 'good');
 			} else {
