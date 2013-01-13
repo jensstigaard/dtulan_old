@@ -10,6 +10,7 @@
 #sidebar {
 	float: right;
 	width: 265px;
+	background-color: #121212;
 }
 
 #sidebar h1, #sidebar a{

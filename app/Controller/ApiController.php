@@ -16,7 +16,7 @@ class ApiController extends AppController {
 			unset($this->request->data['username']);
 			unset($this->request->data['password']);
 			
-			if($this->request->is('post') && $this->request->accepts("application/json")) {
+			if($this->request->is('post')) {
 				$this->response->header(array('content-type: application/json'));
 				$this->render('API/response');
 				$data = array();
