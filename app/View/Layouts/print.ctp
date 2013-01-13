@@ -24,16 +24,7 @@
 				)
 		);
 
-		if ($is_admin) {
-			echo $this->Html->css(array(
-				'layout.admin'));
-		}
-
-		echo $this->Html->script(array('jquery', 'jquery-ui', 'generel'));
-
-		if ($is_admin) {
-			$this->Html->script(array('admin/user_lookup'), false);
-		}
+		echo $this->Html->script(array('jquery', 'jquery-ui'));
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');

@@ -136,9 +136,7 @@
 				<tr>
 					<td>
 						<?php
-						$find = array('"A bag with which one douches"', '"A bag with which one douches "');
-						$replace = array('', '');
-						echo $this->Html->link(str_replace($find,$replace,$user['User']['name']), array('controller' => 'users', 'action' => 'profile', $user['User']['id'])); ?>
+						echo $this->Html->link($user['User']['name'], array('controller' => 'users', 'action' => 'profile', $user['User']['id'])); ?>
 					</td>
 					<td>
 						<?php echo $user['User']['phonenumber'] ?>
