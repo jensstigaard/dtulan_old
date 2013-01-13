@@ -360,6 +360,13 @@ class Lan extends AppModel {
 		return $total[0][0]['Total'];
 	}
 
+	public function getIndexList() {
+		return $this->find('all', array(
+						'recursive' => 1
+							 )
+		);
+	}
+
 }
 
 ?>

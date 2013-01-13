@@ -44,6 +44,18 @@ class LanInvite extends AppModel {
 
         return false;
     }
+	 
+	 
+	 public function isNotAccepted($lan_id, $user_id){
+		 return $this->find('count', array('conditions' => array(
+							 'LanInvite.lan_id' => $lan_id,
+							 'LanInvite.user_guest_id' => $user_id,
+							 'LanInvite.accepted' => 0
+						)
+							 )
+				  )
+				  != 1;
+	 }
 
 }
 

@@ -42,6 +42,21 @@ class FoodOrder extends AppModel {
 
 		return $this->LanFoodMenu->isOrderable();
 	}
+	
+	
+	public function getItemsSum(){	
+		$sum = $this->FoodOrderItem->find('all', array(
+			'fields' => array(
+				'sum(FoodOrderItem.quantity * FoodOrderItem.price) AS ctotal'
+			),
+			'conditions' => array(
+				'FoodOrderItem.food_order_id' => $this->id
+			)
+				)
+		);
+		
+		return $sum[0][0]['ctotal'];
+	}
 }
 
 ?>

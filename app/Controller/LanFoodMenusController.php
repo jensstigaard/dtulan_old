@@ -3,9 +3,9 @@
 class LanFoodMenusController extends AppController {
 
 	public function view($id) {
-		$this->set('title_for_layout', "Sweets n' soda");
-
 		$this->LanFoodMenu->id = $id;
+
+		$this->set('title_for_layout', "Sweets n' soda");
 
 		if (!$this->LanFoodMenu->exists()) {
 			throw new NotFoundException('Lan Food Menu not found with ID #' . $id);
@@ -35,20 +35,20 @@ class LanFoodMenusController extends AppController {
 		$this->set('lan_food_menu', $this->LanFoodMenu->read());
 
 		$this->paginate = array(
-			'FoodOrder' => array(
-				'conditions' => array(
-					'FoodOrder.lan_food_menu_id' => $id
-				),
-				'fields' => array(
-					'User.id',
-					'User.name',
-					'FoodOrder.id',
-					'FoodOrder.time',
-					'FoodOrder.status',
-				),
-				'recursive' => 2,
-				'limit' => 10
-			)
+			 'FoodOrder' => array(
+				  'conditions' => array(
+						'FoodOrder.lan_food_menu_id' => $id
+				  ),
+				  'fields' => array(
+						'User.id',
+						'User.name',
+						'FoodOrder.id',
+						'FoodOrder.time',
+						'FoodOrder.status',
+				  ),
+				  'recursive' => 2,
+				  'limit' => 10
+			 )
 		);
 
 		$orders = $this->paginate('FoodOrder');
@@ -80,12 +80,13 @@ class LanFoodMenusController extends AppController {
 		$this->set('lan_title', $this->LanFoodMenu->Lan->data['Lan']['title']);
 
 		$this->set('foodMenus', $this->LanFoodMenu->FoodMenu->find('list', array(
-					'conditions' => array(
-						'NOT' => array(
-							'FoodMenu.id' => $this->LanFoodMenu->Lan->getFoodMenuIds()
+						'conditions' => array(
+							 'NOT' => array(
+								  'FoodMenu.id' => $this->LanFoodMenu->Lan->getFoodMenuIds()
+							 )
 						)
-					)
-				)));
+							 )
+				  ));
 	}
 
 }

@@ -20,23 +20,11 @@ class PagesController extends AppController {
 	}
 
 	public function index() {
-
-		$pages = $this->Page->find('all');
-
-		$this->Page->dateToNiceArray($pages, 'Page', 'time_created');
-		$this->Page->dateToNiceArray($pages, 'Page', 'time_latest_update');
-
-		$this->set(compact('pages'));
+		$this->set('pages', $this->Page->getIndexList());
 	}
 
 	public function view($slug = 'welcome') {
-		$page = $this->Page->findBySlug($slug);
-
-		if (!isset($page['Page']['public']) || (!$this->Page->isYouAdmin() && !$page['Page']['public'])) {
-			throw new NotFoundException('Page not found');
-		}
-
-		$page['Page']['time_latest_update_nice'] = $this->Page->dateTonice($page['Page']['time_latest_update']);
+		$page = $this->Page->getBySlug($slug);
 
 		$title_for_layout = $page['Page']['title'];
 
@@ -57,11 +45,7 @@ class PagesController extends AppController {
 			}
 		}
 
-		$opt = $this->Page->find('list', array('conditions' => array('parent_id' => 0)));
-		$opt[0] = '[Top level]';
-		ksort($opt);
-
-		$this->set('parents', $opt);
+		$this->set('parents', $this->Page->getPagesToplevel());
 
 		$this->request->data['Page']['created_by_id'] = $this->request->data['Page']['latest_update_by_id'] = $this->Auth->user('id');
 	}
@@ -89,11 +73,7 @@ class PagesController extends AppController {
 			}
 		}
 
-		$opt = $this->Page->find('list', array('conditions' => array('id <>' => $id, 'parent_id' => 0)));
-		$opt[0] = '[Top level]';
-		ksort($opt);
-
-		$parents = $opt;
+		$parents = $this->Page->getPagesToplevel();
 
 		$this->set(compact('id', 'parents'));
 		$this->request->data['Page']['latest_update_by_id'] = $this->Auth->user('id');

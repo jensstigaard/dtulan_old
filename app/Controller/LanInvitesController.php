@@ -29,7 +29,7 @@ class LanInvitesController extends AppController {
 		$this->LanInvite->id = $id;
 
 		if (!$this->LanInvite->exists()) {
-			throw new NotFoundException('LanSignupNot found');
+			throw new NotFoundException('LanSignup Not found');
 		}
 
 		$this->LanInvite->read();

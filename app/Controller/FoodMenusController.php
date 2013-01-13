@@ -17,18 +17,7 @@ class FoodMenusController extends AppController {
 	}
 
 	public function index() {
-		$food_menus = $this->FoodMenu->find('all', array(
-			'recursive' => -1
-				));
-
-		foreach ($food_menus as $index => $data) {
-			$this->FoodMenu->id = $data['FoodMenu']['id'];
-			$food_menus[$index]['FoodMenu']['count_categories'] = $this->FoodMenu->countCategories();
-			$food_menus[$index]['FoodMenu']['count_items'] = $this->FoodMenu->countItems();
-			$food_menus[$index]['FoodMenu']['count_used'] = $this->FoodMenu->countUsedInLans();
-		}
-
-		$this->set(compact('food_menus'));
+		$this->set('food_menus', $this->FoodMenu->getIndexList());
 	}
 
 	public function view($id) {

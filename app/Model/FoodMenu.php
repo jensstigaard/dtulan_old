@@ -67,6 +67,21 @@ class FoodMenu extends AppModel {
 				));
 	}
 
+	
+	public function getIndexList(){
+		$food_menus = $this->find('all', array(
+			'recursive' => -1
+				));
+
+		foreach ($food_menus as $index => $data) {
+			$this->id = $data['FoodMenu']['id'];
+			$food_menus[$index]['FoodMenu']['count_categories'] = $this->countCategories();
+			$food_menus[$index]['FoodMenu']['count_items'] = $this->countItems();
+			$food_menus[$index]['FoodMenu']['count_used'] = $this->countUsedInLans();
+		}
+		
+		return $food_menus;
+	}
 }
 
 ?>

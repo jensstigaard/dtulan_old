@@ -16,6 +16,8 @@ class FoodOrdersController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
+		// Admins are able to see any page
+		// Elsewise, users logged in are able to add or delete food orders
 		if ($this->FoodOrder->isYouAdmin() || in_array($this->action, array(
 					'add',
 					'delete',
@@ -138,17 +140,7 @@ class FoodOrdersController extends AppController {
 			throw new UnauthorizedException(__('Order already delivered'));
 		}
 
-		$sum = $this->FoodOrder->FoodOrderItem->find('all', array(
-			'fields' => array(
-				'sum(FoodOrderItem.quantity * FoodOrderItem.price) AS ctotal'
-			),
-			'conditions' => array(
-				'FoodOrderItem.food_order_id' => $id
-			)
-				)
-		);
-
-		$sum = $sum[0][0]['ctotal'];
+		$sum = $this->FoodOrder->getSumItems();
 
 		$this->FoodOrder->User->id = $this->Auth->user('id');
 		$this->FoodOrder->User->read(array('balance'));

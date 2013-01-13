@@ -8,7 +8,9 @@ class LansController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 
-		$this->Auth->allow('view', 'view_general', 'view_participants', 'view_crew', 'view_tournaments');
+		$this->Auth->allow(
+				  'view', 'view_general', 'view_participants', 'view_crew', 'view_tournaments'
+		);
 	}
 
 	public function isAuthorized($user) {
@@ -21,8 +23,7 @@ class LansController extends AppController {
 	}
 
 	public function index() {
-		$this->Lan->recursive = 1;
-		$this->set('lans', $this->Lan->find('all'));
+		$this->set('lans', $this->Lan->getIndexList());
 	}
 
 	public function view($slug) {
@@ -75,7 +76,13 @@ class LansController extends AppController {
 			throw new NotFoundException('Lan not found with id #' . $id);
 		}
 
-		$this->set('lan', $this->Lan->read(array('price', 'time_start', 'time_end', 'published', 'sign_up_open')));
+		$this->set('lan', $this->Lan->read(array(
+						'price',
+						'time_start',
+						'time_end',
+						'published',
+						'sign_up_open'
+				  )));
 
 		$this->set('count_tournaments', $this->Lan->countTournaments());
 		$this->set('count_lan_signups', $this->Lan->countSignups());
@@ -116,19 +123,19 @@ class LansController extends AppController {
 		}
 
 		$this->paginate = array(
-			'LanSignup' => array(
-				'conditions' => array(
-					'LanSignup.lan_id' => $id,
-					'NOT' => array(
-						'LanSignup.id' => $this->Lan->LanSignup->getLanSignupsCrewIds($id)
-					)
-				),
-				'recursive' => 2,
-				'limit' => 10,
-				'order' => array(
-					array('User.name' => 'asc')
-				)
-			),
+			 'LanSignup' => array(
+				  'conditions' => array(
+						'LanSignup.lan_id' => $id,
+						'NOT' => array(
+							 'LanSignup.id' => $this->Lan->LanSignup->getLanSignupsCrewIds($id)
+						)
+				  ),
+				  'recursive' => 2,
+				  'limit' => 10,
+				  'order' => array(
+						array('User.name' => 'asc')
+				  )
+			 ),
 		);
 
 		$participants = $this->paginate('LanSignup');
@@ -151,16 +158,16 @@ class LansController extends AppController {
 		}
 
 		$this->paginate = array(
-			'Tournament' => array(
-				'conditions' => array(
-					'Tournament.lan_id' => $id,
-				),
-				'recursive' => 2,
-				'limit' => 10,
-				'order' => array(
-					array('Tournament.time_start' => 'asc')
-				)
-			),
+			 'Tournament' => array(
+				  'conditions' => array(
+						'Tournament.lan_id' => $id,
+				  ),
+				  'recursive' => 2,
+				  'limit' => 10,
+				  'order' => array(
+						array('Tournament.time_start' => 'asc')
+				  )
+			 ),
 		);
 
 		$this->set('tournaments', $this->paginate('Tournament'));
@@ -187,11 +194,11 @@ class LansController extends AppController {
 		$this->Lan->LanPizzaMenu->unbindModel(array('belongsTo' => array('Lan')));
 		$this->Lan->LanPizzaMenu->PizzaMenu->unbindModel(array('hasMany' => array('PizzaCategory')));
 		$pizza_menus = $this->Lan->LanPizzaMenu->find('all', array(
-			'conditions' => array(
-				'LanPizzaMenu.lan_id' => $id
-			),
-			'recursive' => 2
-				));
+			 'conditions' => array(
+				  'LanPizzaMenu.lan_id' => $id
+			 ),
+			 'recursive' => 2
+				  ));
 
 		foreach ($pizza_menus as $index => $pizza_menu_data) {
 			$this->Lan->dateToNiceArray($pizza_menus[$index]['PizzaWave'], null, 'time_start', false);
@@ -204,6 +211,8 @@ class LansController extends AppController {
 
 		$this->set(compact('pizza_menus', 'id'));
 	}
+
+	/* -- Food menus tab -- */
 
 	public function view_foodmenus($id) {
 
@@ -222,13 +231,13 @@ class LansController extends AppController {
 		$this->Lan->LanFoodMenu->unbindModel(array('belongsTo' => array('Lan')));
 
 		$food_menus = $this->Lan->LanFoodMenu->find('all', array(
-			'conditions' => array(
-				'LanFoodMenu.lan_id' => $id
-			),
-			'recursive' => 1
-				));
+			 'conditions' => array(
+				  'LanFoodMenu.lan_id' => $id
+			 ),
+			 'recursive' => 1
+				  ));
 
-		foreach($food_menus as $index => $food_menu){
+		foreach ($food_menus as $index => $food_menu) {
 			$this->Lan->LanFoodMenu->id = $food_menu['LanFoodMenu']['id'];
 			$food_menus[$index]['LanFoodMenu']['count_orders'] = $this->Lan->LanFoodMenu->countOrders();
 			$food_menus[$index]['LanFoodMenu']['count_orders_unhandled'] = $this->Lan->LanFoodMenu->countOrdersUnhandled();
@@ -268,6 +277,8 @@ class LansController extends AppController {
 
 		$this->set(compact('count_lan_signups', 'money_total', 'money_pizza_orders', 'money_food_orders'));
 	}
+
+	/* -- Lan invites tab -- */
 
 	public function view_invites($id) {
 		if (!$this->request->is('ajax')) {
@@ -342,6 +353,7 @@ class LansController extends AppController {
 		$this->redirect($this->referer());
 	}
 
+	// Print all data about Lan (participants)
 	public function view_print($slug) {
 		$this->layout = 'print';
 		$cond = array('Lan.slug' => $slug);
@@ -354,6 +366,8 @@ class LansController extends AppController {
 		}
 
 		$lan_id = $lan['Lan']['id'];
+		
+		$this->Lan->id = $lan_id;
 
 		$title_for_layout = 'Lan &bull; ' . $lan['Lan']['title'];
 
@@ -361,70 +375,70 @@ class LansController extends AppController {
 
 
 		$this->set('lan_days', $this->Lan->LanDay->find('all', array(
-					'conditions' => array(
-						'LanDay.lan_id' => $lan_id
-					),
-					'order' => array(
-						'LanDay.date ASC',
-					)
+						'conditions' => array(
+							 'LanDay.lan_id' => $lan_id
+						),
+						'order' => array(
+							 'LanDay.date ASC',
 						)
-				)
+							 )
+				  )
 		);
 
 		$this->Lan->LanInvite->recursive = 2;
 
 		$this->set('lan_invites', $this->Lan->LanInvite->find('all', array(
-					'conditions' => array(
-						'LanInvite.lan_id' => $lan_id,
-						'LanInvite.accepted' => 0
-					)
+						'conditions' => array(
+							 'LanInvite.lan_id' => $lan_id,
+							 'LanInvite.accepted' => 0
 						)
-				)
+							 )
+				  )
 		);
 
-		$this->set('count_lan_signups', $this->Lan->LanSignup->countTotalInLan($lan_id));
-		$this->set('count_lan_signups_guests', $this->Lan->LanInvite->countGuestsInLan($lan_id));
+		$this->set('count_lan_signups', $this->Lan->countSignups());
+		$this->set('count_lan_signups_guests', $this->Lan->countGuests());
 
 		// Tournaments signed up for LAN
 		$conditions_tournaments = array(
-			'Tournament.lan_id' => $lan_id,
+			 'Tournament.lan_id' => $lan_id,
 		);
 
 		$this->Lan->Tournament->recursive = 2;
 		$tournaments = $this->Lan->Tournament->find('all', array(
-			'conditions' => $conditions_tournaments
-				));
+			 'conditions' => $conditions_tournaments
+				  ));
 
 		$this->set(compact('tournaments'));
 
 		// Users signed up for LAN
 		$this->Lan->LanSignup->recursive = 2;
 		$this->Lan->LanSignup->unbindModel(array(
-			'belongsTo' => array(
-				'Lan'
-			),
-			'hasOne' => array(
-				'LanInvite'
-			),
-			'hasMany' => array(
+			 'belongsTo' => array(
+				  'Lan'
+			 ),
+			 'hasOne' => array(
+				  'LanInvite'
+			 ),
+			 'hasMany' => array(
 //				'LanSignupDay'
-			)
-				)
+			 )
+				  )
 		);
 		$this->Lan->LanSignup->User->unbindModel(array(
-			'hasOne' => array(
-				'UserPasswordTicket'
-			),
-			'hasMany' => array(
-				'LanSignup',
-				'LanInvite',
-				'LanInviteSent',
-				'Payment',
-				'PizzaOrder',
-				'TeamInvite',
-				'TeamUser'
-			)
-				)
+			 'hasOne' => array(
+				  'UserPasswordTicket'
+			 ),
+			 'hasMany' => array(
+				  'LanSignup',
+				  'LanInvite',
+				  'LanInviteSent',
+				  'Payment',
+				  'PizzaOrder',
+				  'TeamInvite',
+				  'TeamUser'
+			 )
+				  )
 		);
 
 		$this->Lan->Crew->recursive = 0;
@@ -437,14 +451,14 @@ class LansController extends AppController {
 
 		// Crew signed up for LAN
 		$lan_signups_crew = $this->Lan->LanSignup->find('all', array(
-			'conditions' => array(
-				'LanSignup.lan_id' => $lan_id,
-				'LanSignup.user_id' => $lan_crew_ids,
-			),
-			'order' => array(
-				'User.name'
-			)
-				)
+			 'conditions' => array(
+				  'LanSignup.lan_id' => $lan_id,
+				  'LanSignup.user_id' => $lan_crew_ids,
+			 ),
+			 'order' => array(
+				  'User.name'
+			 )
+				  )
 		);
 
 		$lan_signups_id_crew = array();
@@ -455,16 +469,16 @@ class LansController extends AppController {
 
 
 		$lan_signups = $this->Lan->LanSignup->find('all', array(
-			'conditions' => array(
-				'LanSignup.lan_id' => $lan_id,
-				'NOT' => array(
-					'LanSignup.id' => $lan_signups_id_crew
-				)
-			),
-			'order' => array(
-				array('User.name' => 'asc')
-			)
-				)
+			 'conditions' => array(
+				  'LanSignup.lan_id' => $lan_id,
+				  'NOT' => array(
+						'LanSignup.id' => $lan_signups_id_crew
+				  )
+			 ),
+			 'order' => array(
+				  array('User.name' => 'asc')
+			 )
+				  )
 		);
 
 		$this->set(compact('lan_signups', 'lan_signups_crew'));

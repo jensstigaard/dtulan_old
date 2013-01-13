@@ -16,7 +16,6 @@ class FoodCategory extends AppModel {
 			),
 		),
 	);
-
 }
 
 ?>

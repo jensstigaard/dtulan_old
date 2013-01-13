@@ -19,7 +19,7 @@ class LanSignupsController extends AppController {
 		parent::beforeFilter();
 	}
 
-	public function add($id = null) {
+	public function add($lan_id = null) {
 
 		App::uses('CakeTime', 'Utility');
 
@@ -31,20 +31,11 @@ class LanSignupsController extends AppController {
 
 		$user = $this->LanSignup->User->read();
 
-		if ($user['User']['type'] == 'guest') {
-			if ($this->LanSignup->Lan->LanInvite->find('count', array('conditions' => array(
-							'LanInvite.lan_id' => $id,
-							'LanInvite.user_guest_id' => $user['User']['id'],
-							'LanInvite.accepted' => 0
-						)
-							)
-					)
-					!= 1) {
-				throw new BadRequestException('Invite not found');
-			}
+		if ($user['User']['type'] == 'guest' && $this->LanSignup->Lan->LanInvite->isNotAccepted($lan_id, $user['User']['id'])) {
+			throw new BadRequestException('Invite not found');
 		}
 
-		$this->LanSignup->Lan->id = $id;
+		$this->LanSignup->Lan->id = $lan_id;
 		if (!$this->LanSignup->Lan->exists()) {
 			throw new NotFoundException('LAN not found');
 		}
@@ -54,7 +45,7 @@ class LanSignupsController extends AppController {
 			$lans[] = $lan['lan_id'];
 		}
 
-		if (in_array($id, $lans)) {
+		if (in_array($lan_id, $lans)) {
 			throw new BadRequestException(__('LAN already signed up'));
 		}
 
@@ -77,21 +68,21 @@ class LanSignupsController extends AppController {
 				$this->request->data['LanSignup']['lan_id'] = 0;
 
 				if (count($this->request->data['LanSignupDay'])) {
-					$this->request->data['LanSignup']['lan_id'] = $id;
+					$this->request->data['LanSignup']['lan_id'] = $lan_id;
 
 					if ($user['User']['type'] == 'guest') {
 						$invite = $this->LanSignup->LanInvite->find('first', array('conditions' => array(
-								'LanInvite.lan_id' => $id,
-								'LanInvite.user_guest_id' => $user['User']['id'],
-								'LanInvite.accepted' => 0
-							),
-							'recursive' => 0
-								)
+								  'LanInvite.lan_id' => $lan_id,
+								  'LanInvite.user_guest_id' => $user['User']['id'],
+								  'LanInvite.accepted' => 0
+							 ),
+							 'recursive' => 0
+								  )
 						);
 
 						$this->request->data['LanInvite'] = array(
-							'id' => $invite['LanInvite']['id'],
-							'accepted' => 1
+							 'id' => $invite['LanInvite']['id'],
+							 'accepted' => 1
 						);
 					}
 				}
@@ -115,9 +106,9 @@ class LanSignupsController extends AppController {
 			$seats_left = $this->LanSignup->LanSignupDay->LanDay->seatsLeft($lan_day['id']);
 
 			$lan_days[CakeTime::format('Y-m-d', $lan_day['date'])] = array(
-				'id' => $lan_day['id'],
-				'value' => CakeTime::format('D, M jS Y', $lan_day['date']),
-				'seats_left' => $seats_left,
+				 'id' => $lan_day['id'],
+				 'value' => CakeTime::format('D, M jS Y', $lan_day['date']),
+				 'seats_left' => $seats_left,
 			);
 
 			ksort($lan_days);
@@ -147,10 +138,10 @@ class LanSignupsController extends AppController {
 
 		$this->LanSignup->recursive = 2;
 		$lan_signup = $this->LanSignup->find('first', array('conditions' => array(
-				'LanSignup.lan_id' => $lan_id,
-				'LanSignup.user_id' => $user['User']['id']
-			)
-				)
+				  'LanSignup.lan_id' => $lan_id,
+				  'LanSignup.user_id' => $user['User']['id']
+			 )
+				  )
 		);
 
 		$id = $lan_signup['LanSignup']['id'];
@@ -181,8 +172,8 @@ class LanSignupsController extends AppController {
 
 			foreach ($days_wanted as $day_wanted) {
 				$this->request->data[] = array(
-					'lan_day_id' => $day_wanted,
-					'lan_signup_id' => $id
+					 'lan_day_id' => $day_wanted,
+					 'lan_signup_id' => $id
 				);
 			}
 
@@ -227,10 +218,10 @@ class LanSignupsController extends AppController {
 			$seats_left = $this->LanSignup->LanSignupDay->LanDay->seatsLeft($lan_day['id']);
 
 			$lan_days[CakeTime::format('Y-m-d', $lan_day['date'])] = array(
-				'id' => $lan_day['id'],
-				'value' => CakeTime::format('D, M jS Y', $lan_day['date']),
-				'seats_left' => $seats_left,
-				'checked' => in_array($lan_day['id'], $days_selected)
+				 'id' => $lan_day['id'],
+				 'value' => CakeTime::format('D, M jS Y', $lan_day['date']),
+				 'seats_left' => $seats_left,
+				 'checked' => in_array($lan_day['id'], $days_selected)
 			);
 		}
 
@@ -261,10 +252,10 @@ class LanSignupsController extends AppController {
 
 		$this->LanSignup->recursive = 2;
 		$lan_signup = $this->LanSignup->find('first', array('conditions' => array(
-				'LanSignup.lan_id' => $lan_id,
-				'LanSignup.user_id' => $user['User']['id']
-			)
-				)
+				  'LanSignup.lan_id' => $lan_id,
+				  'LanSignup.user_id' => $user['User']['id']
+			 )
+				  )
 		);
 
 		$id = $lan_signup['LanSignup']['id'];
@@ -280,17 +271,17 @@ class LanSignupsController extends AppController {
 
 		$update_balances = array();
 		$update_balances[] = array(
-			'id' => $user['User']['id'],
-			'balance' => $user['User']['balance'] + $lan_signup['Lan']['price']
+			 'id' => $user['User']['id'],
+			 'balance' => $user['User']['balance'] + $lan_signup['Lan']['price']
 		);
 
 		if ($user['User']['type'] == 'student') {
 
 			$lan_invites = $this->LanSignup->LanInvite->find('all', array('conditions' => array(
-					'LanInvite.lan_id' => $lan_signup['LanSignup']['lan_id'],
-					'LanInvite.user_student_id' => $lan_signup['LanSignup']['user_id'],
-				)
-					)
+					  'LanInvite.lan_id' => $lan_signup['LanSignup']['lan_id'],
+					  'LanInvite.user_student_id' => $lan_signup['LanSignup']['user_id'],
+				 )
+					  )
 			);
 
 			foreach ($lan_invites as $invite) {
@@ -300,32 +291,32 @@ class LanSignupsController extends AppController {
 					$delete_lan_signups[] = $invite['LanInvite']['lan_signup_id'];
 
 					$update_balances[] = array(
-						'id' => $invite['Guest']['id'],
-						'balance' => $invite['Guest']['balance'] + $lan_signup['Lan']['price'],
+						 'id' => $invite['Guest']['id'],
+						 'balance' => $invite['Guest']['balance'] + $lan_signup['Lan']['price'],
 					);
 				}
 			}
 		} else {
 			$lan_invite = $this->LanSignup->LanInvite->find('first', array(
-				'conditions' => array(
-					'LanInvite.lan_signup_id' => $id
-				)
-					)
+				 'conditions' => array(
+					  'LanInvite.lan_signup_id' => $id
+				 )
+					  )
 			);
 			$delete_lan_invites[] = $lan_invite['LanInvite']['id'];
 		}
 
 
 		if (!$this->LanSignup->User->saveMany($update_balances)) {
-
+			
 		} else {
 			if (!(
-					$this->LanSignup->deleteAll(array(
-						'LanSignup.id' => $delete_lan_signups
-					)) && $this->LanSignup->LanSignupDay->deleteAll(array(
-						'LanSignupDay.lan_signup_id' => $delete_lan_signups
-					))
-					)
+					  $this->LanSignup->deleteAll(array(
+							'LanSignup.id' => $delete_lan_signups
+					  )) && $this->LanSignup->LanSignupDay->deleteAll(array(
+							'LanSignupDay.lan_signup_id' => $delete_lan_signups
+					  ))
+					  )
 			) {
 				$this->Session->setFlash('Your signup could not be deleted', 'default', array(), 'bad');
 				$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
