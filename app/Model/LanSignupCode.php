@@ -23,11 +23,11 @@ class LanSignupCode extends AppModel {
 						'code' => $code,
 						'lan_id' => $this->Lan->id
 					),
-			'recursive' => -1
+					'recursive' => -1
 				)) == 1;
 	}
-	
-	public function getIdByCode($code){
+
+	public function getIdByCode($code) {
 		$result = $this->find('first', array(
 			'conditions' => array(
 				'code' => $code
@@ -35,8 +35,8 @@ class LanSignupCode extends AppModel {
 			'fields' => array(
 				'id'
 			)
-		));
-		
+				));
+
 		return $result['LanSignupCode']['id'];
 	}
 

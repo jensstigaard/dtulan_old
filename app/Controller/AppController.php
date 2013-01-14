@@ -85,59 +85,13 @@ class AppController extends Controller {
 		$this->set('lans_highlighted', $this->User->LanSignup->Lan->getHighlighted());
 
 		if ($is_loggedin) {
+			$this->User->id = $this->Auth->user('id');
 
 			// For student: Find next lans / For guest: find invites
-			if (isset($current_user['type'])) {
-
-				$user_read_balance = $this->User->read(array('balance'), $this->Auth->user('id'));
-				$this->set('current_user_balance', $user_read_balance['User']['balance']);
-
-				if ($current_user['type'] == 'guest') {
-					$this->User->LanInvite->unbindModel(array('belongsTo' => array('Guest', 'LanSignup')));
-
-					$this->set('sidebar_lan_invites', $this->User->LanInvite->find('first', array('conditions' => array(
-									'LanInvite.user_guest_id' => $this->Auth->user('id'),
-									'LanInvite.accepted' => 0
-								)
-									)
-							)
-					);
-				} else {
-
-					$this->User->LanSignup->recursive = 0;
-
-					$lans = $this->User->LanSignup->find('all', array('conditions' => array(
-							'LanSignup.user_id' => $this->Auth->user('id')
-						)
-							)
-					);
-
-					$lan_ids = array();
-					foreach ($lans as $lan) {
-						$lan_ids[] = $lan['LanSignup']['lan_id'];
-					}
-
-					if ($current_user['type'] == 'student') {
-						$this->set('sidebar_next_lan', $this->User->LanSignup->Lan->find('first', array(
-									'conditions' => array(
-										'Lan.sign_up_open' => 1,
-										'Lan.published' => 1,
-										'Lan.time_end >' => date('Y-m-d H:i:s'),
-										'NOT' => array(
-											'Lan.id' => $lan_ids
-										)
-									),
-									'order' => array('Lan.time_start ASC'),
-									'recursive' => 0
-										)
-								)
-						);
-					}
-				}
-			}
-
-			$this->loadModel('TeamInvite');
-			$this->set('sidebar_team_invites', $this->TeamInvite->getTeamInvites($this->Auth->user('id')));
+			$user_read_balance = $this->User->read(array('balance'), $this->User->id);
+			$this->set('current_user_balance', $user_read_balance['User']['balance']);
+			$this->set('sidebar_new_lan', $this->User->getNewLans());
+			$this->set('sidebar_team_invites', $this->User->getTournamentTeamInvites());
 		}
 	}
 

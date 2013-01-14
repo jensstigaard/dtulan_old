@@ -21,16 +21,6 @@ class TeamInvite extends AppModel {
 		return $this->Team->isLeader($this->data['TeamInvite']['team_id'], $check['user_invited_by_id']);
 	}
 
-	public function getTeamInvites($user_id) {
-		return $this->find('all', array(
-					'conditions' => array(
-						'user_id' => $user_id
-					),
-					'recursive' => 0
-						)
-		);
-	}
-
 }
 
 ?>

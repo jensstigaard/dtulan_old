@@ -79,6 +79,19 @@ class Lan extends AppModel {
 		)
 	);
 
+	public function getIdBySlug($slug) {
+		$result = $this->find('first', array(
+			'conditions' => array(
+				'slug' => $slug
+			),
+			'fields' => array(
+				'id'
+			)
+				));
+
+		return $result['Lan']['id'];
+	}
+
 	public function validateDates($check) {
 		if ($check['time_start'] >= $this->data['Lan']['time_end']) {
 			$this->invalidate('time_end', 'Invalid start-/end-time');

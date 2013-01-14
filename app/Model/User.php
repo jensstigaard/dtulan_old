@@ -252,6 +252,47 @@ class User extends AppModel {
 		return true;
 	}
 
+	public function getNewLans() {
+		$lans = $this->LanSignup->find('all', array(
+			'conditions' => array(
+				'user_id' => $this->id
+			),
+			'recursive' => 0
+				)
+		);
+
+		$lan_ids = array();
+		foreach ($lans as $lan) {
+			$lan_ids[] = $lan['LanSignup']['lan_id'];
+		}
+
+
+		return $this->LanSignup->Lan->find('first', array(
+					'conditions' => array(
+						'Lan.sign_up_open' => 1,
+						'Lan.published' => 1,
+						'Lan.time_end >' => date('Y-m-d H:i:s'),
+						'NOT' => array(
+							'Lan.id' => $lan_ids
+						)
+					),
+					'order' => array('Lan.time_start ASC'),
+					'recursive' => 0
+						)
+		);
+	}
+
+	public function getTournamentTeamInvites() {
+
+		return $this->TeamInvite->find('all', array(
+					'conditions' => array(
+						'user_id' => $this->id
+					),
+					'recursive' => 0
+						)
+		);
+	}
+
 }
 
 ?>

@@ -162,6 +162,29 @@ class LanSignup extends AppModel {
 		return $lan_signups_id_crew;
 	}
 
+	public function getDataForDeletion() {
+
+		$result = $this->LanSignup->find('first', array(
+			'conditions' => array(
+				'LanSignup.lan_id' => $this->Lan->id,
+				'LanSignup.user_id' => $this->User->id
+			),
+			'fields' => array(
+				'LanSignup.id',
+				'Lan.price'
+			)
+				)
+		);
+
+		$this->id = $result['LanSignup']['id'];
+		
+		if (!$this->exists()) {
+			throw new NotFoundException('Lan Signup not found');
+		}
+
+		return $result;
+	}
+
 }
 
 ?>
