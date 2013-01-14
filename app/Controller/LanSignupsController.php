@@ -277,7 +277,7 @@ class LanSignupsController extends AppController {
 
 
 		if (!$this->LanSignup->User->saveMany($update_balances)) {
-			
+			$this->Session->setFlash('Saving your balance failed', 'default', array(), 'bad');
 		} else {
 			if (!(
 					$this->LanSignup->deleteAll(array(

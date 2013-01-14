@@ -20,9 +20,7 @@ class LanSignup extends AppModel {
 		'LanInvite' => array(
 			'dependent' => true
 		),
-		'LanSignupCode' => array(
-			'dependent' => true
-		)
+		'LanSignupCode'
 	);
 	public $hasMany = array('LanSignupDay');
 	public $validate = array(
