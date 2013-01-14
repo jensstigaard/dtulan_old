@@ -1,6 +1,5 @@
 <div>
-	<div style="float:left; width:54%">
-		<h2 style="text-align: center"><?php echo $this->Html->image('32x32_PNG/globe.png'); ?> General info</h2>
+	<div>
 		<table>
 			<tbody>
 				<tr style="font-size:110%">
@@ -65,37 +64,4 @@
 			</tbody>
 		</table>
 	</div>
-
-	<div style="float:right; width:44%">
-		<h2 style="text-align: center"><?php echo $this->Html->image('32x32_PNG/clock.png'); ?> Days in LAN</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>Date</th>
-					<th>Seats left</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ($lan_days as $lan_day): ?>
-					<?php $seats_left = $lan_day['Lan']['max_participants'] - count($lan_day['LanSignupDay']); ?>
-					<tr>
-						<td><?php echo $this->Time->format('D, M jS', $lan_day['LanDay']['date']); ?></td>
-						<td>
-							<?php
-							if (!$seats_left) {
-								$color = 'red';
-							} elseif ($seats_left < 10) {
-								$color = 'yellow';
-							} else {
-								$color = 'green';
-							}
-							?>
-							<span style="color:<?php echo $color; ?>;"><?php echo $seats_left; ?></span>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-	</div>
-	<div style="clear:both;"></div>
 </div>

@@ -298,9 +298,6 @@ class LansController extends AppController {
 
 	public function add() {
 		if ($this->request->is('post')) {
-
-			$this->request->data['Lan']['slug'] = $this->Lan->stringToSlug($this->request->data['Lan']['title']);
-			$this->request->data['LanDay'] = $this->Lan->getLanDaysByTime($this->request->data['Lan']['time_start'], $this->request->data['Lan']['time_end']);
 			if ($this->Lan->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your Lan has been saved.', 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'index'));

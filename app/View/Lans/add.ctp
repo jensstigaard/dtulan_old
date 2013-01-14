@@ -11,7 +11,7 @@
 		'price',
 		'published',
 		'sign_up_open',
-		'sign_up_specific_days',
+		'need_physical_code',
 	));
 
 	echo $this->Form->end(__('Submit'));

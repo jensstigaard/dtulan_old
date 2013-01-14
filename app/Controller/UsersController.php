@@ -180,6 +180,7 @@ class UsersController extends AppController {
 		}
 
 		$this->set(compact('lans', 'is_you', 'is_auth'));
+		$this->set('user_type', $this->User->data['User']['type']);
 	}
 
 	public function view_payments($id) {

@@ -10,7 +10,6 @@
 					<th style="width:28px;"></th>
 					<th><?php echo $this->Paginator->sort('User.name', 'Name'); ?></th>
 					<?php if ($is_admin): ?>
-						<th style="text-align: center;">Days attending</th>
 						<th style="text-align: right;"><?php echo $this->Paginator->sort('User.phonenumber', 'Phone number'); ?></th>
 					<?php endif; ?>
 				</tr>
@@ -38,9 +37,6 @@
 							<?php endif; ?>
 						</td>
 						<?php if ($is_admin): ?>
-							<td style="text-align: center">
-								<?php echo count($user['LanSignupDay']); ?> days
-							</td>
 							<td style="text-align: right">
 								<?php echo $user['User']['phonenumber'] ?>
 							</td>

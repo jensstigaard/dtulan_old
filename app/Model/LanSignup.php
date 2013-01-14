@@ -33,7 +33,13 @@ class LanSignup extends AppModel {
 				'rule' => 'validateLan',
 				'message' => 'Invalid lan'
 			)
-		)
+		),
+		'code' => array(
+			'validCode' => array(
+				'rule' => 'validateCode',
+				'message' => 'Invalide code'
+			)
+		),
 	);
 
 	public function validateUserInLan($check) {
@@ -65,12 +71,28 @@ class LanSignup extends AppModel {
 	}
 
 	public function validateLan($check) {
-		if ($this->Lan->find('count', array('conditions' => array(
-						'Lan.id' => $check['lan_id']
-					)
-						)
-				)
-				== 1) {
+		$this->Lan->id = $check['lan_id'];
+		
+		if ($this->Lan->isSignupPossible()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function validateCode($check) {
+		$this->Lan->id = $this->Lan->data['Lan']['id'];
+
+		if (!$this->Lan->exists()) {
+			throw new NotFoundException('Lan not found.');
+		}
+
+		$this->Lan->read(array('need_physical_code'));
+
+		if (!$this->Lan->data['Lan']['need_physical_code']) {
+			return true;
+		}
+		elseif($this->Lan->LanSignupCode->isNotUsed($check['code'])){
 			return true;
 		}
 

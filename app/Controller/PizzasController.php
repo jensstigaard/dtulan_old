@@ -80,8 +80,9 @@ class PizzasController extends AppController {
 			throw new NotFoundException('Pizza not found');
 		}
 
-		if ($this->request->is('post') || $this->request->is('put')) {
-
+		if ($this->request->is('get')) {
+			$this->request->data = $this->Pizza->read(null, $id);
+		} else {
 			// Manipulate data	- Pizza prices
 			foreach ($this->request->data['PizzaPrice'] as $price_type_id => $price_value) {
 				if ($price_value['price'] > 0) {
@@ -116,8 +117,6 @@ class PizzasController extends AppController {
 			} else {
 				$this->Session->setFlash('Unable to add your pizza.', 'default', array(), 'bad');
 			}
-		} elseif ($this->request->is('get')) {
-			$this->request->data = $this->Pizza->read(null, $id);
 		}
 
 		$this->Pizza->recursive = 2;

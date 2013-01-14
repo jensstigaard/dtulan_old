@@ -23,6 +23,9 @@ class Lan extends AppModel {
 		),
 		'LanFoodMenu' => array(
 			'dependent' => true
+		),
+		'LanSignupCode' => array(
+			'dependent' => true
 		)
 	);
 	public $validate = array(
@@ -62,7 +65,7 @@ class Lan extends AppModel {
 				'message' => 'Valid "sign up open" required'
 			)
 		),
-		'sign_up_specific_days' => array(
+		'need_physical_code' => array(
 			'required' => array(
 				'rule' => array('between', 0, 1),
 				'message' => 'Valid type required'
@@ -71,7 +74,7 @@ class Lan extends AppModel {
 		'time_start' => array(
 			'bigger than end' => array(
 				'rule' => 'validateDates',
-				'message' => 'Invalid start-/end-time',
+				'message' => 'Invalid start- or end-time',
 			)
 		)
 	);
@@ -208,6 +211,17 @@ class Lan extends AppModel {
 		return $this->data['Lan']['published'];
 	}
 
+	public function isSignupOpen() {
+
+		if (!$this->exists()) {
+			throw new NotFoundException('Lan not found');
+		}
+
+		$this->read(array('sign_up_open'));
+
+		return $this->data['Lan']['sign_up_open'];
+	}
+
 	public function isPast() {
 
 		$this->read(array('time_end'));
@@ -216,21 +230,8 @@ class Lan extends AppModel {
 	}
 
 	public function isSignupPossible() {
-		if ($this->isPublished()) {
-
-			$lan_days = $this->LanDay->find('all', array(
-				'conditions' => array(
-					'LanDay.lan_id' => $this->id
-				),
-				'recursive' => 0
-					)
-			);
-
-			foreach ($lan_days as $day) {
-				if ($this->LanDay->seatsLeft($day['LanDay']['id'])) {
-					return true;
-				}
-			}
+		if ($this->isPublished() && $this->isSignupOpen()) {
+			return true;
 		}
 
 		return false;
@@ -365,6 +366,16 @@ class Lan extends AppModel {
 					'recursive' => 1
 						)
 		);
+	}
+
+	public function beforeSave($options = array()) {
+		parent::beforeSave($options);
+
+		if (isset($this->data['Lan']['slug'])) {
+			$this->request->data['Lan']['slug'] = $this->stringToSlug($this->request->data['Lan']['title']);
+		}
+
+		return true;
 	}
 
 }

@@ -5,7 +5,6 @@
 		<table>
 			<tr>
 				<th>Title</th>
-				<th>Days attending</th>
 				<?php if ($is_auth): ?>
 					<th>Guests of you</th>
 				<?php endif; ?>
@@ -21,11 +20,15 @@
 							<?php if ($is_you && $lan['Lan']['sign_up_open']): ?>
 								<br />
 								<?php
-								echo $this->Html->link(
-										$this->Html->image('16x16_GIF/reply.gif') . ' Edit your signup', array('controller' => 'lan_signups', 'action' => 'edit', $lan['Lan']['id']), array('escape' => false)
+								echo $this->Form->postLink(
+										$this->Html->image('16x16_GIF/action_delete.gif') . ' Delete your signup', array('controller' => 'lan_signups', 'action' => 'delete', $lan['Lan']['id']), array('confirm' => "Are You sure you will delete the signup?", 'escape' => false)
 								);
 								?>
+								<?php if ($user_type == 'student'): ?>
+									<p style="padding-left:5px;">Notice that guests of you or invites you've sent would be deleted too.</p>
+								<?php endif; ?>
 							<?php endif; ?>
+									
 							<?php if (isset($lan['LanInvite']['Student'])): ?>
 								<br />
 								<small>Invited by: <?php echo $this->Html->link($lan['LanInvite']['Student']['name'], array('controller' => 'users', 'action' => 'profile', $lan['LanInvite']['Student']['id'])); ?></small>
@@ -33,11 +36,6 @@
 							<?php if ($is_auth && count($lan['Lan']['LanInvite'])): ?>
 
 							<?php endif; ?>
-						</td>
-						<td>
-							<?php foreach ($lan['LanSignupDay'] as $day): ?>
-								<?php echo $this->Time->format('M jS (l)', $day['LanDay']['date']); ?><br />
-							<?php endforeach; ?>
 						</td>
 
 						<?php if ($is_auth): ?>
