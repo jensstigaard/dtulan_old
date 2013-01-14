@@ -11,7 +11,7 @@
 		?>
 	</div>
 	<?php if (!count($pizza_menus)): ?>
-	<p>No pizza menus connected to this LAN</p>
+		<p>No pizza menus connected to this LAN</p>
 	<?php else: ?>
 		<?php foreach ($pizza_menus as $pizza_menu): ?>
 			<div>
@@ -33,7 +33,7 @@
 					));
 					?>
 				</div>
-					<?php if (!count($pizza_menu['PizzaWave'])): ?>
+				<?php if (!count($pizza_menu['PizzaWave'])): ?>
 					<p>No pizza waves found</p>
 				<?php else: ?>
 					<table>
@@ -50,58 +50,58 @@
 							<th>Total</th>
 							<th>Actions</th>
 						</tr>
-			<?php foreach ($pizza_menu['PizzaWave'] as $pizza_wave): ?>
+						<?php foreach ($pizza_menu['PizzaWave'] as $pizza_wave): ?>
 							<tr>
 								<td><?php echo $pizza_wave['time_start_nice']; ?></td>
 								<td>
-				<?php echo $this->Time->format('H:i', $pizza_wave['time_start']); ?>
+									<?php echo $this->Time->format('H:i', $pizza_wave['time_start']); ?>
 									-
 									<?php echo $this->Time->format('H:i', $pizza_wave['time_end']); ?>
 								</td>
 								<td>
-				<?php
-				switch ($pizza_wave['status']) {
-					case 0:
-						echo $this->Html->image('16x16_GIF/login.gif') . ' Not open';
-						break;
-					case 1:
-						echo $this->Html->image('16x16_PNG/lock_open.png') . ' Open';
-						break;
-					case 2:
-						echo $this->Html->image('16x16_GIF/time.gif') . ' Waiting for delivering';
-						break;
-					case 3:
-						echo $this->Html->image('16x16_GIF/download.gif') . ' Pizza wave received';
-						break;
-					case 4:
-						echo $this->Html->image('16x16_GIF/action_check.gif') . ' Finished';
-						break;
-					default:
-						echo'Not proceded';
-						break;
-				}
-				?>
+									<?php
+									switch ($pizza_wave['status']) {
+										case 0:
+											echo $this->Html->image('16x16_GIF/login.gif') . ' Not open';
+											break;
+										case 1:
+											echo $this->Html->image('16x16_PNG/lock_open.png') . ' Open';
+											break;
+										case 2:
+											echo $this->Html->image('16x16_GIF/time.gif') . ' Waiting for delivering';
+											break;
+										case 3:
+											echo $this->Html->image('16x16_GIF/download.gif') . ' Pizza wave received';
+											break;
+										case 4:
+											echo $this->Html->image('16x16_GIF/action_check.gif') . ' Finished';
+											break;
+										default:
+											echo'Not proceded';
+											break;
+									}
+									?>
 								</td>
 								<td>
-				<?php echo $pizza_wave['pizza_orders_total'] > 0 ? $pizza_wave['pizza_orders_total'] : 0; ?> DKK
+									<?php echo $pizza_wave['pizza_orders_total'] > 0 ? $pizza_wave['pizza_orders_total'] : 0; ?> DKK
 								</td>
 								<td>
-				<?php
-				echo $this->Html->link(
-						'View', array(
-							'controller' => 'pizza_waves',
-					'action' => 'view',
-					$pizza_wave['id']
-						)
-				);
-				?>
+									<?php
+									echo $this->Html->link(
+											'View', array(
+										'controller' => 'pizza_waves',
+										'action' => 'view',
+										$pizza_wave['id']
+											)
+									);
+									?>
 								</td>
 							</tr>
-			<?php endforeach; ?>
+						<?php endforeach; ?>
 					</table>
-					<?php endif; ?>
+				<?php endif; ?>
 			</div>
 			<hr />
-	<?php endforeach; ?>
+		<?php endforeach; ?>
 	<?php endif; ?>
 </div>

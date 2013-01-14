@@ -1,4 +1,4 @@
-<div class="form">
+<div>
 	<?php echo $this->Form->create(); ?>
     <fieldset>
         <legend><?php echo __('Create Team for ' . $tournament['Tournament']['title']); ?></legend>

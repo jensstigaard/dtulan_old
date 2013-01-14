@@ -22,7 +22,7 @@
 						echo $this->Html->image('16x16_PNG/star.png', array('title' => 'Highlighted event'));
 					}
 					?>
-	<?php echo $this->Html->link($lan['Lan']['title'], array('action' => 'view', $lan['Lan']['slug'])); ?>
+					<?php echo $this->Html->link($lan['Lan']['title'], array('action' => 'view', $lan['Lan']['slug'])); ?>
 				</td>
 				<td><?php echo $this->Time->nice($lan['Lan']['time_start']); ?></td>
 				<td><?php echo $this->Time->nice($lan['Lan']['time_end']); ?></td>
@@ -31,17 +31,17 @@
 						<strong style="color:green">Yes</strong>
 					<?php else: ?>
 						<strong style="color:red">No</strong>
-	<?php endif; ?>
+					<?php endif; ?>
 				</td>
 				<td>
 					<?php if ($lan['Lan']['sign_up_open']): ?>
 						<strong style="color:green">Yes</strong>
 					<?php else: ?>
 						<strong style="color:grey">No</strong>
-	<?php endif; ?>
+					<?php endif; ?>
 				</td>
 			</tr>
-<?php endforeach; ?>
+		<?php endforeach; ?>
 
 	</table>
 </div>

@@ -1,6 +1,6 @@
 <?php echo $this->Html->script('foods/index_user', FALSE); ?>
 
-<div class="">
+<div>
 	<?php if (!count($food_orders)): ?>
 		<p>
 			No orders registered

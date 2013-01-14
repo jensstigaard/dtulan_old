@@ -29,8 +29,7 @@
 
 			if (!$day['seats_left']) {
 				$conditions['disabled'] = 'disabled';
-			}
-			else{
+			} else {
 				$conditions['checked'] = true;
 			}
 			?>
@@ -44,5 +43,5 @@
 	</fieldset>
 	<?php echo $this->Form->end(__('Submit')); ?>
 
-	<?php // pr($user);    ?>
+	<?php // pr($user);     ?>
 </div>

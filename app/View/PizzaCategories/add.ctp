@@ -16,10 +16,10 @@
 					$x = 0;
 					foreach ($types as $type_id => $type_value):
 						?>
-					<td>
-						<?php echo $this->Form->checkbox('PizzaType.' . $x . '.pizza_type_id', array('value' => $type_id)); ?>
-						<?php echo $type_value; ?>
-					</td>
+						<td>
+							<?php echo $this->Form->checkbox('PizzaType.' . $x . '.pizza_type_id', array('value' => $type_id)); ?>
+							<?php echo $type_value; ?>
+						</td>
 						<?php
 						$x++;
 					endforeach;
@@ -28,6 +28,6 @@
 			</table>
 		</div>
     </fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
-<?php // pr($pizza_category);   ?>
+	<?php echo $this->Form->end(__('Submit')); ?>
+	<?php // pr($pizza_category);   ?>
 </div>

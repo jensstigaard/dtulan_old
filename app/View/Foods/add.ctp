@@ -6,7 +6,7 @@
 	<div>
 		<?php
 		echo $this->Form->inputs(array(
-			'legend' => 'New Food in '.$category['FoodCategory']['title'],
+			'legend' => 'New Food in ' . $category['FoodCategory']['title'],
 			'title',
 			'description' => array('rows' => 2),
 			'price',

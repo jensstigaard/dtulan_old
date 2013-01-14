@@ -39,7 +39,7 @@
 
 			<?php if ($is_admin): ?>
 
-			<li><a href="<?php
+				<li><a href="<?php
 			echo $this->Html->url(array(
 				'action' => 'view_foodmenus',
 				$lan['Lan']['id']
@@ -47,10 +47,10 @@
 				?>"><?php echo $this->Html->image('24x24_PNG/candy.png'); ?></a></li>
 
 				<li><a href="<?php
-			echo $this->Html->url(array(
-				'action' => 'view_pizzamenus',
-				$lan['Lan']['id']
-			));
+				   echo $this->Html->url(array(
+					   'action' => 'view_pizzamenus',
+					   $lan['Lan']['id']
+				   ));
 				?>"><?php echo $this->Html->image('24x24_PNG/pizza.png'); ?></a></li>
 
 				<li><a href="<?php
@@ -69,13 +69,13 @@
 
 			<?php endif; ?>
 
-				<?php if($signup_available): ?>
+			<?php if ($signup_available): ?>
 				<li><a href="<?php
-				   echo $this->Html->url(array(
-					   'controller' => 'lan_signups',
-					   'action' => 'add',
-					   $lan['Lan']['id']
-				   ));
+			echo $this->Html->url(array(
+				'controller' => 'lan_signups',
+				'action' => 'add',
+				$lan['Lan']['id']
+			));
 				?>" title="Sign up now!"><?php echo $this->Html->image('24x24_PNG/001_01.png'); ?></a></li>
 				<?php endif; ?>
 		</ul>

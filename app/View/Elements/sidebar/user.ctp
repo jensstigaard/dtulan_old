@@ -3,8 +3,8 @@
 	if (!empty($current_user['email_gravatar'])) {
 		$size = 72;
 		echo $this->Html->image(
-				'http://www.gravatar.com/avatar/' . md5(strtolower($current_user['email_gravatar'])) . '?s='.$size.'&amp;r=r', array(
-			'style' => 'float:left;margin: 5px;width:'.$size.'px;height:'.$size.'px;'
+				'http://www.gravatar.com/avatar/' . md5(strtolower($current_user['email_gravatar'])) . '?s=' . $size . '&amp;r=r', array(
+			'style' => 'float:left;margin: 5px;width:' . $size . 'px;height:' . $size . 'px;'
 				)
 		);
 	}
@@ -20,8 +20,7 @@
 
 				if ($current_user_balance < 0) {
 					$color = 'color: #FF0000;';
-				}
-				elseif($current_user_balance > 0) {
+				} elseif ($current_user_balance > 0) {
 					$color = 'color: #00CC00;';
 				}
 				?>

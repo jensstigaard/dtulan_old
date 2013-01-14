@@ -2,7 +2,7 @@
 
 <div>
 	<div style="float:right">
-		<?php echo $this->Html->link('Back to '.$food_menu['FoodMenu']['title'], array('controller' => 'food_menus', 'action' => 'view', $food_menu['FoodMenu']['id'])); ?>
+		<?php echo $this->Html->link('Back to ' . $food_menu['FoodMenu']['title'], array('controller' => 'food_menus', 'action' => 'view', $food_menu['FoodMenu']['id'])); ?>
 	</div>
 	<?php echo $this->Form->create(); ?>
 	<div>

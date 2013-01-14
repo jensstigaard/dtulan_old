@@ -70,14 +70,14 @@
 								?>
 							</td>
 						</tr>
-		<?php endforeach; ?>
+					<?php endforeach; ?>
 					<tr>
 						<td colspan="5">
-		<?php echo $this->Html->link('Add item', array('controller' => 'foods', 'action' => 'add', $category['FoodCategory']['id'])) ?>
+							<?php echo $this->Html->link('Add item', array('controller' => 'foods', 'action' => 'add', $category['FoodCategory']['id'])) ?>
 						</td>
 					</tr>
 				</tbody>
-		<?php endforeach; ?>
+			<?php endforeach; ?>
 		</table>
-<?php endif; ?>
+	<?php endif; ?>
 </div>

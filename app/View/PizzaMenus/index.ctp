@@ -18,7 +18,7 @@
 			</thead>
 			<?php foreach ($pizza_menus as $pizza_menu): ?>
 				<tr>
-					<td><?php echo $this->Html->link($pizza_menu['PizzaMenu']['title'], array('action'=>'view', $pizza_menu['PizzaMenu']['id'])); ?></td>
+					<td><?php echo $this->Html->link($pizza_menu['PizzaMenu']['title'], array('action' => 'view', $pizza_menu['PizzaMenu']['id'])); ?></td>
 					<td><?php echo $pizza_menu['PizzaMenu']['count_categories']; ?></td>
 					<td><?php echo $pizza_menu['PizzaMenu']['count_items']; ?></td>
 					<td><?php echo $pizza_menu['PizzaMenu']['count_used']; ?></td>
@@ -28,4 +28,5 @@
 		</table>
 	<?php endif; ?>
 </div>
-<?php // pr($pizza_menus); ?>
+<?php
+// pr($pizza_menus); ?>

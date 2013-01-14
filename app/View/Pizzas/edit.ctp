@@ -25,8 +25,8 @@
 							<div style="text-align:center;margin:0;padding:0;"><?php echo $type['title']; ?></div>
 							<?php
 							$price_value = '';
-							foreach($pizza['PizzaPrice'] as $price){
-								if($price['pizza_type_id'] == $type['id']){
+							foreach ($pizza['PizzaPrice'] as $price) {
+								if ($price['pizza_type_id'] == $type['id']) {
 									$price_value = $price['price'];
 								}
 							}

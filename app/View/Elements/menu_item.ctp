@@ -24,7 +24,6 @@ if ($page['public'] && $page['in_menu']) {
 
 	$page_model = ClassRegistry::init('Page');
 	$page_url = $page_model->getUrl($page);
-	
 	?>
 	<li class="<?php echo $class; ?>">
 		<?php echo $this->Html->link($page['title'], $page_url); ?>

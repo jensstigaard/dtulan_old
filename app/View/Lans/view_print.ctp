@@ -135,8 +135,7 @@
 			<?php foreach ($lan_signups as $user): ?>
 				<tr>
 					<td>
-						<?php
-						echo $this->Html->link($user['User']['name'], array('controller' => 'users', 'action' => 'profile', $user['User']['id'])); ?>
+						<?php echo $this->Html->link($user['User']['name'], array('controller' => 'users', 'action' => 'profile', $user['User']['id'])); ?>
 					</td>
 					<td>
 						<?php echo $user['User']['phonenumber'] ?>

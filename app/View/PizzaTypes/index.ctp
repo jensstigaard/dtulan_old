@@ -2,8 +2,8 @@
 	<h1>Pizza types known</h1>
 	<ul>
 		<?php foreach ($pizza_types as $pizza_type): ?>
-		<li><?php echo $pizza_type['PizzaType']['title']; ?></li>
-	<?php endforeach; ?>
+			<li><?php echo $pizza_type['PizzaType']['title']; ?></li>
+		<?php endforeach; ?>
 	</ul>
 </div>
 <div>

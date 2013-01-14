@@ -9,7 +9,7 @@
 				$id
 					), array(
 				'confirm' => 'Are you sure you want to delete this LAN and all its data?',
-						'style' => 'color:black'
+				'style' => 'color:black'
 					)
 			);
 			?>

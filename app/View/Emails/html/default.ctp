@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * PHP 5
@@ -17,6 +18,7 @@
  */
 ?>
 <?php
+
 $content = explode("\n", $content);
 
 foreach ($content as $line):
