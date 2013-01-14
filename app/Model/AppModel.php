@@ -84,4 +84,22 @@ class AppModel extends Model {
 		return false;
 	}
 
+	public function generateRandomString($length = 8) {
+		// initialize variables 
+		$string = "";
+		$i = 0;
+		$possible = "0123456789bcdfghjkmnpqrstvwxyz";
+
+		// run random
+		while ($i < $length) {
+			$char = substr($possible, mt_rand(0, strlen($possible) - 1), 1);
+
+			if (!strstr($string, $char)) {
+				$string .= $char;
+				$i++;
+			}
+		}
+		return $string;
+	}
+
 }

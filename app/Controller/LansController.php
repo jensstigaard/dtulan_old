@@ -298,6 +298,11 @@ class LansController extends AppController {
 
 	public function add() {
 		if ($this->request->is('post')) {
+
+			if (isset($this->request->data['Lan']['need_physical_code']) && $this->request->data['Lan']['need_physical_code']) {
+				$this->request->data['LanSignupCode'] = $this->Lan->generateLanSignupCodes($this->request->data['Lan']['max_participants']);
+			}
+
 			if ($this->Lan->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your Lan has been saved.', 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'index'));

@@ -13,9 +13,17 @@
 class LanSignup extends AppModel {
 
 	public $belongsTo = array(
-		'User', 'Lan'
+		'User',
+		'Lan'
 	);
-	public $hasOne = array('LanInvite');
+	public $hasOne = array(
+		'LanInvite' => array(
+			'dependent' => true
+		),
+		'LanSignupCode' => array(
+			'dependent' => true
+		)
+	);
 	public $hasMany = array('LanSignupDay');
 	public $validate = array(
 		'user_id' => array(
@@ -72,7 +80,7 @@ class LanSignup extends AppModel {
 
 	public function validateLan($check) {
 		$this->Lan->id = $check['lan_id'];
-		
+
 		if ($this->Lan->isSignupPossible()) {
 			return true;
 		}
@@ -91,8 +99,7 @@ class LanSignup extends AppModel {
 
 		if (!$this->Lan->data['Lan']['need_physical_code']) {
 			return true;
-		}
-		elseif($this->Lan->LanSignupCode->isNotUsed($check['code'])){
+		} elseif ($this->Lan->LanSignupCode->isNotUsed($check['code'])) {
 			return true;
 		}
 

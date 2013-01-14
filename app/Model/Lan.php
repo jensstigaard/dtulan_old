@@ -371,11 +371,28 @@ class Lan extends AppModel {
 	public function beforeSave($options = array()) {
 		parent::beforeSave($options);
 
-		if (isset($this->data['Lan']['slug'])) {
-			$this->request->data['Lan']['slug'] = $this->stringToSlug($this->request->data['Lan']['title']);
+		if (isset($this->data['Lan']['title'])) {
+			$this->data['Lan']['slug'] = $this->stringToSlug($this->data['Lan']['title']);
 		}
 
 		return true;
+	}
+
+	public function generateLanSignupCodes($quantity) {
+
+		$codes = $this->LanSignupCode->find('list');
+
+		$data = array();
+		$generated = 0;
+		while ($generated < $quantity) {
+			$new = $this->generateRandomString();
+
+			if (!in_array($new, $codes)) {
+				$data[$generated]['code'] = $codes[] = $new;
+				$generated++;
+			}
+		}
+		return $data;
 	}
 
 }
