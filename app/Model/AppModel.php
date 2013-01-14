@@ -68,7 +68,6 @@ class AppModel extends Model {
 		return $return;
 	}
 
-
 	public function stringToSlug($str) {
 		// turn into slug
 		$str = Inflector::slug($str);
@@ -79,7 +78,7 @@ class AppModel extends Model {
 
 	public function isYouAdmin() {
 		$admin_id = AuthComponent::user('Admin.id');
-		if($admin_id > 0){
+		if ($admin_id > 0) {
 			return true;
 		}
 		return false;

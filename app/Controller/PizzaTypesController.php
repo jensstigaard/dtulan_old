@@ -15,7 +15,7 @@ class PizzaTypesController extends AppController {
 		return false;
 	}
 
-	public function index(){
+	public function index() {
 		$this->set('pizza_types', $this->PizzaType->find('all'));
 	}
 

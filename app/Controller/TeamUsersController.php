@@ -53,8 +53,8 @@ class TeamUsersController extends AppController {
 				'tournament_id' => $tournament_id
 			)
 		);
-		
-		if($this->TeamUser->save($this->request->data) && $this->TeamUser->Team->TeamInvite->delete()) {
+
+		if ($this->TeamUser->save($this->request->data) && $this->TeamUser->Team->TeamInvite->delete()) {
 			$this->Session->setFlash('You are now a part of the team', 'default', array('class' => 'message success'), 'good');
 		} else {
 			$this->Session->setFlash('FAILED to accept team invite', 'default', array(), 'bad');

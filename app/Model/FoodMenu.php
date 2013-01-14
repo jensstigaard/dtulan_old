@@ -6,7 +6,6 @@ class FoodMenu extends AppModel {
 		'FoodCategory',
 		'LanFoodMenu'
 	);
-
 	public $validate = array(
 		'title' => array(
 			'notEmpty' => array(
@@ -20,14 +19,14 @@ class FoodMenu extends AppModel {
 		$this->FoodCategory->unbindModel(array('belongsTo' => array('FoodMenu')));
 
 		$categories = $this->FoodCategory->find('all', array(
-					'conditions' => array(
-						'food_menu_id' => $this->id
-					),
-					'recursive' => 1
+			'conditions' => array(
+				'food_menu_id' => $this->id
+			),
+			'recursive' => 1
 				));
 
-		foreach($categories as $index => $category){
-			foreach($category['Food'] as $index2 => $food){
+		foreach ($categories as $index => $category) {
+			foreach ($category['Food'] as $index2 => $food) {
 				$this->FoodCategory->Food->id = $food['id'];
 				$categories[$index]['Food'][$index2]['countTimesSold'] = $this->FoodCategory->Food->countTimesSold();
 			}
@@ -67,8 +66,7 @@ class FoodMenu extends AppModel {
 				));
 	}
 
-	
-	public function getIndexList(){
+	public function getIndexList() {
 		$food_menus = $this->find('all', array(
 			'recursive' => -1
 				));
@@ -79,9 +77,10 @@ class FoodMenu extends AppModel {
 			$food_menus[$index]['FoodMenu']['count_items'] = $this->countItems();
 			$food_menus[$index]['FoodMenu']['count_used'] = $this->countUsedInLans();
 		}
-		
+
 		return $food_menus;
 	}
+
 }
 
 ?>

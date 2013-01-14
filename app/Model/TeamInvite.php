@@ -8,7 +8,6 @@
 class TeamInvite extends AppModel {
 
 	public $belongsTo = array('User', 'Team');
-
 	public $validate = array(
 		'user_invited_by_id' => array(
 			'isUserLeader' => array(
@@ -18,7 +17,7 @@ class TeamInvite extends AppModel {
 		)
 	);
 
-	public function validateIsUserLeader($check){
+	public function validateIsUserLeader($check) {
 		return $this->Team->isLeader($this->data['TeamInvite']['team_id'], $check['user_invited_by_id']);
 	}
 
@@ -27,7 +26,7 @@ class TeamInvite extends AppModel {
 					'conditions' => array(
 						'user_id' => $user_id
 					),
-			'recursive' => 0
+					'recursive' => 0
 						)
 		);
 	}

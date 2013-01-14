@@ -13,44 +13,44 @@
 class Page extends AppModel {
 
 	public $belongsTo = array(
-		 'LatestUpdateBy' => array(
-			  'className' => 'user'
-		 ), 'CreatedBy' => array(
-			  'className' => 'user'
-			  ));
+		'LatestUpdateBy' => array(
+			'className' => 'user'
+		), 'CreatedBy' => array(
+			'className' => 'user'
+			));
 	public $hasMany = array('Underpage' => array(
-			  'className' => 'Page',
-			  'foreignKey' => 'parent_id',
-			  'order' => 'Underpage.sorted ASC',
-		 )
+			'className' => 'Page',
+			'foreignKey' => 'parent_id',
+			'order' => 'Underpage.sorted ASC',
+		)
 	);
 	public $validate = array(
-		 'title' => array(
-			  'required' => array(
-					'rule' => array('notEmpty'),
-					'message' => 'Title is required'
-			  )
-		 ),
-		 'slug' => array(
-			  'rule' => 'isUnique',
-			  'message' => 'Page has to be unique'
-		 ),
-		 'command' => array(
-			  'rule' => array('inList', array('text', 'uri')),
-			  'message' => 'Invalid command'
-		 )
+		'title' => array(
+			'required' => array(
+				'rule' => array('notEmpty'),
+				'message' => 'Title is required'
+			)
+		),
+		'slug' => array(
+			'rule' => 'isUnique',
+			'message' => 'Page has to be unique'
+		),
+		'command' => array(
+			'rule' => array('inList', array('text', 'uri')),
+			'message' => 'Invalid command'
+		)
 	);
 
 	public function getPagesToplevel() {
 
 		$opt = $this->find('list', array(
-			 'conditions' => array(
-				  'parent_id' => 0
-			 )
-				  ));
+			'conditions' => array(
+				'parent_id' => 0
+			)
+				));
 
 		$opt[0] = '[Top level]';
-		
+
 		ksort($opt);
 
 		return $opt;
@@ -70,22 +70,22 @@ class Page extends AppModel {
 
 	public function getMenuItems() {
 		$pages = $this->find('all', array('conditions' => array(
-				  'Page.parent_id' => 0,
-				  'Page.public' => 1,
-				  'Page.in_menu' => 1,
-			 ),
-			 'recursive' => 2,
-			 'fields' => array(
-				  'Page.id',
-				  'Page.title',
-				  'Page.slug',
-				  'Page.public',
-				  'Page.in_menu',
-				  'Page.parent_id',
-				  'Page.command',
-				  'Page.command_value',
-			 )
-				  )
+				'Page.parent_id' => 0,
+				'Page.public' => 1,
+				'Page.in_menu' => 1,
+			),
+			'recursive' => 2,
+			'fields' => array(
+				'Page.id',
+				'Page.title',
+				'Page.slug',
+				'Page.public',
+				'Page.in_menu',
+				'Page.parent_id',
+				'Page.command',
+				'Page.command_value',
+			)
+				)
 		);
 
 		return $pages;
@@ -110,9 +110,9 @@ class Page extends AppModel {
 			default:
 
 				$return = array(
-					 'controller' => 'pages',
-					 'action' => 'view',
-					 'slug' => $this->stringToSlug($page['title'])
+					'controller' => 'pages',
+					'action' => 'view',
+					'slug' => $this->stringToSlug($page['title'])
 				);
 				break;
 		}

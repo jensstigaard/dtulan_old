@@ -30,7 +30,7 @@ class FoodCategoriesController extends AppController {
 
 			if ($this->FoodCategory->save($this->request->data)) {
 				$this->Session->setFlash('Your Food Category has been created', 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('controller'=>'food_menus','action' => 'view', $food_menu_id));
+				$this->redirect(array('controller' => 'food_menus', 'action' => 'view', $food_menu_id));
 			} else {
 				$this->Session->setFlash('Unable to create food', 'default', array(), 'bad');
 			}
@@ -38,7 +38,7 @@ class FoodCategoriesController extends AppController {
 	}
 
 	public function edit($id) {
-
+		
 	}
 
 }

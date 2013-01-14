@@ -18,8 +18,8 @@ class PizzaMenu extends AppModel {
 			)
 		)
 	);
-	
-	public function getIndexList(){
+
+	public function getIndexList() {
 		$pizza_menus = $this->find('all', array(
 			'recursive' => -1
 				));
@@ -30,7 +30,7 @@ class PizzaMenu extends AppModel {
 			$pizza_menus[$index]['PizzaMenu']['count_items'] = $this->countItems();
 			$pizza_menus[$index]['PizzaMenu']['count_used'] = $this->countUsedInLans();
 		}
-		
+
 		return $pizza_menus;
 	}
 

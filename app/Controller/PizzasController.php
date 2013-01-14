@@ -99,7 +99,7 @@ class PizzasController extends AppController {
 						)
 							)
 					);
-					if(count($pizza_price)==1){
+					if (count($pizza_price) == 1) {
 						$this->request->data['PizzaPrice'][$price_type_id]['id'] = $pizza_price['PizzaPrice']['id'];
 //						debug($pizza_price);
 					}
@@ -116,13 +116,12 @@ class PizzasController extends AppController {
 			} else {
 				$this->Session->setFlash('Unable to add your pizza.', 'default', array(), 'bad');
 			}
-		} elseif($this->request->is('get')) {
+		} elseif ($this->request->is('get')) {
 			$this->request->data = $this->Pizza->read(null, $id);
 		}
 
 		$this->Pizza->recursive = 2;
 		$this->set('pizza', $this->Pizza->read());
-
 	}
 
 }

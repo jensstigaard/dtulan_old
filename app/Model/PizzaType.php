@@ -18,7 +18,6 @@ class PizzaType extends AppModel {
 			'joinTable' => 'pizza_category_types'
 		)
 	);
-
 	public $validate = array(
 		'title' => array(
 			'required' => array(

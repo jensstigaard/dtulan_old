@@ -12,23 +12,23 @@
  */
 class LanDay extends AppModel {
 
-    public $belongsTo = array('Lan');
-    public $hasMany = array('LanSignupDay');
-    public $order = array('LanDay.date' => 'asc');
+	public $belongsTo = array('Lan');
+	public $hasMany = array('LanSignupDay');
+	public $order = array('LanDay.date' => 'asc');
 
-    public function seatsLeft($id) {
+	public function seatsLeft($id) {
 
-        $this->id = $id;
+		$this->id = $id;
 
-        if (!$this->exists()) {
-            throw new NotFoundException('Lan day not found');
-        }
+		if (!$this->exists()) {
+			throw new NotFoundException('Lan day not found');
+		}
 
-        $this->recursive = 1;
-        $lan_day = $this->read();
+		$this->recursive = 1;
+		$lan_day = $this->read();
 
-        return $lan_day['Lan']['max_participants'] - count($lan_day['LanSignupDay']);
-    }
+		return $lan_day['Lan']['max_participants'] - count($lan_day['LanSignupDay']);
+	}
 
 }
 

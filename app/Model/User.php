@@ -198,13 +198,13 @@ class User extends AppModel {
 
 	public function getUserIDsNotAdmin() {
 		return $this->find('list', array(
-			'conditions' => array(
-				'User.activated' => 1,
-				'NOT' => array(
-					'User.id' => $this->Admin->getUserIDsAdmins()
-				)
-			)
-				)
+					'conditions' => array(
+						'User.activated' => 1,
+						'NOT' => array(
+							'User.id' => $this->Admin->getUserIDsAdmins()
+						)
+					)
+						)
 		);
 	}
 
@@ -212,7 +212,7 @@ class User extends AppModel {
 		return isset($this->data['User']['activated']) && $this->data['User']['activated'];
 	}
 
-	public function isStudent(){
+	public function isStudent() {
 		$this->read(array('type'));
 
 		return $this->data['User']['type'] === 'student';
@@ -233,8 +233,7 @@ class User extends AppModel {
 		return $this->data['User']['email'];
 	}
 
-
-	public function getBalance(){
+	public function getBalance() {
 		$this->read(array('User.balance'));
 		return $this->data['User']['balance'];
 	}

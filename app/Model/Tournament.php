@@ -11,9 +11,9 @@
  * @author Superkatten
  */
 class Tournament extends AppModel {
+
 	public $belongsTo = array('Lan', 'Game');
 	public $hasMany = array('Team');
-
 	public $validate = array(
 		'title' => array(
 			'notEmpty' => array(
@@ -21,7 +21,6 @@ class Tournament extends AppModel {
 				'message' => 'The title cannot be empty'
 			)
 		),
-
 		'team_size' => array(
 			'is between' => array(
 				'rule' => array('between', 1, 16),
@@ -48,12 +47,13 @@ class Tournament extends AppModel {
 		);
 
 		$team_ids_formatted = array();
-		foreach($team_ids as $team){
+		foreach ($team_ids as $team) {
 			$team_ids_formatted[] = $team['Team']['id'];
 		}
 
 		return $team_ids_formatted;
 	}
+
 }
 
 ?>

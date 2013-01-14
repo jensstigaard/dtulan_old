@@ -21,16 +21,14 @@ class LanSignupDay extends AppModel {
 			)
 		)
 	);
-
 	public $order = array(
 		'LanDay.date' => 'asc',
 	);
 
 	public function availableLanDay($check) {
-		if($this->LanDay->seatsLeft($check['lan_day_id']) > 0){
+		if ($this->LanDay->seatsLeft($check['lan_day_id']) > 0) {
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 //		return false;

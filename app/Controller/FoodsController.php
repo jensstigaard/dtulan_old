@@ -18,8 +18,8 @@ class FoodsController extends AppController {
 	public function add($food_category_id) {
 
 		$this->Food->FoodCategory->id = $food_category_id;
-		if(!$this->Food->FoodCategory->exists()){
-			throw new NotFoundException('Food Category not found with ID #'.$food_category_id);
+		if (!$this->Food->FoodCategory->exists()) {
+			throw new NotFoundException('Food Category not found with ID #' . $food_category_id);
 		}
 
 		$this->set('category', $this->Food->FoodCategory->read(array('id', 'title')));
@@ -40,7 +40,7 @@ class FoodsController extends AppController {
 	public function edit($id) {
 		$this->Food->id = $id;
 		if (!$this->Food->exists()) {
-			throw new NotFoundException(__('Food not found with ID #'.$id));
+			throw new NotFoundException(__('Food not found with ID #' . $id));
 		}
 
 		if ($this->request->is('get')) {
@@ -54,7 +54,7 @@ class FoodsController extends AppController {
 			}
 		}
 
-		$this->set('category', $this->Food->FoodCategory->read(array('id','title'), $this->Food->field('food_category_id')));
+		$this->set('category', $this->Food->FoodCategory->read(array('id', 'title'), $this->Food->field('food_category_id')));
 	}
 
 	public function delete($id) {

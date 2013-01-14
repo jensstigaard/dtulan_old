@@ -78,13 +78,11 @@ class PizzaOrdersController extends AppController {
 				if ($this->PizzaOrder->saveAssociated($this->request->data)) {
 					$msg = 'SUCCESS';
 				} else {
-					if(isset($this->PizzaOrder->validationErrors['User']['balance'][0])){
+					if (isset($this->PizzaOrder->validationErrors['User']['balance'][0])) {
 						$msg = $this->PizzaOrder->validationErrors['User']['balance'][0];
-					}
-					else{
+					} else {
 						$msg = $this->PizzaOrder->validationErrors;
 					}
-
 				}
 			} else {
 				$msg = 'Invalid pizza order';

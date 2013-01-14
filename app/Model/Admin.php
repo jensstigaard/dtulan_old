@@ -10,7 +10,6 @@ class Admin extends AppModel {
 	public $belongsTo = array(
 		'User'
 	);
-
 	public $validate = array(
 		'user_id' => array(
 			'isUnique' => array(
@@ -19,7 +18,6 @@ class Admin extends AppModel {
 			)
 		)
 	);
-
 
 	public function getUserIDsAdmins() {
 		$this->recursive = -1;

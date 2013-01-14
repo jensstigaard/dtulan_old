@@ -11,9 +11,10 @@
  * @author Superkatten
  */
 class Game extends AppModel {
+
 	//put your code here
 	public $hasMany = array('Tournament');
-	
+
 }
 
 ?>

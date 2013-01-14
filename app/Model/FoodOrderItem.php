@@ -11,9 +11,11 @@
  * @author Jens
  */
 class FoodOrderItem extends AppModel {
+
 	public $belongsTo = array(
 		'Food', 'FoodOrder'
 	);
+
 }
 
 ?>

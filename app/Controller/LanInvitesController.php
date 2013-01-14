@@ -43,8 +43,7 @@ class LanInvitesController extends AppController {
 		if ($this->LanInvite->delete()) {
 			$this->Session->setFlash('Your invite has been declined', 'default', array('class' => 'message success'), 'good');
 			$this->redirect(array('controller' => 'users', 'action' => 'profile'));
-		}
-		else{
+		} else {
 			$this->Session->setFlash('Unable to decline invite. Please try again', 'default', array(), 'bad');
 			$this->redirect($this->referer());
 		}
