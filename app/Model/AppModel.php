@@ -78,18 +78,26 @@ class AppModel extends Model {
 
 	public function isLoggedIn() {
 		$id = AuthComponent::user('User.id');
-		if ($id > 0) {
+		if (strlen($id) > 0) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public function isYouAdmin() {
 		$admin_id = AuthComponent::user('Admin.id');
 		if ($admin_id > 0) {
 			return true;
 		}
 		return false;
+	}
+
+	public function getLoggedInId() {
+//		if(!$this->isLoggedIn()){
+//			throw new FatalErrorException('Fatal error!');
+//		}
+
+		return AuthComponent::user('User.id');
 	}
 
 	public function generateRandomString($length = 8) {
@@ -108,6 +116,10 @@ class AppModel extends Model {
 			}
 		}
 		return $string;
+	}
+
+	function floordec($value, $decimals = 2) {
+		return floor($value * pow(10, $decimals)) / pow(10, $decimals);
 	}
 
 }
