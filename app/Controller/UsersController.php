@@ -75,8 +75,10 @@ class UsersController extends AppController {
 
 		$title_for_layout = 'Profile &bull; ' . $user['User']['name'];
 
-		if ($this->User->isCrewForUser()) {
-			$this->set('make_payment_crew_id', $this->User->getCrewId());
+		if ($this->User->isCrewForUser($this->Auth->user('id'))) {
+			$crew_info = $this->User->getNewestCrewId($this->Auth->user('id'));
+			$this->set('make_payment_crew_id', $crew_info['Crew']['CrewId']);
+			$this->set('make_payment_lan_title', $crew_info['Lan']['LanTitle']);
 		}
 
 		$this->set(compact(

@@ -11,11 +11,33 @@
 
 	<?php if (isset($make_payment_crew_id)): ?>
 		<div style="float:right;width:200px;background-color:rgba(0,0,0,.2);padding:10px;">
-			<?php echo $this->Form->create('Payment', array('controller' => 'payments', 'action' => 'add')); ?>
-			<?php echo $this->Form->input('amount', array('label' => 'Make payment')); ?>
-			<?php echo $this->Form->hidden('user_id', array('value' => $user['User']['id'])); ?>
-			<?php echo $this->Form->hidden('crew_id', array('value' => $make_payment_crew_id)); ?>
-			<?php echo $this->Form->end(__('Submit')); ?>
+			<h3>New payment</h3>
+			<?php
+			echo $this->Form->create('Payment', array('controller' => 'payments', 'action' => 'add'));
+			echo $this->Form->inputs(array(
+				'fieldset' => false,
+				'amount',
+				'user_id' => array(
+					'value' => $user['User']['id'],
+					'type' => 'hidden'
+				),
+				'crew_id' => array(
+					'value' => $make_payment_crew_id,
+					'type' => 'hidden'
+				)
+					)
+			);
+			?>
+
+			<p>Payment in: <strong><?php echo $make_payment_lan_title; ?></strong></p>
+			<?php
+			echo $this->Form->end(array(
+				'label' => __('Submit'),
+				'div' => array(
+					'style' => 'margin:0;padding:0 0 5px'
+				)
+			));
+			?>
 		</div>
 	<?php endif; ?>
 

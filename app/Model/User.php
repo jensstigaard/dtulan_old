@@ -292,10 +292,16 @@ class User extends AppModel {
 		);
 	}
 	
-	public function isCrewForUser($user_id_crew, $user_id){
+	public function isCrewForUser($user_id_crew){
 		$db = $this->getDataSource();
-		$total = $db->fetchAll("SELECT COUNT(Crew.id) AS CrewCount FROM `crews` AS Crew WHERE `user_id` = ? INNER JOIN `lans` AS Lan ON Crew.lan_id = Lan.id INNER JOIN `lan_signups` AS LanSignup ON Lan.id = LanSignup.lan_id WHERE LanSignup.user_id = ?", array($user_id_crew, $user_id));
+		$total = $db->fetchAll("SELECT COUNT(Crew.id) AS CrewCount FROM `crews` AS Crew INNER JOIN `lans` AS Lan ON Crew.lan_id = Lan.id INNER JOIN `lan_signups` AS LanSignup ON Lan.id = LanSignup.lan_id WHERE LanSignup.user_id = ? AND Crew.`user_id` = ?", array($this->id, $user_id_crew));
 		return $total[0][0]['CrewCount'] > 0;
+	}
+	
+	public function getNewestCrewId($user_id_crew){
+		$db = $this->getDataSource();
+		$total = $db->fetchAll("SELECT Crew.id AS CrewId, Lan.title AS LanTitle FROM `crews` AS Crew INNER JOIN `lans` AS Lan ON Crew.lan_id = Lan.id INNER JOIN `lan_signups` AS LanSignup ON Lan.id = LanSignup.lan_id WHERE LanSignup.user_id = ? AND Crew.`user_id` = ? ORDER BY Lan.time_start DESC LIMIT 1", array($this->id, $user_id_crew));
+		return $total[0];
 	}
 
 }
