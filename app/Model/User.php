@@ -15,7 +15,6 @@ class User extends AppModel {
 	public $name = 'User';
 	public $hasOne = array('Admin', 'UserPasswordTicket', 'QrCode');
 	public $hasMany = array(
-		'Crew',
 		'LanSignup',
 		'LanInvite' => array(
 			'className' => 'LanInvite',
@@ -291,6 +290,12 @@ class User extends AppModel {
 					'recursive' => 0
 						)
 		);
+	}
+	
+	public function isCrewForUser($user_id_crew, $user_id){
+		$db = $this->getDataSource();
+		$total = $db->fetchAll("SELECT COUNT(Crew.id) AS CrewCount FROM `crews` AS Crew WHERE `user_id` = ? INNER JOIN `lans` AS Lan ON Crew.lan_id = Lan.id INNER JOIN `lan_signups` AS LanSignup ON Lan.id = LanSignup.lan_id WHERE LanSignup.user_id = ?", array($user_id_crew, $user_id));
+		return $total[0][0]['CrewCount'] > 0;
 	}
 
 }

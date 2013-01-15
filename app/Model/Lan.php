@@ -237,6 +237,10 @@ class Lan extends AppModel {
 
 	public function isPast() {
 
+		if (!$this->exists()) {
+			throw new NotFoundException('Lan not found');
+		}
+
 		$this->read(array('time_end'));
 
 		return $this->data['Lan']['time_end'] < date('Y-m-d H:i:s');
