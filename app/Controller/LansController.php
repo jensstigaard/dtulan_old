@@ -28,42 +28,19 @@ class LansController extends AppController {
 
 	public function view($slug) {
 
-		$cond = array('Lan.slug' => $slug);
+		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 
-		if ($this->Auth->loggedIn()) {
+		$this->Lan->read(array('title'));
 
-			if (!$this->Lan->isYouAdmin()) {
-				$cond['published'] = 1;
-			}
-		} else {
-			$cond['published'] = 1;
-		}
+		$title = $this->Lan->data['Lan']['title'];
 
-		$lan = $this->Lan->find('first', array('conditions' => $cond));
+		$title_for_layout = 'Lan &bull; ' . $title;
 
-		if (!$lan) {
-			throw new NotFoundException('No LAN found');
-		}
-
-		$this->Lan->id = $lan['Lan']['id'];
-		if (!$this->Lan->exists()) {
-			throw new NotFoundException('LAN not found with id ' . $this->Lan->id);
-		}
-
-		$title_for_layout = 'Lan &bull; ' . $lan['Lan']['title'];
-
-		$this->set(compact('lan', 'title_for_layout'));
-
-		$signup_available = false;
-		if ($this->Auth->loggedIn()) {
-			$this->Lan->LanSignup->User->id = $this->Auth->user('id');
-
-			$signup_available = $this->Lan->isUserAbleSignup();
-		}
-		$this->set(compact('signup_available'));
+		$this->set(compact('title', 'title_for_layout'));
+		$this->set('tabs', $this->Lan->getTabs());
 	}
 
-	public function view_general($id) {
+	public function view_general($slug) {
 
 		if (!$this->request->is('ajax')) {
 			throw new BadRequestException('Bad request');
@@ -71,10 +48,7 @@ class LansController extends AppController {
 
 		$this->layout = 'ajax';
 
-		$this->Lan->id = $id;
-		if (!$this->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $id);
-		}
+		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 
 		$this->set('lan', $this->Lan->read(array(
 					'price',
@@ -93,41 +67,37 @@ class LansController extends AppController {
 
 	/* -- Crew tab -- */
 
-	public function view_crew($id) {
+	public function view_crew($slug) {
 		if (!$this->request->is('ajax')) {
 			throw new BadRequestException('Bad request');
 		}
 
 		$this->layout = 'ajax';
 
-		$this->Lan->id = $id;
-		if (!$this->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $id);
-		}
+		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 
-		$this->set('crew', $this->Lan->LanSignup->getLanSignupsCrew($id));
+		$this->set('lan_id', $this->Lan->id);
+
+		$this->set('crew', $this->Lan->LanSignup->getLanSignupsCrew($this->Lan->id));
 	}
 
 	/* - Participants tab -- */
 
-	public function view_participants($id) {
+	public function view_participants($slug) {
 		if (!$this->request->is('ajax')) {
 			throw new BadRequestException('Bad request');
 		}
 
 		$this->layout = 'ajax';
 
-		$this->Lan->id = $id;
-		if (!$this->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $id);
-		}
+		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 
 		$this->paginate = array(
 			'LanSignup' => array(
 				'conditions' => array(
-					'LanSignup.lan_id' => $id,
+					'LanSignup.lan_id' => $this->Lan->id,
 					'NOT' => array(
-						'LanSignup.id' => $this->Lan->LanSignup->getLanSignupsCrewIds($id)
+						'LanSignup.id' => $this->Lan->LanSignup->getLanSignupsCrewIds()
 					)
 				),
 				'recursive' => 2,
@@ -145,22 +115,19 @@ class LansController extends AppController {
 
 	/* -- Tournaments tab -- */
 
-	public function view_tournaments($id) {
+	public function view_tournaments($slug) {
 		if (!$this->request->is('ajax')) {
 			throw new BadRequestException('Bad request');
 		}
 
 		$this->layout = 'ajax';
 
-		$this->Lan->id = $id;
-		if (!$this->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $id);
-		}
+		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 
 		$this->paginate = array(
 			'Tournament' => array(
 				'conditions' => array(
-					'Tournament.lan_id' => $id,
+					'Tournament.lan_id' => $this->Lan->id,
 				),
 				'recursive' => 2,
 				'limit' => 10,
@@ -172,12 +139,12 @@ class LansController extends AppController {
 
 		$this->set('tournaments', $this->paginate('Tournament'));
 
-		$this->set('lan_id', $id);
+		$this->set('lan_id', $this->Lan->id);
 	}
 
 	/* -- Pizza menus tab -- */
 
-	public function view_pizzamenus($id) {
+	public function view_pizzamenus($slug) {
 
 		if (!$this->request->is('ajax')) {
 			throw new BadRequestException('Bad request');
@@ -185,17 +152,14 @@ class LansController extends AppController {
 
 		$this->layout = 'ajax';
 
-		$this->Lan->id = $id;
-
-		if (!$this->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $id);
-		}
+		$this->Lan->id = $this->Lan->getIdBySlug($slug);
+		$this->set('id', $this->Lan->id);
 
 		$this->Lan->LanPizzaMenu->unbindModel(array('belongsTo' => array('Lan')));
 		$this->Lan->LanPizzaMenu->PizzaMenu->unbindModel(array('hasMany' => array('PizzaCategory')));
 		$pizza_menus = $this->Lan->LanPizzaMenu->find('all', array(
 			'conditions' => array(
-				'LanPizzaMenu.lan_id' => $id
+				'LanPizzaMenu.lan_id' => $this->Lan->id
 			),
 			'recursive' => 2
 				));
@@ -209,12 +173,12 @@ class LansController extends AppController {
 			}
 		}
 
-		$this->set(compact('pizza_menus', 'id'));
+		$this->set(compact('pizza_menus'));
 	}
 
 	/* -- Food menus tab -- */
 
-	public function view_foodmenus($id) {
+	public function view_foodmenus($slug) {
 
 		if (!$this->request->is('ajax')) {
 			throw new BadRequestException('Bad request');
@@ -222,17 +186,14 @@ class LansController extends AppController {
 
 		$this->layout = 'ajax';
 
-		$this->Lan->id = $id;
-
-		if (!$this->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $id);
-		}
+		$this->Lan->id = $this->Lan->getIdBySlug($slug);
+		$this->set('id', $this->Lan->id);
 
 		$this->Lan->LanFoodMenu->unbindModel(array('belongsTo' => array('Lan')));
 
 		$food_menus = $this->Lan->LanFoodMenu->find('all', array(
 			'conditions' => array(
-				'LanFoodMenu.lan_id' => $id
+				'LanFoodMenu.lan_id' => $this->Lan->id
 			),
 			'recursive' => 1
 				));
@@ -243,23 +204,19 @@ class LansController extends AppController {
 			$food_menus[$index]['LanFoodMenu']['count_orders_unhandled'] = $this->Lan->LanFoodMenu->countOrdersUnhandled();
 		}
 
-		$this->set(compact('food_menus', 'id'));
+		$this->set(compact('food_menus'));
 	}
 
 	/* -- Economics tab -- */
 
-	public function view_economics($id) {
+	public function view_economics($slug) {
 		if (!$this->request->is('ajax')) {
 			throw new BadRequestException('Bad request');
 		}
 
 		$this->layout = 'ajax';
 
-		$this->Lan->id = $id;
-
-		if (!$this->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $id);
-		}
+		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 
 		$this->set('lan', $this->Lan->read());
 
@@ -280,18 +237,14 @@ class LansController extends AppController {
 
 	/* -- Lan invites tab -- */
 
-	public function view_invites($id) {
+	public function view_invites($slug) {
 		if (!$this->request->is('ajax')) {
 			throw new BadRequestException('Bad request');
 		}
 
 		$this->layout = 'ajax';
 
-		$this->Lan->id = $id;
-
-		if (!$this->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $id);
-		}
+		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 
 		$this->set('lan_invites', $this->Lan->getInvites());
 	}
@@ -443,13 +396,8 @@ class LansController extends AppController {
 				)
 		);
 
-		$this->Lan->Crew->recursive = 0;
-		$lan_crews = $this->Lan->getCrew();
+		$lan_crew_ids = $this->Lan->getCrewMembersUserId();
 
-		$lan_crew_ids = array();
-		foreach ($lan_crews as $crew) {
-			$lan_crew_ids[] = $crew['Crew']['user_id'];
-		}
 
 		// Crew signed up for LAN
 		$lan_signups_crew = $this->Lan->LanSignup->find('all', array(

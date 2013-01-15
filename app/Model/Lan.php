@@ -92,7 +92,7 @@ class Lan extends AppModel {
 		$this->id = $result['Lan']['id'];
 
 		if (!$this->exists()) {
-			throw new NotFoundException('Lan not found with slug: '. $slug);
+			throw new NotFoundException('Lan not found with slug: ' . $slug);
 		}
 
 		return $this->id;
@@ -301,15 +301,22 @@ class Lan extends AppModel {
 		);
 	}
 
-	public function getCrew() {
-		return $this->Crew->find('all', array('conditions' => array(
-						'Crew.lan_id' => $this->id
-					),
-					'fields' => array(
-						'Crew.user_id'
-					),
-						)
+	public function getCrewMembersUserId() {
+		$lan_crews = $this->Crew->find('all', array('conditions' => array(
+				'lan_id' => $this->id
+			),
+			'fields' => array(
+				'user_id'
+			),
+				)
 		);
+
+		$lan_crew_ids = array();
+		foreach ($lan_crews as $crew) {
+			$lan_crew_ids[] = $crew['Crew']['user_id'];
+		}
+
+		return $lan_crew_ids;
 	}
 
 	public function getPizzaMenus() {
@@ -389,6 +396,96 @@ class Lan extends AppModel {
 					'recursive' => 1
 						)
 		);
+	}
+
+	public function getTabs() {
+
+		$this->read(array('slug'));
+
+		$tabs = array(
+			array(
+				'title' => 'Generel',
+				'url' => array(
+					'action' => 'view_general',
+					$this->data['Lan']['slug']
+				),
+				'img' => '24x24_PNG/001_40.png',
+			),
+			array(
+				'title' => 'Crew',
+				'url' => array(
+					'action' => 'view_crew',
+					$this->data['Lan']['slug']
+				),
+				'img' => '24x24_PNG/crew.png',
+			),
+			array(
+				'title' => 'Participants',
+				'url' => array(
+					'action' => 'view_participants',
+					$this->data['Lan']['slug']
+				),
+				'img' => '24x24_PNG/participants.png',
+			),
+			array(
+				'title' => 'Tournaments',
+				'url' => array(
+					'action' => 'view_tournaments',
+					$this->data['Lan']['slug']
+				),
+				'img' => '24x24_PNG/trophy_gold.png',
+			),
+		);
+
+		if ($this->isYouAdmin()) {
+			$tabs_admin = array(
+				array(
+					'title' => 'Food menus',
+					'url' => array(
+						'action' => 'view_foodmenus',
+						$this->data['Lan']['slug']
+					),
+					'img' => '24x24_PNG/candy.png',
+				),
+				array(
+					'title' => 'Pizza menus',
+					'url' => array(
+						'action' => 'view_pizzamenus',
+						$this->data['Lan']['slug']
+					),
+					'img' => '24x24_PNG/pizza.png',
+				),
+				array(
+					'title' => 'Economics',
+					'url' => array(
+						'action' => 'view_economics',
+						$this->data['Lan']['slug']
+					),
+					'img' => '24x24_PNG/payment_cash.png',
+				),
+			);
+
+			$tabs = array_merge($tabs, $tabs_admin);
+		}
+
+
+		if ($this->isUserAbleSignup()) {
+			$tabs_signup = array(
+				array(
+					'title' => 'Sign up',
+					'url' => array(
+						'controller' => 'lan_signups',
+						'action' => 'add',
+						$this->data['Lan']['slug']
+					),
+					'img' => '',
+				),
+			);
+
+			$tabs = array_merge($tabs, $tabs_signup);
+		}
+
+		return $tabs;
 	}
 
 	public function beforeSave($options = array()) {

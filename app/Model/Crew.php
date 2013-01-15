@@ -13,7 +13,7 @@
 class Crew extends AppModel {
 
 	public $belongsTo = array(
-		'Lan'
+		'Lan', 'User'
 	);
 	public $hasMany = array('Mark');
 	public $validate = array(
@@ -23,12 +23,14 @@ class Crew extends AppModel {
 				'message' => 'LAN does not exist'
 			),
 			'validate lan' => array(
-				'rule' => 'validateLan',
+				'rule' => 'validateLanNotPast',
 				'message' => 'Lan is not valid'
 			)
 		),
 		'user_id' => array(
 			'validate user' => array(
+				'rule' => 'validateUserExists',
+				'message' => 'The user does not exist'
 			),
 			'validate user as crew in lan' => array(
 				'rule' => 'validateUserInLan',
@@ -37,7 +39,7 @@ class Crew extends AppModel {
 		)
 	);
 
-	public function validateLanExist($check) {
+	public function validateLanExists($check) {
 		$this->Lan->id = $check['lan_id'];
 		return $this->Lan->exists();
 	}
@@ -46,6 +48,12 @@ class Crew extends AppModel {
 		$this->Lan->id = $check['lan_id'];
 
 		return !$this->Lan->isPast();
+	}
+
+	public function validateUserExists($check) {
+		$this->User->id = $check['user_id'];
+
+		return $this->User->exists();
 	}
 
 	public function validateUserInLan($check) {
@@ -81,11 +89,36 @@ class Crew extends AppModel {
 		);
 
 		$this->id = $crew_member['Crew']['id'];
-		
-		if(!$this->exists()){
+
+		if (!$this->exists()) {
 			throw new NotFoundException('Crew not found');
 		}
 		return $this->id;
+	}
+
+	public function getUsersNotCrew() {
+
+		$users = $this->Lan->LanSignup->User->find('all', array(
+			'conditions' => array(
+				'NOT' => array(
+					'id' => $this->Lan->getCrewMembersUserId()
+				)
+			),
+			'fields' => array(
+				'User.id',
+				'User.name',
+				'User.id_number'
+			),
+			'recursive' => -1
+				)
+		);
+
+		$list = array();
+		foreach ($users as $user) {
+			$list[$user['User']['id']] = $user['User']['name'] . ' (' . $user['User']['id_number'] . ')';
+		}
+
+		return $list;
 	}
 
 }

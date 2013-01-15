@@ -1,6 +1,11 @@
 <?php echo $this->Html->script(array('ajax/all_links')); ?>
 
 <div>
+	<?php if ($is_admin): ?>
+		<div style="float:right;">
+			<?php echo $this->Html->link('Add Crewmember', array('controller' => 'crew', 'action' => 'add', $lan_id)); ?>
+		</div>
+	<?php endif; ?>
 	<?php if (!count($crew)): ?>
 		<p>No crew yet</p>
 	<?php else: ?>

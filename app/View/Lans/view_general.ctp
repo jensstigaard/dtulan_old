@@ -1,6 +1,10 @@
 <div>
-	<div>
-		<table>
+	<?php if ($is_admin): ?>
+		<div style="float:right">
+			<?php echo $this->Html->link('Edit LAN', array('action' => 'edit', $lan['Lan']['id'])); ?>
+		</div>
+	<?php endif; ?>
+		<table style="width:500px;">
 			<tbody>
 				<tr style="font-size:110%">
 					<td>Price:</td>
@@ -63,5 +67,4 @@
 				<?php endif; ?>
 			</tbody>
 		</table>
-	</div>
 </div>

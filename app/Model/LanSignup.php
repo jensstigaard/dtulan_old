@@ -104,15 +104,15 @@ class LanSignup extends AppModel {
 		return false;
 	}
 
-	public function getLanSignupsCrew($lan_id) {
-		$this->Lan->id = $lan_id;
+	public function getLanSignupsCrew() {
+
 		if (!$this->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $lan_id);
+			throw new NotFoundException('Lan not found with id #' . $this->Lan->id);
 		}
 
 		$crew = $this->Lan->Crew->find('all', array(
 			'conditions' => array(
-				'Crew.lan_id' => $lan_id
+				'Crew.lan_id' => $this->Lan->id
 			),
 			'recursive' => 0,
 			'fields' => array(
@@ -128,7 +128,7 @@ class LanSignup extends AppModel {
 
 		return $this->find('all', array(
 					'conditions' => array(
-						'LanSignup.lan_id' => $lan_id,
+						'LanSignup.lan_id' => $this->Lan->id,
 						'LanSignup.user_id' => $crew_user_ids
 					),
 					'recursive' => 2
@@ -136,8 +136,8 @@ class LanSignup extends AppModel {
 		);
 	}
 
-	public function getLanSignupsCrewIds($lan_id) {
-		$crew_user_data = $this->getLanSignupsCrew($lan_id);
+	public function getLanSignupsCrewIds() {
+		$crew_user_data = $this->getLanSignupsCrew();
 
 		$lan_crew_user_ids = array();
 		foreach ($crew_user_data as $crew) {
@@ -147,7 +147,7 @@ class LanSignup extends AppModel {
 		// Crew signed up for LAN
 		$lan_signups_crew = $this->Lan->LanSignup->find('all', array(
 			'conditions' => array(
-				'LanSignup.lan_id' => $lan_id,
+				'LanSignup.lan_id' => $this->Lan->id,
 				'LanSignup.user_id' => $lan_crew_user_ids,
 			),
 			'recursive' => -1,
