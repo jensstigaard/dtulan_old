@@ -16,7 +16,7 @@
 		<ul>
 			<li><?php
 		echo $this->Html->link(
-				$this->Html->image('16x16_GIF/action_check.gif') . ' Sign up now!', array('controller' => 'lan_signups', 'action' => 'add', $sidebar_new_lan['Lan']['id']), array('escape' => false));
+				$this->Html->image('16x16_GIF/action_check.gif') . ' Sign up now!', array('controller' => 'lan_signups', 'action' => 'add', $sidebar_new_lan['Lan']['slug']), array('escape' => false));
 	?></li>
 		</ul>
 	</div>

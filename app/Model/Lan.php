@@ -89,7 +89,13 @@ class Lan extends AppModel {
 			)
 				));
 
-		return $result['Lan']['id'];
+		$this->id = $result['Lan']['id'];
+
+		if (!$this->exists()) {
+			throw new NotFoundException('Lan not found with slug: '. $slug);
+		}
+
+		return $this->id;
 	}
 
 	public function validateDates($check) {

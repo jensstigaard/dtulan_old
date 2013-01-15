@@ -21,7 +21,7 @@
 								<br />
 								<?php
 								echo $this->Form->postLink(
-										$this->Html->image('16x16_GIF/action_delete.gif') . ' Delete your signup', array('controller' => 'lan_signups', 'action' => 'delete', $lan['Lan']['id']), array('confirm' => "Are You sure you will delete the signup?", 'escape' => false)
+										$this->Html->image('16x16_GIF/action_delete.gif') . ' Delete your signup', array('controller' => 'lan_signups', 'action' => 'delete', $lan['Lan']['slug']), array('confirm' => "Are You sure you will delete the signup?", 'escape' => false)
 								);
 								?>
 								<?php if ($user_type == 'student'): ?>

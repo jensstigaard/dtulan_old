@@ -40,6 +40,31 @@ class LanSignupCode extends AppModel {
 		return $result['LanSignupCode']['id'];
 	}
 
+	public function resetCode($lan_signup_id) {
+		$code = $this->find('first', array(
+			'conditions' => array(
+				'lan_signup_id' => $lan_signup_id
+			)
+				));
+
+		if ($code) {
+			$this->id = $code['LanSignupCode']['id'];
+			$reset['LanSignupCode'] = array(
+				'accepted' => 0,
+				'lan_signup_id' => 0
+			);
+
+			if ($this->save($reset)) {
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 }
 
 ?>

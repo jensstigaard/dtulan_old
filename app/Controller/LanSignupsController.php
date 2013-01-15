@@ -19,7 +19,7 @@ class LanSignupsController extends AppController {
 		parent::beforeFilter();
 	}
 
-	public function add($lan_id = null) {
+	public function add($lan_slug) {
 
 		App::uses('CakeTime', 'Utility');
 
@@ -31,15 +31,7 @@ class LanSignupsController extends AppController {
 
 		$user = $this->LanSignup->User->read();
 
-		if ($user['User']['type'] == 'guest' && $this->LanSignup->Lan->LanInvite->isNotAccepted($lan_id, $user['User']['id'])) {
-			throw new BadRequestException('Invite not found');
-		}
-
-		$this->LanSignup->Lan->id = $lan_id;
-
-		if (!$this->LanSignup->Lan->exists()) {
-			throw new NotFoundException('LAN not found');
-		}
+		$this->LanSignup->Lan->id = $this->LanSignup->Lan->getIdBySlug($lan_slug);
 
 		if ($this->LanSignup->Lan->isUserAttending()) {
 			throw new BadRequestException(__('LAN already signed up'));
@@ -49,23 +41,7 @@ class LanSignupsController extends AppController {
 
 		if ($this->request->is('post')) {
 
-			$this->request->data['LanSignup']['lan_id'] = $lan_id;
-
-			if ($user['User']['type'] == 'guest') {
-				$invite = $this->LanSignup->LanInvite->find('first', array('conditions' => array(
-						'LanInvite.lan_id' => $lan_id,
-						'LanInvite.user_guest_id' => $user['User']['id'],
-						'LanInvite.accepted' => 0
-					),
-					'recursive' => 0
-						)
-				);
-
-				$this->request->data['LanInvite'] = array(
-					'id' => $invite['LanInvite']['id'],
-					'accepted' => 1
-				);
-			}
+			$this->request->data['LanSignup']['lan_id'] = $lan['Lan']['id'];
 
 			$this->request->data['User']['id'] = $user['User']['id'];
 			$this->request->data['User']['balance'] = $user['User']['balance'] - $lan['Lan']['price'];
@@ -77,7 +53,7 @@ class LanSignupsController extends AppController {
 
 			if ($this->LanSignup->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your signup has been saved', 'default', array('class' => 'message success'), 'good');
-//				$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
+				$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
 			} else {
 				$this->Session->setFlash('Unable to add your signup', 'default', array(), 'bad');
 			}
@@ -86,27 +62,24 @@ class LanSignupsController extends AppController {
 		$this->set(compact('lan'));
 	}
 
-	public function delete($lan_id = null) {
+	public function delete($lan_slug) {
 		if (!$this->request->is('post')) {
 			throw new BadRequestException('Bad request from client');
 		}
 
 		$this->LanSignup->User->id = $this->Auth->user('id');
-		$this->LanSignup->Lan->id = $lan_id;
 
 		if (!$this->LanSignup->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
 
-		$user = $this->LanSignup->User->read(array('id', 'balance'));
+		$this->LanSignup->Lan->id = $this->LanSignup->Lan->getIdBySlug($lan_slug);
 
-		if (!$this->LanSignup->Lan->exists()) {
-			throw new NotFoundException('LAN not found');
-		}
-
-		if (!$this->LanSignup->isSignupOpen()) {
+		if (!$this->LanSignup->Lan->isSignupOpen()) {
 			throw new UnauthorizedException('Unable to delete signup when signup is not open.');
 		}
+
+		$user = $this->LanSignup->User->read(array('id', 'balance'));
 
 		$lan_signup = $this->LanSignup->getDataForDeletion();
 
@@ -115,17 +88,23 @@ class LanSignupsController extends AppController {
 
 		$this->LanSignup->Lan->read(array('slug'));
 
+		$dataSource = $this->LanSignup->getDataSource();
+		$dataSource->begin();
 		if (
 				$this->LanSignup->User->saveField('balance', $new_balance, true)
 				&&
 				$this->LanSignup->delete()
+				&&
+				$this->LanSignup->LanSignupCode->resetCode($lan_signup['LanSignup']['id'])
 		) {
+			$dataSource->commit();
 			$this->Session->setFlash('Your signup has been deleted', 'default', array('class' => 'message success'), 'good');
-			$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
 		} else {
+			$dataSource->rollback();
 			$this->Session->setFlash('Your signup could not be deleted', 'default', array(), 'bad');
-			$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
 		}
+		$dataSource->commit();
+		$this->redirect($this->referer());
 	}
 
 }
