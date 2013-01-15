@@ -92,6 +92,7 @@ class Lan extends AppModel {
 	 */
 
 	public function getIdBySlug($slug) {
+
 		$result = $this->find('first', array(
 			'conditions' => array(
 				'slug' => $slug
@@ -101,10 +102,19 @@ class Lan extends AppModel {
 			)
 				));
 
+		if (!isset($result['Lan']['id'])) {
+			throw new NotFoundException('Lan not found with slug: ' . $slug);
+		}
+
 		$this->id = $result['Lan']['id'];
 
 		if (!$this->exists()) {
 			throw new NotFoundException('Lan not found with slug: ' . $slug);
+		}
+
+		$this->LanSignup->User->id = $this->getLoggedInId();
+		if (!$this->isYouAdmin() && !$this->Crew->isUserInCrewForLan()) {
+			throw new UnauthorizedException('You are not authorized to see this page');
 		}
 
 		return $this->id;
@@ -626,6 +636,37 @@ class Lan extends AppModel {
 			}
 		}
 		return $data;
+	}
+
+	/*
+	 * 
+	 * Get general statistics for the General tab
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
+
+	public function getGeneralStatistics() {
+		$this->read(array('max_participants'));
+		$count_tournaments = $this->countTournaments();
+		$count_signups = $this->countSignups();
+		$count_signups_guests = $this->countGuests();
+		$count_signups_students = $count_signups - $count_signups_guests;
+
+		$fill_rate = $count_signups === 0 ? 0 : $this->floordec($count_signups / $this->data['Lan']['max_participants'] * 100);
+
+		$percentage_students = $count_signups === 0 ? 0 : $this->floordec($count_signups_students / $count_signups * 100);
+		$percentage_guests = $count_signups === 0 ? 0 : $this->floordec($count_signups_guests / $count_signups * 100);
+
+		return array(
+			'count_tournaments' => $count_tournaments,
+			'count_signups' => $count_signups,
+			'count_signups_students' => $count_signups_students,
+			'count_signups_guests' => $count_signups_guests,
+			'fill_rate' => $fill_rate,
+			'percentage_students' => $percentage_students,
+			'percentage_guests' => $percentage_guests
+		);
 	}
 
 }
