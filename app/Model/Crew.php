@@ -70,7 +70,7 @@ class Crew extends AppModel {
 	public function isUserInCrewForLan() {
 		return $this->find('count', array('conditions' => array(
 						'lan_id' => $this->Lan->id,
-						'user_id' => $this->Lan->User->id
+						'user_id' => $this->User->id
 					)
 						)
 				) == 1;
