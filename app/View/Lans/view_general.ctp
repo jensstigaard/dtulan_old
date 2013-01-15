@@ -31,10 +31,6 @@
 						<th colspan="2">Crew only</th>
 					</tr>
 					<tr>
-						<td>Invited (not accepted):</td>
-						<td><?php echo $count_invites; ?></td>
-					</tr>
-					<tr>
 						<td>Tournaments:</td>
 						<td><?php echo $count_tournaments; ?></td>
 					</tr>
@@ -56,10 +52,6 @@
 					</tr>
 					<?php $total_signup = 0; ?>
 					<?php $max_signup = 0; ?>
-					<?php foreach ($lan_days as $lan_day): ?>
-						<?php $total_signup += count($lan_day['LanSignupDay']); ?>
-						<?php $max_signup += $lan_day['Lan']['max_participants']; ?>
-					<?php endforeach; ?>
 					<tr>
 						<td>Fill rate:</td>
 						<td><?php echo $max_signup === 0 ? 0 : floor(($total_signup / $max_signup) * 100) ?> %</td>

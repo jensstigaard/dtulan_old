@@ -61,8 +61,6 @@ class LansController extends AppController {
 		$this->set('count_tournaments', $this->Lan->countTournaments());
 		$this->set('count_lan_signups', $this->Lan->countSignups());
 		$this->set('count_lan_signups_guests', $this->Lan->countGuests());
-		$this->set('count_invites', $this->Lan->countInvites());
-		$this->set('lan_days', $this->Lan->getLanDays());
 	}
 
 	/* -- Crew tab -- */
