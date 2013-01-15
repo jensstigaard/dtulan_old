@@ -2,6 +2,8 @@
 
 class Lan extends AppModel {
 
+	//
+	// Has Many
 	public $hasMany = array(
 		'Crew' => array(
 			'dependent' => true
@@ -28,6 +30,8 @@ class Lan extends AppModel {
 			'dependent' => true
 		)
 	);
+	//
+	//Validation
 	public $validate = array(
 		'title' => array(
 			'required' => array(
@@ -79,6 +83,14 @@ class Lan extends AppModel {
 		)
 	);
 
+	/*
+	 * 
+	 * Get Lan Id by Slug
+	 * 
+	 * Required
+	 * 	- $slug
+	 */
+
 	public function getIdBySlug($slug) {
 		$result = $this->find('first', array(
 			'conditions' => array(
@@ -98,6 +110,12 @@ class Lan extends AppModel {
 		return $this->id;
 	}
 
+	/*
+	 * 
+	 * Validate inputs time_start + time_end
+	 * 
+	 */
+
 	public function validateDates($check) {
 		if ($check['time_start'] >= $this->data['Lan']['time_end']) {
 			$this->invalidate('time_end', 'Invalid start-/end-time');
@@ -105,6 +123,14 @@ class Lan extends AppModel {
 		}
 		return true;
 	}
+
+	/*
+	 * 
+	 * Count signups for Lan
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
 
 	public function countSignups() {
 		return $this->LanSignup->find('count', array(
@@ -114,6 +140,14 @@ class Lan extends AppModel {
 						)
 		);
 	}
+
+	/*
+	 * 
+	 * Count guests in Lan
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
 
 	public function countGuests() {
 		return $this->LanInvite->find('count', array(
@@ -125,15 +159,13 @@ class Lan extends AppModel {
 		);
 	}
 
-	public function countInvites() {
-		return $this->LanInvite->find('count', array(
-					'conditions' => array(
-						'LanInvite.lan_id' => $this->id,
-						'LanInvite.accepted' => 0
-					),
-						)
-		);
-	}
+	/*
+	 * 
+	 * Count Tournaments in Lan
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
 
 	public function countTournaments() {
 		return $this->Tournament->find('count', array(
@@ -162,6 +194,11 @@ class Lan extends AppModel {
 		return $days;
 	}
 
+	/*
+	 * 
+	 * Get highlighted LANS
+	 */
+
 	public function getHighlighted() {
 		return $this->find('all', array(
 					'conditions' => array(
@@ -174,46 +211,13 @@ class Lan extends AppModel {
 				));
 	}
 
-	// REFACTOR THIS METHOD
-	public function getInviteableUsers($user_id) {
-		$this->recursive = 1;
-		$lan = $this->read();
-
-		$user_ids = array();
-		foreach ($lan['LanSignup'] as $user) {
-			$user_ids[] = $user['user_id'];
-		}
-
-//		$user_ids_signed_up = $user_ids;
-
-		$count_invites = 0;
-		foreach ($lan['LanInvite'] as $user) {
-			$user_ids[] = $user['user_guest_id'];
-
-			if ($user['user_student_id'] == $user_id) {
-				$count_invites++;
-			}
-		}
-
-		$users = array();
-
-		// Only the max participants is it possible to invite
-		// $lan['Lan']['max_participants'] > count($user_ids)
-		if ($this->isSignupPossible($this->id) && $lan['Lan']['max_guests_per_student'] > $count_invites) {
-
-			$users = $this->LanSignup->User->find('list', array('conditions' => array(
-					'NOT' => array(
-						'User.id' => $user_ids,
-					),
-					'User.type' => 'guest',
-					'User.activated' => 1
-				)
-					)
-			);
-		}
-
-		return $users;
-	}
+	/*
+	 * 
+	 * Is Lan published?
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
 
 	public function isPublished() {
 
@@ -230,6 +234,14 @@ class Lan extends AppModel {
 		return $this->data['Lan']['published'];
 	}
 
+	/*
+	 * 
+	 * Is signup open for Lan?
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
+
 	public function isSignupOpen() {
 
 		if (!$this->exists()) {
@@ -241,16 +253,28 @@ class Lan extends AppModel {
 		return $this->data['Lan']['sign_up_open'];
 	}
 
-	public function isPast() {
+	/*
+	 * 
+	 * Is Lan in the past?
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
 
-		if (!$this->exists()) {
-			throw new NotFoundException('Lan not found');
-		}
+	public function isPast() {
 
 		$this->read(array('time_end'));
 
 		return $this->data['Lan']['time_end'] < date('Y-m-d H:i:s');
 	}
+
+	/*
+	 * 
+	 * Is signup possible in Lan?
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
 
 	public function isSignupPossible() {
 		if ($this->isPublished() && $this->isSignupOpen()) {
@@ -260,14 +284,32 @@ class Lan extends AppModel {
 		return false;
 	}
 
+	/*
+	 * 
+	 * Is User able to sign up in Lan?
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 * 	- $this(->Lan)->LanSignup->User->id
+	 */
+
 	public function isUserAbleSignup() {
 
-		if ($this->LanSignup->User->isStudent() && !$this->isUserAttending()) {
+		if (!$this->isUserAttending() && isSignupPossible()) {
 			return true;
 		}
 
 		return false;
 	}
+
+	/*
+	 * 
+	 * Is User atttending Lan?
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 * 	- $this(->Lan)->LanSignup->User->id
+	 */
 
 	public function isUserAttending() {
 		return $this->LanSignup->find('count', array('conditions' => array(
@@ -278,28 +320,13 @@ class Lan extends AppModel {
 				) == 1;
 	}
 
-	public function getLanDays() {
-		return $this->LanDay->find('all', array(
-					'conditions' => array(
-						'LanDay.lan_id' => $this->id
-					),
-					'order' => array(
-						'LanDay.date ASC',
-					)
-						)
-		);
-	}
-
-	public function getInvites() {
-		return $this->LanInvite->find('all', array(
-					'conditions' => array(
-						'LanInvite.lan_id' => $this->id,
-						'LanInvite.accepted' => 0
-					),
-					'recursive' => 2
-						)
-		);
-	}
+	/*
+	 * 
+	 * Get Crewmembers User-ids for a specific LAN
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
 
 	public function getCrewMembersUserId() {
 		$lan_crews = $this->Crew->find('all', array('conditions' => array(
@@ -319,7 +346,15 @@ class Lan extends AppModel {
 		return $lan_crew_ids;
 	}
 
-	public function getPizzaMenus() {
+	/*
+	 * 
+	 * Get Lan Pizza Menus for a specific LAN
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
+
+	public function getLanPizzaMenus() {
 		return $this->LanPizzaMenu->find('all', array(
 					'conditions' => array(
 						'LanPizzaMenu.lan_id' => $this->id
@@ -327,6 +362,14 @@ class Lan extends AppModel {
 						)
 		);
 	}
+
+	/*
+	 * 
+	 * Get Pizza menus connected to a LAN
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
 
 	public function getPizzaMenuIds() {
 		$lan_pizza_menus = $this->LanPizzaMenu->find('all', array(
@@ -348,6 +391,14 @@ class Lan extends AppModel {
 		return $ids;
 	}
 
+	/*
+	 * 
+	 * Get Food menu ids connected to specific LAN
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id has to be initialized
+	 */
+
 	public function getFoodMenuIds() {
 		$lan_food_menus = $this->LanFoodMenu->find('all', array(
 			'conditions' => array(
@@ -367,11 +418,28 @@ class Lan extends AppModel {
 		return $food_menu_ids;
 	}
 
+	/*
+	 * 
+	 * Count quantity of Pizza orders for specific LAN
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
+
 	public function countPizzaOrders() {
 		$db = $this->getDataSource();
 		$total = $db->fetchAll("SELECT COUNT(PizzaOrder.id) AS PizzaOrders FROM `lan_pizza_menus` AS LanPizzaMenu INNER JOIN `pizza_waves` AS PizzaWave ON PizzaWave.lan_pizza_menu_id = LanPizzaMenu.id INNER JOIN `pizza_orders` AS PizzaOrder ON PizzaOrder.pizza_wave_id = PizzaWave.id WHERE LanPizzaMenu.lan_id = ?", array($this->id));
 		return $total[0][0]['PizzaOrders'];
 	}
+
+	/*
+	 * 
+	 * Get total money for pizzas for specific LAN
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 * 
+	 */
 
 	public function getMoneyTotalPizzas() {
 		$db = $this->getDataSource();
@@ -379,11 +447,27 @@ class Lan extends AppModel {
 		return $total[0][0]['Total'];
 	}
 
+	/*
+	 * 
+	 * Count quantity of Food orders for specific LAN
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
+
 	public function countFoodOrders() {
 		$db = $this->getDataSource();
 		$total = $db->fetchAll("SELECT COUNT(FoodOrder.id) AS FoodOrders FROM `lan_food_menus` AS LanFoodMenu INNER JOIN `food_orders` AS FoodOrder ON FoodOrder.lan_food_menu_id = LanFoodMenu.id WHERE LanFoodMenu.lan_id = ?", array($this->id));
 		return $total[0][0]['FoodOrders'];
 	}
+
+	/*
+	 * 
+	 * Get total money for food for specific LAN
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
 
 	public function getMoneyTotalFoods() {
 		$db = $this->getDataSource();
@@ -391,12 +475,26 @@ class Lan extends AppModel {
 		return $total[0][0]['Total'];
 	}
 
+	/*
+	 * 
+	 * List of Lans (index)
+	 * 
+	 */
+
 	public function getIndexList() {
 		return $this->find('all', array(
 					'recursive' => 1
 						)
 		);
 	}
+
+	/*
+	 * 
+	 * Tabs for LAN-page
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
 
 	public function getTabs() {
 
@@ -469,7 +567,7 @@ class Lan extends AppModel {
 		}
 
 
-		if ($this->isUserAbleSignup()) {
+		if ($this->isLoggedIn() && $this->isUserAbleSignup()) {
 			$tabs_signup = array(
 				array(
 					'title' => 'Sign up',
@@ -478,7 +576,7 @@ class Lan extends AppModel {
 						'action' => 'add',
 						$this->data['Lan']['slug']
 					),
-					'img' => '',
+					'img' => '24x24_PNG/001_01.png',
 				),
 			);
 
@@ -487,6 +585,11 @@ class Lan extends AppModel {
 
 		return $tabs;
 	}
+
+	/*
+	 * 
+	 * Before save
+	 */
 
 	public function beforeSave($options = array()) {
 		parent::beforeSave($options);
@@ -497,6 +600,16 @@ class Lan extends AppModel {
 
 		return true;
 	}
+
+	/*
+	 * 
+	 * Generate Lan Signup Codes
+	 * 
+	 * Used when a LAN is created
+	 * 
+	 * Required
+	 * 	- $quantity, how many codes has to be generated?
+	 */
 
 	public function generateLanSignupCodes($quantity) {
 
