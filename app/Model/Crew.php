@@ -101,7 +101,7 @@ class Crew extends AppModel {
 		$users = $this->Lan->LanSignup->User->find('all', array(
 			'conditions' => array(
 				'NOT' => array(
-					'id' => $this->Lan->getCrewMembersUserId()
+					'id' => $this->Lan->getCrewMembersUserIds()
 				)
 			),
 			'fields' => array(
