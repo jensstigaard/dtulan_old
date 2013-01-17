@@ -75,7 +75,7 @@ class LansController extends AppController {
 
 		$this->set('lan_slug', $slug);
 
-		$this->set('crew', $this->Lan->LanSignup->getLanSignupsCrew($this->Lan->id));
+		$this->set('crew', $this->Lan->getCrewData());
 	}
 
 	/* - Participants tab -- */
@@ -93,11 +93,8 @@ class LansController extends AppController {
 			'LanSignup' => array(
 				'conditions' => array(
 					'LanSignup.lan_id' => $this->Lan->id,
-					'NOT' => array(
-						'LanSignup.id' => $this->Lan->LanSignup->getLanSignupsCrewIds()
-					)
 				),
-				'recursive' => 2,
+				'recursive' => 1,
 				'limit' => 15,
 				'order' => array(
 					array('User.name' => 'asc')
