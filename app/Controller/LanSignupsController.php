@@ -29,7 +29,7 @@ class LanSignupsController extends AppController {
 			throw new NotFoundException(__('Invalid user'));
 		}
 
-		$user = $this->LanSignup->User->read();
+		$user = $this->LanSignup->User->read(array('id', 'balance'));
 
 		$this->LanSignup->Lan->id = $this->LanSignup->Lan->getIdBySlug($lan_slug);
 
@@ -40,7 +40,6 @@ class LanSignupsController extends AppController {
 		$lan = $this->LanSignup->Lan->read();
 
 		if ($this->request->is('post')) {
-
 			$this->request->data['LanSignup']['lan_id'] = $lan['Lan']['id'];
 
 			$this->request->data['User']['id'] = $user['User']['id'];
@@ -67,43 +66,13 @@ class LanSignupsController extends AppController {
 			throw new BadRequestException('Bad request from client');
 		}
 
-		$this->LanSignup->User->id = $this->Auth->user('id');
-
-		if (!$this->LanSignup->User->exists()) {
-			throw new NotFoundException(__('Invalid user'));
-		}
-
-		$this->LanSignup->Lan->id = $this->LanSignup->Lan->getIdBySlug($lan_slug);
-
-		if (!$this->LanSignup->Lan->isSignupOpen()) {
-			throw new UnauthorizedException('Unable to delete signup when signup is not open.');
-		}
-
-		$user = $this->LanSignup->User->read(array('id', 'balance'));
-
-		$lan_signup = $this->LanSignup->getDataForDeletion();
-
-		$this->LanSignup->id = $lan_signup['LanSignup']['id'];
-		$new_balance = $user['User']['balance'] + $lan_signup['Lan']['price'];
-
-		$this->LanSignup->Lan->read(array('slug'));
-
-		$dataSource = $this->LanSignup->getDataSource();
-		$dataSource->begin();
-		if (
-				$this->LanSignup->User->saveField('balance', $new_balance, true)
-				&&
-				$this->LanSignup->delete()
-				&&
-				$this->LanSignup->LanSignupCode->resetCode($lan_signup['LanSignup']['id'])
-		) {
-			$dataSource->commit();
+		if ($this->LanSignup->deleteByUserIdAndLanId($this->Auth->user('id'), $this->LanSignup->Lan->getIdBySlug($lan_slug))) {
 			$this->Session->setFlash('Your signup has been deleted', 'default', array('class' => 'message success'), 'good');
 		} else {
-			$dataSource->rollback();
 			$this->Session->setFlash('Your signup could not be deleted', 'default', array(), 'bad');
 		}
-		$dataSource->commit();
+
+
 		$this->redirect($this->referer());
 	}
 

@@ -104,64 +104,6 @@ class LanSignup extends AppModel {
 		return false;
 	}
 
-	public function getLanSignupsCrew() {
-
-		if (!$this->Lan->exists()) {
-			throw new NotFoundException('Lan not found with id #' . $this->Lan->id);
-		}
-
-		$crew = $this->Lan->Crew->find('all', array(
-			'conditions' => array(
-				'Crew.lan_id' => $this->Lan->id
-			),
-			'recursive' => 0,
-			'fields' => array(
-				'Crew.user_id'
-			)
-				)
-		);
-
-		$crew_user_ids = array();
-		foreach ($crew as $crew_member) {
-			$crew_user_ids[] = $crew_member['Crew']['user_id'];
-		}
-
-		return $this->find('all', array(
-					'conditions' => array(
-						'LanSignup.lan_id' => $this->Lan->id,
-						'LanSignup.user_id' => $crew_user_ids
-					),
-					'recursive' => 2
-						)
-		);
-	}
-
-	public function getLanSignupsCrewIds() {
-		$crew_user_data = $this->getLanSignupsCrew();
-
-		$lan_crew_user_ids = array();
-		foreach ($crew_user_data as $crew) {
-			$lan_crew_user_ids[] = $crew['User']['id'];
-		}
-
-		// Crew signed up for LAN
-		$lan_signups_crew = $this->Lan->LanSignup->find('all', array(
-			'conditions' => array(
-				'LanSignup.lan_id' => $this->Lan->id,
-				'LanSignup.user_id' => $lan_crew_user_ids,
-			),
-			'recursive' => -1,
-				)
-		);
-
-		$lan_signups_id_crew = array();
-		foreach ($lan_signups_crew as $lan_signup_crew) {
-			$lan_signups_id_crew[] = $lan_signup_crew['LanSignup']['id'];
-		}
-
-		return $lan_signups_id_crew;
-	}
-
 	public function getDataForDeletion() {
 
 		$result = $this->find('first', array(
@@ -177,12 +119,54 @@ class LanSignup extends AppModel {
 		);
 
 		$this->id = $result['LanSignup']['id'];
-		
+
 		if (!$this->exists()) {
 			throw new NotFoundException('Lan Signup not found');
 		}
 
 		return $result;
+	}
+
+	/*
+	 * 
+	 * Delete LanSignup by User.id and Lan.id
+	 * 
+	 * Required
+	 *	- $user_id
+	 *	- $lan_id
+	 */
+	public function deleteByUserIdAndLanId($user_id, $lan_id) {
+		$this->User->id = $user_id;
+		$this->Lan->id = $lan_id;
+
+		if (!$this->Lan->isSignupOpen()) {
+			throw new UnauthorizedException('Unable to delete signup when signup is not open.');
+		}
+
+		$user = $this->User->read(array('id', 'balance'));
+
+		$lan_signup = $this->getDataForDeletion();
+
+		$this->id = $lan_signup['LanSignup']['id'];
+		$new_balance = $user['User']['balance'] + $lan_signup['Lan']['price'];
+
+		$this->Lan->read(array('slug'));
+
+		$dataSource = $this->getDataSource();
+		$dataSource->begin();
+		if (
+				$this->User->saveField('balance', $new_balance, true)
+				&&
+				$this->delete()
+				&&
+				$this->LanSignupCode->resetCodeByLanSignupId($lan_signup['LanSignup']['id'])
+		) {
+			$dataSource->commit();
+			return true;
+		} else {
+			$dataSource->rollback();
+			return false;
+		}
 	}
 
 }

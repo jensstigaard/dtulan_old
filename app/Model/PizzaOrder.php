@@ -70,6 +70,72 @@ class PizzaOrder extends AppModel {
 		);
 	}
 
+	/*
+	 * 
+	 * Try to place a PizzaOrder
+	 * 
+	 * Required
+	 * 	- $data_input, with following format:
+	 * 		array(
+	 * 			'PizzaOrder' => array(
+	 * 				'user_id' => ?
+	 * 				'pizza_wave_id' => ?
+	 * 			)
+	 * 			'PizzaOrderItem' => array(
+	 * 				0 => array(
+	 * 					'pizza_price_id' => ?
+	 * 					'quantity' => ?
+	 * 					'price' => ?
+	 * 				),
+	 * 				
+	 * 			)
+	 * 		)
+	 */
+
+	public function saveOrder($data_input) {
+
+		$success = false;
+
+		if ($this->save($data_input)) {
+			$success = true;
+		} else {
+			if (isset($this->PizzaOrder->validationErrors['User']['balance'][0])) {
+				$message = $this->PizzaOrder->validationErrors['User']['balance'][0];
+			} else {
+				$message = $this->PizzaOrder->validationErrors;
+			}
+		}
+
+		return array(
+			'success' => $success,
+			'message' => $message
+		);
+	}
+
+	public function manipulateInputData($data_input) {
+		$data = array(
+			'DataSave' => array(
+				'PizzaOrder' => array(
+					'pizza_wave_id' => $data_input['wave_id'],
+					'user_id' => $this->getLoggedInId()
+				),
+			),
+			'PizzaOrderItemSum' => 0
+		);
+
+		foreach ($data_input['order_list'] as $pizza_price_id => $pizza_data) {
+			$data['DataSave']['PizzaOrderItem'][] = array(
+				'pizza_price_id' => $pizza_price_id,
+				'quantity' => $pizza_data['quantity'],
+				'price' => $pizza_data['price_value']
+			);
+
+			$data['PizzaOrderItemSum'] += $pizza_data['quantity'] * $pizza_data['price_value'];
+		}
+
+		return $data;
+	}
+
 }
 
 ?>

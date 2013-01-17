@@ -85,44 +85,6 @@ class Lan extends AppModel {
 
 	/*
 	 * 
-	 * Get Lan Id by Slug
-	 * 
-	 * Required
-	 * 	- $slug
-	 */
-
-	public function getIdBySlug($slug) {
-
-		$result = $this->find('first', array(
-			'conditions' => array(
-				'slug' => $slug
-			),
-			'fields' => array(
-				'id',
-				'published'
-			)
-				));
-
-		if (!isset($result['Lan']['id'])) {
-			throw new NotFoundException('Lan not found with slug: ' . $slug);
-		}
-
-		$this->id = $result['Lan']['id'];
-
-		if (!$this->exists()) {
-			throw new NotFoundException('Lan not found with slug: ' . $slug);
-		}
-
-		$this->LanSignup->User->id = $this->getLoggedInId();
-		if (!($result['Lan']['published'] || $this->isYouAdmin() || $this->Crew->isUserInCrewForLan())) {
-			throw new UnauthorizedException('You are not authorized to see this page');
-		}
-
-		return $this->id;
-	}
-
-	/*
-	 * 
 	 * Validate inputs time_start + time_end
 	 * 
 	 */
@@ -133,6 +95,20 @@ class Lan extends AppModel {
 			return false;
 		}
 		return true;
+	}
+
+	/*
+	 * 
+	 * Count how many seats left in Lan
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
+
+	public function countSeatsLeft() {
+		$this->read(array('max_participants'));
+
+		return $this->data['Lan']['max_participants'] - $this->countSignups();
 	}
 
 	/*
@@ -172,6 +148,20 @@ class Lan extends AppModel {
 
 	/*
 	 * 
+	 * Count quantity of Pizza orders for specific LAN
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
+
+	public function countPizzaOrders() {
+		$db = $this->getDataSource();
+		$total = $db->fetchAll("SELECT COUNT(PizzaOrder.id) AS PizzaOrders FROM `lan_pizza_menus` AS LanPizzaMenu INNER JOIN `pizza_waves` AS PizzaWave ON PizzaWave.lan_pizza_menu_id = LanPizzaMenu.id INNER JOIN `pizza_orders` AS PizzaOrder ON PizzaOrder.pizza_wave_id = PizzaWave.id WHERE LanPizzaMenu.lan_id = ?", array($this->id));
+		return $total[0][0]['PizzaOrders'];
+	}
+
+	/*
+	 * 
 	 * Count Tournaments in Lan
 	 * 
 	 * Required
@@ -187,174 +177,113 @@ class Lan extends AppModel {
 		);
 	}
 
-	public function getLanDaysByTime($start, $end) {
-		App::uses('CakeTime', 'Utility');
+	/*
+	 * 
+	 * Generate Lan Signup Codes
+	 * 
+	 * Used when a LAN is created
+	 * 
+	 * Required
+	 * 	- $quantity, how many codes has to be generated?
+	 */
 
-		$date_start = $start['year'] . '-' . $start['month'] . '-' . $start['day'];
-		$date_end = $end['year'] . '-' . $end['month'] . '-' . $end['day'];
+	public function generateLanSignupCodes($quantity) {
 
-		$days = array();
+		$codes = $this->LanSignupCode->find('list');
 
-		$date_current = $date_start;
-		while ($date_current <= $date_end) {
-			$days[] = array('date' => $date_current);
+		$data = array();
+		$generated = 0;
+		while ($generated < $quantity) {
+			$new = $this->generateRandomString();
 
-			$date_current = CakeTime::format('Y-m-d', strtotime('+1 day', strtotime($date_current)));
+			if (!in_array($new, $codes)) {
+				$data[$generated]['code'] = $codes[] = $new;
+				$generated++;
+			}
 		}
-
-		return $days;
+		return $data;
 	}
 
 	/*
 	 * 
-	 * Get highlighted LANS
-	 */
-
-	public function getHighlighted() {
-		return $this->find('all', array(
-					'conditions' => array(
-						'Lan.highlighted' => 1
-					),
-					'recursive' => 1,
-					'order' => array(
-						'Lan.time_start' => 'asc'
-					)
-				));
-	}
-
-	/*
-	 * 
-	 * Is Lan published?
+	 * Get general statistics for the General tab
 	 * 
 	 * Required
 	 * 	- $this(->Lan)->id
 	 */
 
-	public function isPublished() {
-
-		if (!$this->exists()) {
-			throw new NotFoundException('Lan not found');
-		}
-
-		if ($this->isYouAdmin()) {
-			return true;
-		}
-
-		$this->read(array('published'));
-
-		return $this->data['Lan']['published'];
-	}
-
-	/*
-	 * 
-	 * Is signup open for Lan?
-	 * 
-	 * Required
-	 * 	- $this(->Lan)->id
-	 */
-
-	public function isSignupOpen() {
-
-		if (!$this->exists()) {
-			throw new NotFoundException('Lan not found');
-		}
-
-		$this->read(array('sign_up_open'));
-
-		return $this->data['Lan']['sign_up_open'];
-	}
-
-	/*
-	 * 
-	 * Is Lan in the past?
-	 * 
-	 * Required
-	 * 	- $this(->Lan)->id
-	 */
-
-	public function isPast() {
-
-		$this->read(array('time_end'));
-
-		return $this->data['Lan']['time_end'] < date('Y-m-d H:i:s');
-	}
-
-	/*
-	 * 
-	 * Is signup possible in Lan?
-	 * 
-	 * Required
-	 * 	- $this(->Lan)->id
-	 */
-
-	public function isSignupPossible() {
-		if ($this->isPublished() && $this->isSignupOpen() && $this->isSeatsLeft()) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/*
-	 * 
-	 * Is there seats free in Lan?
-	 * 
-	 * Required
-	 * 	- $this(->Lan)->id
-	 */
-
-	public function isSeatsLeft() {
-		return $this->countSeatsLeft > 0;
-	}
-
-	/*
-	 * 
-	 * Count how many seats left in Lan
-	 * 
-	 * Required
-	 * 	- $this(->Lan)->id
-	 */
-
-	public function countSeatsLeft() {
+	public function getGeneralStatistics() {
 		$this->read(array('max_participants'));
+		$count_tournaments = $this->countTournaments();
+		$count_signups = $this->countSignups();
+		$count_signups_guests = $this->countGuests();
+		$count_signups_students = $count_signups - $count_signups_guests;
 
-		return $this->data['Lan']['max_participants'] - $this->countSignups();
+		$fill_rate = $count_signups === 0 ? 0 : $this->floordec($count_signups / $this->data['Lan']['max_participants'] * 100);
+
+		$percentage_students = $count_signups === 0 ? 0 : $this->floordec($count_signups_students / $count_signups * 100);
+		$percentage_guests = $count_signups === 0 ? 0 : $this->floordec($count_signups_guests / $count_signups * 100);
+
+		return array(
+			'count_tournaments' => $count_tournaments,
+			'count_signups' => $count_signups,
+			'count_signups_students' => $count_signups_students,
+			'count_signups_guests' => $count_signups_guests,
+			'fill_rate' => $fill_rate,
+			'percentage_students' => $percentage_students,
+			'percentage_guests' => $percentage_guests
+		);
 	}
 
 	/*
 	 * 
-	 * Is User able to sign up in Lan?
+	 * Get Lan Id by Slug
 	 * 
 	 * Required
-	 * 	- $this(->Lan)->id
-	 * 	- $this(->Lan)->LanSignup->User->id
+	 * 	- $slug
 	 */
 
-	public function isUserAbleSignup() {
+	public function getIdBySlug($slug) {
 
-		if (!$this->isUserAttending() && isSignupPossible()) {
-			return true;
+		$result = $this->find('first', array(
+			'conditions' => array(
+				'slug' => $slug
+			),
+			'fields' => array(
+				'id',
+				'published'
+			)
+				));
+
+		if (!isset($result['Lan']['id'])) {
+			throw new NotFoundException('Lan not found with slug: ' . $slug);
 		}
 
-		return false;
+		$this->id = $result['Lan']['id'];
+
+		if (!$this->exists()) {
+			throw new NotFoundException('Lan not found with slug: ' . $slug);
+		}
+
+		$this->LanSignup->User->id = $this->getLoggedInId();
+		if (!($result['Lan']['published'] || $this->isYouAdmin() || $this->Crew->isUserInCrewForLan())) {
+			throw new UnauthorizedException('You are not authorized to see this page');
+		}
+
+		return $this->id;
 	}
-
-	/*
-	 * 
-	 * Is User atttending Lan?
-	 * 
-	 * Required
-	 * 	- $this(->Lan)->id
-	 * 	- $this(->Lan)->LanSignup->User->id
-	 */
-
-	public function isUserAttending() {
-		return $this->LanSignup->find('count', array('conditions' => array(
-						'LanSignup.lan_id' => $this->id,
-						'LanSignup.user_id' => $this->LanSignup->User->id
-					)
-						)
-				) == 1;
+	
+	public function getCrewData(){
+		return $this->Crew->User->find('all', array(
+			'conditions' => array(
+				'User.id' => $this->getCrewMembersUserIds()
+			),
+			'fields' => array(
+				'User.id',
+				'User.name',
+				'User.email_gravatar',
+			)
+		));
 	}
 
 	/*
@@ -365,12 +294,12 @@ class Lan extends AppModel {
 	 * 	- $this(->Lan)->id
 	 */
 
-	public function getCrewMembersUserId() {
+	public function getCrewMembersUserIds() {
 		$lan_crews = $this->Crew->find('all', array('conditions' => array(
-				'lan_id' => $this->id
+				'Crew.lan_id' => $this->id
 			),
 			'fields' => array(
-				'user_id'
+				'Crew.user_id'
 			),
 				)
 		);
@@ -457,16 +386,140 @@ class Lan extends AppModel {
 
 	/*
 	 * 
-	 * Count quantity of Pizza orders for specific LAN
+	 * Get highlighted LANS
+	 */
+
+	public function getHighlighted() {
+		return $this->find('all', array(
+					'conditions' => array(
+						'Lan.highlighted' => 1
+					),
+					'recursive' => 1,
+					'order' => array(
+						'Lan.time_start' => 'asc'
+					)
+				));
+	}
+
+	/*
+	 * 
+	 * Is Lan published?
 	 * 
 	 * Required
 	 * 	- $this(->Lan)->id
 	 */
 
-	public function countPizzaOrders() {
-		$db = $this->getDataSource();
-		$total = $db->fetchAll("SELECT COUNT(PizzaOrder.id) AS PizzaOrders FROM `lan_pizza_menus` AS LanPizzaMenu INNER JOIN `pizza_waves` AS PizzaWave ON PizzaWave.lan_pizza_menu_id = LanPizzaMenu.id INNER JOIN `pizza_orders` AS PizzaOrder ON PizzaOrder.pizza_wave_id = PizzaWave.id WHERE LanPizzaMenu.lan_id = ?", array($this->id));
-		return $total[0][0]['PizzaOrders'];
+	public function isPublished() {
+
+		if (!$this->exists()) {
+			throw new NotFoundException('Lan not found');
+		}
+
+		if ($this->isYouAdmin()) {
+			return true;
+		}
+
+		$this->read(array('published'));
+
+		return $this->data['Lan']['published'];
+	}
+
+	/*
+	 * 
+	 * Is signup open for Lan?
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
+
+	public function isSignupOpen() {
+
+		if (!$this->exists()) {
+			throw new NotFoundException('Lan not found with id: ' . $this->id);
+		}
+
+		$this->read(array('sign_up_open'));
+
+		return $this->data['Lan']['sign_up_open'];
+	}
+
+	/*
+	 * 
+	 * Is Lan in the past?
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
+
+	public function isPast() {
+
+		$this->read(array('time_end'));
+
+		return $this->data['Lan']['time_end'] < date('Y-m-d H:i:s');
+	}
+
+	/*
+	 * 
+	 * Is signup possible in Lan?
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
+
+	public function isSignupPossible() {
+		if ($this->isPublished() && $this->isSignupOpen() && $this->isSeatsLeft()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/*
+	 * 
+	 * Is there seats free in Lan?
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
+
+	public function isSeatsLeft() {
+		return $this->countSeatsLeft > 0;
+	}
+
+	/*
+	 * 
+	 * Is User able to sign up in Lan?
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 * 	- $this(->Lan)->LanSignup->User->id
+	 */
+
+	public function isUserAbleSignup() {
+
+		if (!$this->isUserAttending() && isSignupPossible()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/*
+	 * 
+	 * Is User atttending Lan? (either signed up or in crew)
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 * 	- $this(->Lan)->LanSignup->User->id
+	 */
+
+	public function isUserAttending() {
+		return $this->LanSignup->find('count', array('conditions' => array(
+						'LanSignup.lan_id' => $this->id,
+						'LanSignup.user_id' => $this->LanSignup->User->id
+					)
+						)
+				) == 1 || $this->Crew->isUserInCrewForLan();
 	}
 
 	/*
@@ -636,64 +689,6 @@ class Lan extends AppModel {
 		}
 
 		return true;
-	}
-
-	/*
-	 * 
-	 * Generate Lan Signup Codes
-	 * 
-	 * Used when a LAN is created
-	 * 
-	 * Required
-	 * 	- $quantity, how many codes has to be generated?
-	 */
-
-	public function generateLanSignupCodes($quantity) {
-
-		$codes = $this->LanSignupCode->find('list');
-
-		$data = array();
-		$generated = 0;
-		while ($generated < $quantity) {
-			$new = $this->generateRandomString();
-
-			if (!in_array($new, $codes)) {
-				$data[$generated]['code'] = $codes[] = $new;
-				$generated++;
-			}
-		}
-		return $data;
-	}
-
-	/*
-	 * 
-	 * Get general statistics for the General tab
-	 * 
-	 * Required
-	 * 	- $this(->Lan)->id
-	 */
-
-	public function getGeneralStatistics() {
-		$this->read(array('max_participants'));
-		$count_tournaments = $this->countTournaments();
-		$count_signups = $this->countSignups();
-		$count_signups_guests = $this->countGuests();
-		$count_signups_students = $count_signups - $count_signups_guests;
-
-		$fill_rate = $count_signups === 0 ? 0 : $this->floordec($count_signups / $this->data['Lan']['max_participants'] * 100);
-
-		$percentage_students = $count_signups === 0 ? 0 : $this->floordec($count_signups_students / $count_signups * 100);
-		$percentage_guests = $count_signups === 0 ? 0 : $this->floordec($count_signups_guests / $count_signups * 100);
-
-		return array(
-			'count_tournaments' => $count_tournaments,
-			'count_signups' => $count_signups,
-			'count_signups_students' => $count_signups_students,
-			'count_signups_guests' => $count_signups_guests,
-			'fill_rate' => $fill_rate,
-			'percentage_students' => $percentage_students,
-			'percentage_guests' => $percentage_guests
-		);
 	}
 
 }

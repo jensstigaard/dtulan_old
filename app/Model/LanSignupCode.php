@@ -40,7 +40,11 @@ class LanSignupCode extends AppModel {
 		return $result['LanSignupCode']['id'];
 	}
 
-	public function resetCode($lan_signup_id) {
+	/*
+	 * 
+	 * Reset code for LanSignupCode 
+	 */
+	public function resetCodeByLanSignupId($lan_signup_id) {
 		$code = $this->find('first', array(
 			'conditions' => array(
 				'lan_signup_id' => $lan_signup_id
