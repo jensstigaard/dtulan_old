@@ -1,5 +1,16 @@
 <div>
-	<h1>Add Crew-member to <?php echo $lan_title; ?></h1>
+	<div style="float:right;">
+		<?php
+		echo $this->Html->link(
+				'Back to ' . $lan_title, array(
+			'controller' => 'lans',
+			'action' => 'view',
+			$lan_slug
+				)
+		);
+		?>
+	</div>
+	<h1>Add Crew-member to <?php echo $lan_slug; ?></h1>
 	<?php
 	echo $this->Form->create();
 	echo $this->Chosen->select(

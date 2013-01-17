@@ -28,9 +28,10 @@ class CrewController extends AppController {
 	public function add($lan_slug) {
 		$this->Crew->Lan->id = $this->Crew->Lan->getIdBySlug($lan_slug);
 		
-		$this->Crew->Lan->read('title');
+		$this->Crew->Lan->read(array('title'));
 		
 		$this->set('lan_title', $this->Crew->Lan->data['Lan']['title']);
+		$this->set('lan_slug', $lan_slug);
 
 		if ($this->request->is('post')) {
 			$this->request->data['Crew']['lan_id'] = $this->Crew->Lan->id;
