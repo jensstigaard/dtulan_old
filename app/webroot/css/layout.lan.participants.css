@@ -1,0 +1,49 @@
+/* 
+    Document   : layout.lan.crew
+    Created on : 16-01-2013, 14:11:27
+    Author     : Jens
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+#participant-list{
+
+}
+
+#participant-list > a.person{
+	position: relative;
+	display:block;
+	float:left;
+	width: 110px;
+	height:110px;
+	text-align: center;
+	background-repeat: no-repeat;
+	background-position: top left;
+	margin: 5px;
+}
+
+#participant-list > a.person > small{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right:0;
+	text-align: center;
+	display:block;
+	background: rgba(255, 255, 255, .5);
+	padding:1px 5px;
+
+	color: #222;
+	font-weight: bold;
+}
+
+#participant-list > a.person:hover > small{
+	background: rgba(255, 255, 255, .8);
+}
+
+
+.participants-list-sort-links{
+	text-align: center; 
+	padding: 5px;
+	margin:5px 0;
+	background:rgba(0,0,0,.3);
+}

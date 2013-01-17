@@ -1,52 +1,50 @@
-<?php echo $this->Html->script(array('ajax/all_links')); ?>
+<?php
+echo $this->Html->css('layout.lan.participants.css');
+echo $this->Html->script(array('ajax/all_links'));
+?>
 
-<div>
+<div class="ajax_area">
 	<?php if (!count($participants)): ?>
 		<p>No participants yet</p>
 	<?php else: ?>
-		<table>
-			<thead>
-				<tr>
-					<th style="width:28px;"></th>
-					<th><?php echo $this->Paginator->sort('User.name', 'Name'); ?></th>
-					<?php if ($is_admin): ?>
-						<th style="text-align: right;"><?php echo $this->Paginator->sort('User.phonenumber', 'Phone number'); ?></th>
-					<?php endif; ?>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ($participants as $user): ?>
-					<tr>
-						<td style="padding:0 2px;text-align:center;">
-							<?php
-							if (!empty($user['User']['email_gravatar'])) {
-								echo $this->Html->image(
-										'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=24&amp;r=r', array(
-									'alt' => $user['User']['name'],
-									'title' => $user['User']['name'] . ' gravatar',
-									'style' => 'width:24px;height:24px;',
-										)
-								);
-							}
-							?>
-						</td>
-						<td>
-							<?php echo $this->Html->link($user['User']['name'], array('controller' => 'users', 'action' => 'profile', $user['User']['id'])); ?>
-							<?php if ($user['User']['type'] == 'guest'): ?>
-								(g)
-							<?php endif; ?>
-						</td>
-						<?php if ($is_admin): ?>
-							<td style="text-align: right">
-								<?php echo $user['User']['phonenumber'] ?>
-							</td>
-						<?php endif; ?>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-		<div style="text-align: center" class="pagination-link">
-			<?php echo $this->Paginator->numbers(); ?>
+		<div class="participants-list-sort-links">
+			Sort by: <?php echo $this->Paginator->sort('User.name', 'Name', array('class' => 'load_inline')); ?>
 		</div>
+
+		<div id="participant-list">
+			<?php foreach ($participants as $user): ?>
+				<?php
+				$title = '';
+				$title.='<small>';
+				$title.= $user['User']['name'];
+				$title.='</small>';
+
+//					if ($is_admin) {
+//						$title.='<small class="phonenumber">';
+//						$title.='+45 ' . $user['User']['phonenumber'];
+//						$title.='</small>';
+//					}
+
+				echo $this->Html->link(
+						$title, array(
+					'controller' => 'users',
+					'action' => 'profile',
+					$user['User']['id']), array(
+					'style' => 'background-image: url(http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=110&amp;r=r);',
+					'escape' => false,
+					'class' => 'person'
+						)
+				);
+				?>
+			<?php endforeach; ?>
+		</div>
+
+		<div style="clear:both;"></div>
+		
+		<div class="participants-list-sort-links">
+			<?php echo $this->Paginator->numbers(array('class' => 'load_inline')); ?>
+		</div>
+
+		<div style="clear:both;"></div>
 	<?php endif; ?>
 </div>

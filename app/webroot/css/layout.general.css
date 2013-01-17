@@ -225,7 +225,7 @@ hr{
 /** containers **/
 
 #content > div.content{
-	float: left;
+	float: right;
 	width: 670px;
 }
 

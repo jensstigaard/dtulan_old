@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$('#sponsors a, #header a').hover(function(){
+	$('#header a, #sponsors a').hover(function(){
 		$(this).find('img').stop().fadeTo(500, 1);
 	}, function(){
 		$(this).find('img').stop().fadeTo(800, 0.5);
@@ -10,7 +10,7 @@ $(document).ready(function(){
 		beforeLoad: function( event, ui ) {
 			ui.jqXHR.error(function() {
 				ui.panel.html(
-					"Couldn't load this tab. We'll try to fix this as soon as possible. "
+					"Couldn't load this tab. We'll try to fix this as soon as possible!"
 					);
 			});
 		},
@@ -20,8 +20,10 @@ $(document).ready(function(){
 		load:   function(event, ui) {
 			$('#loading_indicator').hide();
 		}
-	}).tooltip({
-		tooltipClass: "custom-tooltip-styling"
-	});
+	})
+//	.tooltip({
+//		tooltipClass: "custom-tooltip-styling"
+//	})
+;
 
 });

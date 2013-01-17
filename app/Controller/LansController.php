@@ -73,7 +73,7 @@ class LansController extends AppController {
 
 		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 
-		$this->set('lan_id', $this->Lan->id);
+		$this->set('lan_slug', $slug);
 
 		$this->set('crew', $this->Lan->LanSignup->getLanSignupsCrew($this->Lan->id));
 	}
@@ -98,7 +98,7 @@ class LansController extends AppController {
 					)
 				),
 				'recursive' => 2,
-				'limit' => 10,
+				'limit' => 15,
 				'order' => array(
 					array('User.name' => 'asc')
 				)

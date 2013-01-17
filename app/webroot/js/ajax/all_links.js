@@ -2,7 +2,7 @@ $(document).ready(
 	function() {
 
 		$area = $('.ajax_area');
-		$area_links = $area.find('thead a, div a');
+		$area_links = $area.find('a.load_inline, span.load_inline > a');
 
 		$area_links.click(function(event){
 			event.preventDefault();
