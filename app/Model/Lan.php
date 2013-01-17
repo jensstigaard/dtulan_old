@@ -137,10 +137,10 @@ class Lan extends AppModel {
 	 */
 
 	public function countGuests() {
-		return $this->LanInvite->find('count', array(
+		return $this->LanSignup->find('count', array(
 					'conditions' => array(
-						'LanInvite.lan_id' => $this->id,
-						'LanInvite.accepted' => 1
+						'LanSignup.lan_id' => $this->id,
+						'User.type' => 'guest'
 					)
 						)
 		);
@@ -222,7 +222,7 @@ class Lan extends AppModel {
 		$fill_rate = $count_signups === 0 ? 0 : $this->floordec($count_signups / $this->data['Lan']['max_participants'] * 100);
 
 		$percentage_students = $count_signups === 0 ? 0 : $this->floordec($count_signups_students / $count_signups * 100);
-		$percentage_guests = $count_signups === 0 ? 0 : $this->floordec($count_signups_guests / $count_signups * 100);
+		$percentage_guests = 100 - $percentage_students;
 
 		return array(
 			'count_tournaments' => $count_tournaments,
@@ -272,18 +272,18 @@ class Lan extends AppModel {
 
 		return $this->id;
 	}
-	
-	public function getCrewData(){
+
+	public function getCrewData() {
 		return $this->Crew->User->find('all', array(
-			'conditions' => array(
-				'User.id' => $this->getCrewMembersUserIds()
-			),
-			'fields' => array(
-				'User.id',
-				'User.name',
-				'User.email_gravatar',
-			)
-		));
+					'conditions' => array(
+						'User.id' => $this->getCrewMembersUserIds()
+					),
+					'fields' => array(
+						'User.id',
+						'User.name',
+						'User.email_gravatar',
+					)
+				));
 	}
 
 	/*
