@@ -35,6 +35,14 @@ class PizzaOrdersController extends AppController {
 			throw new BadRequestException('Bad request from client');
 		}
 
+		$this->set('success', $this->PizzaOrder->saveOrder($this->request->data));
+	}
+
+	public function add_old() {
+		if (!$this->request->is('ajax')) {
+			throw new BadRequestException('Bad request from client');
+		}
+
 		$data = $this->request->data;
 
 		$this->PizzaOrder->PizzaWave->id = $this->request->data['wave_id'];

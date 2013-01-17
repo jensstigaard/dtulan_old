@@ -18,18 +18,23 @@ class PizzaOrderItem extends AppModel {
 			'exists' => array(
 				'rule' => 'isPizzaPriceId',
 				'message' => 'Invalid pizza or pizza type'
+			),
+			'validate Pizza' => array(
+				'rule' => 'validatePizzaWave',
+				'message' => 'Invalid pizza wave'
 			)
 		),
 	);
 
-	public function isPizzaPriceId($check) {
+	public function validatePizzaPriceId($check) {
 		$this->PizzaPrice->id = $check['pizza_price_id'];
 
-		if ($this->PizzaPrice->exists()) {
-			return true;
-		} else {
-			return false;
-		}
+		return $this->PizzaPrice->exists();
+	}
+	
+	public function validatePizzaWave($check){
+		
+		return 0;
 	}
 
 }
