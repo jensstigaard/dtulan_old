@@ -5,7 +5,9 @@
  *
  * @author Nigrea, Jens & Casper
  */
-class UsersController extends AppController {
+App::uses('CakeEventListener', 'Event');
+
+class UsersController extends AppController implements CakeEventListener {
 
 	public $components = array('RequestHandler');
 	public $name = 'Users';
@@ -33,6 +35,12 @@ class UsersController extends AppController {
 			return true;
 		}
 		return false;
+	}
+
+	public function implementedEvents() {
+		return array(
+			'Model.User.activationEmail' => 'sendActivationEmail'
+		);
 	}
 
 	public function index() {
@@ -76,7 +84,7 @@ class UsersController extends AppController {
 		$title_for_layout = 'Profile &bull; ' . $user['User']['name'];
 
 		if ($this->User->isCrewForUser($this->Auth->user('id'))) {
-			$crew_info = $this->User->getNewestCrewId($this->Auth->user('id'));	
+			$crew_info = $this->User->getNewestCrewId($this->Auth->user('id'));
 			$this->set('make_payment_crew_id', $crew_info['CrewId']);
 			$this->set('make_payment_lan_title', $crew_info['LanTitle']);
 		}
@@ -318,19 +326,19 @@ class UsersController extends AppController {
 
 				$id = $this->User->getLastInsertID();
 
+				$user_info = array(
+					'id' => $id,
+					'name' => $name,
+					'email' => $email
+				);
+
+				$event = new CakeEvent('Model.User.activationEmail', $this, array(
+							'user' => $user_info
+						));
+				$this->getEventManager()->dispatch($event);
+
 
 				ini_set("SMTP", 'smtp.unoeuro.com');
-
-				$email = new CakeEmail();
-				$email->config('smtp');
-				$email->emailFormat('html');
-				$email->template('user_activate');
-				$email->from(array('no-reply@dtu-lan.dk' => 'DTU LAN site - No reply'));
-				$email->to($this->request->data['User']['email']);
-				$email->subject('DTU-LAN site - Activation');
-				$email->viewVars(array('title_for_layout' => 'Activate user', 'activate_id' => $id, 'name' => $name));
-				$email->send();
-
 
 				$this->Session->setFlash(__('Your user has been registered. An email is sent to ' . $email . '. Follow the instructions in the email to continue the activation process. Remember to check your spam folder'), 'default', array('class' => 'message success'), 'good');
 				$this->redirect('/');
@@ -362,6 +370,27 @@ class UsersController extends AppController {
 		}
 
 		$this->set('this_user', $this->User->read());
+	}
+
+	public function activationEmail($event) {
+
+		if (isset($event->data['user'])) {
+			$email = new CakeEmail();
+			$email->config('smtp');
+			$email->emailFormat('html');
+			$email->template('user_activate');
+			$email->from(array('contact@dtu-lan.dk' => 'DTU LAN website'));
+			$email->to($event->data['user']['email']);
+			$email->subject('DTU LAN website - Activation');
+			$email->viewVars(array('title_for_layout' => 'Activate user', 'activate_id' => $event->data['user']['id'], 'name' => $event->data['user']['name']));
+			
+			if(!$email->send()){
+				$this->log('Activation email not send', 'user');
+			}
+		} else {
+			$this->log('Activation email not send..', 'user');
+		}
+		return $event;
 	}
 
 	public function activate($id = null) {
