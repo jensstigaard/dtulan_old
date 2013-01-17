@@ -98,7 +98,8 @@ class Lan extends AppModel {
 				'slug' => $slug
 			),
 			'fields' => array(
-				'id'
+				'id',
+				'published'
 			)
 				));
 
@@ -113,7 +114,7 @@ class Lan extends AppModel {
 		}
 
 		$this->LanSignup->User->id = $this->getLoggedInId();
-		if (!$this->isYouAdmin() && !$this->Crew->isUserInCrewForLan()) {
+		if (!($result['Lan']['published'] || $this->isYouAdmin() || $this->Crew->isUserInCrewForLan())) {
 			throw new UnauthorizedException('You are not authorized to see this page');
 		}
 
@@ -287,11 +288,37 @@ class Lan extends AppModel {
 	 */
 
 	public function isSignupPossible() {
-		if ($this->isPublished() && $this->isSignupOpen()) {
+		if ($this->isPublished() && $this->isSignupOpen() && $this->isSeatsLeft()) {
 			return true;
 		}
 
 		return false;
+	}
+
+	/*
+	 * 
+	 * Is there seats free in Lan?
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
+
+	public function isSeatsLeft() {
+		return $this->countSeatsLeft > 0;
+	}
+
+	/*
+	 * 
+	 * Count how many seats left in Lan
+	 * 
+	 * Required
+	 * 	- $this(->Lan)->id
+	 */
+
+	public function countSeatsLeft() {
+		$this->read(array('max_participants'));
+
+		return $this->data['Lan']['max_participants'] - $this->countSignups();
 	}
 
 	/*
