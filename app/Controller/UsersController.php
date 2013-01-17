@@ -5,9 +5,7 @@
  *
  * @author Nigrea, Jens & Casper
  */
-App::uses('CakeEventListener', 'Event');
-
-class UsersController extends AppController implements CakeEventListener {
+class UsersController extends AppController {
 
 	public $components = array('RequestHandler');
 	public $name = 'Users';
@@ -370,27 +368,6 @@ class UsersController extends AppController implements CakeEventListener {
 		}
 
 		$this->set('this_user', $this->User->read());
-	}
-
-	public function activationEmail($event) {
-
-		if (isset($event->data['user'])) {
-			$email = new CakeEmail();
-			$email->config('smtp');
-			$email->emailFormat('html');
-			$email->template('user_activate');
-			$email->from(array('contact@dtu-lan.dk' => 'DTU LAN website'));
-			$email->to($event->data['user']['email']);
-			$email->subject('DTU LAN website - Activation');
-			$email->viewVars(array('title_for_layout' => 'Activate user', 'activate_id' => $event->data['user']['id'], 'name' => $event->data['user']['name']));
-			
-			if(!$email->send()){
-				$this->log('Activation email not send', 'user');
-			}
-		} else {
-			$this->log('Activation email not send..', 'user');
-		}
-		return $event;
 	}
 
 	public function activate($id = null) {
