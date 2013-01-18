@@ -80,18 +80,16 @@ class AppController extends Controller {
 
 		$this->set(compact('current_user', 'is_loggedin', 'is_admin'));
 
-		$this->loadModel('User');
+		$this->loadModel('Lan');
 
-		$this->set('lans_highlighted', $this->User->LanSignup->Lan->getHighlighted());
+		$this->set('lans_highlighted', $this->Lan->getHighlighted());
 
 		if ($is_loggedin) {
-			$this->User->id = $this->Auth->user('id');
-
-			// For student: Find next lans / For guest: find invites
-			$user_read_balance = $this->User->read(array('balance'), $this->User->id);
-			$this->set('current_user_balance', $user_read_balance['User']['balance']);
-			$this->set('sidebar_new_lan', $this->User->getNewLans());
-			$this->set('sidebar_team_invites', $this->User->getTournamentTeamInvites());
+			$this->Lan->LanSignup->User->id = $current_user['id'];
+			$this->Lan->LanSignup->User->read(array('balance'));
+			$this->set('current_user_balance', $this->Lan->LanSignup->User->data['User']['balance']);
+			$this->set('sidebar_new_lan', $this->Lan->LanSignup->User->getNewLans());
+			$this->set('sidebar_team_invites', $this->Lan->LanSignup->User->getTournamentTeamInvites());
 		}
 	}
 

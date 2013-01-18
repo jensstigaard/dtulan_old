@@ -10,9 +10,7 @@
  *
  * @author Jens
  */
-App::uses('CakeEventListener', 'Event');
-
-class User extends AppModel implements CakeEventListener {
+class User extends AppModel {
 
 	public $name = 'User';
 	public $hasOne = array('Admin', 'UserPasswordTicket', 'QrCode');
@@ -224,21 +222,6 @@ class User extends AppModel implements CakeEventListener {
 		return isset($this->data['Admin']['user_id']);
 	}
 
-	// Why this function?
-	public function getName() {
-		return $this->data['User']['name'];
-	}
-
-	// Why this function?
-	public function getEmail() {
-		return $this->data['User']['email'];
-	}
-
-	public function getBalance() {
-		$this->read(array('User.balance'));
-		return $this->data['User']['balance'];
-	}
-
 	public function beforeSave($options = array()) {
 		parent::beforeSave($options);
 		if (isset($this->data['User']['password'])) {
@@ -304,27 +287,6 @@ class User extends AppModel implements CakeEventListener {
 		$db = $this->getDataSource();
 		$total = $db->fetchAll("(SELECT Crew.id AS CrewId, Lan.title AS LanTitle, Lan.time_start AS time_start FROM `crews` AS Crew INNER JOIN `lans` AS Lan ON Crew.lan_id = Lan.id INNER JOIN `lan_signups` AS LanSignup ON Lan.id = LanSignup.lan_id WHERE LanSignup.user_id = ? AND Crew.`user_id` = ?) UNION ALL (SELECT Crew1.id AS CrewId, Lan.title AS LanTitle, Lan.time_start AS time_start FROM `crews` AS Crew1 INNER JOIN `lans` AS Lan ON Crew1.lan_id = Lan.id INNER JOIN `crews` AS Crew2 ON Lan.id = Crew2.lan_id WHERE Crew1.user_id = ? AND Crew2.`user_id` = ?) ORDER BY time_start DESC LIMIT 1", array($this->id, $user_id_crew, $this->id, $user_id_crew));
 		return $total[0][0];
-	}
-
-	public function activationEmail($event) {
-
-		if (isset($event->data['user'])) {
-			$email = new CakeEmail();
-			$email->config('smtp');
-			$email->emailFormat('html');
-			$email->template('user_activate');
-			$email->from(array('contact@dtu-lan.dk' => 'DTU LAN website'));
-			$email->to($event->data['user']['email']);
-			$email->subject('DTU LAN website - Activation');
-			$email->viewVars(array('title_for_layout' => 'Activate user', 'activate_id' => $event->data['user']['id'], 'name' => $event->data['user']['name']));
-
-			if (!$email->send()) {
-				$this->log('Activation email not send', 'user');
-			}
-		} else {
-			$this->log('Activation email not send..', 'user');
-		}
-		return $event;
 	}
 
 }

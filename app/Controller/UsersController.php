@@ -5,14 +5,17 @@
  *
  * @author Nigrea, Jens & Casper
  */
+//App::uses('AppController', 'Controller');
+
 class UsersController extends AppController {
 
 	public $components = array('RequestHandler');
-	public $name = 'Users';
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('login', 'add', 'activate', 'forgot_password', 'reset_password', 'api_view');
+		$this->Auth->allow(
+				'login', 'add', 'activate', 'forgot_password', 'reset_password', 'api_view'
+		);
 	}
 
 	public function isAuthorized($user) {
@@ -33,12 +36,6 @@ class UsersController extends AppController {
 			return true;
 		}
 		return false;
-	}
-
-	public function implementedEvents() {
-		return array(
-			'Model.User.activationEmail' => 'sendActivationEmail'
-		);
 	}
 
 	public function index() {
@@ -306,8 +303,6 @@ class UsersController extends AppController {
 
 	public function add() {
 
-		App::uses('CakeEmail', 'Network/Email');
-
 		$this->set('title_for_layout', 'Register new user');
 
 		if ($this->request->is('post')) {
@@ -334,9 +329,6 @@ class UsersController extends AppController {
 							'user' => $user_info
 						));
 				$this->getEventManager()->dispatch($event);
-
-
-				ini_set("SMTP", 'smtp.unoeuro.com');
 
 				$this->Session->setFlash(__('Your user has been registered. An email is sent to ' . $email . '. Follow the instructions in the email to continue the activation process. Remember to check your spam folder'), 'default', array('class' => 'message success'), 'good');
 				$this->redirect('/');
