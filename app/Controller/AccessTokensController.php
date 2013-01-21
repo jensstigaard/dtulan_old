@@ -12,8 +12,6 @@
  */
 class AccessTokensController extends AppController {
 
-	public $components = array('RequestHandler');
-
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow('api_add');
@@ -33,21 +31,21 @@ class AccessTokensController extends AppController {
 					if ($this->AccessToken->save($data)) {
 						$this->set('success', true);
 						$this->set('data', array(
-							'access_token' => $this->AccessToken->getLastInsertId(),
-								)
+							 'access_token' => $this->AccessToken->getLastInsertId(),
+								  )
 						);
 					} else {
 						$this->set('success', false);
 						$this->set('data', array(
-							'message' => __('Unable to create access token')
-								)
+							 'message' => __('Unable to create access token')
+								  )
 						);
 					}
 				} else {
 					$this->set('success', false);
 					$this->set('data', array(
-						'message' => __('Invalid email and password combination')
-							)
+						 'message' => __('Invalid email and password combination')
+							  )
 					);
 				}
 				$this->set('_serialize', array('success', 'data'));

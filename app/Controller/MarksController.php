@@ -12,8 +12,6 @@
  */
 class MarksController extends AppController {
 
-	public $components = array('RequestHandler');
-
 	public function beforeFilter() {
 		parent::beforeFilter();
 //        $this->Auth->login();
@@ -50,12 +48,12 @@ class MarksController extends AppController {
 
 					$this->set('success', true);
 					$this->set('data', array(
-						'id' => $this->Mark->data['User']['id'],
-						'name' => $this->Mark->data['User']['email'],
-						'email' => $this->Mark->data['User']['email'],
-						'image_url' => 'http://www.gravatar.com/avatar/' . md5($this->Mark->data['User']['email_gravatar']) . '?s=100&r=r',
-						'id_number' => $this->Mark->data['Ueer']['id_number']
-							)
+						 'id' => $this->Mark->data['User']['id'],
+						 'name' => $this->Mark->data['User']['email'],
+						 'email' => $this->Mark->data['User']['email'],
+						 'image_url' => 'http://www.gravatar.com/avatar/' . md5($this->Mark->data['User']['email_gravatar']) . '?s=100&r=r',
+						 'id_number' => $this->Mark->data['Ueer']['id_number']
+							  )
 					);
 					$this->set('_serialize', array('success', 'data'));
 				} else {

@@ -12,8 +12,6 @@
  */
 class QrCodesController extends AppController {
 
-	public $components = array('RequestHandler');
-
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow('api_add', 'generate', 'api_view');
@@ -53,8 +51,8 @@ class QrCodesController extends AppController {
 							$this->set('data', array('message' => 'QR code is connected to user'));
 						} else {
 							$user = $this->QrCode->User->find('first', array(
-								'conditions' => array('user_id' => $user['User']['id'])
-									)
+								 'conditions' => array('user_id' => $user['User']['id'])
+									  )
 							);
 							if (count($user)) {
 								$this->set('success', false);
@@ -72,8 +70,8 @@ class QrCodesController extends AppController {
 						}
 					} catch (PDOException $e) {
 						$user = $this->QrCode->User->find('first', array(
-							'conditions' => array('User.id' => $user['User']['id'])
-								)
+							 'conditions' => array('User.id' => $user['User']['id'])
+								  )
 						);
 						if (count($user)) {
 							$this->set('success', false);
@@ -106,12 +104,12 @@ class QrCodesController extends AppController {
 		if ($this->request->is('get')) {
 			if ($this->isJsonRequest()) {
 				$qr_code = $this->QrCode->find('first', array(
-					'conditions' => array(
-						'QrCode.id' => $id
-					),
-					'fields' => array('QrCode.user_id'),
-					'recursive' => -1
-						)
+					 'conditions' => array(
+						  'QrCode.id' => $id
+					 ),
+					 'fields' => array('QrCode.user_id'),
+					 'recursive' => -1
+						  )
 				);
 				if (count($qr_code['QrCode'])) {
 					$this->set('success', true);

@@ -34,36 +34,37 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
 
 	public $helpers = array(
-		'Chosen.Chosen',
+		 'Chosen.Chosen',
 	);
 	public $components = array(
-		'Session',
-		'Auth' => array(
-			'loginRedirect' => array('controller' => 'pages', 'action' => 'view', 'welcome'),
-			'logoutRedirect' => array('controller' => 'pages', 'action' => 'view', 'welcome'),
-			'authError' => 'Access denied',
-			'authorize' => array('Controller'), // Added this line
-			'authenticate' => array(
-				// Allow authentication by user / password
-				'Form' => array(
-					'userModel' => 'User',
-					'fields' => array(
-						'username' => 'email',
-						'password' => 'password'
+		 'RequestHandler',
+		 'Session',
+		 'Auth' => array(
+			  'loginRedirect' => array('controller' => 'pages', 'action' => 'view', 'welcome'),
+			  'logoutRedirect' => array('controller' => 'pages', 'action' => 'view', 'welcome'),
+			  'authError' => 'Access denied',
+			  'authorize' => array('Controller'), // Added this line
+			  'authenticate' => array(
+					// Allow authentication by user / password
+					'Form' => array(
+						 'userModel' => 'User',
+						 'fields' => array(
+							  'username' => 'email',
+							  'password' => 'password'
+						 ),
+						 'scope' => array(
+							  'User.activated' => 1
+						 )
 					),
-					'scope' => array(
-						'User.activated' => 1
-					)
-				),
-				// Allow authentication by access token
-				'Api' => array(
-					'userModel' => 'AccessToken',
-					'fields' => array(
-						'username' => 'id',
+					// Allow authentication by access token
+					'Api' => array(
+						 'userModel' => 'AccessToken',
+						 'fields' => array(
+							  'username' => 'id',
+						 ),
 					),
-				),
-			)
-		)
+			  )
+		 )
 	);
 
 	public function isAuthorized($user) {

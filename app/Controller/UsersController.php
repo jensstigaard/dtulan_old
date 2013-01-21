@@ -9,8 +9,6 @@
 
 class UsersController extends AppController {
 
-	public $components = array('RequestHandler');
-
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow(

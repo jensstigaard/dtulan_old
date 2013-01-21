@@ -7,8 +7,6 @@
  */
 class FoodOrdersController extends AppController {
 
-	public $components = array('RequestHandler');
-
 	public function beforeFilter() {
 		parent::beforeFilter();
 	}
@@ -19,9 +17,9 @@ class FoodOrdersController extends AppController {
 		// Admins are able to see any page
 		// Elsewise, users logged in are able to add or delete food orders
 		if ($this->FoodOrder->isYouAdmin() || in_array($this->action, array(
-					'add',
-					'delete',
-				))) {
+						'add',
+						'delete',
+				  ))) {
 			return true;
 		}
 
@@ -30,8 +28,8 @@ class FoodOrdersController extends AppController {
 
 	public function index() {
 		$this->paginate = array(
-			'limit' => 5,
-			'recursive' => 3
+			 'limit' => 5,
+			 'recursive' => 3
 		);
 
 		$orders = $this->paginate('FoodOrder');
@@ -49,8 +47,8 @@ class FoodOrdersController extends AppController {
 		$data = $this->request->data;
 
 		$this->request->data['FoodOrder'] = array(
-			'lan_food_menu_id' => $data['lan_food_menu_id'],
-			'user_id' => $this->Auth->user('id')
+			 'lan_food_menu_id' => $data['lan_food_menu_id'],
+			 'user_id' => $this->Auth->user('id')
 		);
 
 		// Get the user balance
@@ -62,9 +60,9 @@ class FoodOrdersController extends AppController {
 		// Manipulating the input data - running each pizza
 		foreach ($data['order_list'] as $item_id => $item) {
 			$this->request->data['FoodOrderItem'][] = array(
-				'food_id' => $item_id,
-				'quantity' => $item['quantity'],
-				'price' => $item['price']
+				 'food_id' => $item_id,
+				 'quantity' => $item['quantity'],
+				 'price' => $item['price']
 			);
 
 			$sum += $item['quantity'] * $item['price'];
@@ -113,9 +111,9 @@ class FoodOrdersController extends AppController {
 		}
 
 		$this->redirect(array(
-			'controller' => 'food_orders',
-			'action' => 'index'
-				)
+			 'controller' => 'food_orders',
+			 'action' => 'index'
+				  )
 		);
 	}
 

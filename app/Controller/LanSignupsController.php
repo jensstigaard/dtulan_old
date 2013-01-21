@@ -12,7 +12,6 @@
  */
 class LanSignupsController extends AppController {
 
-	public $components = array('RequestHandler');
 	public $helpers = array('Js');
 
 	public function beforeFilter() {
@@ -46,8 +45,8 @@ class LanSignupsController extends AppController {
 			$this->request->data['User']['balance'] = $user['User']['balance'] - $lan['Lan']['price'];
 
 			$this->request->data['LanSignupCode'] = array(
-				'id' => $this->LanSignup->LanSignupCode->getIdByCode($this->request->data['LanSignup']['code']),
-				'accepted' => 1,
+				 'id' => $this->LanSignup->LanSignupCode->getIdByCode($this->request->data['LanSignup']['code']),
+				 'accepted' => 1,
 			);
 
 			if ($this->LanSignup->saveAssociated($this->request->data)) {
