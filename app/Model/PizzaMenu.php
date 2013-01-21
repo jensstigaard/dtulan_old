@@ -3,26 +3,26 @@
 class PizzaMenu extends AppModel {
 
 	public $hasMany = array(
-		'PizzaCategory',
-		'LanPizzaMenu'
+		 'PizzaCategory',
+		 'LanPizzaMenu'
 	);
 	public $validate = array(
-		'title' => array(
-			'notEmpty' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Title cannot be empty'
-			),
-			'unique' => array(
-				'rule' => 'isUnique',
-				'message' => 'Title has to be unique'
-			)
-		)
+		 'title' => array(
+			  'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Title cannot be empty'
+			  ),
+			  'unique' => array(
+					'rule' => 'isUnique',
+					'message' => 'Title has to be unique'
+			  )
+		 )
 	);
 
 	public function getIndexList() {
 		$pizza_menus = $this->find('all', array(
-			'recursive' => -1
-				));
+			 'recursive' => -1
+				  ));
 
 		foreach ($pizza_menus as $index => $data) {
 			$this->id = $data['PizzaMenu']['id'];
@@ -43,8 +43,8 @@ class PizzaMenu extends AppModel {
 			$conditions['PizzaCategory.available'] = 1;
 		}
 		$conditions =
-				$data_category = $this->PizzaCategory->find('all', array('conditions' => $conditions,
-			'recursive' => 3)
+				  $data_category = $this->PizzaCategory->find('all', array('conditions' => $conditions,
+			 'recursive' => 3)
 		);
 
 		$data_prices = array();
@@ -77,10 +77,10 @@ class PizzaMenu extends AppModel {
 
 	public function countCategories() {
 		return $this->PizzaCategory->find('count', array(
-					'conditions' => array(
-						'PizzaCategory.pizza_menu_id' => $this->id
-					)
-				));
+						'conditions' => array(
+							 'PizzaCategory.pizza_menu_id' => $this->id
+						)
+				  ));
 	}
 
 	public function countItems() {
@@ -91,19 +91,19 @@ class PizzaMenu extends AppModel {
 
 	public function getUsedInLans() {
 		return $this->LanPizzaMenu->find('all', array(
-					'conditions' => array(
-						'LanPizzaMenu.pizza_menu_id' => $this->id
-					),
-					'recursive' => 1
-				));
+						'conditions' => array(
+							 'LanPizzaMenu.pizza_menu_id' => $this->id
+						),
+						'recursive' => 1
+				  ));
 	}
 
 	public function countUsedInLans() {
 		return $this->LanPizzaMenu->find('count', array(
-					'conditions' => array(
-						'LanPizzaMenu.pizza_menu_id' => $this->id
-					)
-				));
+						'conditions' => array(
+							 'LanPizzaMenu.pizza_menu_id' => $this->id
+						)
+				  ));
 	}
 
 }

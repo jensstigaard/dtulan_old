@@ -1,7 +1,3 @@
 <?php
 
-if (!is_array($msg)) {
-	echo $msg;
-} else {
-	print_r($msg);
-}
+echo json_encode(compact('data'));

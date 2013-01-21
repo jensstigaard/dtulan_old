@@ -5,25 +5,25 @@ class PizzaWave extends AppModel {
 	public $hasMany = array('PizzaOrder' => array('foreignKey' => 'pizza_wave_id'));
 	public $belongsTo = array('LanPizzaMenu');
 	public $order = array(
-		'PizzaWave.time_start' => 'desc'
+		 'PizzaWave.time_start' => 'desc'
 	);
 	public $validate = array(
-		'time_start' => array(
-			'bigger than end' => array(
-				'rule' => 'validateDates',
-				'message' => 'Invalid start-/end-time',
-			),
-			'validInterval' => array(
-				'rule' => 'validInterval',
-				'message' => 'There already exist a pizza wave in this interval'
-			)
-		),
-		'lan_pizza_menu_id' => array(
-			'validLanPizzaMenu' => array(
-				'rule' => 'validLanPizzaMenu',
-				'message' => 'Invalid lan pizza menu'
-			)
-		)
+		 'time_start' => array(
+			  'bigger than end' => array(
+					'rule' => 'validateDates',
+					'message' => 'Invalid start-/end-time',
+			  ),
+			  'validInterval' => array(
+					'rule' => 'validInterval',
+					'message' => 'There already exist a pizza wave in this interval'
+			  )
+		 ),
+//		 'lan_pizza_menu_id' => array(
+//			  'validLanPizzaMenu' => array(
+//					'rule' => 'validLanPizzaMenu',
+//					'message' => 'Invalid lan pizza menu'
+//			  )
+//		 )
 	);
 
 	public function validateDates($check) {
@@ -36,37 +36,37 @@ class PizzaWave extends AppModel {
 
 	public function validInterval($check) {
 		return $this->find('count', array(
-					'conditions' => array(
-						'PizzaWave.lan_pizza_menu_id' => $this->data['PizzaWave']['lan_pizza_menu_id'],
-						'OR' => array(
-							array(
-								'PizzaWave.time_start >= ' => $this->data['PizzaWave']['time_start'],
-								'PizzaWave.time_start < ' => $this->data['PizzaWave']['time_end'],
-							),
-							array(
-								'PizzaWave.time_end > ' => $this->data['PizzaWave']['time_start'],
-								'PizzaWave.time_end <= ' => $this->data['PizzaWave']['time_end'],
-							),
-							array(
-								'PizzaWave.time_start <= ' => $this->data['PizzaWave']['time_start'],
-								'PizzaWave.time_end >= ' => $this->data['PizzaWave']['time_end'],
-							)
+						'conditions' => array(
+							 'PizzaWave.lan_pizza_menu_id' => $this->data['PizzaWave']['lan_pizza_menu_id'],
+							 'OR' => array(
+								  array(
+										'PizzaWave.time_start >= ' => $this->data['PizzaWave']['time_start'],
+										'PizzaWave.time_start < ' => $this->data['PizzaWave']['time_end'],
+								  ),
+								  array(
+										'PizzaWave.time_end > ' => $this->data['PizzaWave']['time_start'],
+										'PizzaWave.time_end <= ' => $this->data['PizzaWave']['time_end'],
+								  ),
+								  array(
+										'PizzaWave.time_start <= ' => $this->data['PizzaWave']['time_start'],
+										'PizzaWave.time_end >= ' => $this->data['PizzaWave']['time_end'],
+								  )
+							 )
 						)
-					)
-						)
-				) == 0;
+							 )
+				  ) == 0;
 	}
 
 	public function isOnAir() {
 		$current_time = date('Y-m-d H:i:s');
 
 		$current_wave = $this->Lan->PizzaWave->find('count', array(
-			'conditions' => array(
-				'PizzaWave.time_end >' => $current_time,
-				'PizzaWave.time_start <' => $current_time,
-				'PizzaWave.status' => 1
-			)
-				)
+			 'conditions' => array(
+				  'PizzaWave.time_end >' => $current_time,
+				  'PizzaWave.time_start <' => $current_time,
+				  'PizzaWave.status' => 1
+			 )
+				  )
 		);
 
 		return $current_wave;
@@ -86,13 +86,21 @@ class PizzaWave extends AppModel {
 
 		$this->LanPizzaMenu->Lan->id = $this->LanPizzaMenu->data['LanPizzaMenu']['lan_id'];
 
-		$this->LanPizzaMenu->Lan->LanSignup->User->id = CakeSession::read('Auth.User.id');
+		$this->LanPizzaMenu->Lan->LanSignup->User->id = $this->getLoggedInId();
 
 		if ($this->LanPizzaMenu->Lan->isUserAttending() && $this->data['PizzaWave']['status'] == 1 && $this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
 			return true;
 		}
 
 		return false;
+	}
+
+	public function isUserConnected() {
+		$this->read(array('lan_pizza_menu_id'));
+
+		$this->LanPizzaMenu->id = $this->data['PizzaWave']['lan_pizza_menu_id'];
+
+		return $this->LanPizzaMenu->isUserConnected();
 	}
 
 	public function getItemList($id) {
@@ -106,11 +114,11 @@ class PizzaWave extends AppModel {
 		$this->PizzaOrder->PizzaOrderItem->unbindModel(array('belongsTo' => array('PizzaOrder')));
 		$this->PizzaOrder->PizzaOrderItem->PizzaPrice->unbindModel(array('hasMany' => array('PizzaOrderItem')));
 		$pizza_orders = $this->PizzaOrder->find('all', array(
-			'conditions' => array(
-				'PizzaOrder.pizza_wave_id' => $id
-			),
-			'recursive' => 3
-				)
+			 'conditions' => array(
+				  'PizzaOrder.pizza_wave_id' => $id
+			 ),
+			 'recursive' => 3
+				  )
 		);
 
 		$pizza_wave_items = array();
@@ -120,10 +128,10 @@ class PizzaWave extends AppModel {
 
 				if (!isset($pizza_wave_items[$pizza_order_item['PizzaPrice']['id']])) {
 					$pizza_wave_items[$pizza_order_item['PizzaPrice']['id']] = array(
-						'quantity' => 0,
-						'pizza_title' => $pizza_order_item['PizzaPrice']['Pizza']['title'],
-						'pizza_number' => $pizza_order_item['PizzaPrice']['Pizza']['number'],
-						'pizza_type' => $pizza_order_item['PizzaPrice']['PizzaType']['title']
+						 'quantity' => 0,
+						 'pizza_title' => $pizza_order_item['PizzaPrice']['Pizza']['title'],
+						 'pizza_number' => $pizza_order_item['PizzaPrice']['Pizza']['number'],
+						 'pizza_type' => $pizza_order_item['PizzaPrice']['PizzaType']['title']
 					);
 				}
 				$pizza_wave_items[$pizza_order_item['PizzaPrice']['id']]['quantity'] += $pizza_order_item['quantity'];
@@ -161,33 +169,33 @@ class PizzaWave extends AppModel {
 		$this->PizzaOrder->PizzaOrderItem->PizzaPrice->unbindModel(array('hasMany' => array('PizzaOrderItem')));
 
 		$this->PizzaOrder->User->unbindModel(
-				array('hasMany' => array(
-						'Crew',
-						'LanSignup',
-						'LanInvite',
-						'LanInviteSent',
-						'Payment',
-						'PizzaOrder',
-						'TeamUser'
-					),
-					'hasOne' => array(
-						'Admin',
-						'UserPasswordTicket',
-						'QrCode'
-					)
-				)
+				  array('hasMany' => array(
+							 'Crew',
+							 'LanSignup',
+							 'LanInvite',
+							 'LanInviteSent',
+							 'Payment',
+							 'PizzaOrder',
+							 'TeamUser'
+						),
+						'hasOne' => array(
+							 'Admin',
+							 'UserPasswordTicket',
+							 'QrCode'
+						)
+				  )
 		);
 
 		$pizza_orders = $this->PizzaOrder->find('all', array(
-			'conditions' => array(
-				'PizzaOrder.pizza_wave_id' => $id
-			),
-			'recursive' => 3,
-			'order' => array(
-				'status' => 'asc',
-				'time' => 'asc'
-			)
-				)
+			 'conditions' => array(
+				  'PizzaOrder.pizza_wave_id' => $id
+			 ),
+			 'recursive' => 3,
+			 'order' => array(
+				  'status' => 'asc',
+				  'time' => 'asc'
+			 )
+				  )
 		);
 
 		return $pizza_orders;
@@ -200,13 +208,13 @@ class PizzaWave extends AppModel {
 		}
 
 		$pizza_orders = $this->PizzaOrder->find('all', array(
-			'conditions' => array(
-				'PizzaOrder.pizza_wave_id' => $this->id
-			),
-			'fields' => array(
-				'PizzaOrder.id'
-			)
-				)
+			 'conditions' => array(
+				  'PizzaOrder.pizza_wave_id' => $this->id
+			 ),
+			 'fields' => array(
+				  'PizzaOrder.id'
+			 )
+				  )
 		);
 
 		$pizza_order_ids = array();
@@ -216,13 +224,13 @@ class PizzaWave extends AppModel {
 		}
 
 		$sum = $this->PizzaOrder->PizzaOrderItem->find('all', array(
-			'fields' => array(
-				'sum(PizzaOrderItem.quantity * PizzaOrderItem.price) AS ctotal'
-			),
-			'conditions' => array(
-				'PizzaOrderItem.pizza_order_id' => $pizza_order_ids
-			)
-				)
+			 'fields' => array(
+				  'sum(PizzaOrderItem.quantity * PizzaOrderItem.price) AS ctotal'
+			 ),
+			 'conditions' => array(
+				  'PizzaOrderItem.pizza_order_id' => $pizza_order_ids
+			 )
+				  )
 		);
 
 		return $sum[0][0]['ctotal'];

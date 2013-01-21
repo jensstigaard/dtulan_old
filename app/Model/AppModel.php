@@ -77,7 +77,7 @@ class AppModel extends Model {
 	}
 
 	public function isLoggedIn() {
-		$id = AuthComponent::user('User.id');
+		$id = AuthComponent::user('id');
 		if (strlen($id) > 0) {
 			return true;
 		}
@@ -93,11 +93,11 @@ class AppModel extends Model {
 	}
 
 	public function getLoggedInId() {
-//		if(!$this->isLoggedIn()){
-//			throw new FatalErrorException('Fatal error!');
-//		}
+		if (!$this->isLoggedIn()) {
+			throw new FatalErrorException('Fatal error!');
+		}
 
-		return AuthComponent::user('User.id');
+		return AuthComponent::user('id');
 	}
 
 	public function generateRandomString($length = 8) {

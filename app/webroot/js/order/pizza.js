@@ -96,27 +96,33 @@ $(document).ready(
 			var wave_id = $(this).parent().find('div.hidden').text();
 
 			if(orderListSize() > 0){
-				$.post($(this).attr('href'), {
-					'order_list': order_list,
-					'wave_id': wave_id
-				}, function(data) {
-					if(data.trim()=='SUCCESS'){
-						$pizza_order.find('.pizza_order_errors').hide();
-						$pizza_order.find(".pizza_order_success").show().delay(2000).hide("slow");
+				$.post(
+					$(this).attr('href'), // Url to place order
+					{
+						'order_list': order_list,
+						'wave_id': wave_id
+					}, 
+					function(data) {
+						var json = $.parseJSON(data);
+						var data = json.data;
+						
+						if(data.success == true){
+							$pizza_order.find('.pizza_order_errors').hide();
+							$pizza_order.find(".pizza_order_success").show().delay(2000).hide("slow");
 
-						// Clear order visually
-						clearOrder();
+							// Clear order visually
+							clearOrder();
 
-					// Update latest activities
-					// showLatestActivities();
-					}
-					else{
-						$pizza_order.find(".pizza_order_errors").text(data).show();
-					}
-				});
+						// Update latest activities
+						// showLatestActivities();
+						}
+						else{
+							$pizza_order.find(".pizza_order_errors").text(data.message).show();
+						}
+					});
 			}
 			else{
-//				console.log('No pizzas in order. ', orderListSize());
+			//				console.log('No pizzas in order. ', orderListSize());
 			}
 			return false;
 		});
@@ -135,7 +141,7 @@ $(document).ready(
 
 			$row = $(this).closest('tr');
 
-//			console.log($row);
+			//			console.log($row);
 
 			var price_id	= $row.find('td:first-child').attr('class');
 			var price_value = $row.find('td:nth-child(4)').text()/$row.find('td:first-child').text();

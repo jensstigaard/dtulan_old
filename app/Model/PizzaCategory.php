@@ -14,23 +14,23 @@ class PizzaCategory extends AppModel {
 
 	public $name = 'PizzaCategory';
 	public $hasMany = array(
-		'Pizza'
+		 'Pizza'
 	);
 	public $hasAndBelongsToMany = array(
-		'PizzaType' => array(
-			'joinTable' => 'pizza_category_types'
-		)
+		 'PizzaType' => array(
+			  'joinTable' => 'pizza_category_types'
+		 )
 	);
 	public $order = array(
-		'sorted' => 'asc'
+		 'sorted' => 'asc'
 	);
 	public $validate = array(
-		'title' => array(
-			'not empty' => array(
-				'rule' => array('notEmpty'),
-				'message' => 'Title cannot be empty'
-			)
-		)
+		 'title' => array(
+			  'not empty' => array(
+					'rule' => array('notEmpty'),
+					'message' => 'Title cannot be empty'
+			  )
+		 )
 	);
 
 }

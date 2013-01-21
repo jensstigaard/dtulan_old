@@ -5,82 +5,82 @@ class Lan extends AppModel {
 	//
 	// Has Many
 	public $hasMany = array(
-		'Crew' => array(
-			'dependent' => true
-		),
-		'LanSignup' => array(
-			'dependent' => true
-		),
-		'LanDay' => array(
-			'dependent' => true
-		),
-		'LanInvite' => array(
-			'dependent' => true
-		),
-		'Tournament' => array(
-			'dependent' => true
-		),
-		'LanPizzaMenu' => array(
-			'dependent' => true
-		),
-		'LanFoodMenu' => array(
-			'dependent' => true
-		),
-		'LanSignupCode' => array(
-			'dependent' => true
-		)
+		 'Crew' => array(
+			  'dependent' => true
+		 ),
+		 'LanSignup' => array(
+			  'dependent' => true
+		 ),
+		 'LanDay' => array(
+			  'dependent' => true
+		 ),
+		 'LanInvite' => array(
+			  'dependent' => true
+		 ),
+		 'Tournament' => array(
+			  'dependent' => true
+		 ),
+		 'LanPizzaMenu' => array(
+			  'dependent' => true
+		 ),
+		 'LanFoodMenu' => array(
+			  'dependent' => true
+		 ),
+		 'LanSignupCode' => array(
+			  'dependent' => true
+		 )
 	);
 	//
 	//Validation
 	public $validate = array(
-		'title' => array(
-			'required' => array(
-				'rule' => array('notEmpty'),
-				'message' => 'Title is required'
-			)
-		),
-		'slug' => array(
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'Lan has to have an unique title'
-			)
-		),
-		'max_participants' => array(
-			'required' => array(
-				'rule' => array('numeric'),
-				'message' => 'Has to be a number'
-			)
-		),
-		'max_guests_per_student' => array(
-			'required' => array(
-				'rule' => array('numeric'),
-				'message' => 'Has to be a number'
-			)
-		),
-		'published' => array(
-			'required' => array(
-				'rule' => array('between', 0, 1),
-				'message' => 'Valid publishing required'
-			)
-		),
-		'sign_up_open' => array(
-			'required' => array(
-				'rule' => array('between', 0, 1),
-				'message' => 'Valid "sign up open" required'
-			)
-		),
-		'need_physical_code' => array(
-			'required' => array(
-				'rule' => array('between', 0, 1),
-				'message' => 'Valid type required'
-			)
-		),
-		'time_start' => array(
-			'bigger than end' => array(
-				'rule' => 'validateDates',
-				'message' => 'Invalid start- or end-time',
-			)
-		)
+		 'title' => array(
+			  'required' => array(
+					'rule' => array('notEmpty'),
+					'message' => 'Title is required'
+			  )
+		 ),
+		 'slug' => array(
+			  'isUnique' => array(
+					'rule' => 'isUnique',
+					'message' => 'Lan has to have an unique title'
+			  )
+		 ),
+		 'max_participants' => array(
+			  'required' => array(
+					'rule' => array('numeric'),
+					'message' => 'Has to be a number'
+			  )
+		 ),
+		 'max_guests_per_student' => array(
+			  'required' => array(
+					'rule' => array('numeric'),
+					'message' => 'Has to be a number'
+			  )
+		 ),
+		 'published' => array(
+			  'required' => array(
+					'rule' => array('between', 0, 1),
+					'message' => 'Valid publishing required'
+			  )
+		 ),
+		 'sign_up_open' => array(
+			  'required' => array(
+					'rule' => array('between', 0, 1),
+					'message' => 'Valid "sign up open" required'
+			  )
+		 ),
+		 'need_physical_code' => array(
+			  'required' => array(
+					'rule' => array('between', 0, 1),
+					'message' => 'Valid type required'
+			  )
+		 ),
+		 'time_start' => array(
+			  'bigger than end' => array(
+					'rule' => 'validateDates',
+					'message' => 'Invalid start- or end-time',
+			  )
+		 )
 	);
 
 	/*
@@ -121,10 +121,10 @@ class Lan extends AppModel {
 
 	public function countSignups() {
 		return $this->LanSignup->find('count', array(
-					'conditions' => array(
-						'LanSignup.lan_id' => $this->id
-					)
+						'conditions' => array(
+							 'LanSignup.lan_id' => $this->id
 						)
+							 )
 		);
 	}
 
@@ -138,11 +138,11 @@ class Lan extends AppModel {
 
 	public function countGuests() {
 		return $this->LanSignup->find('count', array(
-					'conditions' => array(
-						'LanSignup.lan_id' => $this->id,
-						'User.type' => 'guest'
-					)
+						'conditions' => array(
+							 'LanSignup.lan_id' => $this->id,
+							 'User.type' => 'guest'
 						)
+							 )
 		);
 	}
 
@@ -170,10 +170,10 @@ class Lan extends AppModel {
 
 	public function countTournaments() {
 		return $this->Tournament->find('count', array(
-					'conditions' => array(
-						'Tournament.lan_id' => $this->id
-					)
+						'conditions' => array(
+							 'Tournament.lan_id' => $this->id
 						)
+							 )
 		);
 	}
 
@@ -225,13 +225,13 @@ class Lan extends AppModel {
 		$percentage_guests = 100 - $percentage_students;
 
 		return array(
-			'count_tournaments' => $count_tournaments,
-			'count_signups' => $count_signups,
-			'count_signups_students' => $count_signups_students,
-			'count_signups_guests' => $count_signups_guests,
-			'fill_rate' => $fill_rate,
-			'percentage_students' => $percentage_students,
-			'percentage_guests' => $percentage_guests
+			 'count_tournaments' => $count_tournaments,
+			 'count_signups' => $count_signups,
+			 'count_signups_students' => $count_signups_students,
+			 'count_signups_guests' => $count_signups_guests,
+			 'fill_rate' => $fill_rate,
+			 'percentage_students' => $percentage_students,
+			 'percentage_guests' => $percentage_guests
 		);
 	}
 
@@ -246,14 +246,14 @@ class Lan extends AppModel {
 	public function getIdBySlug($slug) {
 
 		$result = $this->find('first', array(
-			'conditions' => array(
-				'slug' => $slug
-			),
-			'fields' => array(
-				'id',
-				'published'
-			)
-				));
+			 'conditions' => array(
+				  'slug' => $slug
+			 ),
+			 'fields' => array(
+				  'id',
+				  'published'
+			 )
+				  ));
 
 		if (!isset($result['Lan']['id'])) {
 			throw new NotFoundException('Lan not found with slug: ' . $slug);
@@ -266,7 +266,7 @@ class Lan extends AppModel {
 		}
 
 		$this->LanSignup->User->id = $this->getLoggedInId();
-		if (!($result['Lan']['published'] || $this->isYouAdmin() || $this->Crew->isUserInCrewForLan())) {
+		if (!($result['Lan']['published'] || $this->isYouAdmin() || $this->isUserAttendingAsCrew())) {
 			throw new UnauthorizedException('You are not authorized to see this page');
 		}
 
@@ -275,15 +275,15 @@ class Lan extends AppModel {
 
 	public function getCrewData() {
 		return $this->Crew->User->find('all', array(
-					'conditions' => array(
-						'User.id' => $this->getCrewMembersUserIds()
-					),
-					'fields' => array(
-						'User.id',
-						'User.name',
-						'User.email_gravatar',
-					)
-				));
+						'conditions' => array(
+							 'User.id' => $this->getCrewMembersUserIds()
+						),
+						'fields' => array(
+							 'User.id',
+							 'User.name',
+							 'User.email_gravatar',
+						)
+				  ));
 	}
 
 	/*
@@ -296,12 +296,12 @@ class Lan extends AppModel {
 
 	public function getCrewMembersUserIds() {
 		$lan_crews = $this->Crew->find('all', array('conditions' => array(
-				'Crew.lan_id' => $this->id
-			),
-			'fields' => array(
-				'Crew.user_id'
-			),
-				)
+				  'Crew.lan_id' => $this->id
+			 ),
+			 'fields' => array(
+				  'Crew.user_id'
+			 ),
+				  )
 		);
 
 		$lan_crew_ids = array();
@@ -322,10 +322,10 @@ class Lan extends AppModel {
 
 	public function getLanPizzaMenus() {
 		return $this->LanPizzaMenu->find('all', array(
-					'conditions' => array(
-						'LanPizzaMenu.lan_id' => $this->id
-					)
+						'conditions' => array(
+							 'LanPizzaMenu.lan_id' => $this->id
 						)
+							 )
 		);
 	}
 
@@ -339,14 +339,14 @@ class Lan extends AppModel {
 
 	public function getPizzaMenuIds() {
 		$lan_pizza_menus = $this->LanPizzaMenu->find('all', array(
-			'conditions' => array(
-				'LanPizzaMenu.lan_id' => $this->id
-			),
-			'fields' => array(
-				'LanPizzaMenu.pizza_menu_id'
-			),
-			'recursive' => -1
-				)
+			 'conditions' => array(
+				  'LanPizzaMenu.lan_id' => $this->id
+			 ),
+			 'fields' => array(
+				  'LanPizzaMenu.pizza_menu_id'
+			 ),
+			 'recursive' => -1
+				  )
 		);
 
 		$ids = array();
@@ -367,13 +367,13 @@ class Lan extends AppModel {
 
 	public function getFoodMenuIds() {
 		$lan_food_menus = $this->LanFoodMenu->find('all', array(
-			'conditions' => array(
-				'LanFoodMenu.lan_id' => $this->id
-			),
-			'fields' => array(
-				'LanFoodMenu.food_menu_id'
-			)
-				)
+			 'conditions' => array(
+				  'LanFoodMenu.lan_id' => $this->id
+			 ),
+			 'fields' => array(
+				  'LanFoodMenu.food_menu_id'
+			 )
+				  )
 		);
 
 		$food_menu_ids = array();
@@ -391,14 +391,14 @@ class Lan extends AppModel {
 
 	public function getHighlighted() {
 		return $this->find('all', array(
-					'conditions' => array(
-						'Lan.highlighted' => 1
-					),
-					'recursive' => 1,
-					'order' => array(
-						'Lan.time_start' => 'asc'
-					)
-				));
+						'conditions' => array(
+							 'Lan.highlighted' => 1
+						),
+						'recursive' => 1,
+						'order' => array(
+							 'Lan.time_start' => 'asc'
+						)
+				  ));
 	}
 
 	/*
@@ -514,12 +514,25 @@ class Lan extends AppModel {
 	 */
 
 	public function isUserAttending() {
+		return $this->isUserAttendingAsGuest() || $this->isUserAttendingAsCrew();
+	}
+
+	public function isUserAttendingAsGuest() {
 		return $this->LanSignup->find('count', array('conditions' => array(
-						'LanSignup.lan_id' => $this->id,
-						'LanSignup.user_id' => $this->LanSignup->User->id
-					)
+							 'LanSignup.lan_id' => $this->id,
+							 'LanSignup.user_id' => $this->LanSignup->User->id
 						)
-				) == 1 || $this->Crew->isUserInCrewForLan();
+							 )
+				  ) == 1;
+	}
+
+	public function isUserAttendingAsCrew() {
+		return $this->Crew->find('count', array('conditions' => array(
+							 'Crew.lan_id' => $this->id,
+							 'Crew.user_id' => $this->LanSignup->User->id
+						)
+							 )
+				  ) == 1;
 	}
 
 	/*
@@ -573,8 +586,8 @@ class Lan extends AppModel {
 
 	public function getIndexList() {
 		return $this->find('all', array(
-					'recursive' => 1
-						)
+						'recursive' => 1
+							 )
 		);
 	}
 
@@ -591,66 +604,66 @@ class Lan extends AppModel {
 		$this->read(array('slug'));
 
 		$tabs = array(
-			array(
-				'title' => 'Generel',
-				'url' => array(
-					'action' => 'view_general',
-					$this->data['Lan']['slug']
-				),
-				'img' => '24x24_PNG/001_40.png',
-			),
-			array(
-				'title' => 'Crew',
-				'url' => array(
-					'action' => 'view_crew',
-					$this->data['Lan']['slug']
-				),
-				'img' => '24x24_PNG/crew.png',
-			),
-			array(
-				'title' => 'Participants',
-				'url' => array(
-					'action' => 'view_participants',
-					$this->data['Lan']['slug']
-				),
-				'img' => '24x24_PNG/participants.png',
-			),
-			array(
-				'title' => 'Tournaments',
-				'url' => array(
-					'action' => 'view_tournaments',
-					$this->data['Lan']['slug']
-				),
-				'img' => '24x24_PNG/trophy_gold.png',
-			),
+			 array(
+				  'title' => 'Generel',
+				  'url' => array(
+						'action' => 'view_general',
+						$this->data['Lan']['slug']
+				  ),
+				  'img' => '24x24_PNG/001_40.png',
+			 ),
+			 array(
+				  'title' => 'Crew',
+				  'url' => array(
+						'action' => 'view_crew',
+						$this->data['Lan']['slug']
+				  ),
+				  'img' => '24x24_PNG/crew.png',
+			 ),
+			 array(
+				  'title' => 'Participants',
+				  'url' => array(
+						'action' => 'view_participants',
+						$this->data['Lan']['slug']
+				  ),
+				  'img' => '24x24_PNG/participants.png',
+			 ),
+			 array(
+				  'title' => 'Tournaments',
+				  'url' => array(
+						'action' => 'view_tournaments',
+						$this->data['Lan']['slug']
+				  ),
+				  'img' => '24x24_PNG/trophy_gold.png',
+			 ),
 		);
 
 		if ($this->isYouAdmin()) {
 			$tabs_admin = array(
-				array(
-					'title' => 'Food menus',
-					'url' => array(
-						'action' => 'view_foodmenus',
-						$this->data['Lan']['slug']
-					),
-					'img' => '24x24_PNG/candy.png',
-				),
-				array(
-					'title' => 'Pizza menus',
-					'url' => array(
-						'action' => 'view_pizzamenus',
-						$this->data['Lan']['slug']
-					),
-					'img' => '24x24_PNG/pizza.png',
-				),
-				array(
-					'title' => 'Economics',
-					'url' => array(
-						'action' => 'view_economics',
-						$this->data['Lan']['slug']
-					),
-					'img' => '24x24_PNG/payment_cash.png',
-				),
+				 array(
+					  'title' => 'Food menus',
+					  'url' => array(
+							'action' => 'view_foodmenus',
+							$this->data['Lan']['slug']
+					  ),
+					  'img' => '24x24_PNG/candy.png',
+				 ),
+				 array(
+					  'title' => 'Pizza menus',
+					  'url' => array(
+							'action' => 'view_pizzamenus',
+							$this->data['Lan']['slug']
+					  ),
+					  'img' => '24x24_PNG/pizza.png',
+				 ),
+				 array(
+					  'title' => 'Economics',
+					  'url' => array(
+							'action' => 'view_economics',
+							$this->data['Lan']['slug']
+					  ),
+					  'img' => '24x24_PNG/payment_cash.png',
+				 ),
 			);
 
 			$tabs = array_merge($tabs, $tabs_admin);
@@ -659,15 +672,15 @@ class Lan extends AppModel {
 
 		if ($this->isLoggedIn() && $this->isUserAbleSignup()) {
 			$tabs_signup = array(
-				array(
-					'title' => 'Sign up',
-					'url' => array(
-						'controller' => 'lan_signups',
-						'action' => 'add',
-						$this->data['Lan']['slug']
-					),
-					'img' => '24x24_PNG/001_01.png',
-				),
+				 array(
+					  'title' => 'Sign up',
+					  'url' => array(
+							'controller' => 'lan_signups',
+							'action' => 'add',
+							$this->data['Lan']['slug']
+					  ),
+					  'img' => '24x24_PNG/001_01.png',
+				 ),
 			);
 
 			$tabs = array_merge($tabs, $tabs_signup);

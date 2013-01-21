@@ -15,15 +15,15 @@ class Pizza extends AppModel {
 	public $name = 'Pizza';
 	public $hasMany = 'PizzaPrice';
 	public $belongsTo = array(
-		'PizzaCategory'
+		 'PizzaCategory'
 	);
 	public $validate = array(
-		'title' => array(
-			'required' => array(
-				'rule' => array('notEmpty'),
-				'message' => 'Title is required'
-			)
-		)
+		 'title' => array(
+			  'required' => array(
+					'rule' => array('notEmpty'),
+					'message' => 'Title is required'
+			  )
+		 )
 	);
 
 }
