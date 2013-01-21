@@ -222,7 +222,7 @@ class Lan extends AppModel {
 		$fill_rate = $count_signups === 0 ? 0 : $this->floordec($count_signups / $this->data['Lan']['max_participants'] * 100);
 
 		$percentage_students = $count_signups === 0 ? 0 : $this->floordec($count_signups_students / $count_signups * 100);
-		$percentage_guests = 100 - $percentage_students;
+		$percentage_guests = $count_signups_guests === 0 ? 0 : 100 - $percentage_students;
 
 		return array(
 			 'count_tournaments' => $count_tournaments,
