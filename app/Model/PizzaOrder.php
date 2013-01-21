@@ -197,7 +197,7 @@ class PizzaOrder extends AppModel {
 		$this->PizzaWave->id = $this->data['PizzaOrder']['pizza_wave_id'];
 
 		if (!$this->PizzaWave->isOrderable()) {
-			throw new UnauthorizedException(__('It is not possible to delete pizza order anymore'));
+			throw new UnauthorizedException(__('It is not possible to delete pizza order anymore in this wave'));
 		}
 
 		if (!$this->isNotTreated()) {
@@ -207,7 +207,7 @@ class PizzaOrder extends AppModel {
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
 
-		if ($this->User->balanceIncrease($this->getItemsSum()) && $this->delete()) {
+		if ($this->delete() && $this->User->balanceIncrease($this->getItemsSum())) {
 			$dataSource->commit();
 			return true;
 		} else {

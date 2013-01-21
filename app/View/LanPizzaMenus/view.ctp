@@ -87,5 +87,7 @@ if ($is_orderable) {
 		echo $this->Html->image('16x16_PNG/cancel.png', array('class' => 'image_remove'));
 		?>
 	</div>
-	<?php pr($pizza_waves); ?>
+	<?php
+	// pr($pizza_waves);
+	?>
 </div>
