@@ -13,49 +13,45 @@
 class LanSignup extends AppModel {
 
 	public $belongsTo = array(
-		'User',
-		'Lan'
+		 'User',
+		 'Lan'
 	);
 	public $hasOne = array(
-		'LanInvite' => array(
-			'dependent' => true
-		),
-		'LanSignupCode'
+		 'LanSignupCode'
 	);
-	public $hasMany = array('LanSignupDay');
 	public $validate = array(
-		'user_id' => array(
-			'validateUser' => array(
-				'rule' => 'validateUser',
-				'message' => 'Invalid user'
-			),
-			'checkNotInLan' => array(
-				'rule' => 'validateUserInLan',
-				'message' => 'Invalid signup'
-			)
-		),
-		'lan_id' => array(
-			'valid' => array(
-				'rule' => 'validateLan',
-				'message' => 'Invalid lan'
-			)
-		),
-		'code' => array(
-			'validCode' => array(
-				'rule' => 'validateCode',
-				'message' => 'Invalide code'
-			)
-		),
+		 'user_id' => array(
+			  'validateUser' => array(
+					'rule' => 'validateUser',
+					'message' => 'Invalid user'
+			  ),
+			  'checkNotInLan' => array(
+					'rule' => 'validateUserInLan',
+					'message' => 'Invalid signup'
+			  )
+		 ),
+		 'lan_id' => array(
+			  'valid' => array(
+					'rule' => 'validateLan',
+					'message' => 'Invalid lan'
+			  )
+		 ),
+		 'code' => array(
+			  'validCode' => array(
+					'rule' => 'validateCode',
+					'message' => 'Invalide code'
+			  )
+		 ),
 	);
 
 	public function validateUserInLan($check) {
 		if ($this->find('count', array('conditions' => array(
-						'LanSignup.user_id' => $check['user_id'],
-						'LanSignup.lan_id' => $this->data['LanSignup']['lan_id'],
-					)
+							 'LanSignup.user_id' => $check['user_id'],
+							 'LanSignup.lan_id' => $this->data['LanSignup']['lan_id'],
 						)
-				)
-				== 0) {
+							 )
+				  )
+				  == 0) {
 			return true;
 		}
 
@@ -64,12 +60,12 @@ class LanSignup extends AppModel {
 
 	public function validateUser($check) {
 		if ($this->User->find('count', array(
-					'conditions' => array(
-						'User.id' => $check['user_id']
-					)
+						'conditions' => array(
+							 'User.id' => $check['user_id']
 						)
-				)
-				== 1) {
+							 )
+				  )
+				  == 1) {
 			return true;
 		}
 
@@ -107,15 +103,15 @@ class LanSignup extends AppModel {
 	public function getDataForDeletion() {
 
 		$result = $this->find('first', array(
-			'conditions' => array(
-				'LanSignup.lan_id' => $this->Lan->id,
-				'LanSignup.user_id' => $this->User->id
-			),
-			'fields' => array(
-				'LanSignup.id',
-				'Lan.price'
-			)
-				)
+			 'conditions' => array(
+				  'LanSignup.lan_id' => $this->Lan->id,
+				  'LanSignup.user_id' => $this->User->id
+			 ),
+			 'fields' => array(
+				  'LanSignup.id',
+				  'Lan.price'
+			 )
+				  )
 		);
 
 		$this->id = $result['LanSignup']['id'];
@@ -132,9 +128,10 @@ class LanSignup extends AppModel {
 	 * Delete LanSignup by User.id and Lan.id
 	 * 
 	 * Required
-	 *	- $user_id
-	 *	- $lan_id
+	 * 	- $user_id
+	 * 	- $lan_id
 	 */
+
 	public function deleteByUserIdAndLanId($user_id, $lan_id) {
 		$this->User->id = $user_id;
 		$this->Lan->id = $lan_id;
@@ -155,11 +152,11 @@ class LanSignup extends AppModel {
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
 		if (
-				$this->User->saveField('balance', $new_balance, true)
-				&&
-				$this->delete()
-				&&
-				$this->LanSignupCode->resetCodeByLanSignupId($lan_signup['LanSignup']['id'])
+				  $this->User->saveField('balance', $new_balance, true)
+				  &&
+				  $this->delete()
+				  &&
+				  $this->LanSignupCode->resetCodeByLanSignupId($lan_signup['LanSignup']['id'])
 		) {
 			$dataSource->commit();
 			return true;
