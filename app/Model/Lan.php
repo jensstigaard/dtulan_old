@@ -11,12 +11,6 @@ class Lan extends AppModel {
 		 'LanSignup' => array(
 			  'dependent' => true
 		 ),
-		 'LanDay' => array(
-			  'dependent' => true
-		 ),
-		 'LanInvite' => array(
-			  'dependent' => true
-		 ),
 		 'Tournament' => array(
 			  'dependent' => true
 		 ),
