@@ -132,7 +132,6 @@ class UsersController extends AppController {
 		// Lan signups
 		$this->User->LanSignup->unbindModel(array('belongsTo' => array('User')));
 		$this->User->LanSignup->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'PizzaWave')));
-		$this->User->LanSignup->LanSignupDay->unbindModel(array('belongsTo' => array('LanSignup')));
 
 		$lans = $this->User->LanSignup->find('all', array(
 			 'conditions' => array(
@@ -144,24 +143,6 @@ class UsersController extends AppController {
 			 'recursive' => 2
 				  )
 		);
-
-		if ($this->User->data['User']['type'] == 'student') {
-			// Lan invites (accepted) made by user
-			$lan_invites_accepted = array();
-			foreach ($lans as $lan) {
-				$lan_invites_accepted[$lan['Lan']['id']] = $this->User->LanInvite->find('all', array(
-					 'conditions' => array(
-						  'LanInvite.user_student_id' => $id,
-						  'LanInvite.accepted' => 1,
-						  'LanInvite.lan_id' => $lan['Lan']['id']
-					 ),
-					 'recursive' => 1
-						  )
-				);
-			}
-
-			$this->set(compact('lan_invites_accepted'));
-		}
 
 		if ($id == $this->Auth->user('id')) {
 			$is_you = true;
