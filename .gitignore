@@ -12,3 +12,4 @@
 /app/Config/bootstrap.php
 /app/Config/core.php
 /nbproject/private/
+/app/Config/email.php

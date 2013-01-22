@@ -16,14 +16,48 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!DOCTYPE html>
 <html>
 	<head>
 		<title><?php echo $title_for_layout; ?></title>
+
+		<style type="text/css">
+			table {
+				border: 2px solid #000;
+			}
+
+			table thead tr th {
+				padding: 3px;
+				text-align: center;
+				border-bottom: 2px solid #000;
+			}
+
+			table thead tr th:first-child {
+				text-align: left;
+			}
+
+			table thead tr th:last-child {
+				border-left: 1px solid #000;
+				text-align: right;
+			}
+
+			table tbody tr td {
+				border-bottom: 1px solid #000;
+				text-align: center;
+			}
+
+			table tbody tr td:first-child {
+				text-align: left;
+			}
+
+			table tbody tr td:last-child {
+				text-align: right;
+				border-left: 1px solid #000;
+			}
+		</style>
+
 	</head>
 	<body>
-		<?php echo $this->fetch('content'); ?>
-
-		<p>This email was sent using the <a href="http://cakephp.org">CakePHP Framework</a></p>
+		<?php echo $content_for_layout; ?>
 	</body>
 </html>
