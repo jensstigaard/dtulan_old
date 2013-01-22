@@ -5,14 +5,14 @@
  *
  * @author Nigrea, Jens & Casper
  */
-//App::uses('AppController', 'Controller');
+App::uses('Email', 'Model');
 
 class UsersController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow(
-				'login', 'add', 'activate', 'forgot_password', 'reset_password', 'api_view'
+				  'login', 'add', 'activate', 'forgot_password', 'reset_password', 'api_view'
 		);
 	}
 
@@ -22,15 +22,15 @@ class UsersController extends AppController {
 		if ($this->User->isYouAdmin()) {
 			return true;
 		} elseif (in_array($this->action, array(
-					'profile',
-					'logout',
-					'edit',
-					'view_pizzaorders',
-					'view_foodorders',
-					'view_payments',
-					'view_tournaments',
-					'view_lans'
-				))) {
+						'profile',
+						'logout',
+						'edit',
+						'view_pizzaorders',
+						'view_foodorders',
+						'view_payments',
+						'view_tournaments',
+						'view_lans'
+				  ))) {
 			return true;
 		}
 		return false;
@@ -40,10 +40,10 @@ class UsersController extends AppController {
 		$this->User->recursive = 0;
 
 		$this->paginate = array(
-			'User' => array(
-				'limit' => 10,
-				'order' => 'time_created ASC'
-			)
+			 'User' => array(
+				  'limit' => 10,
+				  'order' => 'time_created ASC'
+			 )
 		);
 
 		$this->set('users', $this->paginate('User'));
@@ -83,8 +83,8 @@ class UsersController extends AppController {
 		}
 
 		$this->set(compact(
-						'title_for_layout', 'is_you', 'is_auth', 'user'
-				)
+							 'title_for_layout', 'is_you', 'is_auth', 'user'
+				  )
 		);
 	}
 
@@ -105,12 +105,12 @@ class UsersController extends AppController {
 		$this->User->TeamUser->Team->Tournament->unbindModel(array('belongsTo' => array('Lan')));
 
 		$this->set('teams', $this->User->TeamUser->find('all', array(
-					'conditions' => array(
-						'TeamUser.user_id' => $id
-					),
-					'recursive' => 2,
-						)
-				));
+						'conditions' => array(
+							 'TeamUser.user_id' => $id
+						),
+						'recursive' => 2,
+							 )
+				  ));
 	}
 
 	public function view_lans($id) {
@@ -135,14 +135,14 @@ class UsersController extends AppController {
 		$this->User->LanSignup->LanSignupDay->unbindModel(array('belongsTo' => array('LanSignup')));
 
 		$lans = $this->User->LanSignup->find('all', array(
-			'conditions' => array(
-				'LanSignup.user_id' => $id
-			),
-			'order' => array(
-				'Lan.time_start' => 'desc'
-			),
-			'recursive' => 2
-				)
+			 'conditions' => array(
+				  'LanSignup.user_id' => $id
+			 ),
+			 'order' => array(
+				  'Lan.time_start' => 'desc'
+			 ),
+			 'recursive' => 2
+				  )
 		);
 
 		if ($this->User->data['User']['type'] == 'student') {
@@ -150,13 +150,13 @@ class UsersController extends AppController {
 			$lan_invites_accepted = array();
 			foreach ($lans as $lan) {
 				$lan_invites_accepted[$lan['Lan']['id']] = $this->User->LanInvite->find('all', array(
-					'conditions' => array(
-						'LanInvite.user_student_id' => $id,
-						'LanInvite.accepted' => 1,
-						'LanInvite.lan_id' => $lan['Lan']['id']
-					),
-					'recursive' => 1
-						)
+					 'conditions' => array(
+						  'LanInvite.user_student_id' => $id,
+						  'LanInvite.accepted' => 1,
+						  'LanInvite.lan_id' => $lan['Lan']['id']
+					 ),
+					 'recursive' => 1
+						  )
 				);
 			}
 
@@ -192,16 +192,16 @@ class UsersController extends AppController {
 		}
 
 		$this->paginate = array(
-			'Payment' => array(
-				'conditions' => array(
-					'Payment.user_id' => $id,
-				),
-				'recursive' => 0,
-				'limit' => 10,
-				'order' => array(
-					array('Payment.time' => 'desc')
-				)
-			),
+			 'Payment' => array(
+				  'conditions' => array(
+						'Payment.user_id' => $id,
+				  ),
+				  'recursive' => 0,
+				  'limit' => 10,
+				  'order' => array(
+						array('Payment.time' => 'desc')
+				  )
+			 ),
 		);
 
 		$payments = $this->paginate('Payment');
@@ -234,12 +234,12 @@ class UsersController extends AppController {
 		$this->User->PizzaOrder->PizzaOrderItem->unbindModel(array('belongsTo' => array('PizzaOrder')));
 //		$this->User->PizzaOrder->PizzaWave->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'LanDay', 'PizzaWave')));
 		$pizza_orders = $this->User->PizzaOrder->find('all', array(
-			'conditions' => array(
-				'PizzaOrder.user_id' => $id
-			),
-			'recursive' => 3,
-			'limit' => 10
-				)
+			 'conditions' => array(
+				  'PizzaOrder.user_id' => $id
+			 ),
+			 'recursive' => 3,
+			 'limit' => 10
+				  )
 		);
 
 		foreach ($pizza_orders as $pizza_order_nr => $pizza_order) {
@@ -275,16 +275,16 @@ class UsersController extends AppController {
 		}
 
 		$this->paginate = array(
-			'FoodOrder' => array(
-				'conditions' => array(
-					'FoodOrder.user_id' => $id,
-				),
-				'recursive' => 3,
-				'limit' => 10,
-				'order' => array(
-					array('FoodOrder.time' => 'desc')
-				)
-			),
+			 'FoodOrder' => array(
+				  'conditions' => array(
+						'FoodOrder.user_id' => $id,
+				  ),
+				  'recursive' => 3,
+				  'limit' => 10,
+				  'order' => array(
+						array('FoodOrder.time' => 'desc')
+				  )
+			 ),
 		);
 
 		$food_orders = $this->paginate('FoodOrder');
@@ -301,34 +301,20 @@ class UsersController extends AppController {
 
 	public function add() {
 
+		$this->User->getEventManager()->attach(new Email());
+
 		$this->set('title_for_layout', 'Register new user');
 
 		if ($this->request->is('post')) {
 
-			$this->request->data['User']['time_created'] = date('Y-m-d H:i:s');
+			$data = array(
+				 'email' => $this->request->data['User']['email'],
+				 'name' => $this->request->data['User']['name']
+			);
 
-			$email = $this->request->data['User']['email_gravatar'] = $this->request->data['User']['email'];
-
-			$name = $this->request->data['User']['name'];
-
-			$this->User->create();
-
-			if ($this->User->save($this->request->data)) {
-
+			if ($this->User->createUser($data)) {
 				$id = $this->User->getLastInsertID();
-
-				$user_info = array(
-					'id' => $id,
-					'name' => $name,
-					'email' => $email
-				);
-
-				$event = new CakeEvent('Model.User.activationEmail', $this, array(
-							'user' => $user_info
-						));
-				$this->getEventManager()->dispatch($event);
-
-				$this->Session->setFlash(__('Your user has been registered. An email is sent to ' . $email . '. Follow the instructions in the email to continue the activation process. Remember to check your spam folder'), 'default', array('class' => 'message success'), 'good');
+				$this->Session->setFlash(__('Your user has been registered. An email is sent to ' . $data['email'] . '. Follow the instructions in the email to continue the activation process. Remember to check your spam folder'), 'default', array('class' => 'message success'), 'good');
 				$this->redirect('/');
 			} else {
 				$this->Session->setFlash(__('The user could not be saved. Please try again.'), 'default', array(), 'bad');
@@ -481,11 +467,11 @@ class UsersController extends AppController {
 			$email = $this->request->data['User']['email'];
 
 			$user = $this->User->find('first', array(
-				'conditions' => array(
-					'User.email' => $email
-				),
-				'recursive' => 0
-					)
+				 'conditions' => array(
+					  'User.email' => $email
+				 ),
+				 'recursive' => 0
+					  )
 			);
 
 			if (!$user) {
@@ -569,22 +555,22 @@ class UsersController extends AppController {
 			$input_string = $this->request->data['search_startsWith'];
 
 			$users = $this->User->find('all', array(
-				'recursive' => -1,
-				'conditions' => array(
-					'OR' => array(
-						array(
-							'name LIKE' => '%' . $input_string . '%'
-						),
-						array(
-							'email LIKE' => '%' . $input_string . '%'
-						),
-						array(
-							'id_number LIKE' => '%' . $input_string . '%'
-						),
-					)
-				),
-				'limit' => 5
-					)
+				 'recursive' => -1,
+				 'conditions' => array(
+					  'OR' => array(
+							array(
+								 'name LIKE' => '%' . $input_string . '%'
+							),
+							array(
+								 'email LIKE' => '%' . $input_string . '%'
+							),
+							array(
+								 'id_number LIKE' => '%' . $input_string . '%'
+							),
+					  )
+				 ),
+				 'limit' => 5
+					  )
 			);
 		}
 

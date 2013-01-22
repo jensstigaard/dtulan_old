@@ -10,6 +10,8 @@
  *
  * @author Jens
  */
+App::uses('CakeEvent', 'Event');
+
 class User extends AppModel {
 
 	public $name = 'User';
@@ -188,10 +190,15 @@ class User extends AppModel {
 			 )
 				  )
 		);
-		$count = intval(substr($count['User']['id_number'], 5));
-		if ($count >= 99) {
-			throw new TooManyGuestSignUps();
+		if (!isset($count['User'])) {
+			$count = 0;
+		} else {
+			$count = intval(substr($count['User']['id_number'], 5));
+			if ($count >= 99) {
+				throw new TooManyGuestSignUps();
+			}
 		}
+
 		return $count < 9 ? $guestNumber . '0' . ($count + 1) : $guestNumber . ($count + 1);
 	}
 
@@ -230,8 +237,11 @@ class User extends AppModel {
 		if (isset($this->data['User']['name'])) {
 			$this->data['User']['name'] = ucwords(strtolower($this->data['User']['name']));
 		}
+		// Creating user
 		if (isset($this->data['User']['email'])) {
 			$this->data['User']['email'] = strtolower($this->data['User']['email']);
+			$this->data['User']['email_gravatar'] = $this->data['User']['email'];
+			$this->data['User']['time_created'] = date('Y-m-d H:i:s');
 		}
 		return true;
 	}
@@ -304,6 +314,33 @@ class User extends AppModel {
 		$new_balance = $this->data['User']['balance'] - $amount;
 
 		return $this->saveField('balance', $new_balance, true);
+	}
+
+	public function createUser($input) {
+		$dataSource = $this->getDataSource();
+		$dataSource->begin();
+
+		$this->create();
+		if ($this->save($input)) {
+
+			$input = $input + array(
+				 'id' => $this->getLastInsertID()
+			);
+
+			$event = new CakeEvent('Model.User.activationEmail', $this, array(
+							'user' => $input
+					  ));
+			$this->getEventManager()->dispatch($event);
+
+			if ($event->result['success']) {
+				$dataSource->commit();
+				return true;
+			}
+		}
+
+		debug($event->result);
+		$dataSource->rollback();
+		return false;
 	}
 
 }
