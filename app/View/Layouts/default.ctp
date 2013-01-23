@@ -8,31 +8,35 @@
 		</title>
 		<?php
 		echo $this->Html->meta(
-				'keywords', 'DTU LAN Party, DTU, LAN, Party, E2012, event, Tournament, League of Legends, Counter-Strike, Pizza, StarCraft 2, NetCompany, RedBull, SteelSeries, S/M-rådet'
+				  'keywords', 'DTU LAN Party, DTU, LAN, Party, E2012, event, Tournament, League of Legends, Counter-Strike, Pizza, StarCraft 2, NetCompany, RedBull, SteelSeries, S/M-rådet'
 		);
 
 		echo $this->Html->meta(
-				'description', 'DTU LAN Party | Two LAN-events every year | Next event: E2012 | October 13th - 18th 2012'
+				  'description', 'DTU LAN Party | Two LAN-events every year | Next event: E2012 | October 13th - 18th 2012'
 		);
 
 		echo $this->Html->meta(
-				'favicon.ico', '/favicon.ico', array('type' => 'icon')
+				  'favicon.ico', '/favicon.ico', array('type' => 'icon')
 		);
 
 		echo $this->Html->css(array(
-			'normalize',
-			'layout.general',
-			'layout.tables',
-			'layout.menu',
-			'layout.sidebar',
-			'cake.errors',
-			'ui-darkness/jquery-ui'
-				)
+			 'bootstrap/bootstrap.min',
+			 'font-awesome/font-awesome.min',
+			 'ui-darkness/jquery-ui-1.10.0.custom',
+			 'jquery.qtip.min',
+			 'normalize',
+			 'layout.general',
+			 'layout.tables',
+			 'layout.menu',
+			 'layout.sidebar',
+			 'layout.lan.css',
+			 'cake.errors',
+				  )
 		);
 
 		if ($is_admin) {
 			echo $this->Html->css(array(
-				'layout.admin'));
+				 'layout.admin'));
 		}
 
 		if ($is_admin) {
@@ -41,11 +45,6 @@
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
-
-		echo $this->Html->script(array('jquery', 'jquery-ui', 'general'), true);
-		echo $this->fetch('script');
-
-		echo $this->Js->writeBuffer(array('cache' => TRUE));
 		?>
 	</head>
 	<body>
@@ -86,6 +85,20 @@
 			</div>
 		</div>
 
-		<?php // echo $this->element('sql_dump');    ?>
+		<?php // echo $this->element('sql_dump');      ?>
+
+		<?php
+		echo $this->Html->script(array(
+			 'jquery/jquery',
+			 'jquery/jquery-ui',
+			 'jquery/jquery.qtip.min',
+			 'bootstrap/bootstrap.min',
+			 'general',
+			 
+				  ), true);
+		echo $this->fetch('script');
+
+		echo $this->Js->writeBuffer(array('cache' => TRUE));
+		?>
 	</body>
 </html>
