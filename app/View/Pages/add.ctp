@@ -1,5 +1,5 @@
 <?php echo $this->Html->script(array('pageEdit', 'ckeditor/ckeditor'), FALSE); ?>
-<div class="form">
+<div>
 	<?php echo $this->Form->create(); ?>
 	<fieldset>
         <legend><?php echo __('New page'); ?></legend>
