@@ -38,18 +38,6 @@ class LansController extends AppController {
 		$title_for_layout = 'Lan &bull; ' . $title;
 
 		$this->set(compact('title', 'title_for_layout'));
-		$this->set('tabs', $this->Lan->getTabs());
-	}
-
-	public function view_general($slug) {
-
-		if (!$this->request->is('ajax')) {
-			throw new BadRequestException('Bad request');
-		}
-
-		$this->layout = 'ajax';
-
-		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 
 		$this->set('lan', $this->Lan->read(array(
 						'price',
@@ -59,8 +47,13 @@ class LansController extends AppController {
 						'sign_up_open',
 						'max_participants'
 				  )));
+		
+		$this->set('tabs', $this->Lan->getTabs());
 
-		$this->set('data', $this->Lan->getGeneralStatistics());
+		if ($this->Lan->isYouAdmin()) {
+			$this->set('tabs_admin', $this->Lan->getTabsAdmin());
+			$this->set('data', $this->Lan->getGeneralStatistics());
+		}
 	}
 
 	/* -- Crew tab -- */
@@ -324,7 +317,7 @@ class LansController extends AppController {
 				$this->Session->setFlash(__('Emails could not be sent. Please try again'), 'default', array(), 'bad');
 			}
 		}
-		
+
 		$this->set('title', $this->Lan->data['Lan']['title']);
 	}
 

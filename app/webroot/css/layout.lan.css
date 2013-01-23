@@ -1,0 +1,44 @@
+/* 
+    Document   : layout.lan
+    Created on : 23-01-2013, 14:06:56
+    Author     : Jens
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+#lan_overview > div{
+	clear:both;
+}
+
+.lan_overview_item{
+	float:left;
+	padding:5px 8px;
+	margin:0 5px 5px 0;
+	height:27px;
+	background:rgba(0,0,0, .5);
+	font-size: 13pt;
+}
+
+.lan_overview_item:hover{
+	color:#FFF;
+}
+
+.lan_overview_item i{
+	float: left;
+	display: block;
+	font-size: 18pt;
+	padding-right: 8px;
+}
+
+.lan_overview_item span{
+	display: inline-block;
+	padding-top: 4px;
+}
+
+#lan_overview:after{
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}

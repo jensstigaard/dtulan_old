@@ -261,10 +261,17 @@ class Lan extends AppModel {
 			throw new NotFoundException('Lan not found with slug: ' . $slug);
 		}
 
-		$this->LanSignup->User->id = $this->getLoggedInId();
-		if (!($result['Lan']['published'] || $this->isYouAdmin() || $this->isUserAttendingAsCrew())) {
-			throw new UnauthorizedException('You are not authorized to see this page');
+		if (!$result['Lan']['published']) {
+			if (!$this->isLoggedIn()) {
+				throw new UnauthorizedException('You are not authorized to see this page');
+			}
+
+			$this->LanSignup->User->id = $this->getLoggedInId();
+			if (!($this->isYouAdmin() || $this->isUserAttendingAsCrew())) {
+				throw new UnauthorizedException('You are not authorized to see this page');
+			}
 		}
+
 
 		return $this->id;
 	}
@@ -392,7 +399,7 @@ class Lan extends AppModel {
 						),
 						'recursive' => 1,
 						'order' => array(
-							 'Lan.time_start' => 'asc'
+							 'Lan.time_start' => 'desc'
 						)
 				  ));
 	}
@@ -601,20 +608,12 @@ class Lan extends AppModel {
 
 		$tabs = array(
 			 array(
-				  'title' => 'Generel',
-				  'url' => array(
-						'action' => 'view_general',
-						$this->data['Lan']['slug']
-				  ),
-				  'img' => '24x24_PNG/001_40.png',
-			 ),
-			 array(
 				  'title' => 'Crew',
 				  'url' => array(
 						'action' => 'view_crew',
 						$this->data['Lan']['slug']
 				  ),
-				  'img' => '24x24_PNG/crew.png',
+				  'icon' => 'icon-user-md',
 			 ),
 			 array(
 				  'title' => 'Participants',
@@ -622,7 +621,7 @@ class Lan extends AppModel {
 						'action' => 'view_participants',
 						$this->data['Lan']['slug']
 				  ),
-				  'img' => '24x24_PNG/participants.png',
+				  'icon' => 'icon-group',
 			 ),
 			 array(
 				  'title' => 'Tournaments',
@@ -630,40 +629,9 @@ class Lan extends AppModel {
 						'action' => 'view_tournaments',
 						$this->data['Lan']['slug']
 				  ),
-				  'img' => '24x24_PNG/trophy_gold.png',
+				  'icon' => 'icon-trophy',
 			 ),
 		);
-
-		if ($this->isYouAdmin()) {
-			$tabs_admin = array(
-				 array(
-					  'title' => 'Food menus',
-					  'url' => array(
-							'action' => 'view_foodmenus',
-							$this->data['Lan']['slug']
-					  ),
-					  'img' => '24x24_PNG/candy.png',
-				 ),
-				 array(
-					  'title' => 'Pizza menus',
-					  'url' => array(
-							'action' => 'view_pizzamenus',
-							$this->data['Lan']['slug']
-					  ),
-					  'img' => '24x24_PNG/pizza.png',
-				 ),
-				 array(
-					  'title' => 'Economics',
-					  'url' => array(
-							'action' => 'view_economics',
-							$this->data['Lan']['slug']
-					  ),
-					  'img' => '24x24_PNG/payment_cash.png',
-				 ),
-			);
-
-			$tabs = array_merge($tabs, $tabs_admin);
-		}
 
 
 		if ($this->isLoggedIn() && $this->isUserAbleSignup()) {
@@ -675,7 +643,7 @@ class Lan extends AppModel {
 							'action' => 'add',
 							$this->data['Lan']['slug']
 					  ),
-					  'img' => '24x24_PNG/001_01.png',
+					  'icon' => 'icon-plus-sign',
 				 ),
 			);
 
@@ -683,6 +651,39 @@ class Lan extends AppModel {
 		}
 
 		return $tabs;
+	}
+
+	public function getTabsAdmin() {
+
+		$this->read(array('slug'));
+
+
+		return $tabs_admin = array(
+			 array(
+				  'title' => 'Food menus',
+				  'url' => array(
+						'action' => 'view_foodmenus',
+						$this->data['Lan']['slug']
+				  ),
+				  'icon' => 'icon-coffee',
+			 ),
+			 array(
+				  'title' => 'Pizza menus',
+				  'url' => array(
+						'action' => 'view_pizzamenus',
+						$this->data['Lan']['slug']
+				  ),
+				  'icon' => 'icon-food',
+			 ),
+			 array(
+				  'title' => 'Economics',
+				  'url' => array(
+						'action' => 'view_economics',
+						$this->data['Lan']['slug']
+				  ),
+				  'icon' => 'icon-money',
+			 ),
+		);
 	}
 
 	public function sendSubscriptionEmails($data) {

@@ -21,9 +21,6 @@ $(document).ready(function(){
 			$('#loading_indicator').hide();
 		}
 	})
-//	.tooltip({
-//		tooltipClass: "custom-tooltip-styling"
-//	})
-;
+	;
 
 });

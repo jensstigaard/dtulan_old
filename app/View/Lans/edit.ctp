@@ -16,6 +16,7 @@
 		</div>
 		<?php
 		echo $this->Form->inputs(array(
+			 'fieldset' => false,
 			 'title',
 			 'time_start' => array('timeFormat' => '24'),
 			 'time_end' => array('timeFormat' => '24'),
