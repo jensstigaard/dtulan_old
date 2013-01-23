@@ -355,6 +355,24 @@ class User extends AppModel {
 			 'recursive' => -1
 				  ));
 	}
+	
+	public function getDataToEditPage(){
+		
+		return $this->find('first', array(
+			 'conditions' => array(
+				  'id' => $this->id
+			 ),
+			 'recursive' => -1,
+			 'fields' => array(
+				  'id',
+				  'name',
+				  'phonenumber',
+				  'email_gravatar',
+				  'email_subscription',
+				  'gamertag',
+			 )
+		));
+	}
 
 }
 
