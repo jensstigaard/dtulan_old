@@ -3,39 +3,39 @@
 		<?php
 		if (!empty($user['User']['email_gravatar'])) {
 			echo $this->Html->image(
-					'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=64&amp;r=r', array('style' => 'margin-right:10px;'));
+					  'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=64&amp;r=r', array('style' => 'margin-right:10px;'));
 		}
 		echo $user['User']['name'];
 		?>
 	</h1>
 
 	<?php if (isset($make_payment_crew_id)): ?>
-		<div style="float:right;width:200px;background-color:rgba(0,0,0,.2);padding:10px;">
+		<div class="box_inline" id="box_make_payment">
 			<h3>New payment</h3>
 			<?php
 			echo $this->Form->create('Payment', array('controller' => 'payments', 'action' => 'add'));
 			echo $this->Form->inputs(array(
-				'fieldset' => false,
-				'amount',
-				'user_id' => array(
-					'value' => $user['User']['id'],
-					'type' => 'hidden'
-				),
-				'crew_id' => array(
-					'value' => $make_payment_crew_id,
-					'type' => 'hidden'
-				)
-					)
+				 'fieldset' => false,
+				 'amount',
+				 'user_id' => array(
+					  'value' => $user['User']['id'],
+					  'type' => 'hidden'
+				 ),
+				 'crew_id' => array(
+					  'value' => $make_payment_crew_id,
+					  'type' => 'hidden'
+				 )
+					  )
 			);
 			?>
 
 			<p>Payment in: <strong><?php echo $make_payment_lan_title; ?></strong></p>
 			<?php
 			echo $this->Form->end(array(
-				'label' => __('Submit'),
-				'div' => array(
-					'style' => 'margin:0;padding:0 0 5px'
-				)
+				 'label' => __('Submit'),
+				 'div' => array(
+					  'style' => 'margin:0;padding:0 0 5px'
+				 )
 			));
 			?>
 		</div>
@@ -82,45 +82,45 @@
 			<?php if ($is_auth): ?>
 				<li><a href="<?php
 			echo $this->Html->url(array(
-				'action' => 'view_pizzaorders',
-				$user['User']['id']
+				 'action' => 'view_pizzaorders',
+				 $user['User']['id']
 			));
-				?>"><?php echo $this->Html->image('24x24_PNG/pizza.png'); ?></a></li>
+			?>"><i class="icon-food"></i></a></li>
 
 				<li><a href="<?php
-				   echo $this->Html->url(array(
-					   'action' => 'view_foodorders',
-					   $user['User']['id']
-				   ));
-				?>"><?php echo $this->Html->image('24x24_PNG/candy.png'); ?></a></li>
+					 echo $this->Html->url(array(
+						  'action' => 'view_foodorders',
+						  $user['User']['id']
+					 ));
+					 ?>"><i class="icon-coffee"></i></a></li>
 
 				<li><a href="<?php
-				   echo $this->Html->url(array(
-					   'action' => 'view_payments',
-					   $user['User']['id']
-				   ));
-				?>"><?php echo $this->Html->image('24x24_PNG/payment_cash.png'); ?></a></li>
+					 echo $this->Html->url(array(
+						  'action' => 'view_payments',
+						  $user['User']['id']
+					 ));
+					 ?>"><i class="icon-money"></i></a></li>
 
 			<?php endif; ?>
 
 			<li><a href="<?php
 			echo $this->Html->url(array(
-				'action' => 'view_tournaments',
-				$user['User']['id']
+				 'action' => 'view_tournaments',
+				 $user['User']['id']
 			));
-			?>"><?php echo $this->Html->image('24x24_PNG/trophy_gold.png'); ?></a></li>
+			?>"><i class="icon-trophy"></i></a></li>
 
 			<li><a href="<?php
-				   echo $this->Html->url(array(
-					   'action' => 'view_lans',
-					   $user['User']['id']
-				   ));
-			?>"><?php echo $this->Html->image('24x24_PNG/games.png'); ?></a></li>
+					 echo $this->Html->url(array(
+						  'action' => 'view_lans',
+						  $user['User']['id']
+					 ));
+					 ?>"><i class="icon-cloud"></i></a></li>
 
 		</ul>
 
-		<div style="text-align:center;">
-			<?php echo $this->Html->image('ajax-loader.gif', array('class' => 'hidden', 'id' => 'loading_indicator', 'alt' => 'loading ...')); ?>
+		<div id="loading_indicator">
+			<i class="icon-spinner icon-spin icon-2x"></i>
 		</div>
 	</div>
 </div>

@@ -306,25 +306,24 @@ class UsersController extends AppController {
 	public function edit() {
 		$this->set('title_for_layout', 'Edit personal data');
 
-		$this->User->id = $this->Auth->user('id');
+		$this->User->id = $this->User->getLoggedInId();
 
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
 		}
 
 		if ($this->request->is('get')) {
-			$this->request->data = $this->User->read();
+			$this->request->data = $this->User->getDataToEditPage();
 		} else {
 			if ($this->User->save($this->request->data)) {
 				$this->Session->setFlash(__('User has been saved'), 'default', array('class' => 'message success'), 'good');
 				$this->redirect(array('action' => 'profile'));
 			} else {
 				$this->Session->setFlash(__('User could not be saved. Please try again'), 'default', array(), 'bad');
-				debug($this->User->validates());
 			}
 		}
 
-		$this->set('this_user', $this->User->read());
+		$this->set('email_gravatar', $this->request->data['User']['email_gravatar']);
 	}
 
 	public function activate($id = null) {

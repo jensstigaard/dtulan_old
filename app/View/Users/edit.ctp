@@ -22,7 +22,7 @@
 			<strong>Avatar</strong>
 			<?php
 			echo $this->Html->image(
-					  'http://www.gravatar.com/avatar/' . md5(strtolower($this_user['User']['email_gravatar'])) . '', array(
+					  'http://www.gravatar.com/avatar/' . md5(strtolower($email_gravatar)), array(
 				 'style' => 'float:right;margin-left:10px;margin-right:5px;'
 					  )
 			);

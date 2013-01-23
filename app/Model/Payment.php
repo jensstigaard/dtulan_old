@@ -9,27 +9,27 @@ class Payment extends AppModel {
 
 	public $belongsTo = array('User', 'Crew');
 	public $validate = array(
-		'amount' => array(
-			'required1' => array(
-				'rule' => array('notEmpty', 'numeric'),
-				'message' => 'Amount is invalid'
-			),
-			'required2' => array(
-				'rule' => 'validInteger',
-				'message' => 'Amount is invalid'
-			),
-		),
-		'user_id' => array(
-			'validUser' => array(
-				'rule' => 'validUser',
-				'message' => 'Invalid user'
-			)
-		),
-		'crew_id' => array(
-		)
+		 'amount' => array(
+			  'required1' => array(
+					'rule' => array('notEmpty'),
+					'message' => 'Amount is invalid'
+			  ),
+			  'required2' => array(
+					'rule' => 'validInteger',
+					'message' => 'Amount is invalid'
+			  ),
+		 ),
+		 'user_id' => array(
+			  'validUser' => array(
+					'rule' => 'validUser',
+					'message' => 'Invalid user'
+			  )
+		 ),
+		 'crew_id' => array(
+		 )
 	);
 	public $order = array(
-		'Payment.time' => 'asc'
+		 'Payment.time' => 'asc'
 	);
 
 	public function validInteger($check) {
@@ -42,11 +42,11 @@ class Payment extends AppModel {
 
 	public function validUser($check) {
 		return $this->User->find('count', array('conditions' => array(
-						'User.id' => $check['user_id'],
-						'User.activated' => 1
-					)
+							 'User.id' => $check['user_id'],
+							 'User.activated' => 1
 						)
-				) == 1;
+							 )
+				  ) == 1;
 	}
 
 }
