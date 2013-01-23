@@ -14,10 +14,12 @@
 
 #sidebar h1, #sidebar a{
 	color: #DDD;
+	/*color: #444;*/
 }
 
 #sidebar a:hover{
 	color: #FFF;
+	/*color:#222;*/
 }
 
 #sidebar > div{
@@ -46,7 +48,7 @@
 }
 
 #sidebar p{
-	padding:5px 10px 0;
+	padding:2px 10px 0;
 	margin-bottom:5px;
 }
 
@@ -60,10 +62,71 @@
 
 #sidebar ul li a {
 	display: block;
-	padding: 4px 15px 6px;
+	padding: 4px 10px 6px;
 	text-decoration: none;
 }
-
 #sidebar ul li a:hover{
-	background-color: rgba(0,0,0,.3);
+	background-color: rgba(0, 0, 0, .2);
+}
+
+#sidebar ul li a i{
+	display: block;
+	float: left;
+	font-size: 14pt;
+	padding-right:5px;
+	padding-top: 1px;
+}
+
+#sidebar_user_info{
+	margin-left: 80px;
+}
+
+.lan_highlighted{
+	padding:0 !important;
+}
+
+.lan_highlighted a{
+	padding: 6px 12px !important;
+}
+.lan_highlighted i{
+	font-size: 20pt !important;
+	padding-top:4px !important;
+}
+
+.lan_highlighted strong{
+	display:block;
+	font-size:12pt;
+}
+
+.lan_highlighted small{
+	display:block;
+}
+
+.lan_highlighted .upcoming{
+	color: yellow;
+}
+
+.lan_highlighted .previous{
+	color:grey;
+}
+
+.lan_highlighted .onair{
+	color: #7A2E96;
+	font-weight: bold;
+}
+
+
+#user_logged_in{
+
+}
+
+#user_name_link{
+	display: block;
+	font-size: 150%;
+	padding: 5px;
+	line-height: 110%;
+}
+
+#user_balance{
+	padding:2px 5px 0 !important;
 }

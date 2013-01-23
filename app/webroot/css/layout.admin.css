@@ -43,3 +43,14 @@ table.pizza_order_list tbody tr td.order_status_green, table.order_list tbody tr
 table.pizza_order_list tbody tr td.order_status_red, table.order_list tbody tr td.order_status_red{
 	background-color: rgba(255, 50, 50, 0.4);
 }
+
+#user_lookup_input{
+	display: block;
+	margin:0 auto;
+}
+
+
+#box_make_payment{
+	float:right;
+	width:200px;
+}

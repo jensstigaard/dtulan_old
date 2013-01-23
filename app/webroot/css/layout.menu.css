@@ -16,7 +16,7 @@ div.menu > ul{
 }
 
 div.menu > ul:hover{
-	background: rgba(0,0,0, .3);
+	background: rgba(0, 0, 0, .3);
 }
 
 div.menu > ul > li.menuItemTop{
@@ -45,7 +45,7 @@ div.menu > ul li a:hover{
 }
 
 div.menu > ul > li:hover > a{
-	background-color: rgba(0,0,0,.7);
+	background-color: rgba(0, 0, 0, .3);
 }
 
 
@@ -58,7 +58,7 @@ div.menu > ul > li > ul {
 	width: 10em;
 	margin: 0;
 	padding: 0;
-	background-color: rgba(0, 0, 0, .8);
+	background-color: rgba(0, 0, 0, .3);
 }
 
 div.menu ul > li:hover > ul {
@@ -76,5 +76,5 @@ div.menu > ul > li > ul > li > a {
 }
 
 div.menu > ul > li > ul > li > a:hover{
-	background-color: rgba(0,0,0,1);
+	background-color: rgba(0, 0, 0, .5);
 }
