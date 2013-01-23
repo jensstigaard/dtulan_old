@@ -343,6 +343,19 @@ class User extends AppModel {
 		return false;
 	}
 
+	public function getSubscribingUsersNameAndEmail() {
+		return $this->find('all', array(
+						'conditions' => array(
+							 'email_subscription' => true
+						),
+						'fields' => array(
+							 'User.name',
+							 'User.email'
+						),
+			 'recursive' => -1
+				  ));
+	}
+
 }
 
 ?>

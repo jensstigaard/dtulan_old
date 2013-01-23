@@ -1,5 +1,7 @@
 <?php
 
+App::uses('Email', 'Model');
+
 class LansController extends AppController {
 
 	public $helpers = array('Html', 'Form', 'Js');
@@ -280,7 +282,7 @@ class LansController extends AppController {
 		$this->set(compact('id'));
 	}
 
-	public function openForSignup($id = null) {
+	public function openForSignup($id) {
 
 		$this->Lan->id = $id;
 		if (!$this->Lan->exists()) {
@@ -299,6 +301,31 @@ class LansController extends AppController {
 			$this->Session->setFlash(__('The Lan could not be saved. Please try again'), 'default', array(), 'bad');
 		}
 		$this->redirect($this->referer());
+	}
+
+	public function sendEmailSubscribers($id) {
+
+		$this->Lan->getEventManager()->attach(new Email());
+
+		$this->Lan->id = $id;
+		if (!$this->Lan->exists()) {
+			throw new NotFoundException(__('Invalid Lan'));
+		}
+
+		$this->Lan->recursive = -1;
+		$this->Lan->read(array('id', 'title', 'time_start'));
+
+		$this->request->data['Lan'] = $this->Lan->data;
+
+		if ($this->request->is('post')) {
+			if ($this->Lan->sendSubscriptionEmails($this->request->data)) {
+				$this->Session->setFlash(__('Emails has been sent!'), 'default', array('class' => 'message success'), 'good');
+			} else {
+				$this->Session->setFlash(__('Emails could not be sent. Please try again'), 'default', array(), 'bad');
+			}
+		}
+		
+		$this->set('title', $this->Lan->data['Lan']['title']);
 	}
 
 	// Print all data about Lan (participants)

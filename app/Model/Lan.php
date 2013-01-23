@@ -1,5 +1,7 @@
 <?php
 
+App::uses('CakeEvent', 'Event');
+
 class Lan extends AppModel {
 
 	//
@@ -681,6 +683,38 @@ class Lan extends AppModel {
 		}
 
 		return $tabs;
+	}
+
+	public function sendSubscriptionEmails($data) {
+
+		$users = $this->LanSignup->User->getSubscribingUsersNameAndEmail();
+
+		$count = array(
+			 'success' => 0,
+			 'failures' => 0,
+		);
+		foreach ($users as $x => $content) {
+			$event = new CakeEvent('Model.Lan.sendSubscriptionEmail', $this, array(
+							'user' => $content['User'],
+							'lan' => $data['Lan']
+					  ));
+			$this->getEventManager()->dispatch($event);
+
+			if ($event->result['success']) {
+				$count['success']++;
+				$data[$x]['success'] = true;
+			} else {
+				$count['failures']++;
+				$data[$x]['success'] = false;
+			}
+		}
+
+		if (!$count['failures']) {
+			return true;
+		}
+
+		debug($data);
+		return false;
 	}
 
 	/*
