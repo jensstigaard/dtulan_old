@@ -35,11 +35,11 @@ class UploadBehavior extends ModelBehavior {
 		'maxWidth'			=> 0,
 		'minWidth'			=> 0,
 		'thumbnails'		=> true,
-		'thumbnailMethod'	=> 'imagick',
+		'thumbnailMethod'	=> 'php', // imagick
 		'thumbnailName'		=> null,
 		'thumbnailPath'		=> null,
 		'thumbnailPrefixStyle'=> true,
-		'thumbnailQuality'	=> 75,
+		'thumbnailQuality'	=> 100,
 		'thumbnailSizes'	=> array(),
 		'thumbnailType'		=> false,
 		'deleteOnUpdate'	=> false,
