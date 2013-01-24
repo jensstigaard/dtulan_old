@@ -14,7 +14,7 @@ echo $this->Html->script(array('ajax/all_links'));
 			<?php foreach ($participants as $user): ?>
 				<?php
 				$title = '';
-				$title.='<small>';
+				$title.='<small class="fittext">';
 				$title.= $user['User']['name'];
 				$title.='</small>';
 

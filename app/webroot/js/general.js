@@ -23,8 +23,20 @@ $(document).ready(function(){
 	})
 	;
 	
-	$(document).ready(function() {
-		$(".fancybox").fancybox();
-	});
+	
+	$(".fancybox").fancybox();
+	
+	//	var $container = $('#list-images');
+	//	$container.imagesLoaded(function(){
+	//		$container.masonry({
+	//			itemSelector : '.item',
+	//			isAnimated: true,
+	//			gutterWidth : 20
+	//		//			columnWidth : 240
+	//		});
+	//	});
+
+
+	$(".fittext").fitText();
 
 });
