@@ -22,11 +22,25 @@
 				);
 				?>
 			</li>
+
 			<li>
 				<?php
 				echo $this->Html->link(
 						  '<i class="icon-coffee"></i> Candy/soda orders', array(
 					 'controller' => 'food_orders',
+					 'action' => 'index'
+						  ), array(
+					 'escape' => false
+						  )
+				);
+				?>
+			</li>
+
+			<li>
+				<?php
+				echo $this->Html->link(
+						  '<i class="icon-picture"></i> Image Database', array(
+					 'controller' => 'images',
 					 'action' => 'index'
 						  ), array(
 					 'escape' => false

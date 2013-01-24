@@ -26,6 +26,10 @@ class ImagesController extends AppController {
 		return false;
 	}
 
+	public function index() {
+		$this->set('images', $this->Image->getListIndex());
+	}
+
 	public function add() {
 
 		if ($this->request->is('post')) {

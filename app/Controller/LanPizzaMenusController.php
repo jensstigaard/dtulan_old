@@ -80,12 +80,12 @@ class LanPizzaMenusController extends AppController {
 		$this->set('lan_title', $this->LanPizzaMenu->Lan->data['Lan']['title']);
 
 		$this->set('pizzaMenus', $this->LanPizzaMenu->PizzaMenu->find('list', array(
-					'conditions' => array(
-						'NOT' => array(
-							'PizzaMenu.id' => $this->LanPizzaMenu->Lan->getPizzaMenuIds()
+						'conditions' => array(
+							 'NOT' => array(
+								  'PizzaMenu.id' => $this->LanPizzaMenu->Lan->getPizzaMenuIds()
+							 )
 						)
-					)
-				)));
+				  )));
 	}
 
 }
