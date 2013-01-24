@@ -23,20 +23,23 @@
 			 'bootstrap/bootstrap.min',
 			 'font-awesome/font-awesome.min',
 			 'ui-darkness/jquery-ui-1.10.0.custom',
-			 'jquery.qtip.min',
+			 'jquery/jquery.qtip.min',
+			 'jquery/jquery.fancybox',
 			 'normalize',
 			 'layout.general',
 			 'layout.tables',
-			 'layout.menu',
+			 'layout.navigation',
 			 'layout.sidebar',
-			 'layout.lan.css',
+			 'layout.lan',
 			 'cake.errors',
 				  )
 		);
 
 		if ($is_admin) {
 			echo $this->Html->css(array(
-				 'layout.admin'));
+				 'layout.admin',
+				 'layout.admin.images'
+			));
 		}
 
 		if ($is_admin) {
@@ -51,9 +54,9 @@
 		<div id="header">
 			<div>
 				<?php echo $this->Html->image('logo.png', array('url' => '/')); ?>
-				<div class="menu">
+				<nav>
 					<?php echo $this->element('menu'); ?>
-				</div>
+				</nav>
 			</div>
 		</div>
 		<div id="container">
@@ -92,9 +95,9 @@
 			 'jquery/jquery',
 			 'jquery/jquery-ui',
 			 'jquery/jquery.qtip.min',
+			 'jquery/jquery.fancybox.pack',
 			 'bootstrap/bootstrap.min',
 			 'general',
-			 
 				  ), true);
 		echo $this->fetch('script');
 

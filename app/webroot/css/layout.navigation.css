@@ -6,32 +6,32 @@
         Purpose of the stylesheet follows.
 */
 
-div.menu{
-	float:right;
-	margin:0 10px;
+nav{
+	float: right;
+	margin-left: 10px;
 }
 
-div.menu > ul{
+nav > ul{
 	margin: 0;
 }
 
-div.menu > ul:hover{
+nav > ul:hover{
 	background: rgba(0, 0, 0, .3);
 }
 
-div.menu > ul > li.menuItemTop{
+nav > ul > li.menuItemTop{
 	float: left;
 }
 
-div.menu > ul > li.menuItemTop > a{
+nav > ul > li.menuItemTop > a{
 	padding: 11px 20px 12px;
 }
 
-div.menu ul li{
+nav ul li{
 	list-style: none;
 }
 
-div.menu > ul li a{
+nav > ul li a{
 	display: block;
 	padding: 5px 15px 7px;
 
@@ -40,20 +40,20 @@ div.menu > ul li a{
 	text-decoration: none;
 }
 
-div.menu > ul li a:hover{
+nav > ul li a:hover{
 	color:#fff;
 }
 
-div.menu > ul > li:hover > a{
+nav > ul > li:hover > a{
 	background-color: rgba(0, 0, 0, .3);
 }
 
 
-div.menu > ul > li {
+nav > ul > li {
 	margin: 0 5px;
 }
 
-div.menu > ul > li > ul {
+nav > ul > li > ul {
 	display: none;
 	width: 10em;
 	margin: 0;
@@ -61,20 +61,20 @@ div.menu > ul > li > ul {
 	background-color: rgba(0, 0, 0, .3);
 }
 
-div.menu ul > li:hover > ul {
+nav ul > li:hover > ul {
 	display: block;
 	position: absolute;
 	z-index: 2;
 }
-div.menu ul > li > ul li{
+nav ul > li > ul li{
 	margin: 0;
 	float: none;
 }
 
-div.menu > ul > li > ul > li > a {
+nav > ul > li > ul > li > a {
 	border-bottom: 1px dotted rgba(100,100,100,.5);
 }
 
-div.menu > ul > li > ul > li > a:hover{
+nav > ul > li > ul > li > a:hover{
 	background-color: rgba(0, 0, 0, .5);
 }
