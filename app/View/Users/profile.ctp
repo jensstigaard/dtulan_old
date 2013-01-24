@@ -115,7 +115,7 @@
 						  'action' => 'view_lans',
 						  $user['User']['id']
 					 ));
-					 ?>"><i class="icon-cloud"></i></a></li>
+					 ?>"><i class="icon-sitemap"></i></a></li>
 
 		</ul>
 

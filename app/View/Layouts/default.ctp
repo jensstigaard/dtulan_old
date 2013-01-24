@@ -38,7 +38,6 @@
 		if ($is_admin) {
 			echo $this->Html->css(array(
 				 'layout.admin',
-				 'layout.admin.images'
 			));
 		}
 
@@ -96,6 +95,9 @@
 			 'jquery/jquery-ui',
 			 'jquery/jquery.qtip.min',
 			 'jquery/jquery.fancybox.pack',
+			 'jquery/jquery.fittext',
+//			 'jquery/jquery.masonry.min',
+//			 'jquery/jquery.isotope.min',
 			 'bootstrap/bootstrap.min',
 			 'general',
 				  ), true);

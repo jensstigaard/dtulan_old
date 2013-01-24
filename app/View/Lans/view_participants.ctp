@@ -1,5 +1,4 @@
 <?php
-echo $this->Html->css('layout.lan.participants.css');
 echo $this->Html->script(array('ajax/all_links'));
 ?>
 

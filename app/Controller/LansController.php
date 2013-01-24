@@ -47,7 +47,7 @@ class LansController extends AppController {
 						'sign_up_open',
 						'max_participants'
 				  )));
-		
+
 		$this->set('tabs', $this->Lan->getTabs());
 
 		if ($this->Lan->isYouAdmin()) {
@@ -117,7 +117,12 @@ class LansController extends AppController {
 				  'conditions' => array(
 						'Tournament.lan_id' => $this->Lan->id,
 				  ),
-				  'recursive' => 2,
+				  'recursive' => -1,
+				  'fields' => array(
+						'Tournament.id',
+						'Tournament.time_start',
+						'Tournament.game_id',
+				  ),
 				  'limit' => 10,
 				  'order' => array(
 						array('Tournament.time_start' => 'asc')
@@ -125,7 +130,8 @@ class LansController extends AppController {
 			 ),
 		);
 
-		$this->set('tournaments', $this->paginate('Tournament'));
+		$this->set('tournaments', $this->Lan->getDataForTournaments($this->paginate('Tournament')));
+
 
 		$this->set('lan_id', $this->Lan->id);
 	}

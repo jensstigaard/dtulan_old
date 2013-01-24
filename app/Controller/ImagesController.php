@@ -43,6 +43,22 @@ class ImagesController extends AppController {
 			}
 		}
 	}
+	
+	public function delete($id){
+		if(!$this->request->is('post')){
+			throw new BadRequestException('Illigal request');
+		}
+		
+		$this->Image->id = $id;
+		
+		if(!$this->Image->exists()){
+			throw new NotFoundException('Image not found!');
+		}
+		
+		if($this->delete()){
+			
+		}
+	}
 
 }
 

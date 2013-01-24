@@ -663,3 +663,39 @@ input[type=submit]:active,
 	margin-bottom: 0 !important;
 	padding-bottom: 0 !important;
 }
+
+
+
+.list-floated > .item{
+	float: left;
+	padding: 8px;
+	margin: 0 5px 5px 0;
+	background: rgba(0,0,0, .5);
+	text-align: center;
+}
+
+.list-floated > .item > img{
+	display: block;
+	margin: 0 auto;
+}
+
+.list-floated:after{
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+#list-tournaments > .item{
+	padding:0;
+}
+#list-tournaments > .item > span{
+	display:block;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+#list-tournaments >.item > span > strong{
+	
+}

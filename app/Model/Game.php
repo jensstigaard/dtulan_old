@@ -12,8 +12,26 @@
  */
 class Game extends AppModel {
 
-	//put your code here
-	public $hasMany = array('Tournament');
+	public $belongsTo = array(
+		 'Image'
+	);
+	public $hasMany = array(
+		 'Tournament'
+	);
+	public $validate = array(
+		 'title' => array(
+			  'isUnique' => array(
+					'rule' => 'isUnique',
+					'message' => 'A game with this title does already exists'
+			  )
+		 )
+	);
+
+	public function getListIndex() {
+		return $this->find('all', array(
+						'recursive' => 0
+				  ));
+	}
 
 }
 

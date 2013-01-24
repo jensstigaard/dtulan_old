@@ -39,6 +39,21 @@
 			<li>
 				<?php
 				echo $this->Html->link(
+						  '<i class="icon-screenshot"></i> Games', array(
+					 'controller' => 'games',
+					 'action' => 'index'
+						  ), array(
+					 'escape' => false
+						  )
+				);
+				?>
+			</li>
+
+
+
+			<li>
+				<?php
+				echo $this->Html->link(
 						  '<i class="icon-picture"></i> Image Database', array(
 					 'controller' => 'images',
 					 'action' => 'index'
@@ -52,7 +67,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-cloud"></i> LANS', array(
+						  '<i class="icon-sitemap"></i> LANS', array(
 					 'controller' => 'lans',
 					 'action' => 'index'
 						  ), array(

@@ -718,6 +718,43 @@ class Lan extends AppModel {
 		return false;
 	}
 
+	public function getDataForTournaments($tournaments) {
+
+		foreach ($tournaments as $key => $value) {
+			$tournaments[$key]['Tournament']['time_start'] = $this->dateToNice($value['Tournament']['time_start']);
+			$game = $this->Tournament->Game->find('first', array(
+				 'conditions' => array(
+					  'Game.id' => $value['Tournament']['game_id']
+				 ),
+				 'fields' => array(
+					  'image_id'
+				 )
+					  ));
+
+			$tournaments[$key]['Game'] = $game['Game'];
+
+			$image = $this->Tournament->Game->Image->find('first', array(
+				 'conditions' => array(
+					  'Image.id' => $game['Game']['image_id']
+				 ),
+				 'fields' => array(
+					  'id',
+					  'ext'
+				 )
+					  ));
+
+			$fileName = $this->Tournament->Game->Image->getFileName($image);
+			list($imgWidth, $imgHeight) = getimagesize(IMAGES . 'uploads' . DS . 'thumb_60h_' . $fileName);
+			$filePath = IMAGES_URL . 'uploads/thumb_60h_' . $fileName;
+			$tournaments[$key]['Game']['Image'] = array(
+				 'filePath' => $filePath,
+				 'imageWidth' => $imgWidth,
+				 'imageHeight' => $imgHeight
+			);
+		}
+		return $tournaments;
+	}
+
 	/*
 	 * 
 	 * Before save

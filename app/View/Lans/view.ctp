@@ -1,3 +1,6 @@
+<?php
+echo $this->Html->css('layout.lan.participants.css', null, array('inline' => false));
+?>
 <div>
 	<?php if ($is_admin): ?>
 		<div style="float:right">

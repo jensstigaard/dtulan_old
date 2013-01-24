@@ -19,7 +19,7 @@
 	text-align: center;
 	background-repeat: no-repeat;
 	background-position: top left;
-	margin: 5px;
+	margin: 0 5px 5px 0;
 }
 
 #participant-list > a.person > small{
@@ -27,13 +27,15 @@
 	bottom: 0;
 	left: 0;
 	right:0;
-	text-align: center;
+
 	display:block;
+	width: 100%;
 	background: rgba(255, 255, 255, .5);
 	padding:1px 5px;
 
 	color: #222;
 	font-weight: bold;
+	text-align: center;
 }
 
 #participant-list > a.person:hover > small{
