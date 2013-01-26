@@ -42,6 +42,8 @@ class TournamentsController extends AppController {
 		$lan = $this->Tournament->Lan->read(array('slug', 'title'));
 
 		$this->set(compact('tournament', 'lan'));
+		
+		$this->set('winner_teams', $this->Tournament->getWinnerTeams());
 	}
 
 	public function view_description($lan_slug, $tournament_slug) {
@@ -82,6 +84,11 @@ class TournamentsController extends AppController {
 							 'Team.tournament_id' => $this->Tournament->id
 						),
 						'recursive' => 1,
+						'order' => array(
+							 'Team.place = 1' => 'desc',
+							 'Team.place = 2' => 'desc',
+							 'Team.place = 3' => 'desc',
+						)
 				  )));
 	}
 
@@ -110,25 +117,32 @@ class TournamentsController extends AppController {
 		$this->set('games', $this->Tournament->Game->find('list'));
 	}
 
-	public function edit($tournament_id) {
-		$this->Tournament->id = $tournament_id;
+	public function edit($id) {
+		$this->Tournament->id = $id;
 
 		if (!$this->Tournament->exists()) {
-			throw new NotFoundException('Tournament not found');
+			throw new NotFoundException('Tournament not found with id: ' . $id);
 		}
-
-		$this->set(compact('tournament_id'));
 
 		if ($this->request->is('get')) {
 			$this->request->data = $this->Tournament->read();
 		} else {
 			if ($this->Tournament->save($this->request->data)) {
-				$this->Session->setFlash('Tournament has been updated.', 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('action' => 'view', $tournament_id));
+				$this->Session->setFlash('Tournament has been updated', 'default', array('class' => 'message success'), 'good');
+
+				$this->Tournament->read(array('Tournament.slug', 'Lan.slug'));
+
+				$this->redirect(array('action' => 'view', $this->Tournament->data['Lan']['slug'], $this->Tournament->data['Tournament']['slug']));
 			} else {
-				$this->Session->setFlash('Unable to update tournament.', 'default', array(), 'bad');
+				$this->Session->setFlash('Unable to update tournament', 'default', array(), 'bad');
 			}
 		}
+
+		$this->Tournament->read(array('slug', 'lan_id'));
+		$this->Tournament->Lan->read('slug', $this->Tournament->data['Tournament']['lan_id']);
+
+		$this->set('tournament_slug', $this->Tournament->data['Tournament']['slug']);
+		$this->set('lan_slug', $this->Tournament->Lan->data['Lan']['slug']);
 	}
 
 }

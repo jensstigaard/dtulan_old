@@ -12,22 +12,27 @@
  */
 class Team extends AppModel {
 
-	public $hasMany = array(
-		'TeamUser' => array(
-			'dependent' => true
-		),
-		'TeamInvite' => array(
-			'dependent' => true
-		)
+	public $hasOne = array(
+		 'TournamentWinner'
 	);
-	public $belongsTo = array('Tournament');
+	public $belongsTo = array(
+		 'Tournament'
+	);
+	public $hasMany = array(
+		 'TeamUser' => array(
+			  'dependent' => true
+		 ),
+		 'TeamInvite' => array(
+			  'dependent' => true
+		 ),
+	);
 	public $validate = array(
-		'name' => array(
-			'required' => array(
-				'rule' => array('notEmpty'),
-				'message' => 'invalid Team name'
-			)
-		)
+		 'name' => array(
+			  'required' => array(
+					'rule' => array('notEmpty'),
+					'message' => 'invalid Team name'
+			  )
+		 )
 	);
 
 	public function isLeader($team_id, $user_id) {
@@ -44,13 +49,13 @@ class Team extends AppModel {
 		}
 
 		return $this->TeamUser->find('count', array(
-					'conditions' => array(
-						'team_id' => $team_id,
-						'user_id' => $user_id,
-						'is_leader' => true
-					)
+						'conditions' => array(
+							 'team_id' => $team_id,
+							 'user_id' => $user_id,
+							 'is_leader' => true
 						)
-				) == 1;
+							 )
+				  ) == 1;
 	}
 
 	public function getInviteableUsers($team_id = null) {
@@ -78,12 +83,12 @@ class Team extends AppModel {
 		if (count($user_ids) < $team['Tournament']['team_size']) {
 
 			$users = $this->Tournament->Lan->LanSignup->find('all', array('conditions' => array(
-					'NOT' => array(
-						'LanSignup.user_id' => $user_ids,
-					),
-					'LanSignup.lan_id' => $team['Tournament']['Lan']['id']
-				)
-					)
+					  'NOT' => array(
+							'LanSignup.user_id' => $user_ids,
+					  ),
+					  'LanSignup.lan_id' => $team['Tournament']['Lan']['id']
+				 )
+					  )
 			);
 
 			foreach ($users as $user) {

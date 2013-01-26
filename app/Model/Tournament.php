@@ -18,7 +18,7 @@ class Tournament extends AppModel {
 	);
 	public $hasMany = array(
 		 'Team',
-//		 'Tournament'
+		 'TournamentWinner'
 	);
 	public $validate = array(
 		 'title' => array(
@@ -26,6 +26,16 @@ class Tournament extends AppModel {
 					'rule' => array('notEmpty'),
 					'message' => 'The title cannot be empty'
 			  )
+		 ),
+		 'slug' => array(
+			  'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Slug cannot be empty'
+			  ),
+//			  'validate slug' => array(
+//					'rule' => '',
+//					'message' => 'Invalid slug!'
+//			  )
 		 ),
 		 'team_size' => array(
 			  'is between' => array(
@@ -96,6 +106,27 @@ class Tournament extends AppModel {
 		}
 
 		return $team_ids_formatted;
+	}
+
+	public function getWinnerTeams() {
+
+		return $this->Team->find('all', array(
+						'conditions' => array(
+							 'Team.tournament_id' => $this->id,
+							 'Team.place >' => 0
+						),
+						'fields' => array(
+							 'name',
+							 'place',
+						),
+						'recursive' => 2,
+						'order' => array(
+							 'Team.place = 1' => 'desc',
+							 'Team.place = 2' => 'desc',
+							 'Team.place = 3' => 'desc',
+						)
+				  ));
+		;
 	}
 
 }

@@ -44,9 +44,17 @@ table.pizza_order_list tbody tr td.order_status_red, table.order_list tbody tr t
 	background-color: rgba(255, 50, 50, 0.4);
 }
 
+#user_lookup .input-prepend{
+	margin: 0 5px;
+}
+
+#user_lookup .input-prepend span{
+	background:#000;
+	opacity: 0.6;
+}
+
 #user_lookup_input{
-	display: block;
-	margin:0 auto;
+	width: 210px;
 }
 
 

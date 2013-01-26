@@ -40,6 +40,8 @@ class LansController extends AppController {
 		$this->set(compact('title', 'title_for_layout'));
 
 		$this->set('lan', $this->Lan->read(array(
+						'id',
+						'slug',
 						'price',
 						'time_start',
 						'time_end',
@@ -119,13 +121,15 @@ class LansController extends AppController {
 				  ),
 				  'recursive' => -1,
 				  'fields' => array(
-						'Tournament.id',
-						'Tournament.time_start',
-						'Tournament.game_id',
+						'id',
+						'slug',
+						'time_start',
+						'game_id',
+						'team_size'
 				  ),
 				  'limit' => 10,
 				  'order' => array(
-						array('Tournament.time_start' => 'asc')
+						array('time_start' => 'asc')
 				  )
 			 ),
 		);
@@ -133,7 +137,10 @@ class LansController extends AppController {
 		$this->set('tournaments', $this->Lan->getDataForTournaments($this->paginate('Tournament')));
 
 
-		$this->set('lan_id', $this->Lan->id);
+		$this->set('lan', $this->Lan->read(array(
+						'id',
+						'slug'
+				  )));
 	}
 
 	/* -- Pizza menus tab -- */
