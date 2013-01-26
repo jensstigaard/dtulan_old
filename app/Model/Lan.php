@@ -4,8 +4,8 @@ App::uses('CakeEvent', 'Event');
 
 class Lan extends AppModel {
 
-	//
-	// Has Many
+//
+// Has Many
 	public $hasMany = array(
 		 'Crew' => array(
 			  'dependent' => true
@@ -26,8 +26,8 @@ class Lan extends AppModel {
 			  'dependent' => true
 		 )
 	);
-	//
-	//Validation
+//
+//Validation
 	public $validate = array(
 		 'title' => array(
 			  'required' => array(
@@ -173,6 +173,15 @@ class Lan extends AppModel {
 		);
 	}
 
+	public function countCrew() {
+		return $this->Crew->find('count', array(
+						'conditions' => array(
+							 'Crew.lan_id' => $this->id
+						)
+							 )
+		);
+	}
+
 	/*
 	 * 
 	 * Generate Lan Signup Codes
@@ -210,6 +219,7 @@ class Lan extends AppModel {
 
 	public function getGeneralStatistics() {
 		$this->read(array('max_participants'));
+		$count_crew = $this->countCrew();
 		$count_tournaments = $this->countTournaments();
 		$count_signups = $this->countSignups();
 		$count_signups_guests = $this->countGuests();
@@ -222,6 +232,7 @@ class Lan extends AppModel {
 
 		return array(
 			 'count_tournaments' => $count_tournaments,
+			 'count_crew' => $count_crew,
 			 'count_signups' => $count_signups,
 			 'count_signups_students' => $count_signups_students,
 			 'count_signups_guests' => $count_signups_guests,
@@ -720,15 +731,17 @@ class Lan extends AppModel {
 
 	public function getDataForTournaments($tournaments) {
 
+		App::uses('CakeTime', 'Utility');
+
 		foreach ($tournaments as $key => $value) {
-			$tournaments[$key]['Tournament']['time_start'] = $this->dateToNice($value['Tournament']['time_start']);
+			$tournaments[$key]['Tournament']['time_start'] = str_replace('on ', '', CakeTime::timeAgoInWords($value['Tournament']['time_start']));
 			$game = $this->Tournament->Game->find('first', array(
 				 'conditions' => array(
 					  'Game.id' => $value['Tournament']['game_id']
 				 ),
 				 'fields' => array(
 					  'image_id'
-				 )
+				 ),
 					  ));
 
 			$tournaments[$key]['Game'] = $game['Game'];
@@ -743,9 +756,10 @@ class Lan extends AppModel {
 				 )
 					  ));
 
+			$thumbPrefix = 'thumb_210w_';
 			$fileName = $this->Tournament->Game->Image->getFileName($image);
-			list($imgWidth, $imgHeight) = getimagesize(IMAGES . 'uploads' . DS . 'thumb_60h_' . $fileName);
-			$filePath = IMAGES_URL . 'uploads/thumb_60h_' . $fileName;
+			list($imgWidth, $imgHeight) = getimagesize(IMAGES . 'uploads' . DS . $thumbPrefix . $fileName);
+			$filePath = IMAGES_URL . 'uploads/' . $thumbPrefix . $fileName;
 			$tournaments[$key]['Game']['Image'] = array(
 				 'filePath' => $filePath,
 				 'imageWidth' => $imgWidth,

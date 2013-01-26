@@ -1,5 +1,10 @@
 <?php
-echo $this->Html->css('layout.lan.participants', null, array('inline' => false));
+echo $this->Html->css(array(
+	 'lan',
+	 'lan.participants'
+		  ), null, array(
+	 'inline' => false
+));
 ?>
 <div>
 	<?php if ($is_admin): ?>
@@ -11,32 +16,37 @@ echo $this->Html->css('layout.lan.participants', null, array('inline' => false))
 
 	<div id="lan_overview">
 		<div>
-			<div class="lan_overview_item" title="Date">
+			<div class="lan_overview_item" rel="tooltip" title="Date">
 				<i class="icon-calendar"></i>
 				<span><?php echo $this->Time->format('d/m/y H:i', $lan['Lan']['time_start']) . ' - ' . $this->Time->format('d/m/y H:i', $lan['Lan']['time_end']); ?></span>
 			</div>
-			<div class="lan_overview_item" title="Price">
+			<div class="lan_overview_item" rel="tooltip" title="Price">
 				<i class="icon-money"></i>
 				<span><?php echo $lan['Lan']['price']; ?> DKK</span>
 
 			</div>
-			<div class="lan_overview_item" title="Participants">
+			<div class="lan_overview_item" rel="tooltip" title="Participants">
 				<i class="icon-group"></i>
 				<span><?php echo $data['count_signups']; ?> (<?php echo $lan['Lan']['max_participants']; ?>)</span>
 			</div>
-			<div class="lan_overview_item" title="Fill rate">
+			<div class="lan_overview_item" rel="tooltip" title="Fill rate">
 				<i class="icon-dashboard"></i>
 				<span><?php echo $data['fill_rate']; ?> %</span>
 			</div>
 		</div>
 
 		<div>
-			<div class="lan_overview_item" title="Tournaments">
+			<div class="lan_overview_item" rel="tooltip" title="Crew-members">
+				<i class="icon-user-md"></i>
+				<span><?php echo $data['count_crew']; ?></span>
+			</div>
+
+			<div class="lan_overview_item" rel="tooltip" title="Tournaments">
 				<i class="icon-trophy"></i>
 				<span><?php echo $data['count_tournaments']; ?></span>
 			</div>
 
-			<div class="lan_overview_item" title="Sign up open">
+			<div class="lan_overview_item" rel="tooltip" title="Sign up open">
 				<?php if ($lan['Lan']['sign_up_open']): ?>
 					<i class="icon-plus-sign"></i>
 					<span>Signup open</span>
@@ -48,7 +58,7 @@ echo $this->Html->css('layout.lan.participants', null, array('inline' => false))
 
 			<?php if ($is_admin): ?>
 
-				<div class="lan_overview_item" title="Published">
+				<div class="lan_overview_item" rel="tooltip" title="Published">
 					<?php if ($lan['Lan']['published']): ?>
 						<i class="icon-ok-sign"></i>
 						<span>Published</span>
@@ -67,15 +77,21 @@ echo $this->Html->css('layout.lan.participants', null, array('inline' => false))
 
 </div>
 
-<div>
-	<div class="tabs">
-		<ul>
-			<?php foreach ($tabs_admin as $tab): ?>
-				<li><a href="<?php echo $this->Html->url($tab['url']); ?>" title="<?php echo $tab['title']; ?>"><i class="<?php echo $tab['icon']; ?>"></i></a></li>
-			<?php endforeach; ?>
-		</ul>
+<?php if ($is_admin): ?>
+	<div>
+		<div class="tabs">
+			<ul>
+				<?php foreach ($tabs_admin as $tab): ?>
+					<li><a href="<?php echo $this->Html->url($tab['url']); ?>" title="<?php echo $tab['title']; ?>"><i class="<?php echo $tab['icon']; ?>"></i></a></li>
+				<?php endforeach; ?>
+			</ul>
+
+			<div class="loading_indicator">
+				<i class="icon-spinner icon-spin icon-2x"></i>
+			</div>
+		</div>
 	</div>
-</div>
+<?php endif; ?>
 
 
 <div>
@@ -86,7 +102,7 @@ echo $this->Html->css('layout.lan.participants', null, array('inline' => false))
 			<?php endforeach; ?>
 		</ul>
 
-		<div id="loading_indicator">
+		<div class="loading_indicator">
 			<i class="icon-spinner icon-spin icon-2x"></i>
 		</div>
 	</div>

@@ -1,14 +1,14 @@
-<?php echo $this->Html->css('layout.lan.participants.css'); ?> 
+<?php echo $this->Html->script('general'); ?>
 <div>
 	<?php if ($is_admin): ?>
 		<div style="text-align: right;margin-bottom:10px;">
 			<?php
 			echo $this->Html->link(
-					'Add Crewmember', array(
-				'controller' => 'crew',
-				'action' => 'add',
-				$lan_slug
-					)
+					  'Add Crewmember', array(
+				 'controller' => 'crew',
+				 'action' => 'add',
+				 $lan_slug
+					  )
 			);
 			?>
 		</div>
@@ -16,7 +16,7 @@
 	<?php if (!count($crew)): ?>
 		<p>No crew yet :-)</p>
 	<?php else: ?>
-		<div id="participant-list">
+		<div class="floated-list" id="participant-list">
 			<?php foreach ($crew as $user): ?>
 				<?php
 				$title = '';
@@ -31,14 +31,14 @@
 //					}
 
 				echo $this->Html->link(
-						$title, array(
-					'controller' => 'users',
-					'action' => 'profile',
-					$user['User']['id']), array(
-					'style' => 'background-image: url(http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=110&amp;r=r);',
-					'escape' => false,
-					'class' => 'person'
-						)
+						  $title, array(
+					 'controller' => 'users',
+					 'action' => 'profile',
+					 $user['User']['id']), array(
+					 'style' => 'background-image: url(http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=120&amp;r=r);',
+					 'escape' => false,
+					 'class' => 'item'
+						  )
 				);
 				?>
 			<?php endforeach; ?>

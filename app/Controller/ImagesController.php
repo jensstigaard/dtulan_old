@@ -43,21 +43,25 @@ class ImagesController extends AppController {
 			}
 		}
 	}
-	
-	public function delete($id){
-		if(!$this->request->is('post')){
+
+	public function delete($id) {
+		if (!$this->request->is('post')) {
 			throw new BadRequestException('Illigal request');
 		}
-		
+
 		$this->Image->id = $id;
-		
-		if(!$this->Image->exists()){
+
+		if (!$this->Image->exists()) {
 			throw new NotFoundException('Image not found!');
 		}
-		
-		if($this->delete()){
-			
+
+		if ($this->Image->delete()) {
+			$this->Session->setFlash('Your image has been deleted', 'default', array('class' => 'message success'), 'good');
+		} else {
+			$this->Session->setFlash('Unable to delete image', 'default', array(), 'bad');
 		}
+
+		$this->redirect($this->referer());
 	}
 
 }

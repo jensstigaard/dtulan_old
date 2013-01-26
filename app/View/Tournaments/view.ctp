@@ -1,5 +1,3 @@
-<?php echo $this->Html->script('tournament/view', FALSE); ?>
-
 <div>
 	<?php if ($is_admin): ?>
 		<div style="float:right">
@@ -11,9 +9,9 @@
 	<p>
 		In LAN: <?php
 	echo $this->Html->link($lan['Lan']['title'], array(
-		'controller' => 'lans',
-		'action' => 'view', $lan['Lan']['slug']
-			)
+		 'controller' => 'lans',
+		 'action' => 'view', $lan['Lan']['slug']
+			  )
 	);
 	?>
 	</p>
@@ -39,32 +37,36 @@
 		<ul>
 			<li><a href="<?php
 					echo $this->Html->url(array(
-						'action' => 'view_description',
-						$tournament['Tournament']['id']
+						 'action' => 'view_description',
+						 $lan['Lan']['slug'],
+						 $tournament['Tournament']['slug']
 					));
-					?>"><?php echo $this->Html->image('24x24_PNG/001_50.png'); ?></a></li>
+					?>"><i class="icon-info-sign"></i></a></li>
 			<li><a href="<?php
-				   echo $this->Html->url(array(
-					   'action' => 'view_rules',
-					   $tournament['Tournament']['id']
-				   ));
-					?>"><?php echo $this->Html->image('24x24_PNG/001_34.png'); ?></a></li>
+				echo $this->Html->url(array(
+					 'action' => 'view_rules',
+					 $lan['Lan']['slug'],
+					 $tournament['Tournament']['slug']
+				));
+					?>"><i class="icon-book"></i></a></li>
 			<li><a href="<?php
-				   echo $this->Html->url(array(
-					   'action' => 'view_teams',
-					   $tournament['Tournament']['id']
-				   ));
-					?>"><?php echo $this->Html->image('24x24_PNG/001_57.png'); ?></a></li>
+				echo $this->Html->url(array(
+					 'action' => 'view_teams',
+					 $lan['Lan']['slug'],
+					 $tournament['Tournament']['slug']
+				));
+					?>"><i class="icon-group"></i></a></li>
 			<li><a href="<?php
-				   echo $this->Html->url(array(
-					   'action' => 'view_bracket',
-					   $tournament['Tournament']['id']
-				   ));
-					?>"><?php echo $this->Html->image('24x24_PNG/001_44.png'); ?></a></li>
+				echo $this->Html->url(array(
+					 'action' => 'view_bracket',
+					 $lan['Lan']['slug'],
+					 $tournament['Tournament']['slug']
+				));
+					?>"><i class="icon-sitemap"></i></a></li>
 		</ul>
 
-		<div style="text-align:center;">
-			<?php echo $this->Html->image('ajax-loader.gif', array('class' => 'hidden', 'id' => 'loading_indicator', 'alt' => 'loading ...')); ?>
+		<div class="loading_indicator">
+			<i class="icon-spinner icon-spin icon-2x"></i>
 		</div>
 	</div>
 </div>

@@ -85,21 +85,21 @@
 				 'action' => 'view_pizzaorders',
 				 $user['User']['id']
 			));
-			?>"><i class="icon-food"></i></a></li>
+				?>"><i class="icon-food"></i></a></li>
 
 				<li><a href="<?php
 					 echo $this->Html->url(array(
 						  'action' => 'view_foodorders',
 						  $user['User']['id']
 					 ));
-					 ?>"><i class="icon-coffee"></i></a></li>
+				?>"><i class="icon-coffee"></i></a></li>
 
 				<li><a href="<?php
 					 echo $this->Html->url(array(
 						  'action' => 'view_payments',
 						  $user['User']['id']
 					 ));
-					 ?>"><i class="icon-money"></i></a></li>
+				?>"><i class="icon-money"></i></a></li>
 
 			<?php endif; ?>
 
@@ -115,11 +115,11 @@
 						  'action' => 'view_lans',
 						  $user['User']['id']
 					 ));
-					 ?>"><i class="icon-sitemap"></i></a></li>
+			?>"><i class="icon-sitemap"></i></a></li>
 
 		</ul>
 
-		<div id="loading_indicator">
+		<div class="loading_indicator">
 			<i class="icon-spinner icon-spin icon-2x"></i>
 		</div>
 	</div>

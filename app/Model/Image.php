@@ -21,6 +21,7 @@ class Image extends AppModel {
 					'thumbnailSizes' => array(
 						 'thumb_60h' => '60h',
 						 'thumb_100h' => '100h',
+						 'thumb_210w' => '210w',
 					)
 			  )
 		 )
@@ -92,7 +93,7 @@ class Image extends AppModel {
 					'message' => 'File does not have a jpg, png, or gif extension'
 			  ),
 			  'rule 14' => array(
-					'rule' => array('isAboveMinHeight', 120),
+					'rule' => array('isAboveMinHeight', 50),
 					'message' => 'File is below the minimum height'
 			  ),
 			  'rule 15' => array(

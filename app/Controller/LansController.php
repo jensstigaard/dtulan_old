@@ -49,10 +49,10 @@ class LansController extends AppController {
 				  )));
 
 		$this->set('tabs', $this->Lan->getTabs());
+		$this->set('data', $this->Lan->getGeneralStatistics());
 
 		if ($this->Lan->isYouAdmin()) {
 			$this->set('tabs_admin', $this->Lan->getTabsAdmin());
-			$this->set('data', $this->Lan->getGeneralStatistics());
 		}
 	}
 
