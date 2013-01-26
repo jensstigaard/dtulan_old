@@ -11,11 +11,11 @@
 			<?php foreach ($teams as $team): ?>
 				<tr>
 					<td><?php
-		if ($team['Team']['place'] == 1) {
+		if ($team['TournamentWinner']['place'] == 1) {
 			echo $this->Html->image('32x32_PNG/trophy_gold.png');
-		} elseif ($team['Team']['place'] == 2) {
+		} elseif ($team['TournamentWinner']['place'] == 2) {
 			echo $this->Html->image('32x32_PNG/trophy_gold.png');
-		} elseif ($team['Team']['place'] == 3) {
+		} elseif ($team['TournamentWinner']['place'] == 3) {
 			echo $this->Html->image('32x32_PNG/trophy_gold.png');
 		}
 				?>

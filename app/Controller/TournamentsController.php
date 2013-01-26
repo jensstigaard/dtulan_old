@@ -85,9 +85,9 @@ class TournamentsController extends AppController {
 						),
 						'recursive' => 1,
 						'order' => array(
-							 'Team.place = 1' => 'desc',
-							 'Team.place = 2' => 'desc',
-							 'Team.place = 3' => 'desc',
+							 'TournamentWinner.place = 1' => 'desc',
+							 'TournamentWinner.place = 2' => 'desc',
+							 'TournamentWinner.place = 3' => 'desc',
 						)
 				  )));
 	}
