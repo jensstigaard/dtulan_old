@@ -18,7 +18,6 @@ class Tournament extends AppModel {
 	);
 	public $hasMany = array(
 		 'Team',
-		 'TournamentWinner'
 	);
 	public $validate = array(
 		 'title' => array(
@@ -113,17 +112,22 @@ class Tournament extends AppModel {
 		return $this->Team->find('all', array(
 						'conditions' => array(
 							 'Team.tournament_id' => $this->id,
-							 'Team.place >' => 0
+							 'TournamentWinner.place >' => 0
 						),
 						'fields' => array(
-							 'name',
-							 'place',
+							 'Team.name',
+							 'TournamentWinner.place'
 						),
-						'recursive' => 2,
-						'order' => array(
-							 'Team.place = 1' => 'desc',
-							 'Team.place = 2' => 'desc',
-							 'Team.place = 3' => 'desc',
+						'contain' => array(
+							 'TournamentWinner' => array(
+								  'order' => array(
+										'place ASC',
+								  ),
+							 ),
+							 'TeamUser' => array(
+								  'User.id',
+								  'User.name'
+							 )
 						)
 				  ));
 		;

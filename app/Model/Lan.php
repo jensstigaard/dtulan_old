@@ -692,7 +692,7 @@ class Lan extends AppModel {
 						'action' => 'view_economics',
 						$this->data['Lan']['slug']
 				  ),
-				  'icon' => 'icon-money',
+				  'icon' => 'icon-bar-chart',
 			 ),
 		);
 	}

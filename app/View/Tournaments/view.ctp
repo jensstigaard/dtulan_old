@@ -39,33 +39,33 @@
 			<?php foreach ($winner_teams as $team): ?>
 				<div class="item" style="text-align: left;padding-right:10px;">
 					<h4><?php
-		if ($team['Team']['place'] == 1) {
+		if ($team['TournamentWinner']['place'] == 1) {
 			echo $this->Html->image('48x48_PNG/trophy_gold.png');
-		} elseif ($team['Team']['place'] == 2) {
+		} elseif ($team['TournamentWinner']['place'] == 2) {
 			echo $this->Html->image('48x48_PNG/trophy_silver.png');
-		} elseif ($team['Team']['place'] == 3) {
+		} elseif ($team['TournamentWinner']['place'] == 3) {
 			echo $this->Html->image('48x48_PNG/trophy_bronze.png');
 		}
 				?> 
 						<?php echo $team['Team']['name']; ?></h4>
 					<ul style="margin-left:50px;">
-							<?php foreach ($team['TeamUser'] as $user): ?>
+						<?php foreach ($team['TeamUser'] as $user): ?>
 							<li><?php
-								echo $this->Html->link($user['User']['name'], array(
-									 'controller' => 'users',
-									 'action' => 'profile',
-									 $user['User']['id']
-								));
-								?></li>
-		<?php endforeach; ?>
+				echo $this->Html->link($user['User']['name'], array(
+					 'controller' => 'users',
+					 'action' => 'profile',
+					 $user['User']['id']
+				));
+							?></li>
+						<?php endforeach; ?>
 					</ul>
 				</div>
-	<?php endforeach; ?>
+			<?php endforeach; ?>
 		</div>
 	</div>
-
-	<?php // pr($winner_teams);  ?>
 <?php endif; ?>
+
+<?php // pr($winner_teams); ?>
 
 
 <div>
@@ -79,25 +79,25 @@ echo $this->Html->url(array(
 ));
 ?>"><i class="icon-info-sign"></i></a></li>
 			<li><a href="<?php
-echo $this->Html->url(array(
-	 'action' => 'view_rules',
-	 $lan['Lan']['slug'],
-	 $tournament['Tournament']['slug']
-));
+					 echo $this->Html->url(array(
+						  'action' => 'view_rules',
+						  $lan['Lan']['slug'],
+						  $tournament['Tournament']['slug']
+					 ));
 ?>"><i class="icon-book"></i></a></li>
 			<li><a href="<?php
-echo $this->Html->url(array(
-	 'action' => 'view_teams',
-	 $lan['Lan']['slug'],
-	 $tournament['Tournament']['slug']
-));
+					 echo $this->Html->url(array(
+						  'action' => 'view_teams',
+						  $lan['Lan']['slug'],
+						  $tournament['Tournament']['slug']
+					 ));
 ?>"><i class="icon-group"></i></a></li>
 			<li><a href="<?php
-echo $this->Html->url(array(
-	 'action' => 'view_bracket',
-	 $lan['Lan']['slug'],
-	 $tournament['Tournament']['slug']
-));
+					 echo $this->Html->url(array(
+						  'action' => 'view_bracket',
+						  $lan['Lan']['slug'],
+						  $tournament['Tournament']['slug']
+					 ));
 ?>"><i class="icon-sitemap"></i></a></li>
 		</ul>
 

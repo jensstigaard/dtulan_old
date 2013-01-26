@@ -15,7 +15,11 @@ App::uses('CakeEvent', 'Event');
 class User extends AppModel {
 
 	public $name = 'User';
-	public $hasOne = array('Admin', 'UserPasswordTicket', 'QrCode');
+	public $hasOne = array(
+		 'Admin',
+		 'UserPasswordTicket',
+		 'QrCode'
+	);
 	public $hasMany = array(
 		 'LanSignup',
 		 'LanInvite' => array(
@@ -32,7 +36,9 @@ class User extends AppModel {
 		 'TeamInvite',
 		 'TeamUser',
 	);
-	public $helpers = array('Js');
+	public $helpers = array(
+		 'Js'
+	);
 	public $order = array(
 		 'name' => 'asc'
 	);
@@ -352,26 +358,64 @@ class User extends AppModel {
 							 'User.name',
 							 'User.email'
 						),
-			 'recursive' => -1
+						'recursive' => -1
 				  ));
 	}
-	
-	public function getDataToEditPage(){
-		
+
+	public function getDataToEditPage() {
+
 		return $this->find('first', array(
+						'conditions' => array(
+							 'id' => $this->id
+						),
+						'recursive' => -1,
+						'fields' => array(
+							 'id',
+							 'name',
+							 'phonenumber',
+							 'email_gravatar',
+							 'email_subscription',
+							 'gamertag',
+						)
+				  ));
+	}
+
+	public function getTeams() {
+		$teams = $this->TeamUser->find('all', array(
 			 'conditions' => array(
-				  'id' => $this->id
+				  'TeamUser.user_id' => $this->id
 			 ),
-			 'recursive' => -1,
 			 'fields' => array(
-				  'id',
-				  'name',
-				  'phonenumber',
-				  'email_gravatar',
-				  'email_subscription',
-				  'gamertag',
+				  'team_id',
+				  'is_leader'
+			 ),
+			 'contain' => array(
+				  'Team' => array(
+						'fields' => array(
+							 'id',
+							 'name',
+							 'tournament_id',
+						),
+						'Tournament' => array(
+							 'fields' => array(
+								  'title',
+								  'slug'
+							 ),
+							 'Lan' => array(
+								  'slug'
+							 )
+						)
+				  )
 			 )
-		));
+				  )
+		);
+
+		foreach ($teams as $key => $team) {
+			$this->TeamUser->Team->id = $team['Team']['id'];
+			$teams[$key]['Team']['count'] = $this->TeamUser->Team->countMembers();
+		}
+
+		return $teams;
 	}
 
 }

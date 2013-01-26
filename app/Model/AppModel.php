@@ -32,6 +32,10 @@ App::uses('Model', 'Model');
  */
 class AppModel extends Model {
 
+	public $actsAs = array(
+		 'Containable'
+	);
+
 	public function dateToNiceArray(&$array, $model_name = null, $field_name_time = 'time', $with_time = true) {
 		foreach ($array as $index => $content) {
 			if ($model_name == null && isset($content[$field_name_time])) {

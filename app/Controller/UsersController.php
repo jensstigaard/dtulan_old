@@ -101,16 +101,7 @@ class UsersController extends AppController {
 			throw new NotFoundException('User not found with ID #' . $id);
 		}
 
-		// Teams for user
-		$this->User->TeamUser->Team->Tournament->unbindModel(array('belongsTo' => array('Lan')));
-
-		$this->set('teams', $this->User->TeamUser->find('all', array(
-						'conditions' => array(
-							 'TeamUser.user_id' => $id
-						),
-						'recursive' => 2,
-							 )
-				  ));
+		$this->set('teams', $this->User->getTeams());
 	}
 
 	public function view_lans($id) {
@@ -144,10 +135,12 @@ class UsersController extends AppController {
 				  )
 		);
 
+		$is_you = false;
 		if ($id == $this->Auth->user('id')) {
 			$is_you = true;
 		}
 
+		$is_auth = false;
 		if ($is_you || $this->User->isYouAdmin()) {
 			$is_auth = true;
 		}

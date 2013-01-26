@@ -58,6 +58,14 @@ class Team extends AppModel {
 				  ) == 1;
 	}
 
+	public function countMembers() {
+		return $this->TeamUser->find('count', array(
+						'conditions' => array(
+							 'TeamUser.team_id' => $this->id
+						)
+				  ));
+	}
+
 	public function getInviteableUsers($team_id = null) {
 		$this->id = $team_id;
 
