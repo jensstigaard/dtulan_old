@@ -2,7 +2,10 @@
 	<div>
 		<h1>User lookup</h1>
 		<div id="user_lookup">
-			<input type="text" name="string" id="user_lookup_input" />
+			<div class="input-prepend">
+				<span class="add-on"><i class="icon-user"></i></span>
+				<input type="text" class="span2" name="string" id="user_lookup_input" placeholder="Name / id-number / email" />
+			</div>
 			<div class="hidden" id="urlLookup"><?php echo $this->Html->link('#', array('controller' => 'users', 'action' => 'lookup')); ?></div>
 			<div class="hidden" id="urlRedirect"><?php echo $this->Html->link('#', array('controller' => 'users', 'action' => 'profile')); ?></div>
 		</div>
@@ -13,7 +16,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-coffee"></i> Candy/soda menus', array(
+						  '<i class="icon-coffee icon-large"></i> Candy/soda menus', array(
 					 'controller' => 'food_menus',
 					 'action' => 'index'
 						  ), array(
@@ -26,7 +29,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-coffee"></i> Candy/soda orders', array(
+						  '<i class="icon-coffee icon-large"></i> Candy/soda orders', array(
 					 'controller' => 'food_orders',
 					 'action' => 'index'
 						  ), array(
@@ -39,7 +42,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-screenshot"></i> Games', array(
+						  '<i class="icon-screenshot icon-large"></i> Games', array(
 					 'controller' => 'games',
 					 'action' => 'index'
 						  ), array(
@@ -54,7 +57,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-picture"></i> Image Database', array(
+						  '<i class="icon-picture icon-large"></i> Image Database', array(
 					 'controller' => 'images',
 					 'action' => 'index'
 						  ), array(
@@ -67,7 +70,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-sitemap"></i> LANS', array(
+						  '<i class="icon-sitemap icon-large"></i> LANS', array(
 					 'controller' => 'lans',
 					 'action' => 'index'
 						  ), array(
@@ -80,7 +83,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-user"></i> New admin', array(
+						  '<i class="icon-user icon-large"></i> New admin', array(
 					 'controller' => 'admins',
 					 'action' => 'add'
 						  ), array(
@@ -93,7 +96,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-file-alt"></i> Pages', array(
+						  '<i class="icon-file-alt icon-large"></i> Pages', array(
 					 'controller' => 'pages',
 					 'action' => 'index'
 						  ), array(
@@ -106,7 +109,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-money"></i> Payments', array(
+						  '<i class="icon-money icon-large"></i> Payments', array(
 					 'controller' => 'payments',
 					 'action' => 'index'
 						  ), array(
@@ -119,7 +122,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-food"></i> Pizza menus', array(
+						  '<i class="icon-food icon-large"></i> Pizza menus', array(
 					 'controller' => 'pizza_menus',
 					 'action' => 'index'
 						  ), array(
@@ -132,7 +135,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-food"></i> Pizza types', array(
+						  '<i class="icon-food icon-large"></i> Pizza types', array(
 					 'controller' => 'pizza_types',
 					 'action' => 'index'
 						  ), array(
@@ -145,7 +148,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-group"></i> Users', array(
+						  '<i class="icon-group icon-large"></i> Users', array(
 					 'controller' => 'users',
 					 'action' => 'index'
 						  ), array(
@@ -154,11 +157,11 @@
 				);
 				?>
 			</li>
-			
+
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-qrcode"></i> QR-codes', array(
+						  '<i class="icon-qrcode icon-large"></i> QR-codes', array(
 					 'controller' => 'qr_codes',
 					 'action' => 'index'
 						  ), array(

@@ -6,9 +6,13 @@ echo $this->Html->script(array(
 ?>
 
 <div class="ajax_area">
+
 	<?php if (!count($participants)): ?>
-		<p>No participants yet</p>
+
+		<p style="margin:10px;font-size: 14pt;"><i class="icon-exclamation-sign" style="font-size:16pt;"></i> No participants yet</p>
+
 	<?php else: ?>
+
 		<div class="participants-list-sort-links">
 			Sort by: <?php echo $this->Paginator->sort('User.name', 'Name', array('class' => 'load_inline')); ?>
 		</div>
@@ -40,8 +44,6 @@ echo $this->Html->script(array(
 				?>
 			<?php endforeach; ?>
 		</div>
-
-		<div style="clear:both;"></div>
 
 		<div class="participants-list-sort-links">
 			<?php echo $this->Paginator->numbers(array('class' => 'load_inline')); ?>

@@ -1,17 +1,6 @@
 <div>
-	<div style="float:right">
-		<?php
-		echo $this->Html->link($this->Html->image('16x16_PNG/add.png') . ' Add pizza-menu to LAN', array(
-			'controller' => 'lan_pizza_menus',
-			'action' => 'add',
-			$id
-				), array(
-			'escape' => false
-		));
-		?>
-	</div>
 	<?php if (!count($pizza_menus)): ?>
-		<p>No pizza menus connected to this LAN</p>
+		<p style="margin:10px;font-size: 14pt;"><i class="icon-exclamation-sign" style="font-size:16pt;"></i> No pizza menus connected to this LAN</p>
 	<?php else: ?>
 		<?php foreach ($pizza_menus as $pizza_menu): ?>
 			<div>
@@ -25,11 +14,11 @@
 				<div style="float:right">
 					<?php
 					echo $this->Html->link($this->Html->image('16x16_PNG/add.png') . ' Add pizza-wave', array(
-						'controller' => 'pizza_waves',
-						'action' => 'add',
-						$pizza_menu['LanPizzaMenu']['id']
-							), array(
-						'escape' => false
+						 'controller' => 'pizza_waves',
+						 'action' => 'add',
+						 $pizza_menu['LanPizzaMenu']['id']
+							  ), array(
+						 'escape' => false
 					));
 					?>
 				</div>
@@ -88,11 +77,11 @@
 								<td>
 									<?php
 									echo $this->Html->link(
-											'View', array(
-										'controller' => 'pizza_waves',
-										'action' => 'view',
-										$pizza_wave['id']
-											)
+											  'View', array(
+										 'controller' => 'pizza_waves',
+										 'action' => 'view',
+										 $pizza_wave['id']
+											  )
 									);
 									?>
 								</td>

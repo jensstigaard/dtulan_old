@@ -1,18 +1,10 @@
 <div>
-	<div style="float:right">
-		<?php
-		echo $this->Html->link($this->Html->image('16x16_PNG/add.png') . ' Add Food Menu to LAN', array(
-			'controller' => 'lan_food_menus',
-			'action' => 'add',
-			$id
-				), array(
-			'escape' => false
-		));
-		?>
-	</div>
 	<?php if (!count($food_menus)): ?>
-		<p>No Food Menus connected to this LAN</p>
+	
+		<p style="margin:10px;font-size: 14pt;"><i class="icon-exclamation-sign" style="font-size:16pt;"></i> No food menus connected</p>
+		
 	<?php else: ?>
+		
 		<table>
 			<thead>
 				<tr>

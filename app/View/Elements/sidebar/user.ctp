@@ -30,7 +30,7 @@
 	<div style="clear:both;"></div>
 
 	<ul>
-		<li><?php echo $this->Html->link('<i class="icon-wrench"></i> Edit personal data', array('controller' => 'users', 'action' => 'edit'), array('escape' => false)); ?></li>
-		<li><?php echo $this->Html->link('<i class="icon-lock"></i> Logout', array('controller' => 'users', 'action' => 'logout'), array('escape' => false)); ?></li>
+		<li><?php echo $this->Html->link('<i class="icon-wrench icon-large"></i> Edit personal data', array('controller' => 'users', 'action' => 'edit'), array('escape' => false)); ?></li>
+		<li><?php echo $this->Html->link('<i class="icon-lock icon-large"></i> Logout', array('controller' => 'users', 'action' => 'logout'), array('escape' => false)); ?></li>
 	</ul>
 </div>

@@ -70,9 +70,46 @@ echo $this->Html->css(array(
 
 			<?php endif; ?>
 		</div>
-
-
 	</div>
+
+	<?php if ($is_admin): ?>
+		<div class="lan_options floated-list">
+			<?php
+			echo $this->Html->link('<i class="icon-user-md icon-large"></i> Add crewmember', array(
+				 'controller' => 'crew',
+				 'action' => 'add',
+				 $lan['Lan']['slug']
+					  ), array(
+				 'escape' => false,
+				 'class' => 'item'
+			));
+			echo $this->Html->link('<i class="icon-trophy icon-large"></i> New tournament', array(
+				 'controller' => 'tournament',
+				 'action' => 'add',
+				 $lan['Lan']['id']
+					  ), array(
+				 'escape' => false,
+				 'class' => 'item'
+			));
+			echo $this->Html->link('<i class="icon-link icon-large"></i> Connect foodmenu', array(
+				 'controller' => 'lan_food_menus',
+				 'action' => 'add',
+				 $lan['Lan']['id']
+					  ), array(
+				 'escape' => false,
+				 'class' => 'item'
+			));
+			echo $this->Html->link('<i class="icon-link icon-large"></i> Connect pizza-menu', array(
+				 'controller' => 'lan_pizza_menus',
+				 'action' => 'add',
+				 $lan['Lan']['id']
+					  ), array(
+				 'escape' => false,
+				 'class' => 'item'
+			));
+			?>
+		</div>
+	<?php endif; ?>
 
 
 </div>

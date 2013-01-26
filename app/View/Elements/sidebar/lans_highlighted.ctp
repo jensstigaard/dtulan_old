@@ -2,7 +2,7 @@
 	<div class="lan_highlighted">
 		<ul>
 			<li><?php
-	$text = '<i class="icon-bullhorn"></i>';
+	$text = '<i class="icon-bullhorn icon-2x"></i>';
 	$text.= '<strong>' . $lan['Lan']['title'] . '</strong>';
 	$text.= '<small>';
 	if ($lan['Lan']['time_start'] > date('Y-m-d H:i:s')) {

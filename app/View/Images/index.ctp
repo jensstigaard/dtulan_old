@@ -3,7 +3,7 @@
 		<?php echo $this->Html->link('Add images', array('action' => 'add')); ?>
 	</div>
 	<h1>Images database</h1>
-	<div class="list-floated" id="list-images">
+	<div class="floated-list" id="list-images">
 		<?php foreach ($images as $image) : ?>
 			<div class="item">
 				<?php

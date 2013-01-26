@@ -1,21 +1,12 @@
 <?php echo $this->Html->script('general'); ?>
 <div>
-	<?php if ($is_admin): ?>
-		<div style="text-align: right;margin-bottom:10px;">
-			<?php
-			echo $this->Html->link(
-					  'Add Crewmember', array(
-				 'controller' => 'crew',
-				 'action' => 'add',
-				 $lan_slug
-					  )
-			);
-			?>
-		</div>
-	<?php endif; ?>
+
 	<?php if (!count($crew)): ?>
-		<p>No crew yet :-)</p>
+
+		<p style="margin:10px;font-size: 14pt;"><i class="icon-exclamation-sign" style="font-size:16pt;"></i> No crew found</p>
+
 	<?php else: ?>
+
 		<div class="floated-list" id="participant-list">
 			<?php foreach ($crew as $user): ?>
 				<?php
@@ -43,6 +34,5 @@
 				?>
 			<?php endforeach; ?>
 		</div>
-		<div style="clear:both;"></div>
 	<?php endif; ?> 
 </div>
