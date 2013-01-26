@@ -154,6 +154,19 @@
 				);
 				?>
 			</li>
+			
+			<li>
+				<?php
+				echo $this->Html->link(
+						  '<i class="icon-qrcode"></i> QR-codes', array(
+					 'controller' => 'qr_codes',
+					 'action' => 'index'
+						  ), array(
+					 'escape' => false
+						  )
+				);
+				?>
+			</li>
 		</ul>
 	</div>
 <?php endif; ?>
