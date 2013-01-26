@@ -6,19 +6,42 @@ $(document).ready(function(){
 	});
 
 
+	//	$( ".tabs" ).tabs({
+	//		beforeLoad: function( event, ui ) {
+	//			ui.jqXHR.error(function() {
+	//				ui.panel.html(
+	//					"Couldn't load this tab. We'll try to fix this as soon as possible!"
+	//					);
+	//			});
+	//		},
+	//		select: function(event, ui) {
+	//			$('#loading_indicator').show();
+	//		},
+	//		load:   function(event, ui) {
+	//			$('#loading_indicator').hide();
+	//		}
+	//	})
+	//	;
+
 	$( ".tabs" ).tabs({
-		beforeLoad: function( event, ui ) {
+		//		beforeLoad: function( event, ui ) {
+		//			ui.jqXHR.error(function() {
+		//				ui.panel.html(
+		//					);
+		//			});
+		//		},
+		beforeLoad: function(event, ui) {
+			$(this).find('.loading_indicator').show();
+			
 			ui.jqXHR.error(function() {
 				ui.panel.html(
-					"Couldn't load this tab. We'll try to fix this as soon as possible!"
-					);
+					"<p>Couldn't load this tab. We'll try to fix this as soon as possible!</p>");
+					
+				$(this).find('.loading_indicator').hide();
 			});
 		},
-		select: function(event, ui) {
-			$('#loading_indicator').show();
-		},
 		load:   function(event, ui) {
-			$('#loading_indicator').hide();
+			$(this).find('.loading_indicator').hide();
 		}
 	})
 	;
@@ -26,15 +49,7 @@ $(document).ready(function(){
 	
 	$(".fancybox").fancybox();
 	
-	//	var $container = $('#list-images');
-	//	$container.imagesLoaded(function(){
-	//		$container.masonry({
-	//			itemSelector : '.item',
-	//			isAnimated: true,
-	//			gutterWidth : 20
-	//		//			columnWidth : 240
-	//		});
-	//	});
+	$('#lan_overview .lan_overview_item').tooltip();
 
 
 	$(".fittext").fitText();
