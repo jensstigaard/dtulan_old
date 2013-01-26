@@ -20,7 +20,7 @@ body{
 	font-size: 90%;
 	color: #DDD;
 
-	background-color: #191919;
+	background-color: #222;
 	/*	background-image: url('../img/background_big.jpg');
 		background-repeat: repeat;
 		background-position: top left;*/
@@ -364,7 +364,8 @@ input, textarea {
 	clear: both;
 	font-size: 130%;
 	/*	font-family: "frutiger linotype", "lucida grande", "verdana", sans-serif;*/
-	font-family: "Lucida Grande","Lucida Sans Unicode","Eras Medium ITC","DejaVu Sans",Helvetica,Verdana,sans-serif;
+	font-family: 'Helvetica Neue',Helvetica,Verdana,sans-serif;
+	/*font-family: "Lucida Grande","Lucida Sans Unicode","Eras Medium ITC","DejaVu Sans",Helvetica,Verdana,sans-serif;*/
 	/*padding: 1%;*/
 	width:92%;
 	color:#DDD;
@@ -379,11 +380,12 @@ input[type=text], input[type=number], input[type=email]{
 select {
 	clear: both;
 	font-size: 120%;
-	vertical-align: text-bottom;
+	/*vertical-align: text-bottom;*/
 	background-color:rgba(0,0,0,.2);
 	border:1px solid rgba(100,100,100,.7);
 	color:#DDD;
-	font-family: "Lucida Grande","Lucida Sans Unicode","Eras Medium ITC","DejaVu Sans",Helvetica,Verdana,sans-serif;
+	font-family: 'Helvetica Neue',Helvetica,Verdana,sans-serif;
+	/*font-family: "Lucida Grande","Lucida Sans Unicode","Eras Medium ITC","DejaVu Sans",Helvetica,Verdana,sans-serif;*/
 	width:auto;
 }
 
@@ -695,4 +697,8 @@ input[type=submit]:active,
 	height: 0;
 	clear: both;
 	visibility: hidden;
+}
+
+.floated-list a{
+	text-decoration: none;
 }
