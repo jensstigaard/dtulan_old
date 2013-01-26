@@ -23,21 +23,20 @@
 			 'bootstrap/bootstrap.min',
 			 'font-awesome/font-awesome.min',
 			 'ui-darkness/jquery-ui-1.10.0.custom',
-			 'jquery/jquery.qtip.min',
+//			 'jquery/jquery.qtip.min',
 			 'jquery/jquery.fancybox',
 			 'normalize',
 			 'layout.general',
 			 'layout.tables',
 			 'layout.navigation',
-			 'layout.sidebar',
-			 'layout.lan',
+			 'sidebar',
 			 'cake.errors',
 				  )
 		);
 
 		if ($is_admin) {
 			echo $this->Html->css(array(
-				 'layout.admin',
+				 'admin',
 			));
 		}
 
@@ -96,7 +95,7 @@
 			 'jquery/jquery.qtip.min',
 			 'jquery/jquery.fancybox.pack',
 			 'jquery/jquery.fittext',
-//			 'jquery/jquery.masonry.min',
+			 'jquery/jquery.masonry.min',
 //			 'jquery/jquery.isotope.min',
 			 'bootstrap/bootstrap.min',
 			 'general',
