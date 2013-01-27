@@ -1,3 +1,4 @@
+<?php echo $this->Html->css(array('user_profile', null, array('inline' => false))); ?>
 <div>
 	<h1>
 		<?php

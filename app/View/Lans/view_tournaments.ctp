@@ -10,17 +10,16 @@ echo $this->Html->script(array('general'));
 
 		<div class="floated-list" id="list-tournaments">
 			<?php foreach ($tournaments as $tournament): ?>
-				<a href="<?php echo $this->Html->url(array('controller' => 'tournaments', 'action' => 'view', $lan['Lan']['slug'], $tournament['Tournament']['slug'])); ?>" class="item">
-					<span style="background-image:url('../../<?php echo $tournament['Game']['Image']['filePath']; ?>');">
-						<strong>
-							<?php
-							if ($tournament['Tournament']['team_size'] > 1) {
-								echo $tournament['Tournament']['team_size'] . 'v' . $tournament['Tournament']['team_size'] . ' - ';
-							}
-							?>
-							<?php echo $tournament['Tournament']['time_start']; ?>
-						</strong>
-					</span>
+				<a href="<?php echo $this->Html->url(array('controller' => 'tournaments', 'action' => 'view', $lan['Lan']['slug'], $tournament['Tournament']['slug'])); ?>" class="item" style="background-image:url('../../<?php echo $tournament['Game']['Image']['filePath']; ?>');">
+
+					<strong class="bottom">
+						<?php
+						if ($tournament['Tournament']['team_size'] > 1) {
+							echo $tournament['Tournament']['team_size'] . 'v' . $tournament['Tournament']['team_size'] . ' - ';
+						}
+						?>
+						<?php echo $tournament['Tournament']['time_start']; ?>
+					</strong>
 				</a>
 			<?php endforeach; ?>
 

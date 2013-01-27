@@ -677,9 +677,13 @@ input[type=submit]:active,
 	padding: 8px;
 	margin: 3px;
 	background-color: rgba(0,0,0, .5);
+	background-position: center center;
+	background-repeat: no-repeat;
 	text-align: center;
 
 	opacity: 0.85;
+	
+	position: relative;
 }
 
 .floated-list > .item:hover{
@@ -701,4 +705,15 @@ input[type=submit]:active,
 
 .floated-list a{
 	text-decoration: none;
+}
+
+
+.floated-list > .item > .bottom{
+	display: block;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(255, 255, 255, .5);
+	color: #000;
 }

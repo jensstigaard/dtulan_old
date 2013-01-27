@@ -2,22 +2,34 @@
 	<?php if (!count($teams)): ?>
 		<p>You do not participate in any tournament</p>
 	<?php else: ?>
-		<table>
-			<tr>
-				<th>Tournament</th>
-				<th>Name</th>
-				<th>Leader</th>
-				<th>Members</th>
-			</tr>
-
+		<div class="floated-list" id="teams-list">
 			<?php foreach ($teams as $team): ?>
-				<tr>
-					<td><?php echo $this->Html->link($team['Team']['Tournament']['title'], array('controller' => 'tournaments', 'action' => 'view', $team['Team']['Tournament']['Lan']['slug'], $team['Team']['Tournament']['slug'])); ?></td>
-					<td><?php echo $this->Html->link($team['Team']['name'], array('controller' => 'teams', 'action' => 'view', $team['Team']['id'])); ?></td>
-					<td><?php echo $team['TeamUser']['is_leader'] ? $this->Html->image('16x16_PNG/star.png') : ''; ?></td>
-					<td><?php echo $team['Team']['count']; ?></td>
-				</tr>
+				<a class="item" href="<?php
+		echo $this->Html->url(array(
+			 'controller' => 'tournaments',
+			 'action' => 'view',
+			 $team['Team']['Tournament']['Lan']['slug'],
+			 $team['Team']['Tournament']['slug']));
+				?>" style="background-image:url('../img/uploads/thumb_210w_<?php echo $team['Team']['Tournament']['Game']['Image']['filePath']; ?>');">
+					<strong class="bottom">
+						<?php
+						if ($team['Team']['Tournament']['team_size'] > 1) {
+							echo $team['Team']['Tournament']['team_size'] . 'v' . $team['Team']['Tournament']['team_size'] . ' &bull; ';
+						}
+						?>
+						<?php echo $team['Team']['Tournament']['Lan']['title']; ?>
+						&bull;
+						<?php
+						if (!strlen($team['Team']['name']) > 10) {
+							echo $team['Team']['name'];
+						} else {
+							echo substr($team['Team']['name'], 0, 10);
+						}
+						?>
+						<?php echo $team['TeamUser']['is_leader'] ? $this->Html->image('16x16_PNG/star.png') : ''; ?>
+					</strong>
+				</a>
 			<?php endforeach; ?>
-		</table>
+		</div>
 	<?php endif; ?>
 </div>

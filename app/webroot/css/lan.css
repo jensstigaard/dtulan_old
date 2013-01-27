@@ -10,6 +10,14 @@
 	clear:both;
 }
 
+#lan_overview:after{
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
 .lan_overview_item{
 	float:left;
 	padding:5px 8px;
@@ -36,36 +44,12 @@
 	padding-top: 4px;
 }
 
-#lan_overview:after{
-	content: ".";
-	display: block;
-	height: 0;
-	clear: both;
-	visibility: hidden;
-}
+
+
 
 
 #list-tournaments > .item{
-	padding:0;
+	padding: 0;
 	height: 100px;
 	width: 208px;
-}
-
-#list-tournaments > .item > span{
-	display:block;
-	position: relative;
-	background-position: center center;
-	background-repeat: no-repeat;
-	width: 100%;
-	height: 100%;
-}
-
-#list-tournaments >.item > span > strong{
-	display:block;
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	background: rgba(255, 255, 255, .5);
-	color: #000;
 }

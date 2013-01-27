@@ -1,0 +1,13 @@
+/* 
+    Document   : user_profile
+    Created on : 27-01-2013, 19:18:49
+    Author     : Jens
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+#teams-list > .item{
+	width: 210px;
+	height: 90px;
+	padding: 0;
+}
