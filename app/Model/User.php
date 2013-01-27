@@ -399,10 +399,20 @@ class User extends AppModel {
 						'Tournament' => array(
 							 'fields' => array(
 								  'title',
-								  'slug'
+								  'slug',
+								  'team_size',
 							 ),
 							 'Lan' => array(
-								  'slug'
+								  'slug',
+								  'title'
+							 ),
+							 'Game' => array(
+								  'Image' => array(
+										'fields' => array(
+											 'id',
+											 'ext'
+										)
+								  )
 							 )
 						)
 				  )
@@ -413,6 +423,7 @@ class User extends AppModel {
 		foreach ($teams as $key => $team) {
 			$this->TeamUser->Team->id = $team['Team']['id'];
 			$teams[$key]['Team']['count'] = $this->TeamUser->Team->countMembers();
+			$teams[$key]['Team']['Tournament']['Game']['Image']['filePath'] = $this->TeamUser->Team->Tournament->Game->Image->getFileName($team['Team']['Tournament']['Game']['Image']);
 		}
 
 		return $teams;

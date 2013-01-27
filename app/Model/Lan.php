@@ -757,7 +757,7 @@ class Lan extends AppModel {
 					  ));
 
 			$thumbPrefix = 'thumb_210w_';
-			$fileName = $this->Tournament->Game->Image->getFileName($image);
+			$fileName = $this->Tournament->Game->Image->getFileName($image['Image']);
 			list($imgWidth, $imgHeight) = getimagesize(IMAGES . 'uploads' . DS . $thumbPrefix . $fileName);
 			$filePath = IMAGES_URL . 'uploads/' . $thumbPrefix . $fileName;
 			$tournaments[$key]['Game']['Image'] = array(

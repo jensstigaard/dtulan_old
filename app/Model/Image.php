@@ -117,7 +117,7 @@ class Image extends AppModel {
 				  ));
 
 		foreach ($images as $key => $value) {
-			$images[$key]['Image']['fileName'] = $this->getFileName($value);
+			$images[$key]['Image']['fileName'] = $this->getFileName($value['Image']);
 			$images[$key]['Image']['fileSize'] = $this->formatBytes($value['Image']['size']);
 		}
 
@@ -125,7 +125,7 @@ class Image extends AppModel {
 	}
 
 	public function getFileName($fields) {
-		return $fields['Image']['id'] . '.' . $fields['Image']['ext'];
+		return $fields['id'] . '.' . $fields['ext'];
 	}
 
 	function formatBytes($bytes, $precision = 2) {
