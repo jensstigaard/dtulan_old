@@ -53,16 +53,17 @@ class AppController extends Controller {
 							  'password' => 'password'
 						 ),
 						 'scope' => array(
-							  'User.activated' => 1
+							  'User.activated' => 1,
+							  'Admin.id >' => 0
 						 )
 					),
-					// Allow authentication by access token
-					'Api' => array(
-						 'userModel' => 'AccessToken',
-						 'fields' => array(
-							  'username' => 'id',
-						 ),
-					),
+			  // Allow authentication by access token
+//					'Api' => array(
+//						 'userModel' => 'AccessToken',
+//						 'fields' => array(
+//							  'username' => 'id',
+//						 ),
+//					),
 			  )
 		 )
 	);

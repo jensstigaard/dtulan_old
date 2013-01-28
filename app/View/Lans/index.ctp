@@ -8,10 +8,12 @@
 	<table>
 		<tr>
 			<th>Title</th>
+			<th><i class="icon-group"></i></th>
 			<th>Date start</th>
 			<th>Date end</th>
-			<th><small>Pub-<br />lished</small></th>
+			<th><small>Published</small></th>
 			<th><small>Signup<br />open</small></th>
+			<th><small>Edit</small></th>
 		</tr>
 
 		<?php foreach ($lans as $lan): ?>
@@ -24,21 +26,25 @@
 					?>
 					<?php echo $this->Html->link($lan['Lan']['title'], array('action' => 'view', $lan['Lan']['slug'])); ?>
 				</td>
-				<td><?php echo $this->Time->nice($lan['Lan']['time_start']); ?></td>
-				<td><?php echo $this->Time->nice($lan['Lan']['time_end']); ?></td>
+				<td><span class="badge badge-inverse"><?php echo $lan['Lan']['count_participants']; ?></span></td>
+				<td><?php echo $this->Time->format('d/m/Y H:i',$lan['Lan']['time_start']); ?></td>
+				<td><?php echo $this->Time->format('d/m/Y H:i',$lan['Lan']['time_end']); ?></td>
 				<td>
 					<?php if ($lan['Lan']['published']): ?>
-						<strong style="color:green">Yes</strong>
+						<span class="badge badge-success">Yes</span>
 					<?php else: ?>
-						<strong style="color:red">No</strong>
+						<span class="badge">No</span>
 					<?php endif; ?>
 				</td>
 				<td>
 					<?php if ($lan['Lan']['sign_up_open']): ?>
-						<strong style="color:green">Yes</strong>
+						<span class="badge badge-success">Yes</span>
 					<?php else: ?>
-						<strong style="color:grey">No</strong>
+						<span class="badge">No</span>
 					<?php endif; ?>
+				</td>
+				<td>
+					<?php echo $this->Html->link('<i class="icon-edit"></i>', array('action' => 'edit', $lan['Lan']['id']), array('escape' => false, 'class' => 'btn btn-inverse')); ?>
 				</td>
 			</tr>
 		<?php endforeach; ?>

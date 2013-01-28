@@ -1,11 +1,17 @@
 <div>
-	<?php echo $this->Form->create(); ?>
-    <fieldset>
-        <legend><?php echo __('Login'); ?></legend>
-		<?php
-		echo $this->Form->input('email');
-		echo $this->Form->input('password');
-		?>
-    </fieldset>
-	<?php echo $this->Form->end(__('Log in')); ?>
+	<?php
+	echo $this->Form->create();
+	echo $this->Form->inputs(array(
+		 'legend' => 'Log in',
+		 'email',
+		 'password'
+	));
+	?>
+	<div class="alert alert-error">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<strong>Notice!</strong> Only admins have access to the site at the moment.
+	</div>
+	<?php
+	echo $this->Form->end(__('Log in'));
+	?>
 </div>

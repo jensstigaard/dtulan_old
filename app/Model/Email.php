@@ -19,7 +19,8 @@ class Email extends AppModel implements CakeEventListener {
 	public function implementedEvents() {
 		return array(
 			 'Model.User.activationEmail' => 'sendActivationEmail',
-			 'Model.Lan.sendSubscriptionEmail' => 'sendSubscriptionEmail'
+			 'Model.User.forgotPasswordEmail' => 'sendForgotPasswordEmail',
+			 'Model.Lan.sendSubscriptionEmail' => 'sendSubscriptionEmail',
 		);
 	}
 
@@ -45,6 +46,37 @@ class Email extends AppModel implements CakeEventListener {
 
 		if (!$email->send()) {
 			$this->log('Activation email not send', 'email');
+			return $event->data + array('success' => false);
+		}
+
+		return $event->data + array('success' => true);
+	}
+
+	public function sendForgotPasswordEmail($event) {
+		if (!isset($event->data['User']) || !isset($event->data['Ticket']['id'])) {
+			$this->log('"Forgot password"-email not send.. Wrong data received', 'user');
+			return $event->data + array('success' => false);
+		}
+
+//		$this->log('"Forgot password"-email.. Name: ' . $event->data['User']['name'], 'email');
+//		$this->log('"Forgot password"-email.. Email: ' . $event->data['User']['email'], 'email');
+//		$this->log('"Forgot password"-email.. Ticket-id: ' . $event->data['Ticket']['id'], 'email');
+
+		$email = new CakeEmail();
+		$email->config('smtp')
+				  ->emailFormat('html')
+				  ->template('user_forgot_password')
+				  ->from(array('contact@dtu-lan.dk' => 'DTU LAN website'))
+				  ->to($event->data['User']['email'])
+				  ->subject('DTU LAN website - Forgot password')
+				  ->viewVars(array(
+						'title_for_layout' => 'Activate user',
+						'name' => $event->data['Ticket']['name'],
+						'ticket_id' => $event->data['Ticket']['id'],
+				  ));
+//
+		if (!$email->send()) {
+			$this->log('"Forgot password"-email not send', 'email');
 			return $event->data + array('success' => false);
 		}
 

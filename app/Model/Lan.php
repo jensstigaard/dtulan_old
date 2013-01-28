@@ -26,6 +26,11 @@ class Lan extends AppModel {
 			  'dependent' => true
 		 )
 	);
+	
+	public $order = array(
+		 'time_start' => 'desc',
+		 
+	);
 //
 //Validation
 	public $validate = array(
@@ -599,10 +604,18 @@ class Lan extends AppModel {
 	 */
 
 	public function getIndexList() {
-		return $this->find('all', array(
-						'recursive' => 1
-							 )
+
+		$lans = $this->find('all', array(
+			 'recursive' => 1
+				  )
 		);
+		
+		foreach($lans as $key => $lan){
+			$this->id = $lan['Lan']['id'];
+			$lans[$key]['Lan']['count_participants'] = $this->countSignups();
+		}
+
+		return $lans;
 	}
 
 	/*

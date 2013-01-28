@@ -275,11 +275,11 @@ class UsersController extends AppController {
 
 	public function add() {
 
-		$this->User->getEventManager()->attach(new Email());
-
 		$this->set('title_for_layout', 'Register new user');
 
 		if ($this->request->is('post')) {
+
+			$this->User->getEventManager()->attach(new Email());
 
 			$data = array(
 				 'email' => $this->request->data['User']['email'],
@@ -432,59 +432,33 @@ class UsersController extends AppController {
 	}
 
 	public function forgot_password() {
-		App::uses('CakeEmail', 'Network/Email');
-
 		$this->set('title_for_layout', 'Forgot password');
 
 		if ($this->request->is('post')) {
-			$email = $this->request->data['User']['email'];
+
+			$this->User->getEventManager()->attach(new Email());
 
 			$user = $this->User->find('first', array(
 				 'conditions' => array(
-					  'User.email' => $email
+					  'email' => $this->request->data['User']['email']
 				 ),
-				 'recursive' => 0
-					  )
-			);
+				 'fields' => array(
+					  'id'
+				 )
+					  ));
 
-			if (!$user) {
-				$this->Session->setFlash(__('No user with entered email'), 'default', array(), 'bad');
+			if (!isset($user['User']['id'])) {
+				$this->Session->setFlash(__('No user with this email.'), 'default', array(), 'bad');
 			} else {
-				if (isset($user['UserPasswordTicket']['time'])) {
-					$this->User->UserPasswordTicket->id = $user['UserPasswordTicket']['id'];
-					if ($this->User->UserPasswordTicket->saveField('time', date('Y-m-d H:i:s'), true)) {
-						$saved = 1;
-						$id = $user['UserPasswordTicket']['id'];
-					}
+				$this->User->id = $user['User']['id'];
+
+				if (!$this->User->exists()) {
+					$this->Session->setFlash(__('No user with this email. '), 'default', array(), 'bad');
 				} else {
-					$this->request->data['UserPasswordTicket']['user_id'] = $user['User']['id'];
-					$this->request->data['UserPasswordTicket']['time'] = date('Y-m-d H:i:s');
-
-					if ($this->User->UserPasswordTicket->save($this->request->data)) {
-						$saved = 1;
-						$id = $this->User->UserPasswordTicket->getLastInsertID();
-					}
-				}
-
-				if (!isset($saved)) {
-					$this->Session->setFlash(__('Fatal error during database call. Please try again'), 'default', array(), 'bad');
-				} else {
-
-					ini_set("SMTP", 'smtp.unoeuro.com');
-
-					$email = new CakeEmail();
-					$email->config('smtp');
-					$email->emailFormat('html');
-					$email->template('user_forgot_password');
-					$email->from(array('no-reply@dtu-lan.dk' => 'DTU LAN Party'));
-					$email->to($user['User']['email']);
-					$email->subject('DTU LAN site - Password reset');
-					$email->viewVars(array('title_for_layout' => 'Forgot password', 'name' => $user['User']['name'], 'ticket_id' => $id));
-
-					if ($email->send()) {
-						$this->Session->setFlash(__('Email sent'), 'default', array('class' => 'message success'), 'good');
+					if ($this->User->createForgotPassword()) {
+						$this->Session->setFlash(__('Email sent!'), 'default', array('class' => 'message success'), 'good');
 					} else {
-						$this->Session->setFlash('Fatal error during sending. Please try again.', 'default', array(), 'bad');
+						$this->Session->setFlash(__('Fatal error'), 'default', array(), 'bad');
 					}
 				}
 			}

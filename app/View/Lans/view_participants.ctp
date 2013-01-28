@@ -45,7 +45,7 @@ echo $this->Html->script(array(
 			<?php endforeach; ?>
 		</div>
 
-		<div class="participants-list-sort-links">
+		<div class="pagination participants-list-sort-links">
 			<?php echo $this->Paginator->numbers(array('class' => 'load_inline')); ?>
 		</div>
 

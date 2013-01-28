@@ -7,11 +7,96 @@ echo $this->Html->css(array(
 ));
 ?>
 <div>
+	
 	<?php if ($is_admin): ?>
-		<div style="float:right">
-			<?php echo $this->Html->link('Edit LAN', array('action' => 'edit', $lan['Lan']['id'])); ?>
+		<?php
+		$admin_links_new = array(
+			 array(
+				  'title' => 'Crew',
+				  'icon' => 'icon-user-md',
+				  'url' => array(
+						'controller' => 'crew',
+						'action' => 'add',
+						$lan['Lan']['slug']
+				  )
+			 ),
+			 array(
+				  'title' => 'Tournament',
+				  'icon' => 'icon-trophy',
+				  'url' => array(
+						'controller' => 'tournaments',
+						'action' => 'add',
+						$lan['Lan']['id']
+				  )
+			 ),
+		);
+		$admin_links_connect = array(
+			 array(
+				  'title' => 'Food-menu',
+				  'icon' => 'icon-coffee',
+				  'url' => array(
+						'controller' => 'lan_food_menus',
+						'action' => 'add',
+						$lan['Lan']['id']
+				  )
+			 ),
+			 array(
+				  'title' => 'Pizza-menu',
+				  'icon' => 'icon-food',
+				  'url' => array(
+						'controller' => 'lan_pizza_menus',
+						'action' => 'add',
+						$lan['Lan']['id']
+				  )
+			 ),
+//				 array(
+//					  'title' => '',
+//					  'icon' => '',
+//					  'url' => array(
+//							'controller' => '',
+//							'action' => '',
+//					  )
+//				 ),
+		);
+		?>
+	<div class="btn-group" style="float:right;">
+		<div class="btn-group">
+			<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
+				<i class="icon-plus-sign"></i> New
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<?php foreach ($admin_links_new as $link): ?>
+					<li>
+						<?php
+						echo $this->Html->link('<i class="icon-large ' . $link['icon'] . '"></i> ' . $link['title'], $link['url'], array(
+							 'escape' => false,
+						));
+						?>
+					</li>
+				<?php endforeach; ?>
+			</ul>
 		</div>
+		<div class="btn-group">
+			<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
+				<i class="icon-link"></i> Connect
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<?php foreach ($admin_links_connect as $link): ?>
+					<li>
+						<?php
+						echo $this->Html->link('<i class="icon-large ' . $link['icon'] . '"></i> ' . $link['title'], $link['url'], array(
+							 'escape' => false,
+						));
+						?>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	</div>
 	<?php endif; ?>
+	
 	<h1><?php echo $title; ?></h1>
 
 	<div id="lan_overview">
@@ -72,44 +157,7 @@ echo $this->Html->css(array(
 		</div>
 	</div>
 
-	<?php if ($is_admin): ?>
-		<div class="lan_options floated-list">
-			<?php
-			echo $this->Html->link('<i class="icon-user-md icon-large"></i> Add crewmember', array(
-				 'controller' => 'crew',
-				 'action' => 'add',
-				 $lan['Lan']['slug']
-					  ), array(
-				 'escape' => false,
-				 'class' => 'item'
-			));
-			echo $this->Html->link('<i class="icon-trophy icon-large"></i> New tournament', array(
-				 'controller' => 'tournament',
-				 'action' => 'add',
-				 $lan['Lan']['id']
-					  ), array(
-				 'escape' => false,
-				 'class' => 'item'
-			));
-			echo $this->Html->link('<i class="icon-link icon-large"></i> Connect foodmenu', array(
-				 'controller' => 'lan_food_menus',
-				 'action' => 'add',
-				 $lan['Lan']['id']
-					  ), array(
-				 'escape' => false,
-				 'class' => 'item'
-			));
-			echo $this->Html->link('<i class="icon-link icon-large"></i> Connect pizza-menu', array(
-				 'controller' => 'lan_pizza_menus',
-				 'action' => 'add',
-				 $lan['Lan']['id']
-					  ), array(
-				 'escape' => false,
-				 'class' => 'item'
-			));
-			?>
-		</div>
-	<?php endif; ?>
+	
 
 
 </div>

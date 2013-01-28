@@ -1,68 +1,72 @@
 <?php
+
+/**
+ * This file is part of the Chosen CakePHP Plugin.
+ *
+ * Copyright (c) Paul Redmond - https://github.com/paulredmond
+ *
+ * @link https://github.com/paulredmond/chosen-cakephp
+ * @license http://paulredmond.mit-license.org/ The MIT License
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 /**
  * Chosen Helper File
  *
- * Copyright (c) 2011 Paul Redmond
- *
- * Distributed under the terms of the MIT License.
- *
- * PHP Version 5
- * CakePHP Version 2.x
- *
  * @package chosen
  * @subpackage chosen.views.helpers
- * @copyright 2011 Paul Redmond <paulrredmond@gmail.com>
- * @license http://www.opensource.org/licenses/mit-license.php The MIT License
- * @link https://github.com/paulredmond/chosen-cakephp
- *
- * HarvestHQ Chosen JQuery/Prototype plugin.
- * @link https://github.com/harvesthq/chosen
- *
  */
 class ChosenHelper extends AppHelper
 {
     public $helpers = array('Html', 'Form');
 
     /**
-     * $load
+     * Default configuration options.
+     *
+     * Settings configured Configure class, ie. `Configure::write('Chosen.asset_base', '/path');`
+     * take precedence over settings configured through Controller::$helpers property.
+     */
+    public $settings = array(
+        'framework' => 'jquery',
+        'class' => 'chzn-select',
+        'asset_base' => '/chosen/chosen',
+    );
+
+    /**
      * If a chosen select element was called, load up the scripts.
+     *
+     * @var Boolean
      */
     private $load = false;
 
     /**
+     * If the scripts were loaded.
+     *
+     * @var Boolean
+     */
+    private $loaded = false;
+
+    /**
      * Determine if debug is disabled/enabled
+     *
+     * @var Boolean
      */
     private $debug = false;
 
-    /**
-     * @var \View
-     */
-    private $view = null;
-
-    /**
-     * Default configuration options.
-     */
-    protected $defaults = array(
-        'framework' => 'jquery',
-        'class' => 'chzn-select',
-    );
-
-    /**
-     * Runtime configuration
-     */
-    protected $settings = array();
-
     public function __construct(View $view, $settings = array())
     {
-		parent::__construct($view, $settings);
-		$this->view = $view;
-		$this->settings = array_merge($this->defaults, (array) $settings);
-		$this->debug = Configure::read('debug') ? true : false;
+        parent::__construct($view, $settings);
 
-		if (!in_array($fw = $this->getSetting('framework'), array('jquery', 'prototype'))) {
-		    throw new LogicException(sprintf('Configured JavaScript framework "%s" is not supported. Only "jquery" or "prototype" are valid options.', $fw));
-		}
-	}
+        // @todo - this is merged by Helper::__construct() in 2.3.
+        $this->settings = array_merge($this->settings, (array) $settings, (array) Configure::read('Chosen'));
+        $this->debug = Configure::read('debug') ? true : false;
+
+        if (!$this->isSupportedFramework($fw = $this->getSetting('framework'))) {
+            throw new LogicException(sprintf('Configured JavaScript framework "%s" is not supported. Only "jquery" or "prototype" are valid options.', $fw));
+        }
+    }
 
     public function getSettings()
     {
@@ -76,11 +80,6 @@ class ChosenHelper extends AppHelper
         }
 
         return null;
-    }
-
-    public function getDefaults()
-    {
-        return (array) $this->defaults;
     }
 
     public function getDebug()
@@ -131,6 +130,18 @@ class ChosenHelper extends AppHelper
             return;
         }
 
+        $this->loadScripts();
+    }
+
+    public function loadScripts()
+    {
+        if ($this->loaded) {
+            return;
+        }
+
+        $this->loaded = true;
+        $base = $this->getsetting('asset_base');
+
         switch ($this->getSetting('framework')) {
             case 'prototype':
                 $elm = 'prototype-script';
@@ -144,36 +155,37 @@ class ChosenHelper extends AppHelper
             break;
         }
 
-        // 3rd party assets
+        // 3rd party assets.
         $script = sprintf($script, $this->debug === true ? 'js' : 'min.js');
-        $this->Html->css('/chosen/chosen/chosen.css', null, array('inline' => false));
-        $this->Html->script("/chosen/chosen/{$script}", array('inline' => false));
+        $this->Html->css($base . '/chosen.css', null, array('inline' => false));
+        $this->Html->script($base . '/' . $script, array('inline' => false));
 
         // Add the script.
-        if (false !== $block = $this->getElement($elm)) {
-            $this->Html->scriptBlock($block, array('inline' => false));
-        }
+        $this->_View->append('script', $this->getElement($elm));
     }
 
     /**
      * Gets the Plugin's element file based on JS framework being used.
-     * Accommodates 2.0.0 and 2.1.0 View::element() API changes.
      *
      * @param $element string Name of the plugin element to use.
      * @return string rendered javascript block based on the JS framework element.
      */
     protected function getElement($element)
     {
-        $block = false;
-        $version = Configure::version();
         $class = $this->getSetting('class');
 
-        if (version_compare($version, '2.1.0', '>=')) {
-            $block = $this->view->element('Chosen.' . $element, array('class' => $class));
-        } else if (version_compare($version, '2.1.0', '<')) {
-            $block = $this->view->element($element, array('class' => $class), array('plugin' => 'Chosen'));
-        }
+        return $this->_View->element('Chosen.' . $element, array('class' => $class));
+    }
 
-        return $block;
+    /**
+     * Test if a JS framework is supported by this helper.
+     *
+     * @param $val The 'framework' setting must use a supported framework.
+     *
+     * @return bool
+     */
+    public function isSupportedFramework($val)
+    {
+        return in_array($val, array('jquery', 'prototype'));
     }
 }

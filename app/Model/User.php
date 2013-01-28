@@ -344,7 +344,36 @@ class User extends AppModel {
 			}
 		}
 
-		debug($event->result);
+//		debug($event->result);
+		$dataSource->rollback();
+		return false;
+	}
+
+	public function createForgotPassword() {
+		$dataSource = $this->getDataSource();
+		$dataSource->begin();
+
+		$data['UserPasswordTicket']['user_id'] = $this->id;
+		$data['UserPasswordTicket']['time'] = date('Y-m-d H:i:s');
+
+
+		if ($this->UserPasswordTicket->save($data)) {
+			$user = $this->read(array('name', 'email'));
+
+			$event = new CakeEvent('Model.User.forgotPasswordEmail', $this, array(
+							'Ticket' => array(
+								 'id' => $this->UserPasswordTicket->id,
+							),
+							'User' => $user['User']
+					  ));
+			$this->getEventManager()->dispatch($event);
+
+			if ($event->result['success']) {
+				$dataSource->commit();
+				return true;
+			}
+		}
+
 		$dataSource->rollback();
 		return false;
 	}
