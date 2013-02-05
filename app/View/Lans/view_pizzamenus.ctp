@@ -1,4 +1,4 @@
-<div>
+<div style="padding: 5px;">
 	<?php if (!count($pizza_menus)): ?>
 		<p style="margin:10px;font-size: 14pt;"><i class="icon-exclamation-sign" style="font-size:16pt;"></i> No pizza menus connected to this LAN</p>
 	<?php else: ?>
@@ -28,10 +28,7 @@
 					<table>
 						<tr>
 							<th>
-								<small>Date</small>
-							</th>
-							<th>
-								<small>Time</small>
+								<small>Time closure</small>
 							</th>
 							<th>
 								<small>Status</small>
@@ -41,12 +38,7 @@
 						</tr>
 						<?php foreach ($pizza_menu['PizzaWave'] as $pizza_wave): ?>
 							<tr>
-								<td><?php echo $pizza_wave['time_start_nice']; ?></td>
-								<td>
-									<?php echo $this->Time->format('H:i', $pizza_wave['time_start']); ?>
-									-
-									<?php echo $this->Time->format('H:i', $pizza_wave['time_end']); ?>
-								</td>
+								<td><?php echo $pizza_wave['time_close_nice']; ?></td>
 								<td>
 									<?php
 									switch ($pizza_wave['status']) {

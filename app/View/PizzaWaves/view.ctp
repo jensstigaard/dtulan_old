@@ -3,12 +3,8 @@
 	<table>
 		<tbody>
 			<tr>
-				<td>Time start</td>
-				<td><?php echo $this->Time->nice($pizza_wave['PizzaWave']['time_start']); ?></td>
-			</tr>
-			<tr>
-				<td>Time end</td>
-				<td><?php echo $this->Time->nice($pizza_wave['PizzaWave']['time_end']); ?></td>
+				<td>Time closure</td>
+				<td><?php echo $this->Time->nice($pizza_wave['PizzaWave']['time_close']); ?></td>
 			</tr>
 			<tr>
 				<td>Status</td>
@@ -21,7 +17,7 @@
 							break;
 						case 1:
 							echo'Open ';
-							if ($pizza_wave['PizzaWave']['time_end'] >= date('Y-m-d H:i:s')) {
+							if ($pizza_wave['PizzaWave']['time_close'] >= date('Y-m-d H:i:s')) {
 								echo' (Still taking orders)';
 							} elseif (!count($pizza_wave_items)) {
 								echo'(No pizzas in wave)';
@@ -85,10 +81,10 @@
 							<td>
 								<?php
 								echo $this->Html->link($order['User']['name'], array(
-									'controller' => 'users',
-									'action' => 'profile',
-									$order['User']['id']
-										)
+									 'controller' => 'users',
+									 'action' => 'profile',
+									 $order['User']['id']
+										  )
 								);
 								?><br />
 
@@ -110,21 +106,21 @@
 								switch ($order['PizzaOrder']['status']) {
 									case 0:
 										echo $this->Html->link($this->Html->image('16x16_PNG/add.png') . ' Mark delivered', array(
-											'controller' => 'pizza_orders',
-											'action' => 'mark_delivered',
-											$order['PizzaOrder']['id']
-												), array(
-											'escape' => false
-												)
+											 'controller' => 'pizza_orders',
+											 'action' => 'mark_delivered',
+											 $order['PizzaOrder']['id']
+												  ), array(
+											 'escape' => false
+												  )
 										);
 										echo'<br />';
 										echo $this->Html->link($this->Html->image('16x16_PNG/cancel.png') . ' With errors', array(
-											'controller' => 'pizza_orders',
-											'action' => 'mark_errors',
-											$order['PizzaOrder']['id']
-												), array(
-											'escape' => false
-												)
+											 'controller' => 'pizza_orders',
+											 'action' => 'mark_errors',
+											 $order['PizzaOrder']['id']
+												  ), array(
+											 'escape' => false
+												  )
 										);
 										break;
 									case 1:

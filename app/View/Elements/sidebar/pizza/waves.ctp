@@ -9,7 +9,7 @@
 <?php
 $last_date = '';
 foreach ($pizza_waves as $wave):
-	$this_date = $this->Time->format('Y-m-d', $wave['PizzaWave']['time_start']);
+	$this_date = $this->Time->format('Y-m-d', $wave['PizzaWave']['time_close']);
 	?>
 	<?php if ($last_date != $this_date): ?>
 		<?php if ($last_date != '') : ?>
@@ -19,14 +19,14 @@ foreach ($pizza_waves as $wave):
 		<div>
 			<h3>
 				<?php
-				if ($this->Time->isToday($wave['PizzaWave']['time_start'])) {
+				if ($this->Time->isToday($wave['PizzaWave']['time_close'])) {
 					echo'Today';
-				} elseif ($this->Time->isTomorrow($wave['PizzaWave']['time_start'])) {
+				} elseif ($this->Time->isTomorrow($wave['PizzaWave']['time_close'])) {
 					echo'Tomorrow';
-				} elseif ($this->Time->isThisWeek($wave['PizzaWave']['time_start'])) {
-					echo $this->Time->format('l', $wave['PizzaWave']['time_start']);
+				} elseif ($this->Time->isThisWeek($wave['PizzaWave']['time_close'])) {
+					echo $this->Time->format('l', $wave['PizzaWave']['time_close']);
 				} else {
-					echo $this->Time->format('D, M jS', $wave['PizzaWave']['time_start']);
+					echo $this->Time->format('D, M jS', $wave['PizzaWave']['time_close']);
 				}
 				?>
 			</h3>
@@ -41,7 +41,7 @@ foreach ($pizza_waves as $wave):
 					$content .= $this->Html->image('16x16_GIF/action_check.gif') . ' ';
 				}
 
-				$content.= $this->Time->format('H:i', $wave['PizzaWave']['time_end']);
+				$content.= $this->Time->format('H:i', $wave['PizzaWave']['time_close']);
 
 				echo $this->Html->link($content, array('action' => 'view', $lan_pizza_menu_id, $wave['PizzaWave']['id']), array('escape' => false));
 				?>

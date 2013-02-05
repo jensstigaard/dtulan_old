@@ -18,17 +18,27 @@
 				?>
 				<p style="margin:0;"><strong><?php echo $image['Image']['title']; ?></strong></p>
 				<p style="margin:0;"><?php echo $image['Image']['fileSize']; ?></p>
-				<?php
-				echo $this->Html->link('<i class="icon-remove"></i> Delete', array(
-					 'controller' => 'images',
-					 'action' => 'delete', $image['Image']['id']
-						  ), array(
-					 'escape' => false,
-					 'confirm' => 'Are you sure?',
-					 'class' => 'btn btn-small btn-danger'
-						  )
-				);
-				?>
+				<div class="btn-group">
+					<?php
+					echo $this->Html->link('<i class="icon-edit"></i> Edit', array(
+						 'controller' => 'images',
+						 'action' => 'edit', $image['Image']['id']
+							  ), array(
+						 'escape' => false,
+						 'class' => 'btn btn-small btn-warning'
+							  )
+					);
+					echo $this->Html->link('<i class="icon-remove"></i> Delete', array(
+						 'controller' => 'images',
+						 'action' => 'delete', $image['Image']['id']
+							  ), array(
+						 'escape' => false,
+						 'confirm' => 'Are you sure?',
+						 'class' => 'btn btn-small btn-danger'
+							  )
+					);
+					?>
+				</div>
 			</div>
 		<?php endforeach; ?>
 	</div>

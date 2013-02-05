@@ -8,8 +8,7 @@
     <fieldset>
         <legend><?php echo __('Add pizza wave for ' . $lan_pizza_menu['PizzaMenu']['title'] . ' at ' . $lan_pizza_menu['Lan']['title']); ?></legend>
 		<?php
-		echo $this->Form->input('time_start', array('timeFormat' => '24'));
-		echo $this->Form->input('time_end', array('timeFormat' => '24'));
+		echo $this->Form->input('time_close', array('timeFormat' => '24'));
 		?>
     </fieldset>
 	<?php echo $this->Form->end(__('Submit')); ?>

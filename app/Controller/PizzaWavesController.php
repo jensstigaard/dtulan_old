@@ -62,49 +62,9 @@ class PizzaWavesController extends AppController {
 
 	public function send_email($id) {
 
-		App::uses('CakeEmail', 'Network/Email');
+		$this->PizzaWave->id = id;
 
-		$this->PizzaWave->id = (int) $id;
-
-		if (!$this->PizzaWave->exists()) {
-			throw new NotFoundException(__('Pizza wave not found'));
-		}
-
-		$this->PizzaWave->read(array('status'));
-
-		if ($this->PizzaWave->data['PizzaWave']['status'] < 1) {
-			throw new MethodNotAllowedException(__('Wave not open yet'));
-		}
-		if ($this->PizzaWave->data['PizzaWave']['status'] > 1) {
-			throw new MethodNotAllowedException(__('Email for pizza wave already sent'));
-		}
-
-		$pizza_wave_items = $this->PizzaWave->getItemList($id);
-
-		if (!count($pizza_wave_items)) {
-			throw new NotFoundException(__('No items found in pizza wave'));
-		}
-
-//		debug($content_for_email);
-
-		$email = new CakeEmail();
-		$email->config('smtp');
-		$email->emailFormat('html');
-		$email->template('pizza_wave_to_pizzaria');
-		$email->from(array('no-reply@dtu-lan.dk' => 'DTU LAN site - No reply'));
-		$email->to(array('mahir.yasar1973@gmail.com', 'pizza@dtu-lan.dk')); // 'mahir.yasar1973@gmail.com' // 'jens@stigaard.info'
-		$email->viewVars(array('pizza_wave_items' => $pizza_wave_items, 'title_for_layout' => 'Pizza bestilling'));
-		$email->subject('DTU LAN Party - Ny pizza liste');
-
-		$this->PizzaWave->set(array('status' => 2));
-
-//		debug($this->PizzaWave->data);
-
-		if (
-				$this->PizzaWave->save()
-				&&
-				$email->send()
-		) {
+		if ($this->PizzaWave->sendEmail()) {
 			$this->Session->setFlash('Your email has been send', 'default', array('class' => 'message success'), 'good');
 		} else {
 			$this->Session->setFlash('Unable to send email for this PizzaWave.', 'default', array(), 'bad');

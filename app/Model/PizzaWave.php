@@ -1,60 +1,27 @@
 <?php
 
+App::uses('CakeEvent', 'Event');
+
 class PizzaWave extends AppModel {
 
 	public $hasMany = array('PizzaOrder' => array('foreignKey' => 'pizza_wave_id'));
 	public $belongsTo = array('LanPizzaMenu');
 	public $order = array(
-		 'PizzaWave.time_start' => 'desc'
+		 'PizzaWave.time_close' => 'desc'
 	);
 	public $validate = array(
-		 'time_start' => array(
-			  'bigger than end' => array(
-					'rule' => 'validateDates',
-					'message' => 'Invalid start-/end-time',
-			  ),
-			  'validInterval' => array(
-					'rule' => 'validInterval',
-					'message' => 'There already exist a pizza wave in this interval'
+		 'time_close' => array(
+			  'validTime' => array(
+					'rule' => 'validTime',
+					'message' => 'There already exist a pizza wave in this time'
 			  )
 		 ),
-//		 'lan_pizza_menu_id' => array(
-//			  'validLanPizzaMenu' => array(
-//					'rule' => 'validLanPizzaMenu',
-//					'message' => 'Invalid lan pizza menu'
-//			  )
-//		 )
 	);
 
-	public function validateDates($check) {
-		if ($check['time_start'] >= $this->data['PizzaWave']['time_end']) {
-			$this->invalidate('time_end', 'Invalid start-/end-time');
-			return false;
-		}
-		return true;
-	}
+	public function validateTime($check) {
+		// $check['time_close'];
 
-	public function validInterval($check) {
-		return $this->find('count', array(
-						'conditions' => array(
-							 'PizzaWave.lan_pizza_menu_id' => $this->data['PizzaWave']['lan_pizza_menu_id'],
-							 'OR' => array(
-								  array(
-										'PizzaWave.time_start >= ' => $this->data['PizzaWave']['time_start'],
-										'PizzaWave.time_start < ' => $this->data['PizzaWave']['time_end'],
-								  ),
-								  array(
-										'PizzaWave.time_end > ' => $this->data['PizzaWave']['time_start'],
-										'PizzaWave.time_end <= ' => $this->data['PizzaWave']['time_end'],
-								  ),
-								  array(
-										'PizzaWave.time_start <= ' => $this->data['PizzaWave']['time_start'],
-										'PizzaWave.time_end >= ' => $this->data['PizzaWave']['time_end'],
-								  )
-							 )
-						)
-							 )
-				  ) == 0;
+		return true;
 	}
 
 	public function isOnAir() {
@@ -254,6 +221,47 @@ class PizzaWave extends AppModel {
 
 	public function isCompleted($id) {
 		return $this->getStatus($id) == 4;
+	}
+
+	public function sendEmail() {
+
+		if (!$this->exists()) {
+			throw new NotFoundException(__('Pizza wave not found'));
+		}
+
+		$this->read(array('status'));
+
+		if ($this->data['PizzaWave']['status'] < 1) {
+			throw new MethodNotAllowedException(__('Wave not open yet'));
+		}
+		if ($this->data['PizzaWave']['status'] > 1) {
+			throw new MethodNotAllowedException(__('Email for pizza wave already sent'));
+		}
+
+		$pizza_wave_items = $this->getItemList($id);
+
+		if (!count($pizza_wave_items)) {
+			throw new NotFoundException(__('No items found in pizza wave'));
+		}
+
+		$this->set(array('status' => 2));
+
+		$event = new CakeEvent('Model.PizzaWave.sendPizzaWaveEmail', $this, array(
+						'pizza_wave_items' => $pizza_wave_items
+				  ));
+		$this->getEventManager()->dispatch($event);
+
+
+		$dataSource = $this->getDataSource();
+		$dataSource->begin();
+
+		if ($this->save() && $event->result['success']) {
+			$dataSource->commit();
+			return true;
+		}
+
+		$dataSource->rollback();
+		return false;
 	}
 
 }
