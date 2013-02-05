@@ -4,24 +4,35 @@ $(document).ready(function(){
 	}, function(){
 		$(this).find('img').stop().fadeTo(800, 0.5);
 	});
-
-
-	//	$( ".tabs" ).tabs({
-	//		beforeLoad: function( event, ui ) {
-	//			ui.jqXHR.error(function() {
-	//				ui.panel.html(
-	//					"Couldn't load this tab. We'll try to fix this as soon as possible!"
-	//					);
-	//			});
-	//		},
-	//		select: function(event, ui) {
-	//			$('#loading_indicator').show();
-	//		},
-	//		load:   function(event, ui) {
-	//			$('#loading_indicator').hide();
+	
+	//	$('.nav-tabs a').click(function (e) {
+	//		
+	//		// get the div's id
+	//		var tab_content_element_id = $(this).attr('href').substr(1);
+	//		
+	//		var url = $(this).attr('data-link');
+	//		
+	//		showTab(url, tab_content_element_id);
+	//	});
+	//	
+	//	$('.nav-tabs a:first-child').each(function(){
+	//		// get the div's id
+	//		var tab_content_element_id = $(this).attr('href').substr(1);
+	//		
+	//		var url = $(this).attr('data-link');
+	//		
+	//		showTab(url, tab_content_element_id);
+	//	});
+	//	
+	//	function showTab(url, target){
+	//		$.ajax({
+	//			url: url,
+	//			success: function(data){
+	//				$("#"+target).html(data);
+	//			}
 	//		}
-	//	})
-	//	;
+	//		);
+	//	}
 
 	$( ".tabs" ).tabs({
 		//		beforeLoad: function( event, ui ) {
@@ -32,11 +43,11 @@ $(document).ready(function(){
 		//		},
 		beforeLoad: function(event, ui) {
 			$(this).find('.loading_indicator').show();
-			
+				
 			ui.jqXHR.error(function() {
 				ui.panel.html(
 					"<p>Couldn't load this tab. We'll try to fix this as soon as possible!</p>");
-					
+						
 				$(this).find('.loading_indicator').hide();
 			});
 		},

@@ -1,4 +1,6 @@
-<?php echo $this->Html->script('general'); ?>
+<?php 
+//echo $this->Html->script('general'); 
+?>
 <div>
 
 	<?php if (!count($crew)): ?>

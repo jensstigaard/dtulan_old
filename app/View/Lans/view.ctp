@@ -7,7 +7,7 @@ echo $this->Html->css(array(
 ));
 ?>
 <div>
-	
+
 	<?php if ($is_admin): ?>
 		<?php
 		$admin_links_new = array(
@@ -59,44 +59,44 @@ echo $this->Html->css(array(
 //				 ),
 		);
 		?>
-	<div class="btn-group" style="float:right;">
-		<div class="btn-group">
-			<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
-				<i class="icon-plus-sign"></i> New
-				<span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu">
-				<?php foreach ($admin_links_new as $link): ?>
-					<li>
-						<?php
-						echo $this->Html->link('<i class="icon-large ' . $link['icon'] . '"></i> ' . $link['title'], $link['url'], array(
-							 'escape' => false,
-						));
-						?>
-					</li>
-				<?php endforeach; ?>
-			</ul>
+		<div class="btn-group" style="float:right;">
+			<div class="btn-group">
+				<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
+					<i class="icon-plus-sign"></i> New
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<?php foreach ($admin_links_new as $link): ?>
+						<li>
+							<?php
+							echo $this->Html->link('<i class="icon-large ' . $link['icon'] . '"></i> ' . $link['title'], $link['url'], array(
+								 'escape' => false,
+							));
+							?>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<div class="btn-group">
+				<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
+					<i class="icon-link"></i> Connect
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<?php foreach ($admin_links_connect as $link): ?>
+						<li>
+							<?php
+							echo $this->Html->link('<i class="icon-large ' . $link['icon'] . '"></i> ' . $link['title'], $link['url'], array(
+								 'escape' => false,
+							));
+							?>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
 		</div>
-		<div class="btn-group">
-			<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
-				<i class="icon-link"></i> Connect
-				<span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu">
-				<?php foreach ($admin_links_connect as $link): ?>
-					<li>
-						<?php
-						echo $this->Html->link('<i class="icon-large ' . $link['icon'] . '"></i> ' . $link['title'], $link['url'], array(
-							 'escape' => false,
-						));
-						?>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
-	</div>
 	<?php endif; ?>
-	
+
 	<h1><?php echo $title; ?></h1>
 
 	<div id="lan_overview">
@@ -157,7 +157,7 @@ echo $this->Html->css(array(
 		</div>
 	</div>
 
-	
+
 
 
 </div>

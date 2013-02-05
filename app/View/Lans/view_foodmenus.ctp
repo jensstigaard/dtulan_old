@@ -1,10 +1,8 @@
 <div>
 	<?php if (!count($food_menus)): ?>
-	
 		<p style="margin:10px;font-size: 14pt;"><i class="icon-exclamation-sign" style="font-size:16pt;"></i> No food menus connected</p>
-		
 	<?php else: ?>
-		
+
 		<table>
 			<thead>
 				<tr>

@@ -81,7 +81,7 @@
 					<?php echo $this->element('sponsors', array()); ?>
 				</div>
 				<div id="copyright">
-					<p>DTU LAN Party &bull; Copyright &copy; 2012 &bull; <?php echo $this->Html->link('Contact', 'mailto:contact@dtu-lan.dk'); ?></p>
+					<p>DTU LAN Party &bull; Copyright &copy; 2012 &bull; <?php echo $this->Html->link('<i class="icon-envelope-alt"></i> Contact', 'mailto:contact@dtu-lan.dk', array('escape'=>false)); ?></p>
 				</div>
 			</div>
 		</div>

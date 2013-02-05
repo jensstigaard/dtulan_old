@@ -1,8 +1,8 @@
 <?php
-echo $this->Html->script(array(
-	 'ajax/all_links',
-	 'general'
-));
+//echo $this->Html->script(array(
+//	 'ajax/all_links',
+//	 'general'
+//));
 ?>
 
 <div class="ajax_area">

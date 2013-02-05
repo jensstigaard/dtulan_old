@@ -4,10 +4,8 @@
 		<div id="user_lookup">
 			<div class="input-prepend">
 				<span class="add-on"><i class="icon-user"></i></span>
-				<input type="text" class="span2" name="string" id="user_lookup_input" placeholder="Name / id-number / email" />
+				<input type="text" name="string" id="user_lookup_input" placeholder="Name / id-number / email" data-link="<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'lookup')); ?>" data-redirect="<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'profile')); ?>" />
 			</div>
-			<div class="hidden" id="urlLookup"><?php echo $this->Html->link('#', array('controller' => 'users', 'action' => 'lookup')); ?></div>
-			<div class="hidden" id="urlRedirect"><?php echo $this->Html->link('#', array('controller' => 'users', 'action' => 'profile')); ?></div>
 		</div>
 	</div>
 	<div>

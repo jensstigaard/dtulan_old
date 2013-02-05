@@ -1,15 +1,36 @@
 $(function() {
 
-	$user_lookup = $('#user_lookup');
-	$input = $user_lookup.find('#user_lookup_input');
-	var urlLookup = $user_lookup.find('#urlLookup a').attr('href');
-	var urlRedirect = $user_lookup.find('#urlRedirect a').attr('href');
+	$user_lookup = $('#user_lookup_input');
+	
+	//	$input.typeahead({
+	//		source: function (query, typeahead) {
+	//
+	//			return $.ajax({
+	//				url: $input.attr('data-link'),
+	//				type : "post",
+	//				dataType: "json",
+	//				async: true,
+	//				data: {
+	//					search_startsWith: query
+	//				},
+	//				success: function (data) {
+	//					return typeahead(data);
+	//				}
+	//			});
+	//		},
+	//		onselect: function(item) {
+	//			document.location = item.id;
+	//		},
+	//		property: 'name'
+	//	});
 
-	$('#user_lookup input').autocomplete({
+	//	$input = $user_lookup.find('#user_lookup_input');
+	
+	$user_lookup.autocomplete({
 		minLength: 2,
 		source: function( request, response ) {
 		$.ajax({
-			url: urlLookup,
+			url: $user_lookup.attr('data-link'),
 			dataType: "json",
 			type : 'POST',
 			data: {
@@ -32,17 +53,19 @@ $(function() {
 		selectFirst : true,
 		select: function( event, ui ) {
 		if(ui.item){
-		document.location = urlRedirect + '/' + ui.item.id;
+		document.location = $user_lookup.attr('data-redirect') + '/' + ui.item.id;
 		}
+			
 		return false;
 		}
 		})
 	.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
 		return $("<li></li>").data("item.autocomplete", item).append(
 			"<a>" +
+			"" +
 			"<strong>" + item.label + "</strong>" +
-			//			"<br />" +
-			//			"<small>" + item.id_number + "<br />" + item.email + "</small>" +
+			"<br />" +
+			"<small>" + item.id_number + "<br />" + item.email + "</small>" +
 			"</a>")
 		.appendTo(ul);
 	};

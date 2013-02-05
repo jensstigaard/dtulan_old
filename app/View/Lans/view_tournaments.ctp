@@ -1,7 +1,3 @@
-<?php
-echo $this->Html->script(array('general'));
-?>
-
 <div>
 
 	<?php if (!count($tournaments)): ?>
@@ -28,4 +24,5 @@ echo $this->Html->script(array('general'));
 </div>
 
 <?php
-// pr($tournaments); ?>
+// pr($tournaments);
+?>
