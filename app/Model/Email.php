@@ -21,6 +21,7 @@ class Email extends AppModel implements CakeEventListener {
 			 'Model.User.activationEmail' => 'sendActivationEmail',
 			 'Model.User.forgotPasswordEmail' => 'sendForgotPasswordEmail',
 			 'Model.Lan.sendSubscriptionEmail' => 'sendSubscriptionEmail',
+			 'Model.PizzaWave.pizzaWaveEmail' => 'sendPizzaWaveEmail'
 		);
 	}
 
@@ -104,6 +105,34 @@ class Email extends AppModel implements CakeEventListener {
 
 		if (!$email->send()) {
 			$this->log('Subscription email not send', 'email');
+			return $event->data + array('success' => false);
+		}
+
+		return $event->data + array('success' => true);
+	}
+
+	public function sendPizzaWaveEmail($event) {
+
+		if (!isset($event->data['pizza_wave_tems'])) {
+			$this->log('Pizza wave email not send.. Wrong data received', 'email');
+			return $event->data + array('success' => false);
+		}
+
+		$email = new CakeEmail();
+		$email->config('smtp')
+				  ->emailFormat('html')
+				  ->template('pizza_wave_to_pizzaria')
+				  ->from(array('no-reply@dtu-lan.dk' => 'DTU LAN site - No reply'))
+				  ->to(array('mahir.yasar1973@gmail.com', 'pizza@dtu-lan.dk')) // 'mahir.yasar1973@gmail.com' // 'jens@stigaard.info'
+				  ->viewVars(array(
+						'pizza_wave_items' => $event->data['pizza_wave_items'],
+						'title_for_layout' => 'Pizza bestilling'
+				  ))
+				  ->subject('DTU LAN Party - Ny pizza liste');
+
+
+		if (!$email->send()) {
+			$this->log('Pizza wave email not send', 'email');
 			return $event->data + array('success' => false);
 		}
 
