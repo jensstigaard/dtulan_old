@@ -28,16 +28,15 @@ class LanPizzaMenu extends AppModel {
 	}
 
 	public function getPizzaWavesAvailable() {
-		$current_time = date('Y-m-d H:i:s');
 
 		$current_wave = $this->PizzaWave->find('all', array(
 			 'conditions' => array(
 				  'PizzaWave.status' => 1,
-				  'PizzaWave.time_end >' => $current_time,
+				  'PizzaWave.time_close >' => date('Y-m-d H:i:s'),
 				  'PizzaWave.lan_pizza_menu_id' => $this->id
 			 ),
 			 'order' => array(
-				  'PizzaWave.time_start ASC'
+				  'PizzaWave.time_close ASC'
 			 )
 				  )
 		);
@@ -54,13 +53,10 @@ class LanPizzaMenu extends AppModel {
 				 'PizzaWave.id' => $this->PizzaWave->id,
 			);
 		} else {
-			$current_time = date('Y-m-d H:i:s');
-
 			$cond = array(
 				 'PizzaWave.lan_pizza_menu_id' => $this->id,
 				 'PizzaWave.status' => 1,
-				 'PizzaWave.time_end >' => $current_time,
-				 'PizzaWave.time_start <' => $current_time,
+				 'PizzaWave.time_close >' => date('Y-m-d H:i:s'),
 			);
 		}
 

@@ -356,6 +356,7 @@ class User extends AppModel {
 		$data['UserPasswordTicket']['user_id'] = $this->id;
 		$data['UserPasswordTicket']['time'] = date('Y-m-d H:i:s');
 
+		$this->UserPasswordTicket->deleteAll(array('UserPasswordTicket.user_id' => $this->id));
 
 		if ($this->UserPasswordTicket->save($data)) {
 			$user = $this->read(array('name', 'email'));

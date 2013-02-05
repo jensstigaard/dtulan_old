@@ -26,10 +26,8 @@ class Lan extends AppModel {
 			  'dependent' => true
 		 )
 	);
-	
 	public $order = array(
 		 'time_start' => 'desc',
-		 
 	);
 //
 //Validation
@@ -420,6 +418,33 @@ class Lan extends AppModel {
 				  ));
 	}
 
+	public function getPizzaMenus() {
+		$pizza_menus = $this->LanPizzaMenu->find('all', array(
+			 'conditions' => array(
+				  'LanPizzaMenu.lan_id' => $this->id
+			 ),
+			 'contain' => array(
+				  'PizzaMenu',
+				  'PizzaWave' => array(
+						'order' => array(
+							 'time_close' => 'DESC'
+						)
+				  )
+			 )
+				  ));
+
+		foreach ($pizza_menus as $index => $pizza_menu_data) {
+			$this->dateToNiceArray($pizza_menus[$index]['PizzaWave'], null, 'time_close');
+
+			foreach ($pizza_menu_data['PizzaWave'] as $index_ => $pizza_wave_data) {
+				$this->LanPizzaMenu->PizzaWave->id = $pizza_wave_data['id'];
+				$pizza_menus[$index]['PizzaWave'][$index_]['pizza_orders_total'] = $this->LanPizzaMenu->PizzaWave->getOrdersSum();
+			}
+		}
+
+		return $pizza_menus;
+	}
+
 	/*
 	 * 
 	 * Is Lan published?
@@ -609,8 +634,8 @@ class Lan extends AppModel {
 			 'recursive' => 1
 				  )
 		);
-		
-		foreach($lans as $key => $lan){
+
+		foreach ($lans as $key => $lan) {
 			$this->id = $lan['Lan']['id'];
 			$lans[$key]['Lan']['count_participants'] = $this->countSignups();
 		}

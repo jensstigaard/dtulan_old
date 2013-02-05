@@ -43,6 +43,30 @@ class ImagesController extends AppController {
 			}
 		}
 	}
+	
+	public function edit($id) {
+		
+		$this->Image->id = $id;
+		
+		if(!$this->Image->exists()){
+			throw new NotFoundException('Image was not found');
+		}
+
+		if ($this->request->is('get')) {
+			$this->request->data = $this->Image->read();
+		}
+		else{
+			if ($this->Image->save($this->request->data)) {
+				$this->Session->setFlash('Your image has been saved', 'default', array('class' => 'message success'), 'good');
+			} else {
+				$this->Session->setFlash('Unable to save image', 'default', array(), 'bad');
+			}
+		}
+		
+		$this->Image->read(array('id', 'ext'));
+		
+		$this->set('imgPath', $this->Image->getFileName($this->Image->data['Image']));
+	}
 
 	public function delete($id) {
 		if (!$this->request->is('post')) {

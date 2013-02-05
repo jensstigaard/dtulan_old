@@ -156,25 +156,7 @@ class LansController extends AppController {
 		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 		$this->set('id', $this->Lan->id);
 
-		$this->Lan->LanPizzaMenu->unbindModel(array('belongsTo' => array('Lan')));
-		$this->Lan->LanPizzaMenu->PizzaMenu->unbindModel(array('hasMany' => array('PizzaCategory')));
-		$pizza_menus = $this->Lan->LanPizzaMenu->find('all', array(
-			 'conditions' => array(
-				  'LanPizzaMenu.lan_id' => $this->Lan->id
-			 ),
-			 'recursive' => 2
-				  ));
-
-		foreach ($pizza_menus as $index => $pizza_menu_data) {
-			$this->Lan->dateToNiceArray($pizza_menus[$index]['PizzaWave'], null, 'time_start', false);
-
-			foreach ($pizza_menu_data['PizzaWave'] as $index_ => $pizza_wave_data) {
-				$this->Lan->LanPizzaMenu->PizzaWave->id = $pizza_wave_data['id'];
-				$pizza_menus[$index]['PizzaWave'][$index_]['pizza_orders_total'] = $this->Lan->LanPizzaMenu->PizzaWave->getOrdersSum();
-			}
-		}
-
-		$this->set(compact('pizza_menus'));
+		$this->set('pizza_menus', $this->Lan->getPizzaMenus());
 	}
 
 	/* -- Food menus tab -- */
