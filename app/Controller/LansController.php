@@ -172,22 +172,7 @@ class LansController extends AppController {
 		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 		$this->set('id', $this->Lan->id);
 
-		$this->Lan->LanFoodMenu->unbindModel(array('belongsTo' => array('Lan')));
-
-		$food_menus = $this->Lan->LanFoodMenu->find('all', array(
-			 'conditions' => array(
-				  'LanFoodMenu.lan_id' => $this->Lan->id
-			 ),
-			 'recursive' => 1
-				  ));
-
-		foreach ($food_menus as $index => $food_menu) {
-			$this->Lan->LanFoodMenu->id = $food_menu['LanFoodMenu']['id'];
-			$food_menus[$index]['LanFoodMenu']['count_orders'] = $this->Lan->LanFoodMenu->countOrders();
-			$food_menus[$index]['LanFoodMenu']['count_orders_unhandled'] = $this->Lan->LanFoodMenu->countOrdersUnhandled();
-		}
-
-		$this->set(compact('food_menus'));
+		$this->set('food_menus', $this->Lan->getFoodMenus());
 	}
 
 	/* -- Economics tab -- */
@@ -201,21 +186,7 @@ class LansController extends AppController {
 
 		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 
-		$this->set('lan', $this->Lan->read());
-
-		$count_lan_signups = $this->Lan->countSignups();
-		$money_pizza_orders = $this->Lan->getMoneyTotalPizzas();
-		$money_food_orders = $this->Lan->getMoneyTotalFoods();
-		$this->set('count_lan_signups_guests', $this->Lan->countGuests());
-		$this->set('count_pizza_orders', $this->Lan->countPizzaOrders());
-		$this->set('count_food_orders', $this->Lan->countFoodOrders());
-
-		$money_total = 0;
-		$money_total += $count_lan_signups * $this->Lan->data['Lan']['price'];
-		$money_total += $money_pizza_orders;
-		$money_total += $money_food_orders;
-
-		$this->set(compact('count_lan_signups', 'money_total', 'money_pizza_orders', 'money_food_orders'));
+		$this->set('data', $this->Lan->getEconomics());
 	}
 
 	/* -- Lan invites tab -- */

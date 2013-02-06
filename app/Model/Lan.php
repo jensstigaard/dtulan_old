@@ -418,6 +418,15 @@ class Lan extends AppModel {
 				  ));
 	}
 
+	/*
+	 * 
+	 * Get data for Pizza Menus tab
+	 * 
+	 * Required
+	 *  - $this(->Lan)->id
+	 * 
+	 */
+
 	public function getPizzaMenus() {
 		$pizza_menus = $this->LanPizzaMenu->find('all', array(
 			 'conditions' => array(
@@ -443,6 +452,78 @@ class Lan extends AppModel {
 		}
 
 		return $pizza_menus;
+	}
+
+	/*
+	 * 
+	 * Get data for Food Menus tab
+	 * 
+	 * Required
+	 *  - $this(->Lan)->id
+	 */
+
+	public function getFoodMenus() {
+
+		$food_menus = $this->LanFoodMenu->find('all', array(
+			 'conditions' => array(
+				  'LanFoodMenu.lan_id' => $this->id
+			 ),
+			 'contain' => array(
+				  'FoodMenu'
+			 )
+				  ));
+
+		foreach ($food_menus as $index => $food_menu) {
+			$this->LanFoodMenu->id = $food_menu['LanFoodMenu']['id'];
+			$food_menus[$index]['LanFoodMenu']['count_orders'] = $this->LanFoodMenu->countOrders();
+			$food_menus[$index]['LanFoodMenu']['count_orders_unhandled'] = $this->LanFoodMenu->countOrdersUnhandled();
+		}
+
+		return $food_menus;
+	}
+
+	/*
+	 * 
+	 * Get data for Economics tab
+	 * 
+	 * Required
+	 *  - $this(->Lan)->id
+	 * 
+	 */
+
+	public function getEconomics() {
+
+		$this->read('price');
+
+		$data = array(
+			 'lan' => array(
+				  'price' => $this->data['Lan']['price']
+			 ),
+			 'participants' => array(
+				  'count' => $this->countSignups(),
+				  'count_guests' => $this->countGuests(),
+			 ),
+			 'pizza_orders' => array(
+				  'count' => $this->countPizzaOrders(),
+				  'money' => $this->getMoneyTotalPizzas(),
+			 ),
+			 'food_orders' => array(
+				  'count' => $this->countFoodOrders(),
+				  'money' => $this->getMoneyTotalFoods()
+			 )
+		);
+
+		$data['participants']['money'] = $data['participants']['count'] * $this->data['Lan']['price'];
+
+		$data['pizza_orders']['average'] = $data['pizza_orders']['count'] > 0 ? floor($data['pizza_orders']['money'] / $data['pizza_orders']['count']) : 0;
+		$data['food_orders']['average'] = $data['food_orders']['count'] > 0 ? floor($data['food_orders']['money'] / $data['food_orders']['count']) : 0;
+
+		$data['lan']['total'] = 0;
+		$data['lan']['total'] += $data['participants']['money'];
+		$data['lan']['total'] += $data['pizza_orders']['money'];
+		$data['lan']['total'] += $data['food_orders']['money'];
+
+		return $data;
 	}
 
 	/*
