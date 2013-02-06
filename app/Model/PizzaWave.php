@@ -29,8 +29,7 @@ class PizzaWave extends AppModel {
 
 		$current_wave = $this->Lan->PizzaWave->find('count', array(
 			 'conditions' => array(
-				  'PizzaWave.time_end >' => $current_time,
-				  'PizzaWave.time_start <' => $current_time,
+				  'PizzaWave.time_close >' => $current_time,
 				  'PizzaWave.status' => 1
 			 )
 				  )
@@ -45,7 +44,7 @@ class PizzaWave extends AppModel {
 			throw new NotFoundException(__('Pizza wave not found with ID: "' . $this->id . '" in function isOrderable'));
 		}
 
-		$this->read(array('status', 'time_end', 'lan_pizza_menu_id'));
+		$this->read(array('status', 'time_close', 'lan_pizza_menu_id'));
 
 		$this->LanPizzaMenu->id = $this->data['PizzaWave']['lan_pizza_menu_id'];
 
@@ -55,7 +54,7 @@ class PizzaWave extends AppModel {
 
 		$this->LanPizzaMenu->Lan->LanSignup->User->id = $this->getLoggedInId();
 
-		if ($this->LanPizzaMenu->Lan->isUserAttending() && $this->data['PizzaWave']['status'] == 1 && $this->data['PizzaWave']['time_end'] > date('Y-m-d H:i:s')) {
+		if ($this->LanPizzaMenu->Lan->isUserAttending() && $this->data['PizzaWave']['status'] == 1 && $this->data['PizzaWave']['time_close'] > date('Y-m-d H:i:s')) {
 			return true;
 		}
 
@@ -75,9 +74,9 @@ class PizzaWave extends AppModel {
 		if (!$this->exists()) {
 			throw new NotFoundException(__('Pizza wave not found with ID: ' . $this->id));
 		}
-		
+
 		$pizza_orders = $this->PizzaOrder->find('all', array(
-			'conditions' => array(
+			 'conditions' => array(
 				  'PizzaOrder.pizza_wave_id' => $this->id
 			 ),
 			 'contain' => array(
@@ -88,7 +87,7 @@ class PizzaWave extends AppModel {
 						)
 				  )
 			 )
-		));
+				  ));
 
 		$pizza_wave_items = array();
 

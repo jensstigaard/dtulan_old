@@ -105,23 +105,26 @@
 								<?php
 								switch ($order['PizzaOrder']['status']) {
 									case 0:
-										echo $this->Html->link($this->Html->image('16x16_PNG/add.png') . ' Mark delivered', array(
+										echo'<div class="btn-group">';
+										echo $this->Html->link('<i class="icon icon-large icon-ok-sign"></i> Mark delivered', array(
 											 'controller' => 'pizza_orders',
 											 'action' => 'mark_delivered',
 											 $order['PizzaOrder']['id']
 												  ), array(
-											 'escape' => false
+											 'escape' => false,
+											 'class' => 'btn btn-mini btn-success'
 												  )
 										);
-										echo'<br />';
-										echo $this->Html->link($this->Html->image('16x16_PNG/cancel.png') . ' With errors', array(
+										echo $this->Html->link('<i class="icon icon-large icon-exclamation-sign"></i> With errors', array(
 											 'controller' => 'pizza_orders',
 											 'action' => 'mark_errors',
 											 $order['PizzaOrder']['id']
 												  ), array(
-											 'escape' => false
+											 'escape' => false,
+											 'class' => 'btn btn-mini btn-danger'
 												  )
 										);
+										echo'</div>';
 										break;
 									case 1:
 

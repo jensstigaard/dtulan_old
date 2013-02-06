@@ -202,16 +202,18 @@ class UsersController extends AppController {
 			throw new UnauthorizedException;
 		}
 
-		// Pizza orders
-		$this->User->PizzaOrder->unbindModel(array('belongsTo' => array('User')));
-		$this->User->PizzaOrder->PizzaWave->unbindModel(array('hasMany' => array('PizzaOrder'), 'belongsTo' => array('Lan')));
-		$this->User->PizzaOrder->PizzaOrderItem->unbindModel(array('belongsTo' => array('PizzaOrder')));
-//		$this->User->PizzaOrder->PizzaWave->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'LanDay', 'PizzaWave')));
 		$pizza_orders = $this->User->PizzaOrder->find('all', array(
 			 'conditions' => array(
 				  'PizzaOrder.user_id' => $id
 			 ),
-			 'recursive' => 3,
+			 'contain' => array(
+				  'PizzaOrderItem' => array(
+						'PizzaPrice' => array(
+							 'Pizza',
+							 'PizzaType'
+						)
+				  )
+			 ),
 			 'limit' => 10
 				  )
 		);
