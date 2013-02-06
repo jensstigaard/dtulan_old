@@ -70,23 +70,25 @@ class PizzaWave extends AppModel {
 		return $this->LanPizzaMenu->isUserConnected();
 	}
 
-	public function getItemList($id) {
-		$this->id = $id;
+	public function getItemList() {
 
 		if (!$this->exists()) {
-			throw new NotFoundException(__('Pizza wave not found with ID: ' . $id));
+			throw new NotFoundException(__('Pizza wave not found with ID: ' . $this->id));
 		}
-
-		$this->PizzaOrder->unbindModel(array('belongsTo' => array('User', 'PizzaWave')));
-		$this->PizzaOrder->PizzaOrderItem->unbindModel(array('belongsTo' => array('PizzaOrder')));
-		$this->PizzaOrder->PizzaOrderItem->PizzaPrice->unbindModel(array('hasMany' => array('PizzaOrderItem')));
+		
 		$pizza_orders = $this->PizzaOrder->find('all', array(
-			 'conditions' => array(
-				  'PizzaOrder.pizza_wave_id' => $id
+			'conditions' => array(
+				  'PizzaOrder.pizza_wave_id' => $this->id
 			 ),
-			 'recursive' => 3
+			 'contain' => array(
+				  'PizzaOrderItem' => array(
+						'PizzaPrice' => array(
+							 'Pizza',
+							 'PizzaType'
+						)
 				  )
-		);
+			 )
+		));
 
 		$pizza_wave_items = array();
 
@@ -131,36 +133,22 @@ class PizzaWave extends AppModel {
 			throw new NotFoundException(__('Pizza wave not found with ID: ' . $id));
 		}
 
-		$this->PizzaOrder->unbindModel(array('belongsTo' => array('PizzaWave')));
-		$this->PizzaOrder->PizzaOrderItem->unbindModel(array('belongsTo' => array('PizzaOrder')));
-		$this->PizzaOrder->PizzaOrderItem->PizzaPrice->unbindModel(array('hasMany' => array('PizzaOrderItem')));
-
-		$this->PizzaOrder->User->unbindModel(
-				  array('hasMany' => array(
-							 'Crew',
-							 'LanSignup',
-							 'LanInvite',
-							 'LanInviteSent',
-							 'Payment',
-							 'PizzaOrder',
-							 'TeamUser'
-						),
-						'hasOne' => array(
-							 'Admin',
-							 'UserPasswordTicket',
-							 'QrCode'
-						)
-				  )
-		);
-
 		$pizza_orders = $this->PizzaOrder->find('all', array(
 			 'conditions' => array(
 				  'PizzaOrder.pizza_wave_id' => $id
 			 ),
-			 'recursive' => 3,
 			 'order' => array(
 				  'status' => 'asc',
 				  'time' => 'asc'
+			 ),
+			 'contain' => array(
+				  'User',
+				  'PizzaOrderItem' => array(
+						'PizzaPrice' => array(
+							 'Pizza',
+							 'PizzaType'
+						)
+				  )
 			 )
 				  )
 		);
@@ -238,7 +226,7 @@ class PizzaWave extends AppModel {
 			throw new MethodNotAllowedException(__('Email for pizza wave already sent'));
 		}
 
-		$pizza_wave_items = $this->getItemList($id);
+		$pizza_wave_items = $this->getItemList();
 
 		if (!count($pizza_wave_items)) {
 			throw new NotFoundException(__('No items found in pizza wave'));

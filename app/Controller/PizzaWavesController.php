@@ -62,7 +62,7 @@ class PizzaWavesController extends AppController {
 
 	public function send_email($id) {
 
-		$this->PizzaWave->id = id;
+		$this->PizzaWave->id = $id;
 
 		if ($this->PizzaWave->sendEmail()) {
 			$this->Session->setFlash('Your email has been send', 'default', array('class' => 'message success'), 'good');
