@@ -93,11 +93,9 @@ class LanSignup extends AppModel {
 
 		if (!$this->Lan->data['Lan']['need_physical_code']) {
 			return true;
-		} elseif ($this->Lan->LanSignupCode->isNotUsed($check['code'])) {
-			return true;
+		} else{
+			return $this->Lan->LanSignupCode->isNotUsed($check['code']);
 		}
-
-		return false;
 	}
 
 	public function getDataForDeletion() {

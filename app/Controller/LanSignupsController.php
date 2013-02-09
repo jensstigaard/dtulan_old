@@ -35,11 +35,17 @@ class LanSignupsController extends AppController {
 		if ($this->LanSignup->Lan->isUserAttending()) {
 			throw new BadRequestException(__('LAN already signed up'));
 		}
-
-		$lan = $this->LanSignup->Lan->read();
+		
+		$lan = $this->LanSignup->Lan->read(array(
+			 'title',
+			 'need_physical_code',
+			 'price',
+			 'time_start',
+			 'time_end'
+		));
 
 		if ($this->request->is('post')) {
-			$this->request->data['LanSignup']['lan_id'] = $lan['Lan']['id'];
+			$this->request->data['LanSignup']['lan_id'] = $this->LanSignup->Lan->id;
 
 			$this->request->data['User']['id'] = $user['User']['id'];
 			$this->request->data['User']['balance'] = $user['User']['balance'] - $lan['Lan']['price'];
@@ -49,15 +55,17 @@ class LanSignupsController extends AppController {
 				 'accepted' => 1,
 			);
 
+			unset($this->request->data['LanSignup']['code']);
+
 			if ($this->LanSignup->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your signup has been saved', 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug']));
+				$this->redirect(array('controller' => 'lans', 'action' => 'view', $lan_slug));
 			} else {
 				$this->Session->setFlash('Unable to add your signup', 'default', array(), 'bad');
 			}
 		}
 
-		$this->set(compact('lan'));
+		$this->set('lan', $lan);
 	}
 
 	public function delete($lan_slug) {

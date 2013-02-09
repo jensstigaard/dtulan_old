@@ -47,6 +47,7 @@ class LansController extends AppController {
 						'time_end',
 						'published',
 						'sign_up_open',
+						'need_physical_code',
 						'max_participants'
 				  )));
 
@@ -228,7 +229,6 @@ class LansController extends AppController {
 		if ($this->request->is('get')) {
 			$this->request->data = $this->Lan->read();
 		} else {
-			$this->request->data['Lan']['slug'] = $this->Lan->stringToSlug($this->request->data['Lan']['title']);
 
 			if ($this->Lan->save($this->request->data)) {
 				$this->Session->setFlash(__('The LAN has been saved'), 'default', array('class' => 'message success'), 'good');
@@ -252,9 +252,9 @@ class LansController extends AppController {
 			throw new BadRequestException('Bad request');
 		}
 
-		$this->request->data['Lan']['sign_up_open'] = 1;
+		$this->Lan->set('sign_up_open', 1);
 
-		if ($this->Lan->save($this->request->data)) {
+		if ($this->Lan->save()) {
 			$this->Session->setFlash(__('The LAN has been opened for signups'), 'default', array('class' => 'message success'), 'good');
 		} else {
 			$this->Session->setFlash(__('The Lan could not be saved. Please try again'), 'default', array(), 'bad');

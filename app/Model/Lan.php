@@ -608,7 +608,7 @@ class Lan extends AppModel {
 	 */
 
 	public function isSeatsLeft() {
-		return $this->countSeatsLeft > 0;
+		return $this->countSeatsLeft() > 0;
 	}
 
 	/*
@@ -622,7 +622,7 @@ class Lan extends AppModel {
 
 	public function isUserAbleSignup() {
 
-		if (!$this->isUserAttending() && isSignupPossible()) {
+		if (!$this->isUserAttending() && $this->isSignupPossible()) {
 			return true;
 		}
 
@@ -896,11 +896,17 @@ class Lan extends AppModel {
 	public function beforeSave($options = array()) {
 		parent::beforeSave($options);
 
+
+
+		return true;
+	}
+
+	public function beforeValidate($options = array()) {
+		parent::beforeValidate($options);
+
 		if (isset($this->data['Lan']['title'])) {
 			$this->data['Lan']['slug'] = $this->stringToSlug($this->data['Lan']['title']);
 		}
-
-		return true;
 	}
 
 }
