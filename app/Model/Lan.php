@@ -10,21 +10,21 @@ class Lan extends AppModel {
 		 'Crew' => array(
 			  'dependent' => true
 		 ),
-		 'LanSignup' => array(
-			  'dependent' => true
-		 ),
-		 'Tournament' => array(
+		 'LanFoodMenu' => array(
 			  'dependent' => true
 		 ),
 		 'LanPizzaMenu' => array(
 			  'dependent' => true
 		 ),
-		 'LanFoodMenu' => array(
+		 'LanSignup' => array(
 			  'dependent' => true
 		 ),
 		 'LanSignupCode' => array(
 			  'dependent' => true
-		 )
+		 ),
+		 'Tournament' => array(
+			  'dependent' => true
+		 ),
 	);
 	public $order = array(
 		 'time_start' => 'desc',
@@ -50,12 +50,12 @@ class Lan extends AppModel {
 					'message' => 'Has to be a number'
 			  )
 		 ),
-		 'max_guests_per_student' => array(
-			  'required' => array(
-					'rule' => array('numeric'),
-					'message' => 'Has to be a number'
-			  )
-		 ),
+//		 'max_guests_per_student' => array(
+//			  'required' => array(
+//					'rule' => array('numeric'),
+//					'message' => 'Has to be a number'
+//			  )
+//		 ),
 		 'published' => array(
 			  'required' => array(
 					'rule' => array('between', 0, 1),
@@ -84,16 +84,23 @@ class Lan extends AppModel {
 
 	/*
 	 * 
-	 * Validate inputs time_start + time_end
-	 * 
+	 * Before save
 	 */
 
-	public function validateDates($check) {
-		if ($check['time_start'] >= $this->data['Lan']['time_end']) {
-			$this->invalidate('time_end', 'Invalid start-/end-time');
-			return false;
-		}
+	public function beforeSave($options = array()) {
+		parent::beforeSave($options);
+
+
+
 		return true;
+	}
+
+	public function beforeValidate($options = array()) {
+		parent::beforeValidate($options);
+
+		if (isset($this->data['Lan']['title'])) {
+			$this->data['Lan']['slug'] = $this->stringToSlug($this->data['Lan']['title']);
+		}
 	}
 
 	/*
@@ -785,10 +792,10 @@ class Lan extends AppModel {
 
 	public function getTabsAdmin() {
 
-		$this->read(array('slug'));
+		$this->read(array('slug', 'need_physical_code'));
 
 
-		return $tabs_admin = array(
+		$tabs = array(
 			 array(
 				  'title' => 'Food menus',
 				  'url' => array(
@@ -814,38 +821,19 @@ class Lan extends AppModel {
 				  'icon' => 'icon-bar-chart',
 			 ),
 		);
-	}
 
-	public function sendSubscriptionEmails($data) {
+//		if($this->data['Lan']['need_physical_code']){
+//			$tabs[] = array(
+//				  'title' => 'Signup codes',
+//				  'url' => array(
+//						'action' => 'view_signup_codes',
+//						$this->data['Lan']['slug']
+//				  ),
+//				  'icon' => 'icon-barcode',
+//			 );
+//		}
 
-		$users = $this->LanSignup->User->getSubscribingUsersNameAndEmail();
-
-		$count = array(
-			 'success' => 0,
-			 'failures' => 0,
-		);
-		foreach ($users as $x => $content) {
-			$event = new CakeEvent('Model.Lan.sendSubscriptionEmail', $this, array(
-							'user' => $content['User'],
-							'lan' => $data['Lan']
-					  ));
-			$this->getEventManager()->dispatch($event);
-
-			if ($event->result['success']) {
-				$count['success']++;
-				$data[$x]['success'] = true;
-			} else {
-				$count['failures']++;
-				$data[$x]['success'] = false;
-			}
-		}
-
-		if (!$count['failures']) {
-			return true;
-		}
-
-		debug($data);
-		return false;
+		return $tabs;
 	}
 
 	public function getDataForTournaments($tournaments) {
@@ -888,25 +876,50 @@ class Lan extends AppModel {
 		return $tournaments;
 	}
 
-	/*
-	 * 
-	 * Before save
-	 */
+	public function sendSubscriptionEmails($data) {
 
-	public function beforeSave($options = array()) {
-		parent::beforeSave($options);
+		$users = $this->LanSignup->User->getSubscribingUsersNameAndEmail();
 
+		$count = array(
+			 'success' => 0,
+			 'failures' => 0,
+		);
+		foreach ($users as $x => $content) {
+			$event = new CakeEvent('Model.Lan.sendSubscriptionEmail', $this, array(
+							'user' => $content['User'],
+							'lan' => $data['Lan']
+					  ));
+			$this->getEventManager()->dispatch($event);
 
+			if ($event->result['success']) {
+				$count['success']++;
+				$data[$x]['success'] = true;
+			} else {
+				$count['failures']++;
+				$data[$x]['success'] = false;
+			}
+		}
 
-		return true;
+		if (!$count['failures']) {
+			return true;
+		}
+
+		debug($data);
+		return false;
 	}
 
-	public function beforeValidate($options = array()) {
-		parent::beforeValidate($options);
+	/*
+	 * 
+	 * Validate inputs time_start + time_end
+	 * 
+	 */
 
-		if (isset($this->data['Lan']['title'])) {
-			$this->data['Lan']['slug'] = $this->stringToSlug($this->data['Lan']['title']);
+	public function validateDates($check) {
+		if ($check['time_start'] >= $this->data['Lan']['time_end']) {
+			$this->invalidate('time_end', 'Invalid start-/end-time');
+			return false;
 		}
+		return true;
 	}
 
 }
