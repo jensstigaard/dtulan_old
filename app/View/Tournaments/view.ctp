@@ -8,9 +8,9 @@
 	<h1><?php echo $tournament['Tournament']['title']; ?></h1>
 	<p>
 		In LAN: <?php
-	echo $this->Html->link($lan['Lan']['title'], array(
+	echo $this->Html->link($tournament['Lan']['title'], array(
 		 'controller' => 'lans',
-		 'action' => 'view', $lan['Lan']['slug']
+		 'action' => 'view', $tournament['Lan']['slug']
 			  )
 	);
 	?>
@@ -74,28 +74,28 @@
 			<li><a href="<?php
 echo $this->Html->url(array(
 	 'action' => 'view_description',
-	 $lan['Lan']['slug'],
+	 $tournament['Lan']['slug'],
 	 $tournament['Tournament']['slug']
 ));
 ?>"><i class="icon-info-sign"></i></a></li>
 			<li><a href="<?php
 					 echo $this->Html->url(array(
 						  'action' => 'view_rules',
-						  $lan['Lan']['slug'],
+						  $tournament['Lan']['slug'],
 						  $tournament['Tournament']['slug']
 					 ));
 ?>"><i class="icon-book"></i></a></li>
 			<li><a href="<?php
 					 echo $this->Html->url(array(
 						  'action' => 'view_teams',
-						  $lan['Lan']['slug'],
+						  $tournament['Lan']['slug'],
 						  $tournament['Tournament']['slug']
 					 ));
 ?>"><i class="icon-group"></i></a></li>
 			<li><a href="<?php
 					 echo $this->Html->url(array(
 						  'action' => 'view_bracket',
-						  $lan['Lan']['slug'],
+						  $tournament['Lan']['slug'],
 						  $tournament['Tournament']['slug']
 					 ));
 ?>"><i class="icon-sitemap"></i></a></li>
