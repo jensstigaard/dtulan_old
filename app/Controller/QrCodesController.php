@@ -127,12 +127,8 @@ class QrCodesController extends AppController {
 		}
 	}
 
-	public function generate($count) {
+	public function generate($count = 10) {
 		$this->layout = 'print';
-
-		if (!$count > 0) {
-			throw new InvalidArgumentException('Invalid parameter parsed');
-		}
 
 		$size = 3;
 

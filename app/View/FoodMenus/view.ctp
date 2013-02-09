@@ -19,24 +19,30 @@
 		<tbody>
 			<?php foreach ($used_in_lans as $lan_food_menu): ?>
 				<tr>
-					<td><?php echo $this->Html->link($lan_food_menu['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan_food_menu['Lan']['slug'])); ?></td>
+					<td><?php
+			echo $this->Html->link($lan_food_menu['Lan']['title'], array(
+				 'controller' => 'lans',
+				 'action' => 'view',
+				 'slug' => $lan_food_menu['Lan']['slug']
+			));
+			?></td>
 					<td></td>
 				</tr>
-			<?php endforeach; ?>
+<?php endforeach; ?>
 		</tbody>
 	</table>
 </div>
 
 <div>
 	<div style="float:right">
-		<?php echo $this->Html->link('Add category', array('controller' => 'food_categories', 'action' => 'add', $food_menu['FoodMenu']['id'])); ?>
+	<?php echo $this->Html->link('Add category', array('controller' => 'food_categories', 'action' => 'add', $food_menu['FoodMenu']['id'])); ?>
 	</div>
 	<h1>Items</h1>
 	<?php if (!count($categories)): ?>
 		<p>No items</p>
-	<?php else: ?>
+		<?php else: ?>
 		<table>
-			<?php foreach ($categories as $category): ?>
+	<?php foreach ($categories as $category): ?>
 				<thead>
 					<tr>
 						<th><?php echo $category['FoodCategory']['title']; ?></th>
@@ -70,14 +76,14 @@
 								?>
 							</td>
 						</tr>
-					<?php endforeach; ?>
+							<?php endforeach; ?>
 					<tr>
 						<td colspan="5">
-							<?php echo $this->Html->link('Add item', array('controller' => 'foods', 'action' => 'add', $category['FoodCategory']['id'])) ?>
+		<?php echo $this->Html->link('Add item', array('controller' => 'foods', 'action' => 'add', $category['FoodCategory']['id'])) ?>
 						</td>
 					</tr>
 				</tbody>
-			<?php endforeach; ?>
+		<?php endforeach; ?>
 		</table>
-	<?php endif; ?>
+<?php endif; ?>
 </div>

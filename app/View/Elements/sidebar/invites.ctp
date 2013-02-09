@@ -3,10 +3,10 @@
 		<h1><?php echo $this->Html->image('24x24_PNG/001_15.png'); ?> New event!</h1>
 		<h2><?php
 	echo $this->Html->link($sidebar_new_lan['Lan']['title'], array(
-		'controller' => 'lans',
-		'action' => 'view',
-		$sidebar_new_lan['Lan']['slug']
-			)
+		 'controller' => 'lans',
+		 'action' => 'view',
+		 'slug' => $sidebar_new_lan['Lan']['slug']
+			  )
 	);
 	?></h2>
 		<p>
@@ -16,7 +16,7 @@
 		<ul>
 			<li><?php
 		echo $this->Html->link(
-				$this->Html->image('16x16_GIF/action_check.gif') . ' Sign up now!', array('controller' => 'lan_signups', 'action' => 'add', $sidebar_new_lan['Lan']['slug']), array('escape' => false));
+				  $this->Html->image('16x16_GIF/action_check.gif') . ' Sign up now!', array('controller' => 'lan_signups', 'action' => 'add', $sidebar_new_lan['Lan']['slug']), array('escape' => false));
 	?></li>
 		</ul>
 	</div>
@@ -31,21 +31,21 @@
 				<li>
 					<?php
 					echo $this->Html->link($this->Html->image('16x16_GIF/action_check.gif') . ' Join team', array(
-						'controller' => 'team_users',
-						'action' => 'add',
-						$invite['TeamInvite']['id']), array('escape' => false)
+						 'controller' => 'team_users',
+						 'action' => 'add',
+						 $invite['TeamInvite']['id']), array('escape' => false)
 					);
 					?>
 				</li>
 				<li>
 					<?php
 					echo $this->Form->postLink($this->Html->image('16x16_GIF/action_delete.gif') . ' Decline invite', array(
-						'controller' => 'team_invites',
-						'action' => 'delete',
-						$invite['TeamInvite']['id']), array(
-						'confirm' => 'Do you want to decline this invite?',
-						'escape' => false
-							)
+						 'controller' => 'team_invites',
+						 'action' => 'delete',
+						 $invite['TeamInvite']['id']), array(
+						 'confirm' => 'Do you want to decline this invite?',
+						 'escape' => false
+							  )
 					);
 					?>
 				</li>

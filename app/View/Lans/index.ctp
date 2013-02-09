@@ -25,7 +25,11 @@
 						echo $this->Html->image('16x16_PNG/star.png', array('title' => 'Highlighted event'));
 					}
 					?>
-					<?php echo $this->Html->link($lan['Lan']['title'], array('action' => 'view', $lan['Lan']['slug'])); ?>
+					<?php echo $this->Html->link($lan['Lan']['title'], array(
+						 'controller' => 'lans',
+						 'action' => 'view',
+						 'slug' => $lan['Lan']['slug']
+						 )); ?>
 				</td>
 				<td><span class="badge badge-inverse"><?php echo $lan['Lan']['count_participants']; ?></span></td>
 				<td><?php echo $this->Time->format('d/m/Y H:i', $lan['Lan']['time_start']); ?></td>

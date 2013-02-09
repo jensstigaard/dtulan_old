@@ -10,7 +10,7 @@
 		);
 		?>
 	</div>
-	<h1>Add Crew-member to <?php echo $lan_slug; ?></h1>
+	<h1>Add Crew-member to <?php echo $lan_title; ?></h1>
 	<?php
 	echo $this->Form->create();
 	echo $this->Chosen->select(

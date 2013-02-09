@@ -10,7 +10,8 @@
 		In LAN: <?php
 	echo $this->Html->link($tournament['Lan']['title'], array(
 		 'controller' => 'lans',
-		 'action' => 'view', $tournament['Lan']['slug']
+		 'action' => 'view',
+		 'slug' => $tournament['Lan']['slug']
 			  )
 	);
 	?>

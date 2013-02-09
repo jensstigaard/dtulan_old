@@ -23,7 +23,7 @@
 	echo $this->Html->link($text, array(
 		 'controller' => 'lans',
 		 'action' => 'view',
-		 $lan['Lan']['slug']
+		 'slug' => $lan['Lan']['slug']
 			  ), array('escape' => false));
 	?></li>
 		</ul>

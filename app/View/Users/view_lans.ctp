@@ -15,7 +15,13 @@
 				<?php if ($lan['Lan']['published'] || $is_auth): ?>
 					<tr>
 						<td>
-							<?php echo $this->Html->link($lan['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan['Lan']['slug'])); ?>
+							<?php
+							echo $this->Html->link($lan['Lan']['title'], array(
+								 'controller' => 'lans',
+								 'action' => 'view',
+								 'slug' => $lan['Lan']['slug']
+							));
+							?>
 
 							<?php if ($is_you): ?>
 							<td>
@@ -23,23 +29,23 @@
 								if ($lan['Lan']['sign_up_open']) {
 									echo $this->Form->postLink(
 											  '<i class="icon-large icon-remove"></i> Delete your signup', array(
-													'controller' => 'lan_signups',
-													'action' => 'delete',
-													$lan['Lan']['slug']
-													), array(
-														 'confirm' => 'Are You sure you will delete the signup?',
-														 'escape' => false,
-														 'class' => 'btn btn-danger btn-mini'
-														 )
+										 'controller' => 'lan_signups',
+										 'action' => 'delete',
+										 $lan['Lan']['slug']
+											  ), array(
+										 'confirm' => 'Are You sure you will delete the signup?',
+										 'escape' => false,
+										 'class' => 'btn btn-danger btn-mini'
+											  )
 									);
 								}
 								?>
 							</td>
-						<?php endif; ?>
+					<?php endif; ?>
 						</td>
 					</tr>
-				<?php endif; ?>
-			<?php endforeach; ?>
+			<?php endif; ?>
+		<?php endforeach; ?>
 		</table>
-	<?php endif; ?>
+<?php endif; ?>
 </div>

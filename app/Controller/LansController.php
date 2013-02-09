@@ -294,6 +294,11 @@ class LansController extends AppController {
 							 'LanSignupCode.lan_id' => $this->Lan->id
 						)
 				  )));
+		
+		$this->set('settings', array(
+			 'columns' => 3,
+			 'rows_per_page' => 4
+		));
 	}
 
 	// Print all data about Lan (participants)
