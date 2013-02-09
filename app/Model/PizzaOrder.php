@@ -19,7 +19,9 @@ class PizzaOrder extends AppModel {
 	);
 	public $belongsTo = array(
 		 'User',
-		 'PizzaWave'
+		 'PizzaWave' => array(
+			  'foreignKey' => 'pizza_wave_id'
+		 )
 	);
 	public $order = array(
 		 'time' => 'desc'

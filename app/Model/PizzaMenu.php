@@ -4,7 +4,7 @@ class PizzaMenu extends AppModel {
 
 	public $hasMany = array(
 		 'PizzaCategory',
-		 'LanPizzaMenu'
+		 'LanPizzaMenu',
 	);
 	public $validate = array(
 		 'title' => array(

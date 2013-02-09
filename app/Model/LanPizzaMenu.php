@@ -13,7 +13,8 @@
 class LanPizzaMenu extends AppModel {
 
 	public $belongsTo = array(
-		 'Lan', 'PizzaMenu'
+		 'Lan',
+		 'PizzaMenu'
 	);
 	public $hasMany = array(
 		 'PizzaWave'

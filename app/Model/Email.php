@@ -123,12 +123,12 @@ class Email extends AppModel implements CakeEventListener {
 				  ->emailFormat('html')
 				  ->template('pizza_wave_to_pizzaria')
 				  ->from(array('no-reply@dtu-lan.dk' => 'DTU LAN site - No reply'))
-				  ->to(array('mahir.yasar1973@gmail.com', 'pizza@dtu-lan.dk')) // 'mahir.yasar1973@gmail.com' // 'jens@stigaard.info'
+				  ->to(array($event->data['email_to'], 'pizza@dtu-lan.dk')) // 'mahir.yasar1973@gmail.com'
 				  ->viewVars(array(
 						'pizza_wave_items' => $event->data['pizza_wave_items'],
 						'title_for_layout' => 'Pizza bestilling'
 				  ))
-				  ->subject('DTU LAN Party - Ny pizza liste');
+				  ->subject('DTU LAN - Ny pizza liste');
 
 
 		if (!$email->send()) {

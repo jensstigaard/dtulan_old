@@ -4,8 +4,15 @@ App::uses('CakeEvent', 'Event');
 
 class PizzaWave extends AppModel {
 
-	public $hasMany = array('PizzaOrder' => array('foreignKey' => 'pizza_wave_id'));
-	public $belongsTo = array('LanPizzaMenu');
+	public $useTable = 'pizza_waves';
+	public $hasMany = array(
+		 'PizzaOrder' => array(
+			  'foreignKey' => 'pizza_wave_id'
+		 )
+	);
+	public $belongsTo = array(
+		 'LanPizzaMenu'
+	);
 	public $order = array(
 		 'PizzaWave.time_close' => 'desc'
 	);
@@ -18,6 +25,7 @@ class PizzaWave extends AppModel {
 		 ),
 	);
 
+	// Remember to refactor!!!
 	public function validateTime($check) {
 		// $check['time_close'];
 
@@ -216,12 +224,41 @@ class PizzaWave extends AppModel {
 			throw new NotFoundException(__('Pizza wave not found'));
 		}
 
-		$this->read(array('status'));
+		$pizza_wave = $this->find('first', array(
+			 'conditions' => array(
+				  'PizzaWave.id' => $this->id
+			 ),
+			 'fields' => array(
+				  'status'
+			 ),
+			 'contain' => array(
+				  'LanPizzaMenu' => array(
+						'fields' => array(
+							 'id'
+						)
+				  )
+			 )
+				  ));
 
-		if ($this->data['PizzaWave']['status'] < 1) {
+		$this->LanPizzaMenu->id = $pizza_wave['LanPizzaMenu']['id'];
+
+		if (!$this->LanPizzaMenu->exists()) {
+			throw new NotFoundException(__('LanPizzaMenu not found with ID: ' . $this->LanPizzaMenu->id));
+		}
+
+		$lan_pizza_menu = $this->LanPizzaMenu->read('pizza_menu_id');
+
+		$this->LanPizzaMenu->PizzaMenu->id = $lan_pizza_menu['LanPizzaMenu'];
+		if (!$this->LanPizzaMenu->PizzaMenu->exists()) {
+			throw new NotFoundException(__('PizzaMenu not found with ID: ' . $this->LanPizzaMenu->PizzaMenu->id));
+		}
+
+		$pizza_menu = $this->LanPizzaMenu->PizzaMenu->read(array('email'));
+
+		if ($pizza_wave['PizzaWave']['status'] < 1) {
 			throw new MethodNotAllowedException(__('Wave not open yet'));
 		}
-		if ($this->data['PizzaWave']['status'] > 1) {
+		if ($pizza_wave['PizzaWave']['status'] > 1) {
 			throw new MethodNotAllowedException(__('Email for pizza wave already sent'));
 		}
 
@@ -234,6 +271,7 @@ class PizzaWave extends AppModel {
 		$this->set(array('status' => 2));
 
 		$event = new CakeEvent('Model.PizzaWave.sendPizzaWaveEmail', $this, array(
+						'email_to' => $pizza_menu['PizzaMenu']['email'],
 						'pizza_wave_items' => $pizza_wave_items
 				  ));
 		$this->getEventManager()->dispatch($event);
