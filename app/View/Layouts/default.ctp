@@ -81,12 +81,12 @@
 					<?php echo $this->element('sponsors', array()); ?>
 				</div>
 				<div id="copyright">
-					<p>DTU LAN Party &bull; Copyright &copy; 2012 &bull; <?php echo $this->Html->link('<i class="icon-envelope-alt"></i> Contact', 'mailto:contact@dtu-lan.dk', array('escape'=>false)); ?></p>
+					<p>DTU LAN Party &bull; Copyright &copy; 2012 &bull; <?php echo $this->Html->link('<i class="icon-envelope-alt"></i> Contact', 'mailto:contact@dtu-lan.dk', array('escape' => false)); ?></p>
 				</div>
 			</div>
 		</div>
 
-		<?php // echo $this->element('sql_dump');      ?>
+		<?php // echo $this->element('sql_dump'); ?>
 
 		<?php
 		echo $this->Html->script(array(
