@@ -45,8 +45,15 @@
 			<?php endforeach; ?>
 		</div>
 
-		<div class="pagination participants-list-sort-links">
-			<?php echo $this->Paginator->numbers(array('class' => 'load_inline')); ?>
+		<div class="pagination">
+			<ul>
+			<?php echo $this->Paginator->numbers(array(
+				 'tag' => 'li',
+				 'currentTag' => 'a',
+				 'class' => 'load_inline',
+				 'separator' => false
+				 )); ?>
+			</ul>
 		</div>
 
 		<div style="clear:both;"></div>
