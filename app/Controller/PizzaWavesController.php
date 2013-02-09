@@ -1,6 +1,8 @@
 <?php
 
 class PizzaWavesController extends AppController {
+	
+	public $uses = 'PizzaWave';
 
 	public function beforeFilter() {
 		parent::beforeFilter();
@@ -12,6 +14,7 @@ class PizzaWavesController extends AppController {
 		if ($this->PizzaWave->isYouAdmin()) {
 			return true;
 		}
+
 		return false;
 	}
 
