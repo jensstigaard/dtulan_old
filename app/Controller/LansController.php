@@ -33,9 +33,8 @@ class LansController extends AppController {
 
 		$title = $this->Lan->data['Lan']['title'];
 
-		$title_for_layout = 'Lan &bull; ' . $title;
-
-		$this->set(compact('title', 'title_for_layout'));
+		$this->set('title_for_layout', $title);
+		$this->set(compact('title'));
 
 		$this->set('lan', $this->Lan->read(array(
 						'id',
@@ -302,24 +301,24 @@ class LansController extends AppController {
 		$this->layout = 'print';
 
 		$this->Lan->id = $this->Lan->getIdBySlug($slug);
-		
+
 		$this->Lan->read(array('title'));
 
 		$this->set('title_for_layout', 'Lan &bull; ' . $this->Lan->data['Lan']['title']);
 
 		$this->set('lan', $this->Lan->find('first', array(
-			 'conditions' => array(
-				  'id' => $this->Lan->id
-			 ),
-			 'contain' => array(
-				  'LanSignup' => array(
-						'User'
-				  ),
-				  'Crew' => array(
-						'User'
-				  )
-			 )
-		)));
+						'conditions' => array(
+							 'id' => $this->Lan->id
+						),
+						'contain' => array(
+							 'LanSignup' => array(
+								  'User'
+							 ),
+							 'Crew' => array(
+								  'User'
+							 )
+						)
+				  )));
 	}
 
 	public function delete($id) {
