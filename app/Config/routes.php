@@ -46,6 +46,20 @@ Router::connect('/lan_signup/:slug', array(
 		  )
 );
 
+Router::connect('/tournament/:lan_slug/:tournament_slug', array(
+	 'controller' => 'tournaments',
+	 'action' => 'view',
+		  ), array(
+	 'pass' => array(
+		  'lan_slug',
+		  'tournament_slug'
+	 ),
+	 'lan_slug' => '[a-z][-_a-z0-9]+',
+	 'tournament_slug' => '[a-z][-_a-z0-9]+',
+		  )
+);
+
+
 
 Router::connect('/lan/:slug', array(
 	 'controller' => 'lans',

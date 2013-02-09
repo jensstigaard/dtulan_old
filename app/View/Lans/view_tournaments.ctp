@@ -6,8 +6,14 @@
 
 		<div class="floated-list" id="list-tournaments">
 			<?php foreach ($tournaments as $tournament): ?>
-				<a href="<?php echo $this->Html->url(array('controller' => 'tournaments', 'action' => 'view', $lan['Lan']['slug'], $tournament['Tournament']['slug'])); ?>" class="item" style="background-image:url('../../<?php echo $tournament['Game']['Image']['filePath']; ?>');">
-
+				<a href="<?php
+		echo $this->Html->url(array(
+			 'controller' => 'tournaments',
+			 'action' => 'view',
+			 'lan_slug' => $lan['Lan']['slug'],
+			 'tournament_slug' => $tournament['Tournament']['slug']
+		));
+				?>" class="item" style="background-image:url('../../<?php echo $tournament['Game']['Image']['filePath']; ?>');">
 					<strong class="bottom">
 						<?php
 						if ($tournament['Tournament']['team_size'] > 1) {

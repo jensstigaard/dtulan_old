@@ -8,8 +8,9 @@
 		echo $this->Html->url(array(
 			 'controller' => 'tournaments',
 			 'action' => 'view',
-			 $team['Team']['Tournament']['Lan']['slug'],
-			 $team['Team']['Tournament']['slug']));
+			 'lan_slug' => $team['Team']['Tournament']['Lan']['slug'],
+			 'tournament_slug' => $team['Team']['Tournament']['slug']
+		));
 				?>" style="background-image:url('<?php echo $this->Html->url('../img/uploads/thumb_210w_' . $team['Team']['Tournament']['Game']['Image']['filePath']); ?>');">
 					<strong class="bottom">
 						<?php
