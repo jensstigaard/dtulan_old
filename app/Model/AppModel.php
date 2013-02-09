@@ -73,8 +73,8 @@ class AppModel extends Model {
 	}
 
 	public function stringToSlug($str) {
-		// turn into slug
-		$str = Inflector::slug($str);
+		// turn into slug (use '-' as replacement)
+		$str = Inflector::slug($str, '-');
 		// to lowercase
 		$str = strtolower($str);
 		return $str;
