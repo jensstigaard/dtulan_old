@@ -36,6 +36,19 @@ class FoodOrdersController extends AppController {
 
 		$this->FoodOrder->dateToNiceArray($orders, 'FoodOrder');
 
+		$date = null;
+		foreach ($orders as $index => $order) {
+
+			$date_current = substr($order['FoodOrder']['time'], 0, 10);
+			if ($date_current !== $date) {
+				$date = $date_current;
+				$orders[$index]['header'] = $this->FoodOrder->dateToNice($date, false);
+			}
+
+			$expl = explode(' ', $order['FoodOrder']['time_nice']);
+			$orders[$index]['FoodOrder']['time_nice'] = end($expl);
+		}
+
 		$this->set(compact('orders'));
 	}
 
