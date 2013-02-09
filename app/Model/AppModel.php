@@ -35,6 +35,8 @@ class AppModel extends Model {
 	public $actsAs = array(
 		 'Containable'
 	);
+	
+	public $recursive = 0;
 
 	public function dateToNiceArray(&$array, $model_name = null, $field_name_time = 'time', $with_time = true) {
 		foreach ($array as $index => $content) {
