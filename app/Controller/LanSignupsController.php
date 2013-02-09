@@ -12,8 +12,6 @@
  */
 class LanSignupsController extends AppController {
 
-	public $helpers = array('Js');
-
 	public function beforeFilter() {
 		parent::beforeFilter();
 	}

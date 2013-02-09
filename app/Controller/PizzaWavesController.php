@@ -2,9 +2,6 @@
 
 class PizzaWavesController extends AppController {
 
-	public $helpers = array('Html', 'Form');
-	public $uses = 'PizzaWave';
-
 	public function beforeFilter() {
 		parent::beforeFilter();
 	}
