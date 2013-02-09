@@ -4,7 +4,7 @@
 		<?php
 		if (!empty($user['User']['email_gravatar'])) {
 			echo $this->Html->image(
-					  'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=64&amp;r=r', array('style' => 'margin-right:10px;'));
+					  'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=64&amp;r=r', array('style' => 'width:64px;height:64px;margin-right:10px;'));
 		}
 		echo $user['User']['name'];
 		?>

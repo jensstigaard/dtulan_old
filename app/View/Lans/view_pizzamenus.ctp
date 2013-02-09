@@ -17,15 +17,17 @@
 
 				<div style="float:right">
 					<?php
-					echo $this->Html->link($this->Html->image('16x16_PNG/add.png') . ' Add pizza-wave', array(
+					echo $this->Html->link('<i class="icon-plus-sign icon-large"></i> Add pizza-wave', array(
 						 'controller' => 'pizza_waves',
 						 'action' => 'add',
 						 $pizza_menu['LanPizzaMenu']['id']
 							  ), array(
-						 'escape' => false
+						 'escape' => false,
+									'class' => 'btn btn-success btn-small'
 					));
 					?>
 				</div>
+				<h2>Pizza waves</h2>
 				<?php if (!count($pizza_menu['PizzaWave'])): ?>
 					<p>No pizza waves found</p>
 				<?php else: ?>
@@ -47,19 +49,19 @@
 									<?php
 									switch ($pizza_wave['status']) {
 										case 0:
-											echo $this->Html->image('16x16_GIF/login.gif') . ' Not open';
+											echo '<i class="icon-large icon-ban-circle"></i> Not open';
 											break;
 										case 1:
-											echo $this->Html->image('16x16_PNG/lock_open.png') . ' Open';
+											echo '<i class="icon-large icon-unlock"></i> Open';
 											break;
 										case 2:
-											echo $this->Html->image('16x16_GIF/time.gif') . ' Waiting for delivering';
+											echo '<i class="icon-large icon-truck"></i> Waiting for delivering';
 											break;
 										case 3:
-											echo $this->Html->image('16x16_GIF/download.gif') . ' Pizza wave received';
+											echo '<i class="icon-large icon-pushpin"></i> Pizza wave received';
 											break;
 										case 4:
-											echo $this->Html->image('16x16_GIF/action_check.gif') . ' Finished';
+											echo '<i class="icon-large icon-ok-sign"></i> Finished';
 											break;
 										default:
 											echo'Not proceded';
