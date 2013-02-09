@@ -30,19 +30,32 @@ class TournamentsController extends AppController {
 
 		$this->Tournament->id = $this->Tournament->getTournamentIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug);
 
-		if (!$this->Tournament->exists()) {
-			throw new NotFoundException('Tournament not found with id #' . $id);
-		}
+		$tournament = $this->Tournament->find('first', array(
+			 'conditions' => array(
+				  'Tournament.id' => $this->Tournament->id
+			 ),
+			 'contain' => array(
+				  'Lan' => array(
+						'fields' => array(
+							 'title',
+							 'slug',
+						)
+				  ),
+				  'Game' => array(
+						'Image' => array(
+							 'fields' => array(
+								  'id',
+								  'ext'
+							 )
+						),
+				  )
+			 )
+				  ));
 
-		$tournament = $this->Tournament->read();
 		$tournament['Tournament']['time_start_nice'] = $this->Tournament->dateToNice($tournament['Tournament']['time_start']);
 
-		$this->Tournament->Lan->id = $tournament['Tournament']['lan_id'];
+		$this->set(compact('tournament'));
 
-		$lan = $this->Tournament->Lan->read(array('slug', 'title'));
-
-		$this->set(compact('tournament', 'lan'));
-		
 		$this->set('winner_teams', $this->Tournament->getWinnerTeams());
 	}
 
@@ -100,7 +113,7 @@ class TournamentsController extends AppController {
 			throw new NotFoundException('Lan not found');
 		}
 
-		$this->set('lan', $this->Tournament->Lan->read());
+		$this->set('lan', $this->Tournament->Lan->read(array('title')));
 
 		if ($this->request->is('post')) {
 

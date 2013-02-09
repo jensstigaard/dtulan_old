@@ -66,6 +66,8 @@ class Team extends AppModel {
 				  ));
 	}
 
+	
+	// Refactor!!!
 	public function getInviteableUsers($team_id = null) {
 		$this->id = $team_id;
 

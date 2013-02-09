@@ -32,7 +32,7 @@ class Tournament extends AppModel {
 					'message' => 'Slug cannot be empty'
 			  ),
 //			  'validate slug' => array(
-//					'rule' => '',
+//					'rule' => 'validateSlug',
 //					'message' => 'Invalid slug!'
 //			  )
 		 ),
@@ -43,6 +43,19 @@ class Tournament extends AppModel {
 			  )
 		 )
 	);
+
+	public function getLanIdByTournamentId($id) {
+
+		$this->id = $id;
+
+		if (!$this->exists()) {
+			throw new NotFoundException('No tournament with id: ' . $id);
+		}
+
+		$this->read('lan_id');
+
+		return $this->data['Tournament']['lan_id'];
+	}
 
 	public function getTournamentIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug) {
 		$this->Lan->id = $this->Lan->getIdBySlug($lan_slug);
@@ -131,6 +144,14 @@ class Tournament extends AppModel {
 						)
 				  ));
 		;
+	}
+
+	public function beforeValidate($options = array()) {
+		parent::beforeValidate($options);
+
+		if (isset($this->data['Tournament']['title'])) {
+			$this->data['Tournament']['slug'] = $this->stringToSlug($this->data['Tournament']['title']);
+		}
 	}
 
 }

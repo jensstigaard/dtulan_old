@@ -22,7 +22,15 @@
 								<?php
 								if ($lan['Lan']['sign_up_open']) {
 									echo $this->Form->postLink(
-											  $this->Html->image('16x16_GIF/action_delete.gif') . ' Delete your signup', array('controller' => 'lan_signups', 'action' => 'delete', $lan['Lan']['slug']), array('confirm' => "Are You sure you will delete the signup?", 'escape' => false)
+											  '<i class="icon-large icon-remove"></i> Delete your signup', array(
+													'controller' => 'lan_signups',
+													'action' => 'delete',
+													$lan['Lan']['slug']
+													), array(
+														 'confirm' => 'Are You sure you will delete the signup?',
+														 'escape' => false,
+														 'class' => 'btn btn-danger btn-mini'
+														 )
 									);
 								}
 								?>

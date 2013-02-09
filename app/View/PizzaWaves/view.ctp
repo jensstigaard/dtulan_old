@@ -106,7 +106,7 @@
 								switch ($order['PizzaOrder']['status']) {
 									case 0:
 										echo'<div class="btn-group">';
-										echo $this->Html->link('<i class="icon icon-large icon-ok-sign"></i> Mark delivered', array(
+										echo $this->Html->link('<i class="icon-large icon-ok-sign"></i> Mark delivered', array(
 											 'controller' => 'pizza_orders',
 											 'action' => 'mark_delivered',
 											 $order['PizzaOrder']['id']
@@ -115,7 +115,7 @@
 											 'class' => 'btn btn-mini btn-success'
 												  )
 										);
-										echo $this->Html->link('<i class="icon icon-large icon-exclamation-sign"></i> With errors', array(
+										echo $this->Html->link('<i class="icon-large icon-exclamation-sign"></i> With errors', array(
 											 'controller' => 'pizza_orders',
 											 'action' => 'mark_errors',
 											 $order['PizzaOrder']['id']

@@ -9,7 +9,6 @@
 	echo $this->Form->inputs(array(
 		 //'legend' => __('Edit tournament'),
 		 'title',
-		 'slug',
 		 'team_size',
 		 'time_start' => array('timeFormat' => '24'),
 		 'description' => array('class' => 'ckeditor'),

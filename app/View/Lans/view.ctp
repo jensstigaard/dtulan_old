@@ -153,6 +153,16 @@ echo $this->Html->css(array(
 					<?php endif; ?>
 				</div>
 
+				<div class="lan_overview_item" rel="tooltip" title="Need physical code">
+					<?php if ($lan['Lan']['need_physical_code']): ?>
+						<i class="icon-tags"></i>
+						<span>Need code to signup</span>
+					<?php else: ?>
+						<i class="icon-ok-circle"></i>
+						<span>No code needed to signup</span>
+					<?php endif; ?>
+				</div>
+
 			<?php endif; ?>
 		</div>
 	</div>

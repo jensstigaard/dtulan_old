@@ -5,7 +5,6 @@
 	echo $this->Form->inputs(array(
 		 'legend' => __('New Tournament in ' . $lan['Lan']['title']),
 		 'title',
-		 'slug',
 		 'team_size',
 		 'time_start' => array(
 			  'timeFormat' => '24',

@@ -17,10 +17,12 @@ class User extends AppModel {
 	public $name = 'User';
 	public $hasOne = array(
 		 'Admin',
+		 'QrCode',
 		 'UserPasswordTicket',
-		 'QrCode'
 	);
 	public $hasMany = array(
+		 'Crew',
+		 'FoodOrder',
 		 'LanSignup',
 		 'LanInvite' => array(
 			  'className' => 'LanInvite',
@@ -32,7 +34,6 @@ class User extends AppModel {
 		 ),
 		 'Payment',
 		 'PizzaOrder',
-		 'FoodOrder',
 		 'TeamInvite',
 		 'TeamUser',
 	);
@@ -235,11 +236,9 @@ class User extends AppModel {
 		return isset($this->data['Admin']['user_id']);
 	}
 
-	public function beforeSave($options = array()) {
-		parent::beforeSave($options);
-		if (isset($this->data['User']['password'])) {
-			$this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
-		}
+	public function beforeValidate($options = array()) {
+		parent::beforeValidate($options);
+
 		if (isset($this->data['User']['name'])) {
 			$this->data['User']['name'] = ucwords(strtolower($this->data['User']['name']));
 		}
@@ -249,37 +248,73 @@ class User extends AppModel {
 			$this->data['User']['email_gravatar'] = $this->data['User']['email'];
 			$this->data['User']['time_created'] = date('Y-m-d H:i:s');
 		}
+	}
+
+	public function beforeSave($options = array()) {
+		parent::beforeSave($options);
+		if (isset($this->data['User']['password'])) {
+			$this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
+		}
 		return true;
 	}
 
 	public function getNewLans() {
-		$lans = $this->LanSignup->find('all', array(
-			 'conditions' => array(
-				  'user_id' => $this->id
-			 ),
-			 'recursive' => 0
-				  )
-		);
-
-		$lan_ids = array();
-		foreach ($lans as $lan) {
-			$lan_ids[] = $lan['LanSignup']['lan_id'];
-		}
-
-
 		return $this->LanSignup->Lan->find('first', array(
 						'conditions' => array(
 							 'Lan.sign_up_open' => 1,
 							 'Lan.published' => 1,
 							 'Lan.time_end >' => date('Y-m-d H:i:s'),
 							 'NOT' => array(
-								  'Lan.id' => $lan_ids
+								  'Lan.id' => $this->getLanIds()
 							 )
 						),
 						'order' => array('Lan.time_start ASC'),
-						'recursive' => 0
+						'recursive' => 0,
+						'fields' => array(
+							 'slug',
+							 'title',
+							 'time_start',
+							 'time_end',
+						)
 							 )
 		);
+	}
+
+	public function getLanIds() {
+
+		$lans_as_participant = $this->LanSignup->find('all', array(
+			 'conditions' => array(
+				  'user_id' => $this->id
+			 ),
+			 'fields' => array(
+				  'lan_id'
+			 )
+				  )
+		);
+
+		$lans_as_crew = $this->Crew->find('all', array(
+			 'conditions' => array(
+				  'user_id' => $this->id
+			 ),
+			 'fields' => array(
+				  'lan_id'
+			 )
+				  )
+		);
+
+		$lan_ids = array();
+
+		foreach ($lans_as_participant as $lan) {
+			$lan_ids[] = $lan['LanSignup']['lan_id'];
+		}
+
+		foreach ($lans_as_crew as $lan) {
+			$lan_ids[] = $lan['Crew']['lan_id'];
+		}
+
+
+
+		return $lan_ids;
 	}
 
 	public function getTournamentTeamInvites() {
@@ -413,7 +448,7 @@ class User extends AppModel {
 	public function getTeams() {
 		$teams = $this->TeamUser->find('all', array(
 			 'conditions' => array(
-				  'TeamUser.user_id' => $this->id
+				  'TeamUser.user_id' => $this->id,
 			 ),
 			 'fields' => array(
 				  'team_id',
