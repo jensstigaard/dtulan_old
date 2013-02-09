@@ -1,6 +1,6 @@
 <?php if (isset($sidebar_new_lan['Lan']['title'])): ?>
 	<div class="unsigned_lan">
-		<h1><?php echo $this->Html->image('24x24_PNG/001_15.png'); ?> New event!</h1>
+		<h1><i class="icon-star icon-large" style="color: gold"></i> New event!</h1>
 		<h2><?php
 	echo $this->Html->link($sidebar_new_lan['Lan']['title'], array(
 		 'controller' => 'lans',
@@ -16,7 +16,13 @@
 		<ul>
 			<li><?php
 		echo $this->Html->link(
-				  $this->Html->image('16x16_GIF/action_check.gif') . ' Sign up now!', array('controller' => 'lan_signups', 'action' => 'add', $sidebar_new_lan['Lan']['slug']), array('escape' => false));
+				  $this->Html->image('16x16_GIF/action_check.gif') . ' Sign up now!', array(
+			 'controller' => 'lan_signups',
+			 'action' => 'add',
+			 'slug' => $sidebar_new_lan['Lan']['slug']
+				  ), array(
+			 'escape' => false
+		));
 	?></li>
 		</ul>
 	</div>

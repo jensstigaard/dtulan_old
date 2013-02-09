@@ -43,10 +43,10 @@ class AppController extends Controller {
 		 'RequestHandler',
 		 'Session',
 		 'Auth' => array(
-			  'loginRedirect' => array('controller' => 'pages', 'action' => 'view', 'welcome'),
-			  'logoutRedirect' => array('controller' => 'pages', 'action' => 'view', 'welcome'),
+			  'loginRedirect' => array('controller' => 'pages', 'action' => 'view', 'slug' => 'welcome'),
+			  'logoutRedirect' => array('controller' => 'pages', 'action' => 'view', 'slug' => 'welcome'),
 			  'authError' => 'Access denied',
-			  'authorize' => array('Controller'), // Added this line
+			  'authorize' => array('Controller'), // What does this do??
 			  'authenticate' => array(
 					// Allow authentication by user / password
 					'Form' => array(

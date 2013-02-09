@@ -742,13 +742,15 @@ class Lan extends AppModel {
 	public function getTabs() {
 
 		$this->read(array('slug'));
+		
+		$slug = $this->data['Lan']['slug'];
 
 		$tabs = array(
 			 array(
 				  'title' => 'Crew',
 				  'url' => array(
 						'action' => 'view_crew',
-						$this->data['Lan']['slug']
+						$slug
 				  ),
 				  'icon' => 'icon-user-md',
 			 ),
@@ -756,7 +758,7 @@ class Lan extends AppModel {
 				  'title' => 'Participants',
 				  'url' => array(
 						'action' => 'view_participants',
-						$this->data['Lan']['slug']
+						$slug
 				  ),
 				  'icon' => 'icon-group',
 			 ),
@@ -764,7 +766,7 @@ class Lan extends AppModel {
 				  'title' => 'Tournaments',
 				  'url' => array(
 						'action' => 'view_tournaments',
-						$this->data['Lan']['slug']
+						$slug
 				  ),
 				  'icon' => 'icon-trophy',
 			 ),
@@ -778,7 +780,7 @@ class Lan extends AppModel {
 					  'url' => array(
 							'controller' => 'lan_signups',
 							'action' => 'add',
-							$this->data['Lan']['slug']
+							$slug
 					  ),
 					  'icon' => 'icon-plus-sign',
 				 ),
