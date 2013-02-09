@@ -8,11 +8,11 @@
 		</title>
 		<?php
 		echo $this->Html->meta(
-				  'keywords', 'DTU LAN Party, DTU, LAN, Party, E2012, event, Tournament, League of Legends, Counter-Strike, Pizza, StarCraft 2, NetCompany, RedBull, SteelSeries, S/M-rådet'
+				  'keywords', 'DTU LAN, DTU, LAN, Net-party, Net, Party, E2012, F2013, event, Tournament, League of Legends, Counter-Strike, Pizza, StarCraft 2, NetCompany, RedBull, SteelSeries, S/M-rådet'
 		);
 
 		echo $this->Html->meta(
-				  'description', 'DTU LAN Party | Two LAN-events every year | Next event: E2012 | October 13th - 18th 2012'
+				  'description', 'DTU LAN | Two events every year | Next event: F2013 | March 23rd - 27th 2013'
 		);
 
 		echo $this->Html->meta(
@@ -81,7 +81,7 @@
 					<?php echo $this->element('sponsors', array()); ?>
 				</div>
 				<div id="copyright">
-					<p>DTU LAN Party &bull; Copyright &copy; 2012 &bull; <?php echo $this->Html->link('<i class="icon-envelope-alt"></i> Contact', 'mailto:contact@dtu-lan.dk', array('escape' => false)); ?></p>
+					<p>DTU LAN &bull; Copyright &copy; 2012-<?php echo date('Y'); ?> &bull; <?php echo $this->Html->link('<i class="icon-envelope-alt"></i> Contact', 'mailto:contact@dtu-lan.dk', array('escape' => false)); ?></p>
 				</div>
 			</div>
 		</div>
