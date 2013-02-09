@@ -9,6 +9,8 @@ echo $this->Html->script(array('pizzas'), FALSE);
 	</div>
 
 	<h1><?php echo $pizza_menu['PizzaMenu']['title']; ?></h1>
+	<p>Email being sent to: <span class="badge badge-info"><?php echo $pizza_menu['PizzaMenu']['email']; ?></span></p>
+	<p>Phonenumber: <span class="badge badge-info"><?php echo $pizza_menu['PizzaMenu']['phonenumber']; ?></span></p>
 	<p><?php echo $pizza_menu['PizzaMenu']['description']; ?></p>
 
 </div>

@@ -6,6 +6,10 @@
 			<div>
 				<div>
 					<h1><?php echo $pizza_menu['PizzaMenu']['title']; ?></h1>
+					<div style="margin-bottom: 10px;">
+						<p>Email: <span class="badge badge-info"><?php echo $pizza_menu['PizzaMenu']['email']; ?></span></p>
+						<p>Phonenumber: <span class="badge badge-info"><?php echo $pizza_menu['PizzaMenu']['phonenumber']; ?></span></p>
+					</div>
 					<ul>
 						<li>Orders made: coming</li>
 					</ul>

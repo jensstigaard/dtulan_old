@@ -19,9 +19,9 @@
 			<?php foreach ($pizza_menus as $pizza_menu): ?>
 				<tr>
 					<td><?php echo $this->Html->link($pizza_menu['PizzaMenu']['title'], array('action' => 'view', $pizza_menu['PizzaMenu']['id'])); ?></td>
-					<td><?php echo $pizza_menu['PizzaMenu']['count_categories']; ?></td>
-					<td><?php echo $pizza_menu['PizzaMenu']['count_items']; ?></td>
-					<td><?php echo $pizza_menu['PizzaMenu']['count_used']; ?></td>
+					<td><span class="badge badge-info"><?php echo $pizza_menu['PizzaMenu']['count_categories']; ?></span></td>
+					<td><span class="badge badge-info"><?php echo $pizza_menu['PizzaMenu']['count_items']; ?></span></td>
+					<td><span class="badge badge-info"><?php echo $pizza_menu['PizzaMenu']['count_used']; ?></span></td>
 
 				</tr>
 			<?php endforeach; ?>
