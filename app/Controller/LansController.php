@@ -289,12 +289,20 @@ class LansController extends AppController {
 
 		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 
+		$this->set('lan', $this->Lan->find('first', array(
+						'conditions' => $this->Lan->id,
+						'fields' => array(
+							 'title',
+							 'slug',
+						)
+				  )));
+
 		$this->set('codes', $this->Lan->LanSignupCode->find('all', array(
 						'conditions' => array(
 							 'LanSignupCode.lan_id' => $this->Lan->id
 						)
 				  )));
-		
+
 		$this->set('settings', array(
 			 'columns' => 3,
 			 'rows_per_page' => 4

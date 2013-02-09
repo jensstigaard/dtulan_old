@@ -9,11 +9,12 @@
 body{
 	margin: 0;
 	padding: 0;
+	font-size: 10pt;
 }
 
 .signup_ticket{
-	width: 9cm;
-	height: 4.8cm;
+	width: 8.8cm;
+	height: 4.5cm;
 	float:left;
 	position: relative;
 }
@@ -22,12 +23,24 @@ body{
 	text-align: center;
 }
 
-p, h1{
-	margin: 5px 0;
+h1, p{
+	margin: 0;
 }
 
 h2{
-	font-size: 10pt;
+	font-size: 11pt;
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+.url{
+	display:block;
+}
+
+img{
+	width: 7cm; 
+	display:block; 
+	margin: 0.5cm auto 0.2cm;
 }
 
 .corner{
@@ -41,10 +54,7 @@ h2{
 	border-bottom: 1px solid #999;
 }
 
-/*.line:nth-child(even) .signup_code:nth-child(odd){
-	background: #ddd;
+.pagebreak{
+	clear:both; 
+	page-break-after: always;
 }
-
-.line:nth-child(odd) .signup_code:nth-child(even){
-	background: #eee;
-}*/
