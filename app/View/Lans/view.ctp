@@ -188,14 +188,18 @@ echo $this->Html->css(array(
 		);
 		?>
 	</div>
-	<?php endif; ?>
+<?php endif; ?>
 
 <?php if ($is_admin): ?>
 	<div>
 		<div class="tabs">
 			<ul>
-	<?php foreach ($tabs_admin as $tab): ?>
-					<li><a href="<?php echo $this->Html->url($tab['url']); ?>" title="<?php echo $tab['title']; ?>"><i class="<?php echo $tab['icon']; ?>"></i></a></li>
+				<?php foreach ($tabs_admin as $tab): ?>
+					<li>
+						<a href="<?php echo $this->Html->url($tab['url']); ?>" title="<?php echo $tab['title']; ?>">
+							<i class="<?php echo $tab['icon']; ?>"></i>
+						</a>
+					</li>
 				<?php endforeach; ?>
 			</ul>
 
@@ -210,8 +214,11 @@ echo $this->Html->css(array(
 <div>
 	<div class="tabs">
 		<ul>
-<?php foreach ($tabs as $tab): ?>
-				<li><a href="<?php echo $this->Html->url($tab['url']); ?>" title="<?php echo $tab['title']; ?>"><i class="<?php echo $tab['icon']; ?>"></i></a></li>
+			<?php foreach ($tabs as $tab): ?>
+				<li>
+					<a href="<?php echo $this->Html->url($tab['url']); ?>" title="<?php echo $tab['title']; ?>">
+						<i class="<?php echo $tab['icon']; ?>"></i>
+					</a></li>
 			<?php endforeach; ?>
 		</ul>
 
