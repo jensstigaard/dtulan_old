@@ -35,29 +35,6 @@ class Team extends AppModel {
 		 )
 	);
 
-	public function isLeader($team_id, $user_id) {
-		$this->id = $team_id;
-
-		if (!$this->exists()) {
-			throw new NotFoundException('Team not found');
-		}
-
-		$this->TeamUser->User->id = $user_id;
-
-		if (!$this->TeamUser->User->exists()) {
-			throw new NotFoundException('User not found');
-		}
-
-		return $this->TeamUser->find('count', array(
-						'conditions' => array(
-							 'team_id' => $team_id,
-							 'user_id' => $user_id,
-							 'is_leader' => true
-						)
-							 )
-				  ) == 1;
-	}
-
 	public function countMembers() {
 		return $this->TeamUser->find('count', array(
 						'conditions' => array(
@@ -66,7 +43,6 @@ class Team extends AppModel {
 				  ));
 	}
 
-	
 	// Refactor!!!
 	public function getInviteableUsers($team_id = null) {
 		$this->id = $team_id;
@@ -107,6 +83,43 @@ class Team extends AppModel {
 		}
 
 		return $users_list;
+	}
+
+	public function isLeader($team_id, $user_id) {
+		$this->id = $team_id;
+
+		if (!$this->exists()) {
+			throw new NotFoundException('Team not found');
+		}
+
+		$this->TeamUser->User->id = $user_id;
+
+		if (!$this->TeamUser->User->exists()) {
+			throw new NotFoundException('User not found');
+		}
+
+		return $this->TeamUser->find('count', array(
+						'conditions' => array(
+							 'team_id' => $team_id,
+							 'user_id' => $user_id,
+							 'is_leader' => true
+						)
+							 )
+				  ) == 1;
+	}
+
+	public function isWinner() {
+
+		$team = $this->find('first', array(
+			 'conditions' => array(
+				  'Team.id' => $this->id
+			 ),
+			 'fields' => array(
+				  'TournamentWinner.place'
+			 )
+				  ));
+
+		return $team['TournamentWinner']['place'] > 0;
 	}
 
 }

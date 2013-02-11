@@ -44,6 +44,14 @@ class Tournament extends AppModel {
 		 )
 	);
 
+	public function beforeValidate($options = array()) {
+		parent::beforeValidate($options);
+
+		if (isset($this->data['Tournament']['title'])) {
+			$this->data['Tournament']['slug'] = $this->stringToSlug($this->data['Tournament']['title']);
+		}
+	}
+
 	public function getLanIdByTournamentId($id) {
 
 		$this->id = $id;
@@ -143,15 +151,41 @@ class Tournament extends AppModel {
 							 )
 						)
 				  ));
-		;
 	}
 
-	public function beforeValidate($options = array()) {
-		parent::beforeValidate($options);
+	public function isUserInTournament() {
 
-		if (isset($this->data['Tournament']['title'])) {
-			$this->data['Tournament']['slug'] = $this->stringToSlug($this->data['Tournament']['title']);
+		$tournament = $this->find('first', array(
+			 'conditions' => array(
+				  'Tournament.id' => $this->id
+			 ),
+			 'contain' => array(
+				  'Team' => array(
+						'TeamUser' => array(
+							 'User' => array(
+								  'conditions' => array(
+										'User.id' => $this->Team->TeamUser->User->id
+								  ),
+								  'fields' => array(
+										'id'
+								  )
+							 )
+						)
+				  )
+			 )
+				  ));
+
+		return isset($tournament['Team']['TeamUser']['User']['id']);
+	}
+
+	public function isAbleToCreateTeam() {
+		if (!$this->isLoggedIn()) {
+			return false;
 		}
+
+		$this->Team->TeamUser->User->id = $this->getLoggedInId();
+
+		return !$this->isUserInTournament();
 	}
 
 }

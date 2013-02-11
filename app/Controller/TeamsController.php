@@ -25,11 +25,7 @@ class TeamsController extends AppController {
 		return false;
 	}
 
-	public function add($tournament_id = null) {
-
-		if ($tournament_id == null) {
-			throw new NotFoundException('Team not found');
-		}
+	public function add($tournament_id) {
 
 		$this->Team->Tournament->id = $tournament_id;
 
@@ -42,13 +38,13 @@ class TeamsController extends AppController {
 			$this->request->data['Team']['tournament_id'] = $tournament_id;
 
 			$this->request->data['TeamUser'] = array(
-				0 => array(
-					'user_id' => $this->Auth->user('id'),
-					'is_leader' => 1,
-					'Team' => array(
-						'tournament_id' => $tournament_id
-					)
-				)
+				 0 => array(
+					  'user_id' => $this->Auth->user('id'),
+					  'is_leader' => 1,
+					  'Team' => array(
+							'tournament_id' => $tournament_id
+					  )
+				 )
 			);
 
 
@@ -81,7 +77,34 @@ class TeamsController extends AppController {
 
 		$this->Team->recursive = 2;
 
-		$this->set('team', $this->Team->read());
+		$this->set('team', $this->Team->find('first', array(
+						'conditions' => array(
+							 'Team.id' => $this->Team->id
+						),
+						'contain' => array(
+							 'Tournament' => array(
+								  'fields' => array(
+										'slug',
+										'title'
+								  ),
+								  'Lan' => array(
+										'fields' => array(
+											 'slug'
+										)
+								  )
+							 ),
+							 'TeamInvite',
+							 'TeamUser' => array(
+								  'User' => array(
+										'fields' => array(
+											 'id',
+											 'name',
+											 'gamertag',
+										)
+								  )
+							 )
+						)
+				  )));
 
 		$this->set('is_leader', $this->Auth->loggedIn() && $this->Team->isLeader($id, $this->Auth->user('id')));
 
@@ -95,7 +118,23 @@ class TeamsController extends AppController {
 			throw new NotFoundException('Team not found');
 		}
 
-		$team = $this->Team->read('tournament_id');
+		$team = $this->Team->find('first', array(
+			 'conditions' => array(
+				  'id' => $this->Team->id,
+			 ),
+			 'contain' => array(
+				  'Tournament' => array(
+						'fields' => array(
+							 'slug'
+						),
+						'Lan' => array(
+							 'fields' => array(
+								  'slug'
+							 )
+						)
+				  )
+			 )
+				  ));
 
 		if (!$this->Team->isLeader($id, $this->Auth->user('id'))) {
 			throw new UnauthorizedException('You are not allowed to do this');
@@ -107,7 +146,12 @@ class TeamsController extends AppController {
 			$this->Session->setFlash('Unable to delete your team', 'default', array('class' => 'message success'), 'good');
 		}
 
-		$this->redirect(array('controller' => 'tournaments', 'action' => 'view', $team['Team']['tournament_id']));
+		$this->redirect(array(
+			 'controller' => 'tournaments',
+			 'action' => 'view',
+			 'lan_slug' => $team['Tournament']['Lan']['slug'],
+			 'tournament_slug' => $team['Tournament']['slug']
+		));
 	}
 
 }

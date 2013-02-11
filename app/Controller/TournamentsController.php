@@ -57,6 +57,8 @@ class TournamentsController extends AppController {
 		$this->set(compact('tournament'));
 
 		$this->set('winner_teams', $this->Tournament->getWinnerTeams());
+		
+		$this->set('can_create_team', $this->Tournament->isAbleToCreateTeam());
 	}
 
 	public function view_description($lan_slug, $tournament_slug) {

@@ -13,8 +13,9 @@
 class TournamentWinner extends AppModel {
 
 	public $belongsTo = array(
-		 'Team'
+		 'Team',
 	);
+	
 
 }
 
