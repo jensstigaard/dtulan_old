@@ -1,7 +1,16 @@
 <div>
 	<?php if ($is_admin): ?>
 		<div style="float:right;">
-			<?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif', array('alt' => 'Edit page')) . 'Edit page', array('action' => 'edit', $page['Page']['id']), array('escape' => false)); ?>
+			<?php
+			echo $this->Html->link(
+					  '<i class="icon-large icon-pencil"></i> Edit page', array(
+				 'action' => 'edit',
+				 $page['Page']['id']
+					  ), array(
+				 'escape' => false,
+				 'class' => 'btn btn-inverse btn small'
+			));
+			?>
 		</div>
 	<?php endif; ?>
 	<h1><?php echo h($page['Page']['title']); ?></h1>
