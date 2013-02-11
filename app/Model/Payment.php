@@ -29,7 +29,7 @@ class Payment extends AppModel {
 		 )
 	);
 	public $order = array(
-		 'Payment.time' => 'asc'
+		 'Payment.time' => 'desc'
 	);
 
 	public function validInteger($check) {
