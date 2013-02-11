@@ -13,22 +13,34 @@
 class PizzaType extends AppModel {
 
 	public $name = 'PizzaType';
+	
 	public $hasAndBelongsToMany = array(
-		'PizzaCategory' => array(
-			'joinTable' => 'pizza_category_types'
-		)
+		 'PizzaCategory' => array(
+			  'joinTable' => 'pizza_category_types'
+		 )
 	);
+	
 	public $validate = array(
-		'title' => array(
-			'required' => array(
-				'rule' => array('notEmpty', 'alphaNumeric'),
-				'message' => 'Title cannot be empty'
-			),
-			'unique' => array(
-				'rule' => 'isUnique',
-				'message' => 'A type with given title already exist'
-			)
-		)
+		 'title' => array(
+			  'required' => array(
+					'rule' => array('notEmpty', 'alphaNumeric'),
+					'message' => 'Title cannot be empty'
+			  ),
+			  'unique' => array(
+					'rule' => 'isUnique',
+					'message' => 'A type with given title already exist'
+			  )
+		 ),
+		 'title_short' => array(
+			  'required' => array(
+					'rule' => array('notEmpty', 'alphaNumeric'),
+					'message' => 'Title short cannot be empty'
+			  ),
+			  'unique' => array(
+					'rule' => 'isUnique',
+					'message' => 'A type with given short title already exist'
+			  )
+		 )
 	);
 
 }
