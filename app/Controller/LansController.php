@@ -36,20 +36,12 @@ class LansController extends AppController {
 		$this->set('title_for_layout', $title);
 		$this->set(compact('title'));
 
-		$this->set('lan', $this->Lan->read(array(
-						'id',
-						'slug',
-						'price',
-						'time_start',
-						'time_end',
-						'published',
-						'sign_up_open',
-						'need_physical_code',
-						'max_participants'
-				  )));
+		$this->set('lan', $this->Lan->read());
 
 		$this->set('tabs', $this->Lan->getTabs());
 		$this->set('data', $this->Lan->getGeneralStatistics());
+		
+		$this->set('is_cancelable', $this->Lan->isLoggedIn() && $this->Lan->isUserAttendingAsGuest() && $this->Lan->isSignupOpen());
 
 		if ($this->Lan->isYouAdmin()) {
 			$this->set('tabs_admin', $this->Lan->getTabsAdmin());

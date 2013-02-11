@@ -117,23 +117,38 @@ class UsersController extends AppController {
 			throw new NotFoundException('User not found with ID #' . $id);
 		}
 
-		$this->User->read(array('type'));
-
-
-		// Lan signups
-		$this->User->LanSignup->unbindModel(array('belongsTo' => array('User')));
-		$this->User->LanSignup->Lan->unbindModel(array('hasMany' => array('LanSignup', 'Tournament', 'PizzaWave')));
-
-		$lans = $this->User->LanSignup->find('all', array(
+		$lans_as_guest = $this->User->LanSignup->find('all', array(
 			 'conditions' => array(
-				  'LanSignup.user_id' => $id
+				  'LanSignup.user_id' => $this->User->id
 			 ),
 			 'order' => array(
 				  'Lan.time_start' => 'desc'
 			 ),
-			 'recursive' => 2
+			 'contain' => array(
+				  'Lan'
+			 )
 				  )
 		);
+
+		$lans_as_crew = $this->User->Crew->find('all', array(
+			 'conditions' => array(
+				  'Crew.user_id' => $this->User->id
+			 ),
+			 'order' => array(
+				  'Lan.time_start' => 'desc'
+			 ),
+			 'contain' => array(
+				  'Lan' => array(
+						'fields' => array(
+							 'title',
+							 'slug',
+							 'published'
+						)
+				  )
+			 )
+				  ));
+		
+		$lans = $lans_as_guest + $lans_as_crew;
 
 		$is_you = false;
 		if ($id == $this->Auth->user('id')) {
@@ -146,7 +161,6 @@ class UsersController extends AppController {
 		}
 
 		$this->set(compact('lans', 'is_you', 'is_auth'));
-		$this->set('user_type', $this->User->data['User']['type']);
 	}
 
 	public function view_payments($id) {
@@ -170,17 +184,15 @@ class UsersController extends AppController {
 				  'conditions' => array(
 						'Payment.user_id' => $id,
 				  ),
-				  'recursive' => 0,
 				  'limit' => 10,
-				  'order' => array(
-						array('Payment.time' => 'desc')
-				  )
 			 ),
 		);
 
 		$payments = $this->paginate('Payment');
 
 		$this->User->dateToNiceArray($payments, 'Payment');
+
+//		debug($payments);
 
 		$this->set(compact('payments'));
 	}
@@ -225,7 +237,6 @@ class UsersController extends AppController {
 
 		$this->User->PizzaOrder->dateToNiceArray($pizza_orders, 'PizzaOrder');
 
-
 		$is_you = false;
 		if ($id == $this->Auth->user('id')) {
 			$is_you = true;
@@ -246,7 +257,7 @@ class UsersController extends AppController {
 		if (!$this->User->exists()) {
 			throw new NotFoundException('User not found with ID #' . $id);
 		}
-		if ($id !== $this->Auth->user('id') && !$this->isAdmin()) {
+		if ($id !== $this->Auth->user('id') && !$this->User->isYouAdmin()) {
 			throw new UnauthorizedException;
 		}
 

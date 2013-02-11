@@ -167,16 +167,34 @@ echo $this->Html->css(array(
 		</div>
 	</div>
 
-
-
-
 </div>
+
+<?php // pr($lan); ?>
+
+<?php if ($is_cancelable): ?>
+	<div>
+		<h2>Cancel your signup</h2>
+		<?php
+		echo $this->Form->postLink(
+				  '<i class="icon-large icon-remove"></i> Cancel your signup', array(
+			 'controller' => 'lan_signups',
+			 'action' => 'delete',
+			 $lan['Lan']['slug']
+				  ), array(
+			 'confirm' => 'Are You sure you will cancel this signup?',
+			 'escape' => false,
+			 'class' => 'btn btn-danger'
+				  )
+		);
+		?>
+	</div>
+	<?php endif; ?>
 
 <?php if ($is_admin): ?>
 	<div>
 		<div class="tabs">
 			<ul>
-				<?php foreach ($tabs_admin as $tab): ?>
+	<?php foreach ($tabs_admin as $tab): ?>
 					<li><a href="<?php echo $this->Html->url($tab['url']); ?>" title="<?php echo $tab['title']; ?>"><i class="<?php echo $tab['icon']; ?>"></i></a></li>
 				<?php endforeach; ?>
 			</ul>
@@ -192,7 +210,7 @@ echo $this->Html->css(array(
 <div>
 	<div class="tabs">
 		<ul>
-			<?php foreach ($tabs as $tab): ?>
+<?php foreach ($tabs as $tab): ?>
 				<li><a href="<?php echo $this->Html->url($tab['url']); ?>" title="<?php echo $tab['title']; ?>"><i class="<?php echo $tab['icon']; ?>"></i></a></li>
 			<?php endforeach; ?>
 		</ul>
