@@ -14,12 +14,12 @@ input[type=text], input[type=number], input[type=email]{
 
 
 .accordion-group, .accordion-inner {
-	border-color: #666 !important;
+	border-color: #555 !important;
 }
 
 .accordion-heading a{
 	font-size: 120%;
-	color: #DDD;
+	color: #CCC;
 	text-decoration: none;
 }
 
