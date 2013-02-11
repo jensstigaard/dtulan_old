@@ -35,6 +35,12 @@ Router::connect('/', array(
 		  )
 );
 
+Router::connect('/user/*', array(
+	 'controller' => 'users',
+	 'action' => 'view',
+		  )
+);
+
 Router::connect('/lan_signup/:slug', array(
 	 'controller' => 'lan_signups',
 	 'action' => 'add',

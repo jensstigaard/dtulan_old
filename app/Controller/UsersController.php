@@ -22,7 +22,7 @@ class UsersController extends AppController {
 		if ($this->User->isYouAdmin()) {
 			return true;
 		} elseif (in_array($this->action, array(
-						'profile',
+						'view',
 						'logout',
 						'edit',
 						'view_pizzaorders',
@@ -49,7 +49,7 @@ class UsersController extends AppController {
 		$this->set('users', $this->paginate('User'));
 	}
 
-	public function profile($id = null) {
+	public function view($id = null) {
 
 		$is_you = false;
 		$is_auth = false;
@@ -312,7 +312,7 @@ class UsersController extends AppController {
 		} else {
 			if ($this->User->save($this->request->data)) {
 				$this->Session->setFlash(__('User has been saved'), 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('action' => 'profile'));
+				$this->redirect(array('action' => 'view'));
 			} else {
 				$this->Session->setFlash(__('User could not be saved. Please try again'), 'default', array(), 'bad');
 			}

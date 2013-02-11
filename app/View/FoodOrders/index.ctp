@@ -37,7 +37,7 @@
 							<?php
 							echo $this->Html->link($order['User']['name'], array(
 								 'controller' => 'users',
-								 'action' => 'profile',
+								 'action' => 'view',
 								 $order['User']['id']
 									  )
 							);

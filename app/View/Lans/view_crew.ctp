@@ -1,4 +1,4 @@
-<?php 
+<?php
 //echo $this->Html->script('general'); 
 ?>
 <div>
@@ -26,8 +26,9 @@
 				echo $this->Html->link(
 						  $title, array(
 					 'controller' => 'users',
-					 'action' => 'profile',
-					 $user['User']['id']), array(
+					 'action' => 'view',
+					 $user['User']['id']
+						  ), array(
 					 'style' => 'background-image: url(http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=120&amp;r=r);',
 					 'escape' => false,
 					 'class' => 'item'

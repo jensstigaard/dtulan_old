@@ -10,7 +10,7 @@
 	}
 	?>
 	<div id="sidebar_user_info">
-		<?php echo $this->Html->link($current_user['name'], array('controller' => 'users', 'action' => 'profile'), array('id' => 'user_name_link')); ?>
+		<?php echo $this->Html->link($current_user['name'], array('controller' => 'users', 'action' => 'view'), array('id' => 'user_name_link')); ?>
 		<p id="user_balance">Balance:
 			<?php
 			$color = '';

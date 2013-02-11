@@ -15,7 +15,7 @@
 
 		<?php foreach ($users as $user): ?>
 			<tr>
-				<td><?php echo $this->Html->link($user['User']['name'], array('action' => 'profile', $user['User']['id'])); ?></td>
+				<td><?php echo $this->Html->link($user['User']['name'], array('action' => 'view', $user['User']['id'])); ?></td>
 				<td><?php echo $user['User']['id_number']; ?></td>
 				<td><?php echo $user['User']['balance']; ?></td>
 				<td><?php echo (!$user['User']['activated']) ? 'Not activated' : '<span style="color:green">Activated</span>'; ?></td>

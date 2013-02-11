@@ -34,8 +34,9 @@
 				echo $this->Html->link(
 						  $title, array(
 					 'controller' => 'users',
-					 'action' => 'profile',
-					 $user['User']['id']), array(
+					 'action' => 'view',
+					 $user['User']['id']
+						  ), array(
 					 'style' => 'background-image: url(http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=120&amp;r=r);',
 					 'escape' => false,
 					 'class' => 'item'
@@ -47,15 +48,17 @@
 
 		<div class="pagination">
 			<ul>
-			<?php echo $this->Paginator->numbers(array(
-				 'tag' => 'li',
-				 'currentTag' => 'a',
-				 'class' => 'load_inline',
-				 'separator' => false
-				 )); ?>
+				<?php
+				echo $this->Paginator->numbers(array(
+					 'tag' => 'li',
+					 'currentTag' => 'a',
+					 'class' => 'load_inline',
+					 'separator' => false
+				));
+				?>
 			</ul>
 		</div>
 
 		<div style="clear:both;"></div>
-	<?php endif; ?>
+<?php endif; ?>
 </div>

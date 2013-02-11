@@ -4,7 +4,7 @@
 		<div id="user_lookup">
 			<div class="input-prepend">
 				<span class="add-on"><i class="icon-user"></i></span>
-				<input type="text" name="string" id="user_lookup_input" placeholder="Name / id-number / email" data-link="<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'lookup')); ?>" data-redirect="<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'profile')); ?>" />
+				<input type="text" name="string" id="user_lookup_input" placeholder="Name / id-number / email" data-link="<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'lookup')); ?>" data-redirect="<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'view')); ?>" />
 			</div>
 		</div>
 	</div>

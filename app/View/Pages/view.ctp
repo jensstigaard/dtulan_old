@@ -10,7 +10,7 @@
 		<small>
 			<em>
 				Updated: <?php echo $page['Page']['time_latest_update_nice']; ?> by
-				<?php echo $this->Html->link($page['LatestUpdateBy']['name'], array('controller' => 'users', 'action' => 'profile', $page['LatestUpdateBy']['id'])); ?>
+				<?php echo $this->Html->link($page['LatestUpdateBy']['name'], array('controller' => 'users', 'action' => 'view', $page['LatestUpdateBy']['id'])); ?>
 			</em>
 		</small>
 	</p>

@@ -11,18 +11,18 @@
 			));
 			?>
 		</div>
-<?php endif; ?>
+	<?php endif; ?>
 
 	<h1><?php echo $tournament['Tournament']['title']; ?></h1>
 	<p>
 		In LAN: <?php
-echo $this->Html->link($tournament['Lan']['title'], array(
-	 'controller' => 'lans',
-	 'action' => 'view',
-	 'slug' => $tournament['Lan']['slug']
-		  )
-);
-?>
+	echo $this->Html->link($tournament['Lan']['title'], array(
+		 'controller' => 'lans',
+		 'action' => 'view',
+		 'slug' => $tournament['Lan']['slug']
+			  )
+	);
+	?>
 	</p>
 	<table>
 		<tbody>
@@ -33,7 +33,7 @@ echo $this->Html->link($tournament['Lan']['title'], array(
 			<tr>
 				<td>Start time:</td>
 				<td>
-<?php echo $tournament['Tournament']['time_start_nice']; ?>
+					<?php echo $tournament['Tournament']['time_start_nice']; ?>
 
 				</td>
 			</tr>
@@ -45,31 +45,31 @@ echo $this->Html->link($tournament['Lan']['title'], array(
 	<div>
 		<h2>Tournament-winners</h2>
 		<div class="floated-list">
-					<?php foreach ($winner_teams as $team): ?>
+			<?php foreach ($winner_teams as $team): ?>
 				<div class="item" style="text-align: left;padding-right:10px;">
 					<h4><?php
-						if ($team['TournamentWinner']['place'] == 1) {
-							echo $this->Html->image('48x48_PNG/trophy_gold.png');
-						} elseif ($team['TournamentWinner']['place'] == 2) {
-							echo $this->Html->image('48x48_PNG/trophy_silver.png');
-						} elseif ($team['TournamentWinner']['place'] == 3) {
-							echo $this->Html->image('48x48_PNG/trophy_bronze.png');
-						}
-						?> 
+		if ($team['TournamentWinner']['place'] == 1) {
+			echo $this->Html->image('48x48_PNG/trophy_gold.png');
+		} elseif ($team['TournamentWinner']['place'] == 2) {
+			echo $this->Html->image('48x48_PNG/trophy_silver.png');
+		} elseif ($team['TournamentWinner']['place'] == 3) {
+			echo $this->Html->image('48x48_PNG/trophy_bronze.png');
+		}
+				?> 
 						<?php echo $team['Team']['name']; ?></h4>
 					<ul style="margin-left:50px;">
-							<?php foreach ($team['TeamUser'] as $user): ?>
+						<?php foreach ($team['TeamUser'] as $user): ?>
 							<li><?php
-					echo $this->Html->link($user['User']['name'], array(
-						 'controller' => 'users',
-						 'action' => 'profile',
-						 $user['User']['id']
-					));
-					?></li>
-				<?php endforeach; ?>
+				echo $this->Html->link($user['User']['name'], array(
+					 'controller' => 'users',
+					 'action' => 'view',
+					 $user['User']['id']
+				));
+							?></li>
+						<?php endforeach; ?>
 					</ul>
 				</div>
-	<?php endforeach; ?>
+			<?php endforeach; ?>
 		</div>
 	</div>
 <?php endif; ?>
@@ -122,7 +122,7 @@ echo $this->Html->link($tournament['Lan']['title'], array(
 				));
 				?>
 			</li>
-				<?php if ($can_create_team): ?>
+			<?php if ($can_create_team): ?>
 				<li>
 					<?php
 					echo $this->Html->link('<i class="icon-plus-sign"></i>', array(
@@ -136,7 +136,7 @@ echo $this->Html->link($tournament['Lan']['title'], array(
 					?>
 				</li>
 
-<?php endif; ?>
+			<?php endif; ?>
 		</ul>
 
 		<div class="loading_indicator">

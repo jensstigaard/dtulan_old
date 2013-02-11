@@ -105,10 +105,10 @@ class PizzaOrdersController extends AppController {
 
 		if ($this->PizzaOrder->deleteOrder()) {
 			$this->Session->setFlash('Pizza order cancelled', 'default', array('class' => 'message success'), 'good');
-			$this->redirect(array('controller' => 'users', 'action' => 'profile'));
+			$this->redirect(array('controller' => 'users', 'action' => 'view'));
 		} else {
 			$this->Session->setFlash('Pizza order could not be cancelled', 'default', array(), 'bad');
-			$this->redirect(array('controller' => 'users', 'action' => 'profile'));
+			$this->redirect(array('controller' => 'users', 'action' => 'view'));
 		}
 	}
 

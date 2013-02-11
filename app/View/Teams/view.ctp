@@ -62,7 +62,7 @@ echo $this->Html->link($team['Tournament']['title'], array(
 							<?php
 							echo $this->Html->link($user['User']['name'], array(
 								 'controller' => 'users',
-								 'action' => 'profile',
+								 'action' => 'view',
 								 $user['User']['id']
 									  )
 							);

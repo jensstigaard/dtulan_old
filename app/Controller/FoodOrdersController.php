@@ -160,10 +160,10 @@ class FoodOrdersController extends AppController {
 
 		if ($this->FoodOrder->User->saveField('balance', $new_balance, true) && $this->FoodOrder->delete()) {
 			$this->Session->setFlash('Order cancelled', 'default', array('class' => 'message success'), 'good');
-			$this->redirect(array('controller' => 'users', 'action' => 'profile'));
+			$this->redirect(array('controller' => 'users', 'action' => 'view'));
 		} else {
 			$this->Session->setFlash('Order could not be cancelled', 'default', array(), 'bad');
-			$this->redirect(array('controller' => 'users', 'action' => 'profile'));
+			$this->redirect(array('controller' => 'users', 'action' => 'view'));
 		}
 	}
 
