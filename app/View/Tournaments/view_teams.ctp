@@ -27,13 +27,6 @@
 					</div>
 					<div id="collapse<?php echo $team['Team']['id']; ?>" class="accordion-body collapse">
 						<div class="accordion-inner">
-							<?php
-							echo $this->Html->link('View team-details', array(
-								 'controller' => 'teams',
-								 'action' => 'view',
-								 $team['Team']['id']
-							));
-							?>
 							<table>
 								<?php foreach ($team['TeamUser'] as $user): ?>
 									<tr>
@@ -58,6 +51,14 @@
 									</tr>
 								<?php endforeach; ?>
 							</table>
+
+							<?php
+							echo $this->Html->link('View team-details', array(
+								 'controller' => 'teams',
+								 'action' => 'view',
+								 $team['Team']['id']
+							));
+							?>
 
 						</div>
 					</div>
