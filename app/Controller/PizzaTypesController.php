@@ -16,20 +16,16 @@ class PizzaTypesController extends AppController {
 	}
 
 	public function index() {
-		$this->set('pizza_types', $this->PizzaType->find('all'));
-	}
 
-	public function add() {
 		if ($this->request->is('post')) {
-
 			if ($this->PizzaType->save($this->request->data)) {
-				$this->Session->setFlash('Pizza-type has been added.', 'default', array('class' => 'message success'), 'good');
+				$this->Session->setFlash('Pizza-type has been added', 'default', array('class' => 'message success'), 'good');
 			} else {
-				$this->Session->setFlash('Unable to add this pizza-type.', 'default', array(), 'bad');
+				$this->Session->setFlash('Unable to add this pizza-type', 'default', array(), 'bad');
 			}
-
-			$this->redirect($this->referer());
 		}
+
+		$this->set('pizza_types', $this->PizzaType->find('all'));
 	}
 
 }
