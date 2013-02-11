@@ -24,21 +24,10 @@ class User extends AppModel {
 		 'Crew',
 		 'FoodOrder',
 		 'LanSignup',
-		 'LanInvite' => array(
-			  'className' => 'LanInvite',
-			  'foreignKey' => 'user_guest_id'
-		 ),
-		 'LanInviteSent' => array(
-			  'className' => 'LanInvite',
-			  'foreignKey' => 'user_guest_id'
-		 ),
 		 'Payment',
 		 'PizzaOrder',
 		 'TeamInvite',
 		 'TeamUser',
-	);
-	public $helpers = array(
-		 'Js'
 	);
 	public $order = array(
 		 'name' => 'asc'
@@ -331,7 +320,7 @@ class User extends AppModel {
 	public function isCrewForUser($user_id_crew) {
 		$db = $this->getDataSource();
 //		$total = $db->fetchAll("SELECT COUNT(Crew.id) AS CrewCount FROM `crews` AS Crew INNER JOIN `lans` AS Lan ON Crew.lan_id = Lan.id INNER JOIN `lan_signups` AS LanSignup ON Lan.id = LanSignup.lan_id WHERE LanSignup.user_id = ? AND Crew.`user_id` = ?", array($this->id, $user_id_crew));
-		
+
 		$total = $db->fetchAll("
 			
 			SELECT COUNT(Crew.id) AS CrewCount 
@@ -352,16 +341,16 @@ class User extends AppModel {
 							ON Lan.id = Crew2.lan_id
 				WHERE Crew2.user_id = ? AND Crew.user_id = ?
 			", array($this->id, $user_id_crew, $this->id, $user_id_crew));
-		
+
 //		debug($total);
-		
+
 		return $total[0][0]['CrewCount'] > 0 || $total[1][0]['CrewCount'] > 0;
 	}
 
 	public function getNewestCrewId($user_id_crew) {
 		$db = $this->getDataSource();
 		//$total = $db->fetchAll("(SELECT Crew.id AS CrewId, Lan.title AS LanTitle, Lan.time_start AS time_start FROM `crews` AS Crew INNER JOIN `lans` AS Lan ON Crew.lan_id = Lan.id INNER JOIN `lan_signups` AS LanSignup ON Lan.id = LanSignup.lan_id WHERE LanSignup.user_id = ? AND Crew.`user_id` = ?) UNION ALL (SELECT Crew1.id AS CrewId, Lan.title AS LanTitle, Lan.time_start AS time_start FROM `crews` AS Crew1 INNER JOIN `lans` AS Lan ON Crew1.lan_id = Lan.id INNER JOIN `crews` AS Crew2 ON Lan.id = Crew2.lan_id WHERE Crew1.user_id = ? AND Crew2.`user_id` = ?) ORDER BY time_start DESC LIMIT 1", array($this->id, $user_id_crew, $this->id, $user_id_crew));
-		
+
 		$total = $db->fetchAll("
 			(
 			SELECT Crew.id AS CrewId, Lan.title AS LanTitle, Lan.time_start AS time_start
@@ -381,7 +370,7 @@ class User extends AppModel {
 								ON Lan.id = Crew2.lan_id
 				WHERE Crew1.user_id = ? AND Crew2.`user_id` = ?
 				) ORDER BY time_start DESC LIMIT 1", array($this->id, $user_id_crew, $this->id, $user_id_crew));
-		
+
 		return $total[0][0];
 	}
 

@@ -31,7 +31,6 @@
 					<div id="collapse<?php echo $team['Team']['id']; ?>" class="accordion-body collapse">
 						<div class="accordion-inner">
 							<?php if ($is_admin): ?>
-
 								<?php if ($team['TournamentWinner']['place'] > 0): ?>
 									<?php
 									echo $this->Html->link('<i class="icon-large icon-remove"></i> Remove as winner', array(
@@ -40,6 +39,7 @@
 										 $team['TournamentWinner']['id']
 											  ), array(
 										 'escape' => false,
+										 'confirm' => 'Are you sure?',
 										 'class' => 'btn btn-danger pull-right'
 									));
 									?>
