@@ -342,7 +342,7 @@ class User extends AppModel {
 								ON Lan.id = LanSignup.lan_id 
 				WHERE LanSignup.user_id = ? AND Crew.`user_id` = ?
 				
-			UNION
+			UNION ALL
 			
 			SELECT COUNT(Crew.id) AS CrewCount
 				FROM `crews` AS Crew
@@ -352,6 +352,8 @@ class User extends AppModel {
 							ON Lan.id = Crew2.lan_id
 				WHERE Crew2.user_id = ? AND Crew.user_id = ?
 			", array($this->id, $user_id_crew, $this->id, $user_id_crew));
+		
+//		debug($total);
 		
 		return $total[0][0]['CrewCount'] > 0 || $total[1][0]['CrewCount'] > 0;
 	}
