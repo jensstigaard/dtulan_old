@@ -30,6 +30,43 @@
 					</div>
 					<div id="collapse<?php echo $team['Team']['id']; ?>" class="accordion-body collapse">
 						<div class="accordion-inner">
+							<?php if ($is_admin): ?>
+
+								<?php if ($team['TournamentWinner']['place'] > 0): ?>
+									<?php
+									echo $this->Html->link('<i class="icon-large icon-remove"></i> Remove as winner', array(
+										 'controller' => 'tournament_winners',
+										 'action' => 'delete',
+										 $team['TournamentWinner']['id']
+											  ), array(
+										 'escape' => false,
+										 'class' => 'btn btn-danger pull-right'
+									));
+									?>
+								<?php else: ?>
+									<?php if (count($places_not_taken)): ?>
+										<div class="btn-group pull-right">
+											<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
+												Tournament-winner
+												<span class="caret"></span>
+											</a>
+											<ul class="dropdown-menu">
+												<?php foreach ($places_not_taken as $place): ?>
+													<li><?php
+							echo $this->Html->link($place . ' place', array(
+								 'controller' => 'tournament_winners',
+								 'action' => 'add',
+								 $team['Team']['id'],
+								 $place
+							));
+													?></li>
+												<?php endforeach; ?>
+											</ul>
+										</div>
+									<?php endif; ?>
+								<?php endif; ?>
+
+							<?php endif; ?>
 							<table>
 								<?php foreach ($team['TeamUser'] as $user): ?>
 									<tr>
@@ -55,26 +92,26 @@
 										<td>
 											<?php if ($user['is_leader']): ?>
 												<i class="icon-large icon-star" style="color:gold;" title="Teamleader"></i>
-									<?php endif; ?>
+											<?php endif; ?>
 										</td>
 									</tr>
-							<?php endforeach; ?>
+								<?php endforeach; ?>
 							</table>
-
 							<?php
 							echo $this->Html->link('View team-details', array(
 								 'controller' => 'teams',
 								 'action' => 'view',
 								 $team['Team']['id']
+									  ), array(
+								 'class' => 'btn btn-primary'
 							));
 							?>
-
 						</div>
 					</div>
 				</div>
-		<?php endforeach; ?>
+			<?php endforeach; ?>
 		</div>
-<?php endif; ?>
+	<?php endif; ?>
 </div>
 
 <?php

@@ -25,12 +25,6 @@
 				$title.= $user['User']['name'];
 				$title.='</small>';
 
-//					if ($is_admin) {
-//						$title.='<small class="phonenumber">';
-//						$title.='+45 ' . $user['User']['phonenumber'];
-//						$title.='</small>';
-//					}
-
 				echo $this->Html->link(
 						  $title, array(
 					 'controller' => 'users',

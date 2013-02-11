@@ -60,7 +60,7 @@ $(document).ready(function(){
 	
 	$(".fancybox").fancybox();
 	
-	$('#lan_overview .lan_overview_item').tooltip();
+	$('#lan_overview .lan_overview_item, #tournament-winners .item .person').tooltip();
 
 
 	$(".fittext").fitText();

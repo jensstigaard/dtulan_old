@@ -21,8 +21,12 @@ input[type=text], input[type=number], input[type=email]{
 }
 
 
-.accordion-group, .accordion-inner {
-	border-color: #555 !important;
+.accordion-group {
+	border-color: #555;
+}
+
+.accordion-inner{
+	border-color: #333;
 }
 
 .accordion-heading a{

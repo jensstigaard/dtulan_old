@@ -159,14 +159,14 @@ class Tournament extends AppModel {
 			foreach ($teams as $index => $team) {
 				$this->Team->id = $team['Team']['id'];
 				$this->Team->TeamUser->User->id = $this->getLoggedInId();
-				
-				if($this->Team->isUserPartOfTeam()){
+
+				if ($this->Team->isUserPartOfTeam()) {
 					$teams[$index]['Team']['is_part_of'] = true;
 					break;
 				}
 			}
 		}
-		
+
 		return $teams;
 	}
 
@@ -189,11 +189,53 @@ class Tournament extends AppModel {
 							 ),
 							 'TeamUser' => array(
 								  'User.id',
+								  'User.email_gravatar',
 								  'User.name'
 							 )
 						)
 				  ));
 	}
+
+	public function getPlacesTaken() {
+		$places_taken = $this->Team->find('all', array(
+			 'conditions' => array(
+				  'Team.tournament_id' => $this->id,
+				  'TournamentWinner.place >' => 0
+			 ),
+			 'contain' => array(
+				  'TournamentWinner' => array(
+						'fields' => array(
+							 'place'
+						)
+				  )
+			 )
+				  ));
+
+		$places = array();
+		foreach ($places_taken as $place_taken) {
+			$places[] = $place_taken['TournamentWinner']['place'];
+		}
+
+		return $places;
+	}
+
+	public function getPlacesNotTaken() {
+		$places = array(1, 2, 3);
+		
+		$places_taken = $this->getPlacesTaken();
+		
+		return array_diff($places, $places_taken);
+	}
+	
+	public function isPlaceTaken($place){
+		return $this->Team->find('count', array(
+			 'conditions' => array(
+				  'Team.tournament_id' => $this->id,
+				  'TournamentWinner.place' => $place
+			 )
+		));
+	}
+	
 
 	public function isUserInTournament() {
 

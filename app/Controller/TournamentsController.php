@@ -103,6 +103,7 @@ class TournamentsController extends AppController {
 		$this->Tournament->id = $this->Tournament->getIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug);
 
 		$this->set('teams', $this->Tournament->getTeamsList());
+		$this->set('places_not_taken', $this->Tournament->getPlacesNotTaken());
 	}
 
 	public function add($lan_id) {

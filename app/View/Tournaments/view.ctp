@@ -44,30 +44,46 @@
 <?php if (count($winner_teams)) : ?>
 	<div>
 		<h2>Tournament-winners</h2>
-		<div class="floated-list">
+		<div class="floated-list" id="tournament-winners">
 			<?php foreach ($winner_teams as $team): ?>
-				<div class="item" style="text-align: left;padding-right:10px;">
-					<h4><?php
-		if ($team['TournamentWinner']['place'] == 1) {
-			echo $this->Html->image('48x48_PNG/trophy_gold.png');
-		} elseif ($team['TournamentWinner']['place'] == 2) {
-			echo $this->Html->image('48x48_PNG/trophy_silver.png');
-		} elseif ($team['TournamentWinner']['place'] == 3) {
-			echo $this->Html->image('48x48_PNG/trophy_bronze.png');
-		}
-				?> 
-						<?php echo $team['Team']['name']; ?></h4>
-					<ul style="margin-left:50px;">
+				<div class="item" style="text-align: left; padding: 5px 10px 5px 5px;width:30%">
+					<?php
+					if ($team['TournamentWinner']['place'] == 1) {
+						$image = 'gold';
+					} elseif ($team['TournamentWinner']['place'] == 2) {
+						$image = 'silver';
+					} elseif ($team['TournamentWinner']['place'] == 3) {
+						$image = 'bronze';
+					}
+					?> 
+					<?php
+					echo $this->Html->image('48x48_PNG/trophy_' . $image . '.png', array(
+						 'style' => 'display:block;margin: 10px auto;'
+					));
+					?>
+					<div style="text-align: center;">
+						<h5><?php echo $team['TournamentWinner']['place']; ?>. place</h5>
+						<h4><?php echo $team['Team']['name']; ?></h4>
+					</div>
+					<div class="floated-list" style="margin:5px 2px;">
 						<?php foreach ($team['TeamUser'] as $user): ?>
-							<li><?php
-				echo $this->Html->link($user['User']['name'], array(
-					 'controller' => 'users',
-					 'action' => 'view',
-					 $user['User']['id']
-				));
-							?></li>
+							<?php
+							echo $this->Html->image(
+									  'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=35&amp;r=r', array(
+								 'url' => array(
+									  'controller' => 'users',
+									  'action' => 'view',
+									  $user['User']['id']
+								 ),
+								 'title' => $user['User']['name'],
+								 'class' => 'item person',
+								 'data-placement' => 'bottom',
+								 'data-animation' => false
+									  )
+							);
+							?>
 						<?php endforeach; ?>
-					</ul>
+					</div>
 				</div>
 			<?php endforeach; ?>
 		</div>
