@@ -12,16 +12,19 @@
 							if ($team['TournamentWinner']['place'] == 1) {
 								echo $this->Html->image('32x32_PNG/trophy_gold.png');
 							} elseif ($team['TournamentWinner']['place'] == 2) {
-								echo $this->Html->image('32x32_PNG/trophy_gold.png');
+								echo $this->Html->image('32x32_PNG/trophy_silver.png');
 							} elseif ($team['TournamentWinner']['place'] == 3) {
-								echo $this->Html->image('32x32_PNG/trophy_gold.png');
+								echo $this->Html->image('32x32_PNG/trophy_bronze.png');
 							}
 							?>
 
 							<?php echo $team['Team']['name']; ?>
 
 							<?php if (isset($team['Team']['is_part_of'])): ?>
-								<i class="icon-large icon-map-marker" style="float:right;"></i>
+								<span style="float:right;">
+									<i class="icon-large icon-user"></i>
+									Your team
+								</span>
 							<?php endif; ?>
 						</a>
 					</div>
@@ -33,7 +36,7 @@
 										<td>
 											<?php
 											echo $this->Html->image('http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=32&amp;r=r', array(
-												 'style' => 'width:24px; height:24px;'
+												 'style' => 'width:32px; height:32px;'
 											));
 											?>
 										</td>
@@ -41,15 +44,21 @@
 											<?php echo $user['User']['gamertag']; ?>
 										</td>
 										<td>
-											<?php echo $user['User']['name']; ?>
+											<?php
+											echo $this->Html->link($user['User']['name'], array(
+												 'controller' => 'users',
+												 'action' => 'profile',
+												 $user['User']['id']
+											));
+											?>
 										</td>
 										<td>
 											<?php if ($user['is_leader']): ?>
-												<i class="icon-large icon-star" style="color:gold;"></i>
-											<?php endif; ?>
+												<i class="icon-large icon-star" style="color:gold;" title="Teamleader"></i>
+									<?php endif; ?>
 										</td>
 									</tr>
-								<?php endforeach; ?>
+							<?php endforeach; ?>
 							</table>
 
 							<?php
@@ -63,9 +72,9 @@
 						</div>
 					</div>
 				</div>
-			<?php endforeach; ?>
+		<?php endforeach; ?>
 		</div>
-	<?php endif; ?>
+<?php endif; ?>
 </div>
 
 <?php
