@@ -21,6 +21,7 @@
 
 		echo $this->Html->css(array(
 			 'bootstrap/bootstrap.min',
+			 'bootstrap/bootstrap-modification',
 			 'font-awesome/font-awesome.min',
 			 'ui-darkness/jquery-ui-1.10.0.custom',
 //			 'jquery/jquery.qtip.min',
