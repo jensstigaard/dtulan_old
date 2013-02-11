@@ -1,10 +1,10 @@
 <div>
 	<?php echo $this->Form->create(); ?>
-    <fieldset>
-        <legend><?php echo __('Create Team for ' . $tournament['Tournament']['title']); ?></legend>
-		<?php
-		echo $this->Form->input('Team.name');
-		?>
-    </fieldset>
+	<?php
+	echo $this->Form->inputs(array(
+		 'Team.name',
+//		 'TeamInvite.user_id',
+	));
+	?>
 	<?php echo $this->Form->end(__('Submit')); ?>
 </div>

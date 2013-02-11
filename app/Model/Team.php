@@ -121,6 +121,15 @@ class Team extends AppModel {
 
 		return $team['TournamentWinner']['place'] > 0;
 	}
+	
+	public function isUserPartOfTeam(){
+		return $this->TeamUser->find('count', array(
+			 'conditions' => array(
+				  'team_id' => $this->id,
+				  'user_id' => $this->TeamUser->User->id,
+			 )
+		)) == 1;
+	}
 
 }
 

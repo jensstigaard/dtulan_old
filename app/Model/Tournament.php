@@ -65,7 +65,7 @@ class Tournament extends AppModel {
 		return $this->data['Tournament']['lan_id'];
 	}
 
-	public function getTournamentIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug) {
+	public function getIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug) {
 		$this->Lan->id = $this->Lan->getIdBySlug($lan_slug);
 
 		$result = $this->find('first', array(
@@ -128,6 +128,48 @@ class Tournament extends AppModel {
 		return $team_ids_formatted;
 	}
 
+	public function getTeamsList() {
+		$teams = $this->Team->find('all', array(
+			 'conditions' => array(
+				  'Team.tournament_id' => $this->id
+			 ),
+			 'contain' => array(
+				  'TeamUser' => array(
+						'order' => array(
+							 'is_leader' => 'desc'
+						),
+						'User' => array(
+							 'id',
+							 'name',
+							 'email_gravatar',
+							 'gamertag'
+						)
+				  ),
+				  'TournamentWinner'
+			 ),
+			 'order' => array(
+				  'TournamentWinner.place = 1' => 'desc',
+				  'TournamentWinner.place = 2' => 'desc',
+				  'TournamentWinner.place = 3' => 'desc',
+			 )
+				  ));
+
+
+		if ($this->isLoggedIn()) {
+			foreach ($teams as $index => $team) {
+				$this->Team->id = $team['Team']['id'];
+				$this->Team->TeamUser->User->id = $this->getLoggedInId();
+				
+				if($this->Team->isUserPartOfTeam()){
+					$teams[$index]['Team']['is_part_of'] = true;
+					break;
+				}
+			}
+		}
+		
+		return $teams;
+	}
+
 	public function getWinnerTeams() {
 
 		return $this->Team->find('all', array(
@@ -162,20 +204,18 @@ class Tournament extends AppModel {
 			 'contain' => array(
 				  'Team' => array(
 						'TeamUser' => array(
-							 'User' => array(
-								  'conditions' => array(
-										'User.id' => $this->Team->TeamUser->User->id
-								  ),
-								  'fields' => array(
-										'id'
-								  )
+							 'conditions' => array(
+								  'TeamUser.user_id' => $this->Team->TeamUser->User->id
+							 ),
+							 'fields' => array(
+								  'id'
 							 )
 						)
 				  )
 			 )
 				  ));
 
-		return isset($tournament['Team']['TeamUser']['User']['id']);
+		return isset($tournament['Team'][0]['TeamUser'][0]['id']);
 	}
 
 	public function isAbleToCreateTeam() {
@@ -185,7 +225,13 @@ class Tournament extends AppModel {
 
 		$this->Team->TeamUser->User->id = $this->getLoggedInId();
 
-		return !$this->isUserInTournament();
+		return $this->isSignupOpen() && !$this->isUserInTournament();
+	}
+
+	public function isSignupOpen() {
+		$this->read(array('is_signup_open'));
+
+		return $this->data['Tournament']['is_signup_open'];
 	}
 
 }

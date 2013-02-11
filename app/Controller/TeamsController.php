@@ -25,9 +25,9 @@ class TeamsController extends AppController {
 		return false;
 	}
 
-	public function add($tournament_id) {
+	public function add($lan_slug, $tournament_slug) {
 
-		$this->Team->Tournament->id = $tournament_id;
+		$this->Team->Tournament->id = $this->Team->Tournament->getIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug);
 
 		if (!$this->Team->Tournament->exists()) {
 			throw new NotFoundException('Team not found');
@@ -35,15 +35,15 @@ class TeamsController extends AppController {
 
 		if ($this->request->is('post')) {
 
-			$this->request->data['Team']['tournament_id'] = $tournament_id;
+			$this->request->data['Team']['tournament_id'] = $this->Team->Tournament->id;
 
 			$this->request->data['TeamUser'] = array(
 				 0 => array(
 					  'user_id' => $this->Auth->user('id'),
 					  'is_leader' => 1,
-					  'Team' => array(
-							'tournament_id' => $tournament_id
-					  )
+//					  'Team' => array(
+//							'tournament_id' => $tournament_id
+//					  )
 				 )
 			);
 

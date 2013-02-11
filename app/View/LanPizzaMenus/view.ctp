@@ -13,7 +13,7 @@ if ($is_orderable) {
 	<div id="pizza_list" class="accordion">
 		<?php foreach ($pizza_categories as $pizza_category): ?>
 			<?php if (count($pizza_category['Pizza']) || $is_admin): ?>
-				<div class="accordion-group" style="border-color: #666;">
+				<div class="accordion-group">
 					<div class="accordion-heading">
 						<a style="font-size: 13pt;" class="accordion-toggle" data-toggle="collapse" data-parent="#pizza_list" href="#category<?php echo $pizza_category['PizzaCategory']['id']; ?>">
 							<?php echo $pizza_category['PizzaCategory']['title']; ?>

@@ -28,11 +28,18 @@ class TournamentsController extends AppController {
 
 	public function view($lan_slug, $tournament_slug) {
 
-		$this->Tournament->id = $this->Tournament->getTournamentIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug);
+		$this->Tournament->id = $this->Tournament->getIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug);
 
 		$tournament = $this->Tournament->find('first', array(
 			 'conditions' => array(
 				  'Tournament.id' => $this->Tournament->id
+			 ),
+			 'fields' => array(
+				  'id',
+				  'title',
+				  'time_start',
+				  'team_size',
+				  'slug'
 			 ),
 			 'contain' => array(
 				  'Lan' => array(
@@ -57,15 +64,16 @@ class TournamentsController extends AppController {
 		$this->set(compact('tournament'));
 
 		$this->set('winner_teams', $this->Tournament->getWinnerTeams());
-		
+		$this->set('title_for_layout', $tournament['Tournament']['title']. ' &bull; '. $tournament['Lan']['title']);
 		$this->set('can_create_team', $this->Tournament->isAbleToCreateTeam());
+		
 	}
 
 	public function view_description($lan_slug, $tournament_slug) {
 
 		$this->layout = 'ajax';
 
-		$this->Tournament->id = $this->Tournament->getTournamentIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug);
+		$this->Tournament->id = $this->Tournament->getIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug);
 
 		$this->set('tournament', $this->Tournament->read(array('description')));
 	}
@@ -74,7 +82,7 @@ class TournamentsController extends AppController {
 
 		$this->layout = 'ajax';
 
-		$this->Tournament->id = $this->Tournament->getTournamentIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug);
+		$this->Tournament->id = $this->Tournament->getIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug);
 
 		$this->set('tournament', $this->Tournament->read(array('rules')));
 	}
@@ -83,7 +91,7 @@ class TournamentsController extends AppController {
 
 		$this->layout = 'ajax';
 
-		$this->Tournament->id = $this->Tournament->getTournamentIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug);
+		$this->Tournament->id = $this->Tournament->getIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug);
 
 		$this->set('tournament', $this->Tournament->read(array('bracket')));
 	}
@@ -92,19 +100,9 @@ class TournamentsController extends AppController {
 
 		$this->layout = 'ajax';
 
-		$this->Tournament->id = $this->Tournament->getTournamentIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug);
+		$this->Tournament->id = $this->Tournament->getIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug);
 
-		$this->set('teams', $this->Tournament->Team->find('all', array(
-						'conditions' => array(
-							 'Team.tournament_id' => $this->Tournament->id
-						),
-						'recursive' => 1,
-						'order' => array(
-							 'TournamentWinner.place = 1' => 'desc',
-							 'TournamentWinner.place = 2' => 'desc',
-							 'TournamentWinner.place = 3' => 'desc',
-						)
-				  )));
+		$this->set('teams', $this->Tournament->getTeamsList());
 	}
 
 	public function add($lan_id) {
