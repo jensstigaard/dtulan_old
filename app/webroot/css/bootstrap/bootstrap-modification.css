@@ -1,0 +1,29 @@
+/* 
+    Document   : bootstrap-modification
+    Created on : 11-02-2013, 12:39:00
+    Author     : Jens
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.accordion-group, .accordion-inner {
+	border-color: #666 !important;
+}
+
+.accordion-heading a{
+	font-size: 120%;
+	color: #DDD;
+	text-decoration: none;
+}
+
+.accordion-heading a:hover{
+	color: #FFF;
+	text-decoration: none;
+}
+
+
+input[type=text], input[type=number], input[type=email]{
+	background-color:rgba(0,0,0,.2) !important;
+	border:1px solid rgba(100,100,100,.7) !important;
+	color: #CCC;
+}
