@@ -64,9 +64,8 @@ class TournamentsController extends AppController {
 		$this->set(compact('tournament'));
 
 		$this->set('winner_teams', $this->Tournament->getWinnerTeams());
-		$this->set('title_for_layout', $tournament['Tournament']['title']. ' &bull; '. $tournament['Lan']['title']);
+		$this->set('title_for_layout', $tournament['Tournament']['title'] . ' &bull; ' . $tournament['Lan']['title']);
 		$this->set('can_create_team', $this->Tournament->isAbleToCreateTeam());
-		
 	}
 
 	public function view_description($lan_slug, $tournament_slug) {
@@ -122,7 +121,29 @@ class TournamentsController extends AppController {
 
 			if ($this->Tournament->save($this->request->data)) {
 				$this->Session->setFlash('Your Tournament has been created', 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('action' => 'view', $this->Tournament->getLastInsertID()));
+
+
+				$tournament = $this->Tournament->find('first', array(
+					 'conditions' => array(
+						  'id' => $this->Tournament->getLastInsertID()
+					 ),
+					 'fields' => array(
+						  'Tournament.slug'
+					 ),
+					 'contain' => array(
+						  'Lan' => array(
+								'fields' => array(
+									 'Lan.slug'
+								)
+						  )
+					 )
+						  ));
+				$this->redirect(array(
+					 'controller' => 'tournaments',
+					 'action' => 'view',
+					 'lan_slug' => $tournament['Lan']['slug'],
+					 'tournament_slug' => $tournament['Tournament']['slug']
+				));
 			} else {
 				$this->Session->setFlash('Unable to create your tournament', 'default', array(), 'bad');
 			}
