@@ -5,12 +5,12 @@
 	echo $this->Form->create();
 
 	echo $this->Form->inputs(array(
-		 'legend' => 'Send email to subscribers for '.$title,
+		 'legend' => 'Send email to subscribers for ' . $title,
 		 'text' => array(
 			  'label' => false,
 			  'class' => 'ckeditor',
 			  'type' => 'textarea',
-			  'value' => '<h1>Default heading</h1><p>Default text</p>'
+			  'value' => '<p>Default text</p>'
 		 )
 	));
 
