@@ -892,7 +892,7 @@ class Lan extends AppModel {
 			$event = new CakeEvent('Model.Lan.sendSubscriptionEmail', $this, array(
 							'User' => $content['User'],
 							'Lan' => $lan['Lan'],
-							'Text' => $data
+							'Text' => $data['Lan']['text']
 					  ));
 			$this->getEventManager()->dispatch($event);
 

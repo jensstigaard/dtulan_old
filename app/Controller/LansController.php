@@ -260,11 +260,6 @@ class LansController extends AppController {
 			throw new NotFoundException(__('Invalid Lan'));
 		}
 
-		$this->Lan->recursive = -1;
-		$this->Lan->read(array('id', 'title', 'time_start'));
-
-		$this->request->data['Lan'] = $this->Lan->data;
-
 		if ($this->request->is('post')) {
 			if ($this->Lan->sendSubscriptionEmails($this->request->data)) {
 				$this->Session->setFlash(__('Emails has been sent!'), 'default', array('class' => 'message success'), 'good');

@@ -1,7 +1,7 @@
 <div>
 	<h2>Hey <?php echo $user['name']; ?></h2>
 	<div>
-		<?php echo $text['Lan']['text']; ?>
+		<?php echo $text; ?>
 	</div>
 	<div>
 		<?php
@@ -10,7 +10,6 @@
 			 'controller' => 'lans',
 			 'action' => 'view',
 			 $lan['slug']
-				  ), array(
 				  )
 		);
 		?>
