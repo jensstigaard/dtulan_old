@@ -18,10 +18,14 @@ class AdminsController extends AppController {
 
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
-		return true;
+
+		if ($this->Admin->isYouAdmin()) {
+			return true;
+		}
+		return false;
 	}
 
-	public function add() {
+	public function admin_add() {
 
 		if ($this->request->is('post')) {
 

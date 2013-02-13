@@ -8,7 +8,8 @@
 			<div class="item" style="padding:5px 1px">
 				<?php
 				echo $this->Html->link(
-						  $this->Html->image('uploads/thumb_210w_' . $image['Image']['fileName']), '..' . DS . IMAGES_URL . 'uploads' . DS . $image['Image']['fileName'], array(
+						  $this->Html->image('uploads/thumb_210w_' . $image['Image']['fileName']), '../img/uploads/' . $image['Image']['fileName']
+						  , array(
 					 'escape' => false,
 					 'class' => 'fancybox',
 					 'rel' => 'images',

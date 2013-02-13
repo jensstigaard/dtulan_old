@@ -11,10 +11,40 @@
 	<div>
 		<h1>Admin menu</h1>
 		<ul>
+
+
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-coffee icon-large"></i> Candy/soda menus', array(
+						  '<i class="icon-large icon-user-md"></i> Admins', array(
+					 'controller' => 'admins',
+					 'action' => 'add',
+					 'admin' => true,
+						  ), array(
+					 'escape' => false
+						  )
+				);
+				?>
+			</li>
+
+			<li>
+				<?php
+				echo $this->Html->link(
+						  '<i class="icon-large icon-user-md"></i> Admin new', array(
+					 'controller' => 'admins',
+					 'action' => 'add',
+					 'admin' => true,
+						  ), array(
+					 'escape' => false
+						  )
+				);
+				?>
+			</li>
+
+			<li>
+				<?php
+				echo $this->Html->link(
+						  '<i class="icon-large icon-coffee"></i> Candy/soda menus', array(
 					 'controller' => 'food_menus',
 					 'action' => 'index'
 						  ), array(
@@ -27,7 +57,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-coffee icon-large"></i> Candy/soda orders', array(
+						  '<i class="icon-large icon-coffee"></i> Candy/soda orders', array(
 					 'controller' => 'food_orders',
 					 'action' => 'index'
 						  ), array(
@@ -40,7 +70,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-screenshot icon-large"></i> Games', array(
+						  '<i class="icon-large icon-screenshot"></i> Games', array(
 					 'controller' => 'games',
 					 'action' => 'index'
 						  ), array(
@@ -55,7 +85,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-picture icon-large"></i> Image Database', array(
+						  '<i class="icon-large icon-picture"></i> Image Database', array(
 					 'controller' => 'images',
 					 'action' => 'index'
 						  ), array(
@@ -68,7 +98,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-sitemap icon-large"></i> LANS', array(
+						  '<i class="icon-large icon-sitemap"></i> LANS', array(
 					 'controller' => 'lans',
 					 'action' => 'index'
 						  ), array(
@@ -78,12 +108,14 @@
 				?>
 			</li>
 
+
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-user icon-large"></i> New admin', array(
-					 'controller' => 'admins',
-					 'action' => 'add'
+						  '<i class="icon-large icon-quote-right"></i> News database', array(
+					 'controller' => 'news',
+					 'action' => 'index',
+					 'crew' => true,
 						  ), array(
 					 'escape' => false
 						  )
@@ -94,7 +126,21 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-file-alt icon-large"></i> Pages', array(
+						  '<i class="icon-large icon-quote-right"></i> News add', array(
+					 'controller' => 'news',
+					 'action' => 'index',
+					 'crew' => true,
+						  ), array(
+					 'escape' => false
+						  )
+				);
+				?>
+			</li>
+
+			<li>
+				<?php
+				echo $this->Html->link(
+						  '<i class="icon-large icon-file-alt"></i> Pages', array(
 					 'controller' => 'pages',
 					 'action' => 'index'
 						  ), array(
@@ -107,7 +153,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-money icon-large"></i> Payments', array(
+						  '<i class="icon-large icon-money"></i> Payments', array(
 					 'controller' => 'payments',
 					 'action' => 'index'
 						  ), array(
@@ -120,7 +166,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-food icon-large"></i> Pizza menus', array(
+						  '<i class="icon-large icon-food"></i> Pizza menus', array(
 					 'controller' => 'pizza_menus',
 					 'action' => 'index'
 						  ), array(
@@ -133,7 +179,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-food icon-large"></i> Pizza types', array(
+						  '<i class="icon-large icon-food"></i> Pizza types', array(
 					 'controller' => 'pizza_types',
 					 'action' => 'index'
 						  ), array(
@@ -146,7 +192,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-group icon-large"></i> Users', array(
+						  '<i class="icon-large icon-group"></i> Users', array(
 					 'controller' => 'users',
 					 'action' => 'index'
 						  ), array(
@@ -159,7 +205,7 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-qrcode icon-large"></i> QR-codes', array(
+						  '<i class="icon-large icon-qrcode"></i> QR-codes', array(
 					 'controller' => 'qr_codes',
 					 'action' => 'index'
 						  ), array(

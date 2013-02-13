@@ -24,7 +24,11 @@
 				default:
 					$img = 'file';
 					$title = 'Text';
-					$url = array('action' => 'view', $page['Page']['slug']);
+					$url = array(
+						 'controller' => 'pages',
+						 'action' => 'view',
+						 'slug' => $page['Page']['slug']
+					);
 					break;
 			}
 			?>
@@ -44,8 +48,8 @@
 					<?php echo $this->Html->image('16x16_GIF/reply.gif', array('url' => array('action' => 'edit', $page['Page']['id']), 'title' => 'Edit this page')); ?>
 					<?php
 					echo $this->Form->postLink(
-							$this->Html->image('16x16_GIF/action_delete.gif', array('title' => 'Delete this page')), array('action' => 'delete', $page['Page']['id']), array('confirm' => 'Are you sure?',
-						'escape' => false // Add this to avoid Cake from printing the img HTML code instead of the actual image
+							  $this->Html->image('16x16_GIF/action_delete.gif', array('title' => 'Delete this page')), array('action' => 'delete', $page['Page']['id']), array('confirm' => 'Are you sure?',
+						 'escape' => false // Add this to avoid Cake from printing the img HTML code instead of the actual image
 					));
 					?>
 				</td>

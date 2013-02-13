@@ -62,7 +62,6 @@ $(document).ready(function(){
 	
 	$('#lan_overview .lan_overview_item, #tournament-winners .item .person').tooltip();
 
-
 	$(".fittext").fitText();
 
 });

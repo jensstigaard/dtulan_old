@@ -10,7 +10,12 @@
 	}
 	?>
 	<div id="sidebar_user_info">
-		<?php echo $this->Html->link($current_user['name'], array('controller' => 'users', 'action' => 'view'), array('id' => 'user_name_link')); ?>
+		<?php
+		echo $this->Html->link($current_user['name'], array(
+			 'controller' => 'users',
+			 'action' => 'view',
+				  ), array('id' => 'user_name_link'));
+		?>
 		<p id="user_balance">Balance:
 			<?php
 			$color = '';
@@ -30,7 +35,25 @@
 	<div style="clear:both;"></div>
 
 	<ul>
-		<li><?php echo $this->Html->link('<i class="icon-wrench icon-large"></i> Edit personal data', array('controller' => 'users', 'action' => 'edit'), array('escape' => false)); ?></li>
-		<li><?php echo $this->Html->link('<i class="icon-lock icon-large"></i> Logout', array('controller' => 'users', 'action' => 'logout'), array('escape' => false)); ?></li>
+		<li><?php
+				echo $this->Html->link(
+						  '<i class="icon-wrench icon-large"></i> Edit personal data', array(
+					 'controller' => 'users',
+					 'action' => 'edit'
+						  ), array(
+					 'escape' => false
+						  )
+				);
+				?></li>
+		<li><?php
+			echo $this->Html->link(
+					  '<i class="icon-lock icon-large"></i> Logout', array(
+				 'controller' => 'users',
+				 'action' => 'logout'
+					  ), array(
+				 'escape' => false
+					  )
+			);
+				?></li>
 	</ul>
 </div>
