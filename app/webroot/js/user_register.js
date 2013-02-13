@@ -5,10 +5,10 @@ $(document).ready(function(){
 		var val = $(this).val();
 
 		if(val == 'student'){
-			$('#id_number').show();
+			$('#id_number').attr('type', 'text');
 		}
 		else if(val == 'guest'){
-			$('#id_number').hide();
+			$('#id_number').attr('type', 'hidden');
 		}
 	});
 });

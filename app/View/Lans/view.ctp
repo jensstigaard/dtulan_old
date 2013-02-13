@@ -61,13 +61,6 @@ echo $this->Html->css(array(
 		?>
 
 		<div class="btn-group" style="float:right;">
-			<?php
-			echo $this->Html->link('<i class="icon-large icon-envelope-alt"></i> Send subscription email', array(
-				 'action' => 'sendEmailSubscribers',
-				 $lan['Lan']['slug']
-			));
-			?>
-
 			<div class="btn-group">
 				<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
 					<i class="icon-plus-sign"></i> New

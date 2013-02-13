@@ -355,6 +355,7 @@ class UsersController extends AppController {
 			$password = $this->request->data['User']['password'];
 
 			if ($this->User->save($this->request->data)) {
+				
 				/*
 				 * Logs user in after successful activation
 				 */
@@ -364,7 +365,7 @@ class UsersController extends AppController {
 				$this->request->data['User']['password'] = $password;
 
 				if ($this->Auth->login()) {
-					$this->Session->setFlash(__('Your account is activated. Welcome ' . $data['User']['name']), 'default', array('class' => 'message success'), 'good');
+					$this->Session->setFlash(__('Your account is activated. Welcome ' . $user['User']['name']), 'default', array('class' => 'message success'), 'good');
 					$this->redirect('/');
 				} else {
 					$this->Session->setFlash(__('Your account is activated. Please log in.'), 'default', array('class' => 'message success'), 'good');

@@ -72,7 +72,7 @@ class Email extends AppModel implements CakeEventListener {
 				  ->subject('DTU LAN website - Forgot password')
 				  ->viewVars(array(
 						'title_for_layout' => 'Activate user',
-						'name' => $event->data['Ticket']['name'],
+						'name' => $event->data['User']['name'],
 						'ticket_id' => $event->data['Ticket']['id'],
 				  ));
 //
