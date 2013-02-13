@@ -97,10 +97,11 @@ class Email extends AppModel implements CakeEventListener {
 				  ->template('lan_subscription')
 				  ->from(array('contact@dtu-lan.dk' => 'DTU LAN website'))
 				  ->to($event->data['user']['email'])
-				  ->subject('Lan event announcement')
+				  ->subject('DTU LAN - Event announcement')
 				  ->viewVars(array(
 						'title_for_layout' => 'Lan event announcement',
-						'data' => $event->data,
+						'lan' => $event->data['Lan'],
+						'user' => $event->data['User']
 				  ));
 
 		if (!$email->send()) {
