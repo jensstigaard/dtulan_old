@@ -742,7 +742,7 @@ class Lan extends AppModel {
 	public function getTabs() {
 
 		$this->read(array('slug'));
-		
+
 		$slug = $this->data['Lan']['slug'];
 
 		$tabs = array(
@@ -881,7 +881,7 @@ class Lan extends AppModel {
 	public function sendSubscriptionEmails($data) {
 
 		$lan = $this->read(array('title', 'slug', 'time_start'));
-		
+
 		$users = $this->LanSignup->User->getSubscribingUsersNameAndEmail();
 
 		$count = array(
@@ -890,8 +890,9 @@ class Lan extends AppModel {
 		);
 		foreach ($users as $x => $content) {
 			$event = new CakeEvent('Model.Lan.sendSubscriptionEmail', $this, array(
-							'user' => $content['User'],
-							'lan' => $lan['Lan']
+							'User' => $content['User'],
+							'Lan' => $lan['Lan'],
+							'Text' => $data
 					  ));
 			$this->getEventManager()->dispatch($event);
 

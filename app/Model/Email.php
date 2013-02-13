@@ -86,7 +86,7 @@ class Email extends AppModel implements CakeEventListener {
 
 	public function sendSubscriptionEmail($event) {
 
-		if (!isset($event->data['user'])) {
+		if (!isset($event->data['User'])) {
 			$this->log('Subscription email not send.. Wrong data received', 'email');
 			return $event->data + array('success' => false);
 		}
@@ -96,12 +96,13 @@ class Email extends AppModel implements CakeEventListener {
 				  ->emailFormat('html')
 				  ->template('lan_subscription')
 				  ->from(array('contact@dtu-lan.dk' => 'DTU LAN website'))
-				  ->to($event->data['user']['email'])
+				  ->to($event->data['User']['email'])
 				  ->subject('DTU LAN - Event announcement')
 				  ->viewVars(array(
 						'title_for_layout' => 'Lan event announcement',
 						'lan' => $event->data['Lan'],
-						'user' => $event->data['User']
+						'user' => $event->data['User'],
+						'text' => $event->data['Text']
 				  ));
 
 		if (!$email->send()) {
