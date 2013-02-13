@@ -147,7 +147,7 @@ class UsersController extends AppController {
 				  )
 			 )
 				  ));
-		
+
 		$lans = $lans_as_guest + $lans_as_crew;
 
 		$is_you = false;
@@ -294,14 +294,10 @@ class UsersController extends AppController {
 
 			$this->User->getEventManager()->attach(new Email());
 
-			$data = array(
-				 'email' => $this->request->data['User']['email'],
-				 'name' => $this->request->data['User']['name']
-			);
+			$email = $this->request->data['User']['email'];
 
-			if ($this->User->createUser($data)) {
-				$id = $this->User->getLastInsertID();
-				$this->Session->setFlash(__('Your user has been registered. An email is sent to ' . $data['email'] . '. Follow the instructions in the email to continue the activation process. Remember to check your spam folder'), 'default', array('class' => 'message success'), 'good');
+			if ($this->User->createUser($this->request->data)) {
+				$this->Session->setFlash(__('Your user has been registered. An email is sent to ' . $email . '. Follow the instructions in the email to continue the activation process. Remember to check your spam folder'), 'default', array('class' => 'message success'), 'good');
 				$this->redirect('/');
 			} else {
 				$this->Session->setFlash(__('The user could not be saved. Please try again.'), 'default', array(), 'bad');
@@ -355,7 +351,7 @@ class UsersController extends AppController {
 			$password = $this->request->data['User']['password'];
 
 			if ($this->User->save($this->request->data)) {
-				
+
 				/*
 				 * Logs user in after successful activation
 				 */
@@ -366,7 +362,9 @@ class UsersController extends AppController {
 
 				if ($this->Auth->login()) {
 					$this->Session->setFlash(__('Your account is activated. Welcome ' . $user['User']['name']), 'default', array('class' => 'message success'), 'good');
-					$this->redirect('/');
+					$this->redirect(array(
+						 'action' => 'view'
+					));
 				} else {
 					$this->Session->setFlash(__('Your account is activated. Please log in.'), 'default', array('class' => 'message success'), 'good');
 					$this->redirect(array('action' => 'login'));

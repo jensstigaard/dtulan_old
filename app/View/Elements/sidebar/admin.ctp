@@ -113,7 +113,7 @@
 				<?php
 				echo $this->Html->link(
 						  '<i class="icon-large icon-quote-right"></i> News database', array(
-					 'controller' => 'news',
+					 'controller' => 'news_items',
 					 'action' => 'index',
 					 'crew' => true,
 						  ), array(
@@ -127,8 +127,8 @@
 				<?php
 				echo $this->Html->link(
 						  '<i class="icon-large icon-quote-right"></i> News add', array(
-					 'controller' => 'news',
-					 'action' => 'index',
+					 'controller' => 'news_items',
+					 'action' => 'add',
 					 'crew' => true,
 						  ), array(
 					 'escape' => false

@@ -219,23 +219,32 @@ class Tournament extends AppModel {
 		return $places;
 	}
 
+	public function getFrontTournaments() {
+
+		return $this->find('all', array(
+						'order' => array(
+							 'Tournament.time_start' => 'desc'
+						),
+						'limit' => 3
+				  ));
+	}
+
 	public function getPlacesNotTaken() {
 		$places = array(1, 2, 3);
-		
+
 		$places_taken = $this->getPlacesTaken();
-		
+
 		return array_diff($places, $places_taken);
 	}
-	
-	public function isPlaceTaken($place){
+
+	public function isPlaceTaken($place) {
 		return $this->Team->find('count', array(
-			 'conditions' => array(
-				  'Team.tournament_id' => $this->id,
-				  'TournamentWinner.place' => $place
-			 )
-		));
+						'conditions' => array(
+							 'Team.tournament_id' => $this->id,
+							 'TournamentWinner.place' => $place
+						)
+				  ));
 	}
-	
 
 	public function isUserInTournament() {
 

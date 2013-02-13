@@ -397,13 +397,13 @@ class User extends AppModel {
 
 		$this->create();
 		if ($this->save($input)) {
-
-			$input = $input + array(
-				 'id' => $this->getLastInsertID()
-			);
+			
+			$user = $input['User'];
+			
+			$user['id'] = $this->getLastInsertID();
 
 			$event = new CakeEvent('Model.User.activationEmail', $this, array(
-							'user' => $input
+							'user' => $user
 					  ));
 			$this->getEventManager()->dispatch($event);
 

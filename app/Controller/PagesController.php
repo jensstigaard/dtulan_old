@@ -33,7 +33,6 @@ class PagesController extends AppController {
 		if ($this->request->is('post')) {
 
 			$this->request->data['Page']['time_created'] = date('Y-m-d H:i:s');
-			$this->request->data['Page']['slug'] = $this->Page->stringToSlug($this->request->data['Page']['title']);
 
 			if ($this->Page->save($this->request->data)) {
 				$this->Session->setFlash('Your page has been saved.', 'default', array('class' => 'message success'), 'good');
@@ -60,12 +59,12 @@ class PagesController extends AppController {
 			$this->request->data = $this->Page->read();
 		} else {
 			// Otherwise - save the page
-
-			$slug = $this->request->data['Page']['slug'] = $this->Page->stringToSlug($this->request->data['Page']['title']);
-
 			if ($this->Page->save($this->request->data)) {
 				$this->Session->setFlash('Your page has been updated.', 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('action' => 'view', 'slug' => $slug));
+
+				$this->Page->read('slug');
+
+				$this->redirect(array('action' => 'view', 'slug' => $this->Page->data['Page']['slug']));
 			} else {
 				$this->Session->setFlash('Unable to update your page.', 'default', array(), 'bad');
 			}

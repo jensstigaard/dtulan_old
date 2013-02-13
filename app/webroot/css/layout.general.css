@@ -215,17 +215,21 @@ hr{
 	padding: 10px 0 20px 0;
 }
 
-#content > div.content > div:not([class~=message]), #content > #sidebar > div{
+#content > div.content > div:not([class~="message"]):not([class~="row-fluid"]), #content > #sidebar > div, #content .row-fluid > div{
 	background: rgba(0, 0, 0, .3);
 	border: 1px solid rgba(0, 0, 0,.5);
 	margin:0 0 10px;
+}
+
+#content .row-fluid > div:first-child{
+	margin-right: 10px;
 }
 
 /*#content > div.content > div:hover, #content > #sidebar > div:hover{
 	background: rgba(0,0,0, .4);
 }*/
 
-#content > div.content > div:not([class~=message]){
+#content > div.content > div:not([class~=message]):not([class~="row-fluid"]), #content .row-fluid > div {
 	padding: 5px 8px 10px;
 }
 
