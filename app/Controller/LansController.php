@@ -40,7 +40,7 @@ class LansController extends AppController {
 
 		$this->set('tabs', $this->Lan->getTabs());
 		$this->set('data', $this->Lan->getGeneralStatistics());
-		
+
 		$this->set('is_cancelable', $this->Lan->isLoggedIn() && $this->Lan->isUserAttendingAsGuest() && $this->Lan->isSignupOpen());
 
 		if ($this->Lan->isYouAdmin()) {
@@ -251,22 +251,29 @@ class LansController extends AppController {
 		$this->redirect($this->referer());
 	}
 
-	public function sendEmailSubscribers($id) {
+	public function sendEmailSubscribers($slug) {
 
 		$this->Lan->getEventManager()->attach(new Email());
 
-		$this->Lan->id = $id;
-		if (!$this->Lan->exists()) {
-			throw new NotFoundException(__('Invalid Lan'));
-		}
+		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 
 		if ($this->request->is('post')) {
-			if ($this->Lan->sendSubscriptionEmails($this->request->data)) {
+			if ($this->Lan->sendSubscriptionEmails($this->request->data['Lan']['text'])) {
 				$this->Session->setFlash(__('Emails has been sent!'), 'default', array('class' => 'message success'), 'good');
+
+				$this->Lan->read(array('slug'));
+
+				$this->redirect(array(
+					 'controller' => 'lans',
+					 'action' => 'view',
+					 'slug' => $this->Lan->data['Lan']['slug']
+				));
 			} else {
 				$this->Session->setFlash(__('Emails could not be sent. Please try again'), 'default', array(), 'bad');
 			}
 		}
+
+		$this->Lan->read(array('title'));
 
 		$this->set('title', $this->Lan->data['Lan']['title']);
 	}

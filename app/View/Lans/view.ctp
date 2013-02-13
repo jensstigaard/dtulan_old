@@ -59,14 +59,22 @@ echo $this->Html->css(array(
 //				 ),
 		);
 		?>
+
 		<div class="btn-group" style="float:right;">
+			<?php
+			echo $this->Html->link('<i class="icon-large icon-envelope-alt"></i> Send subscription email', array(
+				 'action' => 'sendSubscriptionEmail',
+				 $lan['Lan']['slug']
+			));
+			?>
+
 			<div class="btn-group">
 				<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
 					<i class="icon-plus-sign"></i> New
 					<span class="caret"></span>
 				</a>
 				<ul class="dropdown-menu">
-					<?php foreach ($admin_links_new as $link): ?>
+						<?php foreach ($admin_links_new as $link): ?>
 						<li>
 							<?php
 							echo $this->Html->link('<i class="icon-large ' . $link['icon'] . '"></i> ' . $link['title'], $link['url'], array(
@@ -74,7 +82,7 @@ echo $this->Html->css(array(
 							));
 							?>
 						</li>
-					<?php endforeach; ?>
+	<?php endforeach; ?>
 				</ul>
 			</div>
 			<div class="btn-group">
@@ -83,7 +91,7 @@ echo $this->Html->css(array(
 					<span class="caret"></span>
 				</a>
 				<ul class="dropdown-menu">
-					<?php foreach ($admin_links_connect as $link): ?>
+						<?php foreach ($admin_links_connect as $link): ?>
 						<li>
 							<?php
 							echo $this->Html->link('<i class="icon-large ' . $link['icon'] . '"></i> ' . $link['title'], $link['url'], array(
@@ -91,11 +99,12 @@ echo $this->Html->css(array(
 							));
 							?>
 						</li>
-					<?php endforeach; ?>
+	<?php endforeach; ?>
 				</ul>
 			</div>
 		</div>
-	<?php endif; ?>
+
+<?php endif; ?>
 
 	<h1><?php echo $title; ?></h1>
 
@@ -138,10 +147,10 @@ echo $this->Html->css(array(
 				<?php else: ?>
 					<i class="icon-ban-circle"></i>
 					<span>Signup not open</span>
-				<?php endif; ?>
+			<?php endif; ?>
 			</div>
 
-			<?php if ($is_admin): ?>
+				<?php if ($is_admin): ?>
 
 				<div class="lan_overview_item" rel="tooltip" title="Published">
 					<?php if ($lan['Lan']['published']): ?>
@@ -150,7 +159,7 @@ echo $this->Html->css(array(
 					<?php else: ?>
 						<i class="icon-minus-sign"></i>
 						<span>Unpublished</span>
-					<?php endif; ?>
+	<?php endif; ?>
 				</div>
 
 				<div class="lan_overview_item" rel="tooltip" title="Need physical code">
@@ -160,10 +169,10 @@ echo $this->Html->css(array(
 					<?php else: ?>
 						<i class="icon-ok-circle"></i>
 						<span>No code needed to signup</span>
-					<?php endif; ?>
+				<?php endif; ?>
 				</div>
 
-			<?php endif; ?>
+<?php endif; ?>
 		</div>
 	</div>
 
@@ -171,7 +180,7 @@ echo $this->Html->css(array(
 
 <?php // pr($lan); ?>
 
-<?php if ($is_cancelable): ?>
+	<?php if ($is_cancelable): ?>
 	<div>
 		<h2>Cancel your signup</h2>
 		<?php
@@ -194,13 +203,13 @@ echo $this->Html->css(array(
 	<div>
 		<div class="tabs">
 			<ul>
-				<?php foreach ($tabs_admin as $tab): ?>
+	<?php foreach ($tabs_admin as $tab): ?>
 					<li>
 						<a href="<?php echo $this->Html->url($tab['url']); ?>" title="<?php echo $tab['title']; ?>">
 							<i class="<?php echo $tab['icon']; ?>"></i>
 						</a>
 					</li>
-				<?php endforeach; ?>
+	<?php endforeach; ?>
 			</ul>
 
 			<div class="loading_indicator">
@@ -214,12 +223,12 @@ echo $this->Html->css(array(
 <div>
 	<div class="tabs">
 		<ul>
-			<?php foreach ($tabs as $tab): ?>
+<?php foreach ($tabs as $tab): ?>
 				<li>
 					<a href="<?php echo $this->Html->url($tab['url']); ?>" title="<?php echo $tab['title']; ?>">
 						<i class="<?php echo $tab['icon']; ?>"></i>
 					</a></li>
-			<?php endforeach; ?>
+<?php endforeach; ?>
 		</ul>
 
 		<div class="loading_indicator">
