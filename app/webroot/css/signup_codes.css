@@ -14,33 +14,39 @@ body{
 
 .signup_ticket{
 	width: 8.8cm;
-	height: 4.5cm;
+	height: 4.3cm;
 	float:left;
 	position: relative;
+	padding:0.5cm 0.3cm 0;
 }
 
-.ticket_content{
-	text-align: center;
+.table{
+	margin-top: 20px;
 }
 
 h1, p{
 	margin: 0;
 }
 
+h1{
+	text-align:center;
+}
+
 h2{
 	font-size: 11pt;
 	margin: 0;
-	margin-bottom: 10px;
 }
 
 .url{
 	display:block;
 }
 
+.price{
+	font-size: 14pt;
+}
+
 img{
-	width: 7cm; 
-	display:block; 
-	margin: 0.5cm auto 0.2cm;
+	width: 100px;
 }
 
 .corner{
