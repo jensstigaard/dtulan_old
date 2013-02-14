@@ -4,9 +4,9 @@
 		<div>
 			<?php if (!count($latest_news)): ?>
 				<div class="alert alert-error">
-				<i class="icon-large icon-exclamation-sign pull-left"></i>
-				No news found
-			</div>
+					<i class="icon-large icon-exclamation-sign pull-left"></i>
+					No news found
+				</div>
 			<?php else: ?>
 				<?php foreach ($latest_news as $news_item): ?>
 					<div class="item">
@@ -62,28 +62,32 @@
 	</div>
 </div>
 
-<div class="row">
-	<div>
-		<?php if($is_admin){
-			echo $this->Html->link('<i class="icon-large icon-pencil"></i> Edit page', array(
-				 'controller' => 'pages',
-				 'action' => 'edit',
-				 $page['Page']['id'],
+<div>
+	<?php
+	if ($is_admin) {
+		echo $this->Html->link('<i class="icon-large icon-pencil"></i> Edit page', array(
+			 'controller' => 'pages',
+			 'action' => 'edit',
+			 $page['Page']['id'],
 //				 'admin' => true
-			)); 
-		} ?>
-		<h1><?php echo $page['Page']['title']; ?></h1>
-		<p>
-			<small>
-				<em>
-					Updated: <?php echo $page['Page']['time_latest_update']; ?> by
-					<?php echo $this->Html->link($page['LatestUpdateBy']['name'], array('controller' => 'users', 'action' => 'view', $page['LatestUpdateBy']['id'])); ?>
-				</em>
-			</small>
-		</p>
-		<div>
-			<?php echo $page['Page']['text']; ?>
-		</div>
+				  ), array(
+			 'escape' => false,
+			 'class' => 'btn btn-small btn-inverse',
+			 'style' => 'float:right;'
+		));
+	}
+	?>
+	<h1><?php echo $page['Page']['title']; ?></h1>
+	<p>
+		<small>
+			<em>
+				Updated: <?php echo $page['Page']['time_latest_update']; ?> by
+				<?php echo $this->Html->link($page['LatestUpdateBy']['name'], array('controller' => 'users', 'action' => 'view', $page['LatestUpdateBy']['id'])); ?>
+			</em>
+		</small>
+	</p>
+	<div>
+		<?php echo $page['Page']['text']; ?>
 	</div>
 </div>
 
