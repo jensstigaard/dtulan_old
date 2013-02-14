@@ -21,9 +21,9 @@ body{
 	color: #DDD;
 
 	background-color: #222;
-	/*	background-image: url('../img/background_big.jpg');
-		background-repeat: repeat;
-		background-position: top left;*/
+	background-image: url('../img/background_big.jpg');
+	background-repeat: repeat;
+	background-position: top left;
 	margin: 0;
 	overflow-y: scroll;
 }
