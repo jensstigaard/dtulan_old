@@ -64,6 +64,14 @@
 
 <div class="row">
 	<div>
+		<?php if($is_admin){
+			echo $this->Html->link('<i class="icon-large icon-pencil"></i> Edit page', array(
+				 'controller' => 'pages',
+				 'action' => 'edit',
+				 $page['Page']['id'],
+//				 'admin' => true
+			)); 
+		} ?>
 		<h1><?php echo $page['Page']['title']; ?></h1>
 		<p>
 			<small>
