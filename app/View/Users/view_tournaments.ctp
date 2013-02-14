@@ -11,7 +11,7 @@
 			 'lan_slug' => $team['Team']['Tournament']['Lan']['slug'],
 			 'tournament_slug' => $team['Team']['Tournament']['slug']
 		));
-				?>" style="background-image:url('<?php echo $this->Html->url('../img/uploads/thumb_210w_' . $team['Team']['Tournament']['Game']['Image']['filePath']); ?>');">
+				?>" style="background-image:url('<?php echo $this->Html->url('../img/uploads/' . $team['Team']['Tournament']['Game']['Image']['thumbPath']); ?>');">
 					<strong class="bottom">
 						<?php
 						if ($team['Team']['Tournament']['team_size'] > 1) {

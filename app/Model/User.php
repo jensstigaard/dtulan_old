@@ -522,7 +522,7 @@ class User extends AppModel {
 		foreach ($teams as $key => $team) {
 			$this->TeamUser->Team->id = $team['Team']['id'];
 			$teams[$key]['Team']['count'] = $this->TeamUser->Team->countMembers();
-			$teams[$key]['Team']['Tournament']['Game']['Image']['filePath'] = $this->TeamUser->Team->Tournament->Game->Image->getFileName($team['Team']['Tournament']['Game']['Image']);
+			$teams[$key]['Team']['Tournament']['Game']['Image']['thumbPath'] = $this->TeamUser->Team->Tournament->Game->Image->getThumbPath($team['Team']['Tournament']['Game']['Image']);
 		}
 
 		return $teams;

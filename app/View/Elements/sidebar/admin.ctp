@@ -18,7 +18,7 @@
 				echo $this->Html->link(
 						  '<i class="icon-large icon-user-md"></i> Admins', array(
 					 'controller' => 'admins',
-					 'action' => 'add',
+					 'action' => 'index',
 					 'admin' => true,
 						  ), array(
 					 'escape' => false
@@ -207,7 +207,8 @@
 				echo $this->Html->link(
 						  '<i class="icon-large icon-qrcode"></i> QR-codes', array(
 					 'controller' => 'qr_codes',
-					 'action' => 'index'
+					 'action' => 'index',
+					 'admin' => true
 						  ), array(
 					 'escape' => false
 						  )

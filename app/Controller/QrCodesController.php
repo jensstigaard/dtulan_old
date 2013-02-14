@@ -149,6 +149,10 @@ class QrCodesController extends AppController {
 		$this->set('per_page', 10);
 		$this->set('per_line', 2);
 	}
+	
+	public function admin_index(){
+		
+	}
 
 }
 

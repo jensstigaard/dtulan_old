@@ -24,6 +24,10 @@ class AdminsController extends AppController {
 		}
 		return false;
 	}
+	
+	public function admin_index(){
+		
+	}
 
 	public function admin_add() {
 

@@ -40,8 +40,8 @@ echo $this->Html->script(array(
 			<?php endforeach; ?>
 		</div>
 
-		<div class="pagination">
-			<ul>
+		<div class="pagination" style="text-align: right;">
+			<ul style="width:480px;">
 				<?php
 				echo $this->Paginator->numbers(array(
 					 'tag' => 'li',
