@@ -340,7 +340,7 @@ class LansController extends AppController {
 		} else {
 			$this->Session->setFlash(__('The Lan could not be deleted'), 'default', array(), 'bad');
 		}
-		$this->redirect($this->referer());
+		$this->redirect(array('action' => 'index'));
 	}
 
 }

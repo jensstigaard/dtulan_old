@@ -226,7 +226,7 @@ class Tournament extends AppModel {
 				  'Tournament.time_start >' => date('Y-m-d H:i:s'),
 			 ),
 			 'order' => array(
-				  'Tournament.time_start' => 'desc'
+				  'Tournament.time_start' => 'asc'
 			 ),
 			 'limit' => 3,
 			 'contain' => array(

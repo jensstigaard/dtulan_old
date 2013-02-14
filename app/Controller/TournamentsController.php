@@ -125,7 +125,7 @@ class TournamentsController extends AppController {
 
 				$tournament = $this->Tournament->find('first', array(
 					 'conditions' => array(
-						  'id' => $this->Tournament->getLastInsertID()
+						  'Tournament.id' => $this->Tournament->getLastInsertID()
 					 ),
 					 'fields' => array(
 						  'Tournament.slug'

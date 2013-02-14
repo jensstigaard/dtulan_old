@@ -27,9 +27,9 @@ class NewsItemsController extends AppController {
 
 		return true;
 	}
-	
-	public function crew_index(){
-		
+
+	public function crew_index() {
+
 		$this->set('news', $this->NewsItem->find('all'));
 	}
 
@@ -49,7 +49,7 @@ class NewsItemsController extends AppController {
 	}
 
 	public function crew_edit($id) {
-		
+
 		$this->view = 'crew_add';
 
 		$this->NewsItem->id = $id;
@@ -70,7 +70,7 @@ class NewsItemsController extends AppController {
 		}
 	}
 
-	public function front() {		
+	public function front() {
 		$this->set('latest_news', $this->NewsItem->getLatestNews());
 
 		$this->loadModel('Page');
