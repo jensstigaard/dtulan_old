@@ -21,11 +21,11 @@
 			 'id' => 'typeSelect'
 		));
 		?>
-		<div id="id_number">
-			<?php
-			echo $this->Form->input('id_number', array('label' => 'Study Number', 'type' => 'hidden', 'maxlength' => 7))
-			?>
-		</div>
+
+		<?php
+		echo $this->Form->input('id_number', array('label' => 'Study Number', 'type' => 'hidden', 'maxlength' => 7))
+		?>
+
 	</fieldset>
 	<?php echo $this->Form->end(__('Submit')); ?>
 </div>

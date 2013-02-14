@@ -1,14 +1,14 @@
 $(document).ready(function(){
-	$('#id_number').hide();
+	//$('#id_number');
 
 	$('#typeSelect').change(function(){
 		var val = $(this).val();
 
 		if(val == 'student'){
-			$('#id_number').attr('type', 'text');
+			$('#UserIdNumber').attr('type', 'text').show();
 		}
 		else if(val == 'guest'){
-			$('#id_number').attr('type', 'hidden');
+			$('#UserIdNumber').attr('type', 'hidden').hide();
 		}
 	});
 });
