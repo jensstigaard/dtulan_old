@@ -397,9 +397,9 @@ class User extends AppModel {
 
 		$this->create();
 		if ($this->save($input)) {
-			
+
 			$user = $input['User'];
-			
+
 			$user['id'] = $this->getLastInsertID();
 
 			$event = new CakeEvent('Model.User.activationEmail', $this, array(
@@ -488,6 +488,9 @@ class User extends AppModel {
 				  'team_id',
 				  'is_leader'
 			 ),
+			 'order' => array(
+				  'Team.tournament_id' => 'desc'
+			 ),
 			 'contain' => array(
 				  'Team' => array(
 						'fields' => array(
@@ -503,7 +506,7 @@ class User extends AppModel {
 							 ),
 							 'Lan' => array(
 								  'slug',
-								  'title'
+								  'title',
 							 ),
 							 'Game' => array(
 								  'Image' => array(

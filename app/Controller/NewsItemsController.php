@@ -63,7 +63,7 @@ class NewsItemsController extends AppController {
 		} else {
 			if ($this->NewsItem->save($this->request->data)) {
 				$this->Session->setFlash('News has been saved', 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('action' => 'view'));
+				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash('Unable to save news', 'default', array(), 'bad');
 			}

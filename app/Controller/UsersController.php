@@ -37,12 +37,11 @@ class UsersController extends AppController {
 	}
 
 	public function index() {
-		$this->User->recursive = 0;
 
 		$this->paginate = array(
 			 'User' => array(
 				  'limit' => 10,
-				  'order' => 'time_created ASC'
+				  'order' => 'time_created ASC',
 			 )
 		);
 
@@ -66,6 +65,8 @@ class UsersController extends AppController {
 		$this->User->unbindModel(array('hasMany' => array('PizzaOrder', 'FoodOrder', 'LanSignup')));
 		$user = $this->User->read();
 
+		$title_for_layout = 'Profile &bull; ' . $user['User']['name'];
+
 		if ($user['User']['id'] == $this->Auth->user('id')) {
 			$is_you = true;
 		}
@@ -73,8 +74,6 @@ class UsersController extends AppController {
 		if ($is_you || $this->User->isYouAdmin()) {
 			$is_auth = true;
 		}
-
-		$title_for_layout = 'Profile &bull; ' . $user['User']['name'];
 
 		if ($this->User->isCrewForUser($this->Auth->user('id'))) {
 			$crew_info = $this->User->getNewestCrewId($this->Auth->user('id'));

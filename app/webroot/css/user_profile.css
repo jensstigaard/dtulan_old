@@ -6,7 +6,7 @@
         Purpose of the stylesheet follows.
 */
 
-#teams-list > .item{
+.teams-list > .item{
 	width: 210px;
 	height: 120px;
 	padding: 0;

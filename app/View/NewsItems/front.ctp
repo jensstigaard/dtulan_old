@@ -1,5 +1,5 @@
 <div class="row-fluid">
-	<div class="span6" id="news-feed">
+	<div <?php if (count($tournaments)): ?>class="span6"<?php endif; ?> id="news-feed">
 		<h1>News</h1>
 		<div>
 			<?php if (!count($latest_news)): ?>
@@ -20,14 +20,8 @@
 			<?php endif; ?>
 		</div>
 	</div>
-	<div class="span6">
-		<h1>Upcoming tournaments</h1>
-		<?php if (!count($tournaments)): ?>
-			<div class="alert alert-error">
-				<i class="icon-2x icon-exclamation-sign pull-left"></i>
-				No tournaments planned in the future yet
-			</div>
-		<?php else: ?>
+	<?php if (count($tournaments)): ?>
+		<div class="span6">	
 			<div id="tournaments-carousel" class="carousel slide" style="margin-bottom:0;">
 				<ol class="carousel-indicators">
 					<?php foreach ($tournaments as $x => $tournament): ?>
@@ -49,7 +43,9 @@
 							));
 							?>
 							<div class="carousel-caption">
-								<?php echo $tournament['Tournament']['time_start']; ?>
+								<strong style="display:block;margin-bottom:2px;">Upcoming tournament!</strong>
+								<?php echo $tournament['Tournament']['title']; ?>
+								<em style="color: grey"><?php echo $tournament['Tournament']['time_start']; ?></em>
 							</div>
 						</div>
 					<?php endforeach; ?>
@@ -58,8 +54,8 @@
 				<!--			<a class="carousel-control left" href="#tournaments-carousel" data-slide="prev">&lsaquo;</a>
 							<a class="carousel-control right" href="#tournaments-carousel" data-slide="next">&rsaquo;</a>-->
 			</div>
-		<?php endif; ?>
-	</div>
+		</div>
+	<?php endif; ?>
 </div>
 
 <div>
