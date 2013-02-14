@@ -71,6 +71,9 @@ class NewsItemsController extends AppController {
 	}
 
 	public function front() {
+		
+		$this->set('title_for_layout', 'Home');
+		
 		$this->set('latest_news', $this->NewsItem->getLatestNews());
 
 		$this->loadModel('Page');
