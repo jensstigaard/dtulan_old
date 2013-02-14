@@ -1,1 +1,3 @@
-<h1>Under construction!</h1>
+<div>
+	<h1>Under construction!</h1>
+</div>
