@@ -57,7 +57,7 @@ class Crew extends AppModel {
 	}
 
 	public function validateUserInLan($check) {
-		$this->Lan->User->id = $check['user_id'];
+		$this->Lan->LanSignup->User->id = $check['user_id'];
 		$this->Lan->id = $this->data['Crew']['lan_id'];
 
 		if (!$this->Lan->isUserAttendingAsCrew()) {

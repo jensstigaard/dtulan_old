@@ -228,7 +228,7 @@ class Tournament extends AppModel {
 			 'order' => array(
 				  'Tournament.time_start' => 'asc'
 			 ),
-			 'limit' => 3,
+			 'limit' => 4,
 			 'contain' => array(
 				  'Lan',
 				  'Game' => array(
