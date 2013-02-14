@@ -1,70 +1,80 @@
 <div class="row-fluid">
-	<div class="span5">
+	<div class="span6" id="news-feed">
 		<h1>News</h1>
-		<hr />
 		<div>
 			<?php if (!count($latest_news)): ?>
 				<p>No news</p>
 			<?php else: ?>
 				<?php foreach ($latest_news as $news_item): ?>
-					<div>
-						<small><?php echo $news_item['NewsItem']['date']; ?></small>
-						<h2><?php echo $news_item['NewsItem']['title']; ?></h2>
-						<p><?php echo $news_item['NewsItem']['text']; ?></p>
-						<hr />
+					<div class="item">
+						<h3>
+							<?php echo $news_item['NewsItem']['title']; ?>
+						</h3>
+						<em><small><?php echo $news_item['NewsItem']['time_created']; ?></small></em>
+						<p><?php echo nl2br($news_item['NewsItem']['text']); ?></p>
 					</div>
 				<?php endforeach; ?>
 			<?php endif; ?>
 		</div>
 	</div>
-	<div class="span7">
-		<div id="myCarousel" class="carousel slide" style="background: #000;margin-bottom:0;">
-			<ol class="carousel-indicators">
-				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-				<li data-target="#myCarousel" data-slide-to="1"></li>
-				<li data-target="#myCarousel" data-slide-to="2"></li>
-			</ol>
-			<!-- Carousel items -->
-			<div class="carousel-inner">
-				<div class="active item">
-					<?php echo $this->Html->image('logos/games/heroes_of_newerth.png', array(
-						 'url' => array(
-							  'controller' => 'tournaments',
-							  'action' => 'view',
-							  'lan_slug' => 'e2012',
-							  'tournament_slug' => 'test'
-						 )
-					)); ?>
-					<div class="carousel-caption">
-						Text!!!
-					</div>
-				</div>
-				<div class="item">
-					<?php echo $this->Html->image('logos/games/league_of_legends.png'); ?>
-					<div class="carousel-caption">
-						League of Legends
-					</div>
-				</div>
-				<div class="item">
-					<?php echo $this->Html->image('logos/games/starcraft_2.png'); ?>
-					<div class="carousel-caption">
-						StarCraft 2
-					</div>
-				</div>
+	<div class="span6">
+		<h1>Upcoming tournaments</h1>
+		<?php if (!count($tournaments)): ?>
+			<div class="alert alert-error">
+				<i class="icon-2x icon-exclamation-sign pull-left"></i>
+				No tournaments planned in the future yet.
 			</div>
-			<!-- Carousel nav -->
-			<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-			<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-		</div>
+		<?php else: ?>
+			<div id="tournaments-carousel" class="carousel slide" style="margin-bottom:0;">
+				<ol class="carousel-indicators">
+					<?php foreach ($tournaments as $x => $tournament): ?>
+						<li data-target="#tournaments-carousel" data-slide-to="<?php echo $x; ?>"<?php echo $x == 0 ? ' class="active"' : ''; ?>></li>
+					<?php endforeach; ?>
+				</ol>
+				<!-- Carousel items -->
+				<div class="carousel-inner">
+					<?php foreach ($tournaments as $x => $tournament): ?>
+						<div class="item<?php echo $x == 0 ? ' active' : ''; ?>">
+							<?php
+							echo $this->Html->image('uploads/' . $tournament['Game']['Image']['thumbPath'], array(
+								 'url' => array(
+									  'controller' => 'tournaments',
+									  'action' => 'view',
+									  'lan_slug' => $tournament['Lan']['slug'],
+									  'tournament_slug' => $tournament['Tournament']['slug']
+								 )
+							));
+							?>
+							<div class="carousel-caption">
+								<?php echo $tournament['Tournament']['time_start']; ?>
+							</div>
+						</div>
+					<?php endforeach; ?>
+				</div>
+				<!-- Carousel nav -->
+				<!--			<a class="carousel-control left" href="#tournaments-carousel" data-slide="prev">&lsaquo;</a>
+							<a class="carousel-control right" href="#tournaments-carousel" data-slide="next">&rsaquo;</a>-->
+			</div>
+		<?php endif; ?>
 	</div>
 </div>
 
 <div class="row">
 	<div>
 		<h1><?php echo $page['Page']['title']; ?></h1>
-		<p>Latest update by <?php echo $page['LatestUpdateBy']['name']; ?>, <?php echo $page['Page']['time_latest_update']; ?></p>
+		<p>
+			<small>
+				<em>
+					Updated: <?php echo $page['Page']['time_latest_update']; ?> by
+					<?php echo $this->Html->link($page['LatestUpdateBy']['name'], array('controller' => 'users', 'action' => 'view', $page['LatestUpdateBy']['id'])); ?>
+				</em>
+			</small>
+		</p>
 		<div>
 			<?php echo $page['Page']['text']; ?>
 		</div>
 	</div>
 </div>
+
+<?php
+// pr($tournaments); ?>

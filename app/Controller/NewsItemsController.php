@@ -70,10 +70,8 @@ class NewsItemsController extends AppController {
 		}
 	}
 
-	public function front() {
-		$this->set('latest_news', $this->NewsItem->find('all', array(
-						'limit' => 3
-				  )));
+	public function front() {		
+		$this->set('latest_news', $this->NewsItem->getLatestNews());
 
 		$this->loadModel('Page');
 		$this->set('page', $this->Page->getFrontPage());

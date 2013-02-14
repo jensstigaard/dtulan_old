@@ -865,15 +865,7 @@ class Lan extends AppModel {
 				 )
 					  ));
 
-			$thumbPrefix = 'thumb_210w_';
-			$fileName = $this->Tournament->Game->Image->getFileName($image['Image']);
-			list($imgWidth, $imgHeight) = getimagesize(IMAGES . 'uploads' . DS . $thumbPrefix . $fileName);
-			$filePath = IMAGES_URL . 'uploads/' . $thumbPrefix . $fileName;
-			$tournaments[$key]['Game']['Image'] = array(
-				 'filePath' => $filePath,
-				 'imageWidth' => $imgWidth,
-				 'imageHeight' => $imgHeight
-			);
+			$tournaments[$key]['Game']['Image']['thumbPath'] = IMAGES_URL . 'uploads/' . $this->Tournament->Game->Image->getThumbPath($image['Image']);
 		}
 		return $tournaments;
 	}
@@ -881,7 +873,7 @@ class Lan extends AppModel {
 	public function sendSubscriptionEmails($text) {
 
 		$lan = $this->read(array('title', 'slug', 'time_start', 'time_end'));
-		
+
 		$lan['Lan']['time_start'] = $this->dateToNice($lan['Lan']['time_start']);
 		$lan['Lan']['time_end'] = $this->dateToNice($lan['Lan']['time_end']);
 

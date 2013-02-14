@@ -138,7 +138,7 @@ class Page extends AppModel {
 	}
 
 	public function getFrontPage() {
-		return $this->find('first', array(
+		$page = $this->find('first', array(
 						'conditions' => array(
 							 'Page.id' => 1
 						),
@@ -146,6 +146,10 @@ class Page extends AppModel {
 							 'LatestUpdateBy'
 						)
 				  ));
+		
+		$page['Page']['time_latest_update'] = $this->dateToNice($page['Page']['time_latest_update']);
+		
+		return $page;
 	}
 
 }

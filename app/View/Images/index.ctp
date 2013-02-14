@@ -1,6 +1,15 @@
 <div>
 	<div style="float:right;">
-		<?php echo $this->Html->link('Add images', array('action' => 'add')); ?>
+		<?php
+		echo $this->Html->link(
+				  '<i class="icon-large icon-plus-sign"></i> Add images', array(
+			 'action' => 'add'
+				  ), array(
+			 'escape' => false,
+			 'class' => 'btn btn-inverse'
+				  )
+		);
+		?>
 	</div>
 	<h1>Images database</h1>
 	<div class="floated-list" id="list-images">
@@ -8,7 +17,7 @@
 			<div class="item" style="padding:5px 1px">
 				<?php
 				echo $this->Html->link(
-						  $this->Html->image('uploads/thumb_200x120_' . $image['Image']['fileName']), '../img/uploads/' . $image['Image']['fileName']
+						  $this->Html->image('uploads/' . $image['Image']['thumbPath']), '../img/uploads/' . $image['Image']['fileName']
 						  , array(
 					 'escape' => false,
 					 'class' => 'fancybox',

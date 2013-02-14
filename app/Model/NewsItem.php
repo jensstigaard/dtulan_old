@@ -62,6 +62,18 @@ class NewsItem extends AppModel {
 
 		return $news['News']['id'];
 	}
+	
+	public function getLatestNews(){
+		$latest_news = $this->find('all', array(
+						'limit' => 3
+				  ));
+		
+		foreach($latest_news as $x => $content){
+			$latest_news[$x]['NewsItem']['time_created'] = $this->dateToNice($content['NewsItem']['time_created']);
+		}
+		
+		return $latest_news;
+	}
 
 }
 

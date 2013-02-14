@@ -13,7 +13,7 @@
 			 'lan_slug' => $lan['Lan']['slug'],
 			 'tournament_slug' => $tournament['Tournament']['slug']
 		));
-				?>" class="item" style="background-image:url('<?php echo $this->Html->url('../'.$tournament['Game']['Image']['filePath']); ?>');">
+				?>" class="item" style="background-image:url('<?php echo $this->Html->url('../'.$tournament['Game']['Image']['thumbPath']); ?>');">
 					<strong class="bottom">
 						<?php
 						if ($tournament['Tournament']['team_size'] > 1) {

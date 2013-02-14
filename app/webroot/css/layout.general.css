@@ -719,3 +719,19 @@ input[type=submit]:active,
 	background: rgba(255, 255, 255, .5);
 	color: #000;
 }
+
+
+#news-feed h1{
+	margin: 5px 0 15px 0;
+	border-bottom: 1px dotted #777;
+}
+
+#news-feed .item{
+	border-bottom: 1px dotted #666;
+}
+
+#news-feed h3{
+	font-weight: normal;
+	color: #999;
+	margin-bottom: 2px;
+}

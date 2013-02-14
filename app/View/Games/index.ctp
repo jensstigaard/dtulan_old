@@ -8,10 +8,10 @@
 		<?php foreach ($games as $game) : ?>
 			<div class="item" style="padding: 5px 1px;">
 				<div>
-					<?php echo $this->Html->image('uploads/thumb_200x120_' . $game['Image']['id'] . '.' . $game['Image']['ext']); ?>
-				</div>
-				<div>
 					<strong><?php echo $game['Game']['title']; ?></strong>
+				</div>
+				<div style="margin: 5px 0;">
+					<?php echo $this->Html->image('uploads/' . $game['Image']['id'] . '_200x120.' . $game['Image']['ext']); ?>
 				</div>
 				<div class="btn-group">
 					<?php

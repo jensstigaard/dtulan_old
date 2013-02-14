@@ -221,12 +221,30 @@ class Tournament extends AppModel {
 
 	public function getFrontTournaments() {
 
-		return $this->find('all', array(
-						'order' => array(
-							 'Tournament.time_start' => 'desc'
-						),
-						'limit' => 3
+		$tournaments = $this->find('all', array(
+			 'conditions' => array(
+				  'Tournament.time_start >' => date('Y-m-d H:i:s'),
+			 ),
+			 'order' => array(
+				  'Tournament.time_start' => 'desc'
+			 ),
+			 'limit' => 3,
+			 'contain' => array(
+				  'Lan',
+				  'Game' => array(
+						'Image'
+				  )
+			 )
 				  ));
+
+		foreach ($tournaments as $x => $content) {
+
+			$tournaments[$x]['Tournament']['time_start'] = $this->dateToNice($content['Tournament']['time_start']);
+
+			$tournaments[$x]['Game']['Image']['thumbPath'] = $this->Game->Image->getThumbPath($content['Game']['Image'], '320x180');
+		}
+
+		return $tournaments;
 	}
 
 	public function getPlacesNotTaken() {

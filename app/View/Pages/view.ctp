@@ -13,7 +13,7 @@
 			?>
 		</div>
 	<?php endif; ?>
-	<h1><?php echo h($page['Page']['title']); ?></h1>
+	<h1><?php echo $page['Page']['title']; ?></h1>
 
 	<p>
 		<small>

@@ -18,11 +18,11 @@ class Image extends AppModel {
 					'pathMethod' => 'flat',
 					'path' => '{ROOT}webroot{DS}img{DS}uploads{DS}',
 					'fields' => array(),
+					'thumbnailQuality' => 100,
+					'thumbnailPrefixStyle' => false,
 					'thumbnailSizes' => array(
-						 'thumb_60h' => '60h',
-						 'thumb_100h' => '100h',
-						 'thumb_210w' => '210w',
-						 'thumb_200x120' => '[200x120]'
+						 '200x120' => '[200x120]',
+						 '320x180' => '[320x180]'
 					)
 			  )
 		 )
@@ -119,6 +119,7 @@ class Image extends AppModel {
 
 		foreach ($images as $key => $value) {
 			$images[$key]['Image']['fileName'] = $this->getFileName($value['Image']);
+			$images[$key]['Image']['thumbPath'] = $this->getThumbPath($value['Image']);
 			$images[$key]['Image']['fileSize'] = $this->formatBytes($value['Image']['size']);
 		}
 
@@ -127,6 +128,10 @@ class Image extends AppModel {
 
 	public function getFileName($fields) {
 		return $fields['id'] . '.' . $fields['ext'];
+	}
+
+	public function getThumbPath($image, $size = '200x120') {
+		return $image['id'] . '_' . $size . '.' . $image['ext'];
 	}
 
 	function formatBytes($bytes, $precision = 2) {

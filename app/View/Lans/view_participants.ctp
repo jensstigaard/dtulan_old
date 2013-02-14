@@ -1,8 +1,8 @@
 <?php
-//echo $this->Html->script(array(
-//	 'ajax/all_links',
-//	 'general'
-//));
+echo $this->Html->script(array(
+	 'ajax/all_links',
+	 'general'
+));
 ?>
 
 <div class="ajax_area">
@@ -54,5 +54,5 @@
 		</div>
 
 		<div style="clear:both;"></div>
-<?php endif; ?>
+	<?php endif; ?>
 </div>
