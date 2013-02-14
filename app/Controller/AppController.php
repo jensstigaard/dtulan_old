@@ -43,8 +43,8 @@ class AppController extends Controller {
 		 'RequestHandler',
 		 'Session',
 		 'Auth' => array(
-			  'loginRedirect' => array('controller' => 'pages', 'action' => 'view', 'slug' => 'welcome'),
-			  'logoutRedirect' => array('controller' => 'pages', 'action' => 'view', 'slug' => 'welcome'),
+			  'loginRedirect' => '/',
+			  'logoutRedirect' => '/',
 			  'authError' => 'Access denied',
 			  'authorize' => array('Controller'), // What does this do??
 			  'authenticate' => array(

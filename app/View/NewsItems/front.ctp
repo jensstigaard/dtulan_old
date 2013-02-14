@@ -3,7 +3,10 @@
 		<h1>News</h1>
 		<div>
 			<?php if (!count($latest_news)): ?>
-				<p>No news</p>
+				<div class="alert alert-error">
+				<i class="icon-large icon-exclamation-sign pull-left"></i>
+				No news found
+			</div>
 			<?php else: ?>
 				<?php foreach ($latest_news as $news_item): ?>
 					<div class="item">
@@ -22,7 +25,7 @@
 		<?php if (!count($tournaments)): ?>
 			<div class="alert alert-error">
 				<i class="icon-2x icon-exclamation-sign pull-left"></i>
-				No tournaments planned in the future yet.
+				No tournaments planned in the future yet
 			</div>
 		<?php else: ?>
 			<div id="tournaments-carousel" class="carousel slide" style="margin-bottom:0;">
