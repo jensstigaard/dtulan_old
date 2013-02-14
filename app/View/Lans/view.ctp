@@ -17,7 +17,8 @@ echo $this->Html->css(array(
 				  'url' => array(
 						'controller' => 'crew',
 						'action' => 'add',
-						$lan['Lan']['slug']
+						$lan['Lan']['slug'],
+						'admin' => true
 				  )
 			 ),
 			 array(

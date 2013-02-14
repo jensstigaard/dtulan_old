@@ -25,7 +25,7 @@ class CrewController extends AppController {
 		return false;
 	}
 
-	public function add($lan_slug) {
+	public function admin_add($lan_slug) {
 		$this->Crew->Lan->id = $this->Crew->Lan->getIdBySlug($lan_slug);
 		
 		$this->Crew->Lan->read(array('title'));
