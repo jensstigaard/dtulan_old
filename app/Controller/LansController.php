@@ -288,6 +288,7 @@ class LansController extends AppController {
 						'fields' => array(
 							 'title',
 							 'slug',
+							 'price',
 						)
 				  )));
 
@@ -299,7 +300,7 @@ class LansController extends AppController {
 
 		$this->set('settings', array(
 			 'columns' => 3,
-			 'rows_per_page' => 4
+			 'rows_per_page' => 50
 		));
 	}
 
