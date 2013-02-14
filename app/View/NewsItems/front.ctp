@@ -1,18 +1,17 @@
 <div class="row-fluid">
 	<div class="span5">
 		<h1>News</h1>
+		<hr />
 		<div>
 			<?php if (!count($latest_news)): ?>
 				<p>No news</p>
 			<?php else: ?>
 				<?php foreach ($latest_news as $news_item): ?>
 					<div>
-						<?php
-						echo $this->Html->link($news_item['NewsItem']['title'], array(
-							 'action' => 'view',
-							 $news_item['NewsItem']['id']
-						));
-						?>
+						<small><?php echo $news_item['NewsItem']['date']; ?></small>
+						<h2><?php echo $news_item['NewsItem']['title']; ?></h2>
+						<p><?php echo $news_item['NewsItem']['text']; ?></p>
+						<hr />
 					</div>
 				<?php endforeach; ?>
 			<?php endif; ?>
@@ -28,7 +27,14 @@
 			<!-- Carousel items -->
 			<div class="carousel-inner">
 				<div class="active item">
-					<?php echo $this->Html->image('logos/games/heroes_of_newerth.png'); ?>
+					<?php echo $this->Html->image('logos/games/heroes_of_newerth.png', array(
+						 'url' => array(
+							  'controller' => 'tournaments',
+							  'action' => 'view',
+							  'lan_slug' => 'e2012',
+							  'tournament_slug' => 'test'
+						 )
+					)); ?>
 					<div class="carousel-caption">
 						Text!!!
 					</div>

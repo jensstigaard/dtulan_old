@@ -1064,14 +1064,17 @@ class UploadBehavior extends ModelBehavior {
 
 			$img = imagecreatetruecolor($destW, $destH);
 
-			$white = imagecolorallocate($img, 255, 255, 255);
-
 			if ($createHandler == 'imagecreatefromjpeg') {
+				$white = imagecolorallocate($img, 255, 255, 255);
+
 				imagefill($img, 0, 0, $white);
 			} else {
+
 				imagealphablending($img, false);
 				imagesavealpha($img, true);
-				imagealphablending($src, true);
+				$transparent = imagecolorallocatealpha($img, 255, 255, 255, 127);
+
+				imagefilledrectangle($img, 0, 0, $destW, $destH, $transparent);
 			}
 
 			imagecopyresampled($img, $src, ($destW - $resizeW) / 2, ($destH - $resizeH) / 2, 0, 0, $resizeW, $resizeH, $srcW, $srcH);

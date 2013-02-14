@@ -8,7 +8,7 @@
 		<?php foreach ($games as $game) : ?>
 			<div class="item" style="padding: 5px 1px;">
 				<div>
-					<?php echo $this->Html->image('uploads/thumb_210w_' . $game['Image']['id'] . '.' . $game['Image']['ext']); ?>
+					<?php echo $this->Html->image('uploads/thumb_200x120_' . $game['Image']['id'] . '.' . $game['Image']['ext']); ?>
 				</div>
 				<div>
 					<strong><?php echo $game['Game']['title']; ?></strong>

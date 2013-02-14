@@ -22,6 +22,7 @@ class Image extends AppModel {
 						 'thumb_60h' => '60h',
 						 'thumb_100h' => '100h',
 						 'thumb_210w' => '210w',
+						 'thumb_200x120' => '[200x120]'
 					)
 			  )
 		 )
