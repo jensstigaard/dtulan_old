@@ -2,7 +2,7 @@ $(document).ready(function(){
 	
 	$countdown = $('#countdown-lan');
 	
-	var countdown_date = new Date($countdown.text());
+	var countdown_date = new Date($countdown.attr('data-time-start'));
 	
 	$('#countdown-lan').countdown({ 
 		until: countdown_date,
