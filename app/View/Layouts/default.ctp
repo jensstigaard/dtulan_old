@@ -24,8 +24,7 @@
 			 'bootstrap/bootstrap-modification',
 			 'font-awesome/font-awesome.min',
 			 'ui-darkness/jquery-ui-1.10.0.custom',
-			 'jquery/jquery.fancybox',
-//			 'jquery/jquery.qtip.min',
+//			 'jquery/jquery.fancybox',
 			 'normalize',
 			 'layout.general',
 			 'layout.tables',
@@ -93,11 +92,7 @@
 		echo $this->Html->script(array(
 			 'jquery/jquery',
 			 'jquery/jquery-ui',
-			 'jquery/jquery.qtip.min',
-			 'jquery/jquery.fancybox.pack',
-			 'jquery/jquery.fittext',
-//			 'jquery/jquery.masonry.min',
-//			 'jquery/jquery.isotope.min',
+//			 'jquery/jquery.fancybox.pack',
 			 'bootstrap/bootstrap.min',
 			 'general',
 				  ), true);
