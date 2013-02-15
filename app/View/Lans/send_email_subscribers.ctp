@@ -6,6 +6,10 @@
 
 	echo $this->Form->inputs(array(
 		 'legend' => 'Send email to subscribers for ' . $title,
+		 'send_to_all_users' => array(
+			  'type' => 'checkbox',
+			  'label' => 'Send to all users (not only subscribers)'
+		 ),
 		 'text' => array(
 			  'label' => false,
 			  'class' => 'ckeditor',

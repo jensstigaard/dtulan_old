@@ -258,7 +258,7 @@ class LansController extends AppController {
 		$this->Lan->id = $this->Lan->getIdBySlug($slug);
 
 		if ($this->request->is('post')) {
-			if ($this->Lan->sendSubscriptionEmails($this->request->data['Lan']['text'])) {
+			if ($this->Lan->sendSubscriptionEmails($this->request->data)) {
 				$this->Session->setFlash(__('Emails has been sent!'), 'default', array('class' => 'message success'), 'good');
 
 				$this->Lan->read(array('slug'));

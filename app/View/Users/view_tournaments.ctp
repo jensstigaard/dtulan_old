@@ -26,19 +26,33 @@
 		));
 			?>" style="background-image:url('<?php echo $this->Html->url('../img/uploads/' . $team['Team']['Tournament']['Game']['Image']['thumbPath']); ?>');">
 				<strong class="bottom">
-					<?php echo $team['Team']['Tournament']['title']; ?>
-					&bull;
+					<?php // echo $team['Team']['Tournament']['title']; ?>
+					<!--&bull;-->
 					<?php
-					if (!strlen($team['Team']['name']) > 10) {
+//					if (!strlen($team['Team']['name']) > 10) {
 						echo $team['Team']['name'];
-					} else {
-						echo substr($team['Team']['name'], 0, 10);
-					}
+//					} else {
+//						echo substr($team['Team']['name'], 0, 10);
+//					}
 					?>
-					<?php echo $team['TeamUser']['is_leader'] ? $this->Html->image('16x16_PNG/star.png') : ''; ?>
+					<?php if(isset($team['Team']['TournamentWinner']['place'])):
+						switch($team['Team']['TournamentWinner']['place']){
+						case 1: 
+							$color = 'gold';
+							break;
+						case 2: 
+							$color = 'silver';
+							break;
+						default:
+							$color = 'peru';
+							break;
+						} ?>
+					<i class="icon-large icon-trophy" style="color: <?php echo $color; ?>"></i>
+					<?php endif; ?>
 				</strong>
 			</a>
 		<?php endforeach; ?>
 	</div>
 <?php endif; ?>
 </div>
+<?php // pr($teams); ?>

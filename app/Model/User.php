@@ -448,10 +448,17 @@ class User extends AppModel {
 		return false;
 	}
 
-	public function getSubscribingUsersNameAndEmail() {
+	public function getSubscribingUsersNameAndEmail($all_users = 0) {
+
+		if (!$all_users) {
+			$conditions = array(
+				 'email_subscription' => true
+			);
+		}
+
 		return $this->find('all', array(
 						'conditions' => array(
-							 'email_subscription' => true
+							 $conditions
 						),
 						'fields' => array(
 							 'User.name',
@@ -497,6 +504,11 @@ class User extends AppModel {
 							 'id',
 							 'name',
 							 'tournament_id',
+						),
+						'TournamentWinner' => array(
+							 'fields' => array(
+								  'place'
+							 )
 						),
 						'Tournament' => array(
 							 'fields' => array(

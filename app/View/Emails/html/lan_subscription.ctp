@@ -8,7 +8,7 @@
 	echo $this->Html->link('View event-details here', array(
 		 'controller' => 'lans',
 		 'action' => 'view',
-		 $lan['slug'],
+		 'slug' => $lan['slug'],
 		 'full_base' => true
 	));
 	?></p>

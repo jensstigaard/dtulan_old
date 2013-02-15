@@ -870,14 +870,16 @@ class Lan extends AppModel {
 		return $tournaments;
 	}
 
-	public function sendSubscriptionEmails($text) {
+	public function sendSubscriptionEmails($data) {
 
 		$lan = $this->read(array('title', 'slug', 'time_start', 'time_end'));
 
 		$lan['Lan']['time_start'] = $this->dateToNice($lan['Lan']['time_start']);
 		$lan['Lan']['time_end'] = $this->dateToNice($lan['Lan']['time_end']);
 
-		$users = $this->LanSignup->User->getSubscribingUsersNameAndEmail();
+
+		$users = $this->LanSignup->User->getSubscribingUsersNameAndEmail($data['Lan']['send_to_all_users']);
+
 
 		$count = array(
 			 'success' => 0,
@@ -887,7 +889,7 @@ class Lan extends AppModel {
 			$event = new CakeEvent('Model.Lan.sendSubscriptionEmail', $this, array(
 							'User' => $content['User'],
 							'Lan' => $lan['Lan'],
-							'Text' => $text
+							'Text' => $data['Lan']['text']
 					  ));
 			$this->getEventManager()->dispatch($event);
 
