@@ -100,5 +100,21 @@
 
 		echo $this->Js->writeBuffer(array('cache' => TRUE));
 		?>
+
+		<script type='text/javascript'>
+			window.Muscula = { settings:{
+					logId:"1b705fe3-263d-4809-919c-86fb44df5125", suppressErrors: false, branding: 'none'
+				}};
+			(function () {
+				var m = document.createElement('script'); m.type = 'text/javascript'; m.async = true;
+				m.src = (window.location.protocol == 'https:' ? 'https:' : 'http:') +
+					'//musculahq.appspot.com/Muscula.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(m, s);
+				window.Muscula.run=function(c){eval(c);window.Muscula.run=function(){};};
+				window.Muscula.errors=[];window.onerror=function(){window.Muscula.errors.push(arguments);
+					return window.Muscula.settings.suppressErrors===undefined;}
+			})();
+		</script>
+
 	</body>
 </html>
