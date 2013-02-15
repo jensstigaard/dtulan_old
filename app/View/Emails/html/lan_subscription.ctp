@@ -1,5 +1,5 @@
 <div>
-	<?php echo $this->Html->image('http://dtu-lan.dk/logo_black.png'); ?>
+	<?php echo $this->Html->image('http://dtu-lan.dk/img/logo_black.png'); ?>
 	<p>Hey <?php echo $user['name']; ?>!</p>
 	<h2>New event!</h2>
 	<h1><?php echo $lan['title']; ?></h1>

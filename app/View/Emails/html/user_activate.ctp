@@ -1,7 +1,7 @@
 <div>
 	<?php
 	echo $this->Html->image(
-			  'http://dtu-lan.dk/logo_black.png', array(
+			  'http://dtu-lan.dk/img/logo_black.png', array(
 		 'style' => 'display:block;'
 			  )
 	);
