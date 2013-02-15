@@ -172,7 +172,18 @@ echo $this->Html->css(array(
 
 </div>
 
-<?php // pr($lan); ?>
+<?php if ($lan['Lan']['time_start'] > date('Y-m-d H:i:s')): ?>
+	<?php echo $this->Html->css(array('jquery/jquery.countdown'), null, array('inline' => false)); ?>
+	<?php echo $this->Html->script(array('jquery/jquery.countdown', 'lans/countdown'), array('inline' => false)); ?>
+	<div>
+		<h2 style="text-align: center;">Countdown</h2>
+		<div id="countdown-lan" style="border:none;background:none;">
+			<?php echo $lan['Lan']['time_start']; ?>
+		</div>
+		
+		<div style="clear:both;"></div>
+	</div>
+<?php endif; ?>
 
 <?php if ($is_cancelable): ?>
 	<div>
