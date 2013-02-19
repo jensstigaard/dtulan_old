@@ -93,7 +93,7 @@ class LanSignup extends AppModel {
 
 		if (!$this->Lan->data['Lan']['need_physical_code']) {
 			return true;
-		} else{
+		} else {
 			return $this->Lan->LanSignupCode->isNotUsed($check['code']);
 		}
 	}
@@ -107,7 +107,8 @@ class LanSignup extends AppModel {
 			 ),
 			 'fields' => array(
 				  'LanSignup.id',
-				  'Lan.price'
+				  'Lan.price',
+				  'Lan.need_physical_code'
 			 )
 				  )
 		);
@@ -143,7 +144,13 @@ class LanSignup extends AppModel {
 		$lan_signup = $this->getDataForDeletion();
 
 		$this->id = $lan_signup['LanSignup']['id'];
-		$new_balance = $user['User']['balance'] + $lan_signup['Lan']['price'];
+
+		if (!$lan_signup['Lan']['need_physical_code']) {
+			$new_balance = $user['User']['balance'] + $lan_signup['Lan']['price'];
+		} else {
+			$new_balance = $user['User']['balance'];
+		}
+
 
 		$this->Lan->read(array('slug'));
 
