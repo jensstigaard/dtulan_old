@@ -1,6 +1,17 @@
 <table>
 	<tbody>
+		
 		<tr>
+			<td colspan="2">
+				<?php
+				echo $this->Html->link(
+						$this->Html->image('logos/sponsors/foeniks_small.png', array('alt' => 'Føniks Computer')), 'http://fcomputer.dk', array('target' => '_blank', 'escape' => false)
+				);
+				?>
+			</td>
+		</tr>
+		
+		<tr style="background:none;">
 			<td>
 				<?php
 				echo $this->Html->link(
@@ -64,5 +75,6 @@
 				?>
 			</td>
 		</tr>
+		
 	</tbody>
 </table>
