@@ -43,7 +43,12 @@
 							));
 							?>
 							<div class="carousel-caption">
-								<strong style="display:block;margin-bottom:2px;">Upcoming tournament!</strong>
+								<strong style="display:block;margin-bottom:2px;">
+									Upcoming tournament!
+									<?php if ($tournament['Tournament']['is_signup_open']): ?>
+										<em style="color: lawngreen">[Signup open]</em>
+									<?php endif; ?>
+								</strong>
 								<?php echo $tournament['Tournament']['title']; ?>
 								<em style="color: grey"><?php echo $tournament['Tournament']['time_start']; ?></em>
 							</div>
