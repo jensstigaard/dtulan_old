@@ -10,6 +10,7 @@
 		 //'legend' => __('Edit tournament'),
 		 'title',
 		 'team_size',
+		 'is_signup_open',
 		 'time_start' => array('timeFormat' => '24'),
 		 'description' => array('class' => 'ckeditor'),
 		 'rules' => array('class' => 'ckeditor')
