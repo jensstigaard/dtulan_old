@@ -85,6 +85,12 @@ class UsersController extends AppController {
 							 'title_for_layout', 'is_you', 'is_auth', 'user'
 				  )
 		);
+		
+		if($is_auth){
+			$this->set('tournaments_won', $this->User->getCountTournamentsWon());
+		}
+		
+		
 	}
 
 	public function view_tournaments($id) {

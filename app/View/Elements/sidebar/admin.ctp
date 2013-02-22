@@ -30,20 +30,6 @@
 			<li>
 				<?php
 				echo $this->Html->link(
-						  '<i class="icon-large icon-user-md"></i> Admin new', array(
-					 'controller' => 'admins',
-					 'action' => 'add',
-					 'admin' => true,
-						  ), array(
-					 'escape' => false
-						  )
-				);
-				?>
-			</li>
-
-			<li>
-				<?php
-				echo $this->Html->link(
 						  '<i class="icon-large icon-coffee"></i> Candy/soda menus', array(
 					 'controller' => 'food_menus',
 					 'action' => 'index'
@@ -115,20 +101,6 @@
 						  '<i class="icon-large icon-quote-right"></i> News database', array(
 					 'controller' => 'news_items',
 					 'action' => 'index',
-					 'crew' => true,
-						  ), array(
-					 'escape' => false
-						  )
-				);
-				?>
-			</li>
-
-			<li>
-				<?php
-				echo $this->Html->link(
-						  '<i class="icon-large icon-quote-right"></i> News add', array(
-					 'controller' => 'news_items',
-					 'action' => 'add',
 					 'crew' => true,
 						  ), array(
 					 'escape' => false

@@ -543,6 +543,37 @@ class User extends AppModel {
 		return $teams;
 	}
 
+	public function getCountTournamentsWon() {
+
+		$tournaments_won = array();
+		$count_total = 0;
+
+		for ($i = 1; $i < 4; $i++) {
+			$count_total += $tournaments_won[$i] = $this->getCountTournamentsWonAtPlace($i);
+		}
+		
+		$tournaments_won['all'] = $count_total;
+
+		return $tournaments_won;
+	}
+
+	public function getCountTournamentsWonAtPlace($place) {
+
+		$db = $this->getDataSource();
+
+		$total = $db->fetchAll("		
+			SELECT COUNT(TeamUser.id) AS TeamUser
+				FROM `team_users` AS TeamUser
+					INNER JOIN `teams` AS Team
+						ON TeamUser.team_id = Team.id
+							INNER JOIN `tournament_winners` AS TournamentWinner
+								ON Team.id = TournamentWinner.team_id
+				WHERE TeamUser.user_id = ? AND TournamentWinner.place = ?
+			", array($this->id, $place));
+
+		return $total[0][0]['TeamUser'];
+	}
+
 }
 
 ?>
