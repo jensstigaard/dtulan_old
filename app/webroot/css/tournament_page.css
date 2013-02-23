@@ -1,0 +1,29 @@
+/* 
+    Document   : tournament-page
+    Created on : 23-02-2013, 13:10:30
+    Author     : Jens
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+	display: block;
+}
+
+#tournament-info{
+	background-position: center center;
+	background-repeat: no-repeat;
+	padding-top: 220px;
+}
+
+#tournament-info table{
+	width:100%;
+	font-size:13pt;
+	margin-bottom: 0;
+	background: rgba(0,0,0,.7);
+}
+
+#tournament-info table td{
+	width:25%;
+	text-align:center;
+}

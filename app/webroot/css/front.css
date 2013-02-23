@@ -1,0 +1,20 @@
+/* 
+    Document   : front
+    Created on : 23-02-2013, 13:38:17
+    Author     : Jens
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+	display: block;
+}
+
+#tournaments-carousel img{
+	opacity: 0.8;
+}
+
+
+#tournaments-carousel img:hover{
+	opacity: 1;
+}

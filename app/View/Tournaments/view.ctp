@@ -1,8 +1,52 @@
+<?php echo $this->Html->css(array('tournament_page'), null, array('inline' => false)); ?>
+
 <div>
+	<div id="tournament-info" style="background-image: url('<?php echo $this->Html->url('/img/uploads/' . $tournament['Game']['Image']['id'] . '.' . $tournament['Game']['Image']['ext']); ?>')">
+
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<span class="badge badge-inverse">
+							<?php echo $tournament['Tournament']['time_start_nice']; ?>
+						</span>
+					</td>
+
+					<td>
+						<span class="badge badge-inverse">
+							<?php echo $tournament['Tournament']['team_size']; ?> vs <?php echo $tournament['Tournament']['team_size']; ?>
+						</span>
+					</td>
+
+					<td>
+						<span class="badge <?php echo count($tournament['Team']) ? 'badge-inverse' : 'badge-important'; ?>">
+							<?php echo count($tournament['Team']); ?> teams
+						</span>
+					</td>
+
+					<td>
+						<span class="badge badge-info">
+							<?php
+							echo $this->Html->link('LAN: ' . $tournament['Lan']['title'], array(
+								 'controller' => 'lans',
+								 'action' => 'view',
+								 'slug' => $tournament['Lan']['slug']
+									  ), array(
+								 'style' => 'color:white;'
+									  )
+							);
+							?>
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
 	<?php if ($is_admin): ?>
 		<div style="float:right">
 			<?php
-			echo $this->Html->link('<i class="icon-large icon-pencil"></i> Edit tournament', array(
+			echo $this->Html->link('<i class="icon-large icon-pencil"></i> Edit', array(
 				 'action' => 'edit',
 				 $tournament['Tournament']['id']
 					  ), array(
@@ -13,32 +57,8 @@
 		</div>
 	<?php endif; ?>
 
-	<h1><?php echo $tournament['Tournament']['title']; ?></h1>
-	<p>
-		In LAN: <?php
-	echo $this->Html->link($tournament['Lan']['title'], array(
-		 'controller' => 'lans',
-		 'action' => 'view',
-		 'slug' => $tournament['Lan']['slug']
-			  )
-	);
-	?>
-	</p>
-	<table>
-		<tbody>
-			<tr>
-				<td>Team size:</td>
-				<td><?php echo $tournament['Tournament']['team_size']; ?> persons</td>
-			</tr>
-			<tr>
-				<td>Start time:</td>
-				<td>
-					<?php echo $tournament['Tournament']['time_start_nice']; ?>
+	<h1 style="margin-top:0;text-align: center;"><?php echo $tournament['Tournament']['title']; ?></h1>
 
-				</td>
-			</tr>
-		</tbody>
-	</table>
 </div>
 
 <?php if (count($winner_teams)) : ?>

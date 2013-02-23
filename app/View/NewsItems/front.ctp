@@ -1,3 +1,4 @@
+<?php echo $this->Html->css(array('front'), null, array('inline' => false)); ?>
 <div class="row-fluid">
 	<div <?php if (count($tournaments)): ?>class="span6"<?php endif; ?> id="news-feed">
 		<h1>News</h1>

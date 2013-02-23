@@ -30,37 +30,8 @@ class TournamentsController extends AppController {
 
 		$this->Tournament->id = $this->Tournament->getIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug);
 
-		$tournament = $this->Tournament->find('first', array(
-			 'conditions' => array(
-				  'Tournament.id' => $this->Tournament->id
-			 ),
-			 'fields' => array(
-				  'id',
-				  'title',
-				  'time_start',
-				  'team_size',
-				  'slug'
-			 ),
-			 'contain' => array(
-				  'Lan' => array(
-						'fields' => array(
-							 'title',
-							 'slug',
-						)
-				  ),
-				  'Game' => array(
-						'Image' => array(
-							 'fields' => array(
-								  'id',
-								  'ext'
-							 )
-						),
-				  )
-			 )
-				  ));
-
-		$tournament['Tournament']['time_start_nice'] = $this->Tournament->dateToNice($tournament['Tournament']['time_start']);
-
+		$tournament = $this->Tournament->getDataForView();
+		
 		$this->set(compact('tournament'));
 
 		$this->set('winner_teams', $this->Tournament->getWinnerTeams());

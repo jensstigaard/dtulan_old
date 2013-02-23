@@ -255,6 +255,54 @@ class Tournament extends AppModel {
 		return array_diff($places, $places_taken);
 	}
 
+	public function getDataForView() {
+
+		$tournament = $this->find('first', array(
+			 'conditions' => array(
+				  'Tournament.id' => $this->id
+			 ),
+			 'fields' => array(
+				  'Tournament.id',
+				  'Tournament.title',
+				  'Tournament.time_start',
+				  'Tournament.team_size',
+				  'Tournament.slug',
+			 ),
+			 'contain' => array(
+				  'Lan' => array(
+						'fields' => array(
+							 'title',
+							 'slug',
+						)
+				  ),
+				  'Game' => array(
+						'fields' => 'image_id'
+				  ),
+				  'Team' => array(
+						'fields' => array(
+							 'id'
+						)
+				  )
+			 )
+				  ));
+		
+		if($tournament['Game']['image_id']){
+			$tournament['Game'] += $this->Game->Image->find('first', array(
+				 'conditions' => array(
+					  'Image.id' => $tournament['Game']['image_id']
+				 ),
+				 'fields' => array(
+					  'id',
+					  'ext'
+				 )
+			));
+		}
+
+		$tournament['Tournament']['time_start_nice'] = $this->dateToNice($tournament['Tournament']['time_start']);
+		
+		return $tournament;
+	}
+
 	public function isPlaceTaken($place) {
 		return $this->Team->find('count', array(
 						'conditions' => array(
