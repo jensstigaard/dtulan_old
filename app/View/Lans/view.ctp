@@ -104,16 +104,16 @@ echo $this->Html->css(array(
 
 	<div id="lan_overview">
 		<div>
-			<div class="lan_overview_item" rel="tooltip" title="Date">
+			<div class="lan_overview_item" title="Date">
 				<i class="icon-calendar"></i>
 				<span><?php echo $this->Time->format('d/m/y H:i', $lan['Lan']['time_start']) . ' - ' . $this->Time->format('d/m/y H:i', $lan['Lan']['time_end']); ?></span>
 			</div>
-			<div class="lan_overview_item" rel="tooltip" title="Price">
+			<div class="lan_overview_item" title="Price">
 				<i class="icon-money"></i>
 				<span><?php echo $lan['Lan']['price']; ?> DKK</span>
 
 			</div>
-			<div class="lan_overview_item" rel="tooltip" title="Participants">
+			<div class="lan_overview_item" title="Participants">
 				<i class="icon-group"></i>
 				<span><?php echo $data['count_signups']; ?> (<?php echo $lan['Lan']['max_participants']; ?>)</span>
 			</div>
@@ -124,17 +124,17 @@ echo $this->Html->css(array(
 		</div>
 
 		<div>
-			<div class="lan_overview_item" rel="tooltip" title="Crew-members">
+			<div class="lan_overview_item" title="Crew-members">
 				<i class="icon-user-md"></i>
 				<span><?php echo $data['count_crew']; ?></span>
 			</div>
 
-			<div class="lan_overview_item" rel="tooltip" title="Tournaments">
+			<div class="lan_overview_item" title="Tournaments">
 				<i class="icon-trophy"></i>
 				<span><?php echo $data['count_tournaments']; ?></span>
 			</div>
 
-			<div class="lan_overview_item" rel="tooltip" title="Sign up open">
+			<div class="lan_overview_item" title="Sign up open">
 				<?php if ($lan['Lan']['sign_up_open']): ?>
 					<i class="icon-plus-sign"></i>
 					<span>Signup open</span>
@@ -146,7 +146,7 @@ echo $this->Html->css(array(
 
 			<?php if ($is_admin): ?>
 
-				<div class="lan_overview_item" rel="tooltip" title="Published">
+				<div class="lan_overview_item" title="Published">
 					<?php if ($lan['Lan']['published']): ?>
 						<i class="icon-ok-sign"></i>
 						<span>Published</span>
@@ -156,7 +156,7 @@ echo $this->Html->css(array(
 					<?php endif; ?>
 				</div>
 
-				<div class="lan_overview_item" rel="tooltip" title="Need physical code">
+				<div class="lan_overview_item" title="Need physical code">
 					<?php if ($lan['Lan']['need_physical_code']): ?>
 						<i class="icon-tags"></i>
 						<span>Need code to signup</span>

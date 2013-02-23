@@ -71,34 +71,34 @@
 						<td><?php echo $user['User']['balance']; ?></td>
 					</tr>
 				<?php endif; ?>
-				<?php if ($tournaments_won['all']): ?>
-					<tr>
-						<td colspan="2">
-							<h3>Tournament-wins</h3>
-							<table id="user-tournaments-won">
-								<tbody>
-									<tr>
-										<td>Gold</td>
-										<td>Silver</td>
-										<td>Bronze<td>
-									</tr>
-									<tr>
-										<td><i class="icon-trophy" style="color:gold;font-size:20pt;"></i></td>
-										<td><i class="icon-trophy" style="color:silver;font-size:20pt;"></i></td>
-										<td><i class="icon-trophy" style="color:chocolate;font-size:20pt;"></i></td>
-									</tr>
-									<tr class="count">
-										<td><?php echo $tournaments_won[1]; ?></td>
-										<td><?php echo $tournaments_won[2]; ?></td>
-										<td><?php echo $tournaments_won[3]; ?></td>
-									</tr>
-								</tbody>
-							</table>
-						</td>
-					</tr>
-				<?php endif; ?>
 			</tbody>
 		</table>
+
+		<?php if ($tournaments_won['all']): ?>
+
+			<h3>Tournament-wins</h3>
+			<table id="user-tournaments-won">
+				<tbody>
+					<tr>
+						<td>Gold</td>
+						<td>Silver</td>
+						<td>Bronze<td>
+					</tr>
+					<tr>
+						<td><i class="icon-trophy" style="color:gold;font-size:20pt;"></i></td>
+						<td><i class="icon-trophy" style="color:silver;font-size:20pt;"></i></td>
+						<td><i class="icon-trophy" style="color:chocolate;font-size:20pt;"></i></td>
+					</tr>
+					<tr class="count">
+						<td><?php echo $tournaments_won[1]; ?></td>
+						<td><?php echo $tournaments_won[2]; ?></td>
+						<td><?php echo $tournaments_won[3]; ?></td>
+					</tr>
+				</tbody>
+			</table>
+
+		<?php endif; ?>
+
 	</div>
 	<div style="clear:both"></div>
 </div>
