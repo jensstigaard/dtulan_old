@@ -40,17 +40,19 @@ echo $this->Html->script(array(
 			<?php endforeach; ?>
 		</div>
 
-		<div class="pagination pagination-right">
-			<ul style="width:480px;">
-				<?php
-				echo $this->Paginator->numbers(array(
-					 'tag' => 'li',
-					 'currentTag' => 'a',
-					 'class' => 'load_inline',
-					 'separator' => false
-				));
-				?>
-			</ul>
+		<div>
+			<div class="pagination pagination-centered" style="padding-left:60px;">
+				<ul style="margin:0;">
+					<?php
+					echo $this->Paginator->numbers(array(
+						 'tag' => 'li',
+						 'currentTag' => 'a',
+						 'class' => 'load_inline',
+						 'separator' => false
+					));
+					?>
+				</ul>
+			</div>
 		</div>
 
 		<div style="clear:both;"></div>
