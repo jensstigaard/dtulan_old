@@ -93,7 +93,15 @@ class TeamsController extends AppController {
 										)
 								  )
 							 ),
-							 'TeamInvite',
+							 'TeamInvite' => array(
+								  'User' => array(
+										'fields' => array(
+											 'id',
+											 'name',
+											 'gamertag',
+										)
+								  )
+							 ),
 							 'TeamUser' => array(
 								  'User' => array(
 										'fields' => array(
@@ -106,7 +114,7 @@ class TeamsController extends AppController {
 						)
 				  )));
 
-		$this->set('is_leader', $this->Auth->loggedIn() && $this->Team->isLeader($id, $this->Auth->user('id')));
+		$this->set('is_leader', $this->Auth->loggedIn() && $this->Team->isLeader($this->Auth->user('id')));
 
 		$this->set('users', $this->Team->getInviteableUsers($id));
 	}
@@ -136,7 +144,7 @@ class TeamsController extends AppController {
 			 )
 				  ));
 
-		if (!$this->Team->isLeader($id, $this->Auth->user('id'))) {
+		if (!$this->Team->isLeader($this->Auth->user('id'))) {
 			throw new UnauthorizedException('You are not allowed to do this');
 		}
 

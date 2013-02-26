@@ -19,7 +19,7 @@ class TeamInvitesController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin() || in_array($this->action, array(
+		if ($this->TeamInvite->isYouAdmin() || in_array($this->action, array(
 					'add',
 					'delete'
 				))) {
@@ -57,9 +57,9 @@ class TeamInvitesController extends AppController {
 		$this->TeamInvite->recursive = 2;
 		$this->TeamInvite->read();
 
-		$team_id = $this->TeamInvite->data['Team']['id'];
+		$this->TeamInvite->Team->id = $this->TeamInvite->data['Team']['id'];
 
-		if (!($this->TeamInvite->Team->isLeader($team_id, $this->Auth->user('id')) || $this->TeamInvite->data['TeamInvite']['user_id'] == $this->Auth->user('id'))) {
+		if (!($this->TeamInvite->Team->isLeader($this->Auth->user('id')) || $this->TeamInvite->data['TeamInvite']['user_id'] == $this->Auth->user('id'))) {
 			throw new MethodNotAllowedException('You are not allowed to cancel invites');
 		}
 
