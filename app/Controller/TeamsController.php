@@ -32,6 +32,10 @@ class TeamsController extends AppController {
 		if (!$this->Team->Tournament->exists()) {
 			throw new NotFoundException('Team not found');
 		}
+		
+		if($this->Team->Tournament->isUserInTournament()){
+			throw new UnauthorizedException('You are already in a team in this tournament');
+		}
 
 		if ($this->request->is('post')) {
 
@@ -41,9 +45,9 @@ class TeamsController extends AppController {
 				 0 => array(
 					  'user_id' => $this->Auth->user('id'),
 					  'is_leader' => 1,
-//					  'Team' => array(
-//							'tournament_id' => $tournament_id
-//					  )
+					  'Team' => array(
+							'tournament_id' => $this->Team->Tournament->id
+					  )
 				 )
 			);
 

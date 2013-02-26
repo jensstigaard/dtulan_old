@@ -1,15 +1,5 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of Tournament
- *
- * @author Superkatten
- */
 class Team extends AppModel {
 
 	public $hasOne = array(
@@ -31,9 +21,24 @@ class Team extends AppModel {
 			  'required' => array(
 					'rule' => array('notEmpty'),
 					'message' => 'invalid Team name'
+			  ),
+			  'unique in tournament' => array(
+					'rule' => 'validateNameUniqueInTournament',
+					'required' => 'create',
+					'message' => 'A team with this name exists in this tournament'
 			  )
-		 )
+		 ),
 	);
+
+	public function validateNameUniqueInTournament($check) {
+
+		return $this->find('count', array(
+						'conditions' => array(
+							 'Team.tournament_id' => $this->data['Team']['tournament_id'],
+							 'Team.name' => $check['name']
+						)
+				  )) == 0;
+	}
 
 	public function countMembers() {
 		return $this->TeamUser->find('count', array(
@@ -120,14 +125,14 @@ class Team extends AppModel {
 
 		return $team['TournamentWinner']['place'] > 0;
 	}
-	
-	public function isUserPartOfTeam(){
+
+	public function isUserPartOfTeam() {
 		return $this->TeamUser->find('count', array(
-			 'conditions' => array(
-				  'team_id' => $this->id,
-				  'user_id' => $this->TeamUser->User->id,
-			 )
-		)) == 1;
+						'conditions' => array(
+							 'team_id' => $this->id,
+							 'user_id' => $this->TeamUser->User->id,
+						)
+				  )) == 1;
 	}
 
 }

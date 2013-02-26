@@ -27,17 +27,17 @@ class TeamUser extends AppModel {
 
 	public function userNotInTournament($check) {
 		
-		if ($this->find('count', array(
-					'conditions' => array(
-						'user_id' => $check['user_id'],
-						'team_id' => $this->data['Team']['id']
-					)
-						)
-				) == 0) {
-			return true;
-		}
-
-		return false;
+		$db = $this->getDataSource();
+		
+		$total = $db->fetchAll("
+			SELECT COUNT(TeamUser.id) AS TeamUsers
+				FROM `team_users` AS TeamUser
+					INNER JOIN `teams` AS Team
+						ON TeamUser.team_id = Team.id
+				WHERE Team.tournament_id = ? AND TeamUser.user_id = ?", array($this->data['Team']['tournament_id'], $check['user_id']));
+		
+		return $total[0][0]['TeamUsers'] == 0;
+		
 	}
 
 }
