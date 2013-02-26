@@ -74,7 +74,7 @@
 			</tbody>
 		</table>
 
-		<?php if ($tournaments_won['all']): ?>
+		<?php if (isset($tournaments_won['all'])): ?>
 
 			<h3>Tournament-wins</h3>
 			<table id="user-tournaments-won">
