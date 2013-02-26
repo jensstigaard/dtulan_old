@@ -85,8 +85,7 @@ class Team extends AppModel {
 		return $users_list;
 	}
 
-	public function isLeader($team_id, $user_id) {
-		$this->id = $team_id;
+	public function isLeader($user_id) {
 
 		if (!$this->exists()) {
 			throw new NotFoundException('Team not found');
@@ -100,7 +99,7 @@ class Team extends AppModel {
 
 		return $this->TeamUser->find('count', array(
 						'conditions' => array(
-							 'team_id' => $team_id,
+							 'team_id' => $this->id,
 							 'user_id' => $user_id,
 							 'is_leader' => true
 						)

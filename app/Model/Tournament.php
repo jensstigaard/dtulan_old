@@ -285,8 +285,8 @@ class Tournament extends AppModel {
 				  )
 			 )
 				  ));
-		
-		if($tournament['Game']['image_id']){
+
+		if ($tournament['Game']['image_id']) {
 			$tournament['Game'] += $this->Game->Image->find('first', array(
 				 'conditions' => array(
 					  'Image.id' => $tournament['Game']['image_id']
@@ -295,11 +295,11 @@ class Tournament extends AppModel {
 					  'id',
 					  'ext'
 				 )
-			));
+					  ));
 		}
 
 		$tournament['Tournament']['time_start_nice'] = $this->dateToNice($tournament['Tournament']['time_start']);
-		
+
 		return $tournament;
 	}
 
@@ -314,25 +314,23 @@ class Tournament extends AppModel {
 
 	public function isUserInTournament() {
 
-		$tournament = $this->find('first', array(
+		$team = $this->Team->find('first', array(
 			 'conditions' => array(
-				  'Tournament.id' => $this->id
+				  'Team.tournament_id' => $this->id
 			 ),
 			 'contain' => array(
-				  'Team' => array(
-						'TeamUser' => array(
-							 'conditions' => array(
-								  'TeamUser.user_id' => $this->Team->TeamUser->User->id
-							 ),
-							 'fields' => array(
-								  'id'
-							 )
+				  'TeamUser' => array(
+						'conditions' => array(
+							 'TeamUser.user_id' => $this->Team->TeamUser->User->id
+						),
+						'fields' => array(
+							 'id'
 						)
 				  )
 			 )
 				  ));
 
-		return isset($tournament['Team'][0]['TeamUser'][0]['id']);
+		return isset($team['TeamUser'][0]['id']);
 	}
 
 	public function isAbleToCreateTeam() {

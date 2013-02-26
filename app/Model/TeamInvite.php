@@ -18,7 +18,10 @@ class TeamInvite extends AppModel {
 	);
 
 	public function validateIsUserLeader($check) {
-		return $this->Team->isLeader($this->data['TeamInvite']['team_id'], $check['user_invited_by_id']);
+		
+		$this->Team->id = $this->data['TeamInvite']['team_id'];
+		
+		return $this->Team->isLeader($check['user_invited_by_id']);
 	}
 
 }
