@@ -128,7 +128,7 @@ class TeamsController extends AppController {
 
 		$team = $this->Team->find('first', array(
 			 'conditions' => array(
-				  'id' => $this->Team->id,
+				  'Team.id' => $this->Team->id,
 			 ),
 			 'contain' => array(
 				  'Tournament' => array(

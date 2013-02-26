@@ -313,10 +313,21 @@ class Tournament extends AppModel {
 	}
 
 	public function isUserInTournament() {
-
-		$team = $this->Team->find('first', array(
+		
+		$db = $this->getDataSource();
+		$total = $db->fetchAll("
+			SELECT 
+				COUNT(TeamUser.id) AS CountUsers
+					FROM `team_users` AS TeamUser
+						INNER JOIN `teams` AS Team
+							ON TeamUser.team_id = Team.id
+				WHERE Team.tournament_id = ? AND TeamUser.user_id = ?", array($this->id, $this->Team->TeamUser->User->id));
+		
+		return $total[0][0]['CountUsers'] == 1;
+		
+		return $this->Team->find('count', array(
 			 'conditions' => array(
-				  'Team.tournament_id' => $this->id
+				  'Team.tournament_id' => $this->id,
 			 ),
 			 'contain' => array(
 				  'TeamUser' => array(
@@ -328,9 +339,7 @@ class Tournament extends AppModel {
 						)
 				  )
 			 )
-				  ));
-
-		return isset($team['TeamUser'][0]['id']);
+				  )) == 1;
 	}
 
 	public function isAbleToCreateTeam() {
@@ -339,8 +348,9 @@ class Tournament extends AppModel {
 		}
 
 		$this->Team->TeamUser->User->id = $this->getLoggedInId();
+		$this->Lan->id = $this->getLanIdByTournamentId($this->id);
 
-		return $this->isSignupOpen() && !$this->isUserInTournament();
+		return $this->isSignupOpen() && $this->Lan->isUserAttending() && (!$this->isUserInTournament());
 	}
 
 	public function isSignupOpen() {
