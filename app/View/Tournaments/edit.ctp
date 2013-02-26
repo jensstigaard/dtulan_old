@@ -13,7 +13,8 @@
 		 'is_signup_open',
 		 'time_start' => array('timeFormat' => '24'),
 		 'description' => array('class' => 'ckeditor'),
-		 'rules' => array('class' => 'ckeditor')
+		 'rules' => array('class' => 'ckeditor'),
+		 'bracket'
 	));
 
 	echo $this->Form->end(__('Submit'));

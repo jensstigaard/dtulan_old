@@ -6,6 +6,7 @@
 		 'legend' => __('New Tournament in ' . $lan['Lan']['title']),
 		 'title',
 		 'team_size',
+		 'is_signup_open',
 		 'time_start' => array(
 			  'timeFormat' => '24',
 			  'label' => 'Time start for tournament'
@@ -18,7 +19,8 @@
 		 'rules' => array(
 			  'class' => 'ckeditor',
 			  'value' => '<p>Rules not defined yet</p>'
-		 )
+		 ),
+		 'bracket'
 	));
 	?>
 	<?php echo $this->Form->end(__('Submit')); ?>
