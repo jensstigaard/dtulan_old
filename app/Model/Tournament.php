@@ -14,7 +14,7 @@ class Tournament extends AppModel {
 
 	public $belongsTo = array(
 		 'Lan',
-		 'Game'
+		 'Game',
 	);
 	public $hasMany = array(
 		 'Team',
@@ -122,28 +122,35 @@ class Tournament extends AppModel {
 			 'conditions' => array(
 				  'Team.tournament_id' => $this->id
 			 ),
+			 'fields' => array(
+				  'id',
+				  'name',
+				  'slug'
+			 ),
 			 'contain' => array(
+				  'TournamentWinner' => array(
+						'fields' => array(
+							 'place'
+						)
+				  ),
 				  'TeamUser' => array(
 						'order' => array(
 							 'is_leader' => 'desc'
 						),
 						'User' => array(
-							 'id',
-							 'name',
-							 'email_gravatar',
-							 'gamertag'
-						)
-				  ),
-				  'TournamentWinner',
-				  'Tournament' => array(
-						'fields' => array(
-							 'slug'
-						),
-						'Lan' => array(
 							 'fields' => array(
-								  'slug'
+								  'id',
+								  'name',
+								  'email_gravatar',
+								  'gamertag'
 							 )
 						)
+				  ),
+				  'Tournament' => array(
+						'fields' => array(
+							 'lan_id',
+							 'slug'
+						),
 				  )
 			 ),
 			 'order' => array(
@@ -153,6 +160,12 @@ class Tournament extends AppModel {
 			 )
 				  ));
 
+		foreach ($teams as $index => $team) {
+			$this->Lan->id = $team['Tournament']['lan_id'];
+			$this->Lan->read(array('slug'));
+
+			$teams[$index]['Tournament']['Lan']['slug'] = $this->Lan->data['Lan']['slug'];
+		}
 
 		if ($this->isLoggedIn()) {
 			foreach ($teams as $index => $team) {

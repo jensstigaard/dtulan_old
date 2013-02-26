@@ -39,11 +39,11 @@ class Team extends AppModel {
 						)
 				  )) == 0;
 	}
-	
+
 	public function beforeValidate($options = array()) {
 		parent::beforeValidate($options);
-		
-		if(isset($this->data['Team']['name'])){
+
+		if (isset($this->data['Team']['name'])) {
 			$this->data['Team']['slug'] = $this->stringToSlug($this->data['Team']['name']);
 		}
 	}

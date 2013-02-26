@@ -115,6 +115,3 @@
 		</div>
 	<?php endif; ?>
 </div>
-
-<?php
-// pr($teams); ?>

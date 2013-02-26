@@ -20,9 +20,9 @@ class TeamInvitesController extends AppController {
 		parent::isAuthorized($user);
 
 		if ($this->TeamInvite->isYouAdmin() || in_array($this->action, array(
-					'add',
-					'delete'
-				))) {
+						'add',
+						'delete'
+				  ))) {
 			return true;
 		}
 		return false;
@@ -40,7 +40,10 @@ class TeamInvitesController extends AppController {
 		} else {
 			$this->Session->setFlash('Unable to send your invites', 'default', array(), 'bad');
 		}
-		$this->redirect(array('controller' => 'teams', 'action' => 'view', $this->request->data['TeamInvite']['team_id']));
+
+		$this->TeamInvite->Team->id = $this->request->data['TeamInvite']['team_id'];
+
+		$this->redirect($this->referer());
 	}
 
 	public function delete($id) {
