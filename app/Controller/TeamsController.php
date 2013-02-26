@@ -32,8 +32,8 @@ class TeamsController extends AppController {
 		if (!$this->Team->Tournament->exists()) {
 			throw new NotFoundException('Team not found');
 		}
-		
-		if($this->Team->Tournament->isUserInTournament()){
+
+		if ($this->Team->Tournament->isUserInTournament()) {
 			throw new UnauthorizedException('You are already in a team in this tournament');
 		}
 
@@ -54,7 +54,16 @@ class TeamsController extends AppController {
 
 			if ($this->Team->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your team has been created', 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('controller' => 'teams', 'action' => 'view', $this->Team->getInsertID()));
+
+				$this->Team->read(array('slug'));
+				
+				$this->redirect(array(
+					 'controller' => 'teams',
+					 'action' => 'view',
+					 'lan_slug' => $lan_slug,
+					 'tournament_slug' => $tournament_slug,
+					 'team_slug' => $this->Team->data['Team']['slug']
+				));
 			} else {
 				$errors = $this->Team->invalidFields();
 
@@ -71,15 +80,13 @@ class TeamsController extends AppController {
 		$this->set('tournament', $this->Team->Tournament->read());
 	}
 
-	public function view($id = null) {
+	public function view($lan_slug, $tournament_slug, $team_slug) {
 
-		$this->Team->id = $id;
+		$this->Team->id = $this->Team->getIdByLanSlugAndTournamentSlugAndTeamSlug($lan_slug, $tournament_slug, $team_slug);
 
 		if (!$this->Team->exists()) {
 			throw new NotFoundException('Team not found');
 		}
-
-		$this->Team->recursive = 2;
 
 		$this->set('team', $this->Team->find('first', array(
 						'conditions' => array(
@@ -120,7 +127,7 @@ class TeamsController extends AppController {
 
 		$this->set('is_leader', $this->Auth->loggedIn() && $this->Team->isLeader($this->Auth->user('id')));
 
-		$this->set('users', $this->Team->getInviteableUsers($id));
+		$this->set('users', $this->Team->getInviteableUsers());
 	}
 
 	public function delete($id) {

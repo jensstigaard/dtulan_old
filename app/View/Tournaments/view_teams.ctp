@@ -101,7 +101,9 @@
 							echo $this->Html->link('View team-details', array(
 								 'controller' => 'teams',
 								 'action' => 'view',
-								 $team['Team']['id']
+								 'lan_slug' => $team['Tournament']['Lan']['slug'],
+								 'tournament_slug' => $team['Tournament']['slug'],
+								 'team_slug' => $team['Team']['slug']
 									  ), array(
 								 'class' => 'btn btn-primary'
 							));

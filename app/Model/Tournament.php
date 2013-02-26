@@ -89,17 +89,6 @@ class Tournament extends AppModel {
 			throw new NotFoundException('Tournament not found with slug: ' . $tournament_slug);
 		}
 
-//		if (!$result['Tournament']['published']) {
-//			if (!$this->isLoggedIn()) {
-//				throw new UnauthorizedException('You are not authorized to see this page');
-//			}
-//
-//			$this->Lan->LanSignup->User->id = $this->getLoggedInId();
-//			if (!($this->isYouAdmin() || $this->Lan->isUserAttendingAsCrew())) {
-//				throw new UnauthorizedException('You are not authorized to see this page');
-//			}
-//		}
-
 		return $this->id;
 	}
 
@@ -145,7 +134,17 @@ class Tournament extends AppModel {
 							 'gamertag'
 						)
 				  ),
-				  'TournamentWinner'
+				  'TournamentWinner',
+				  'Tournament' => array(
+						'fields' => array(
+							 'slug'
+						),
+						'Lan' => array(
+							 'fields' => array(
+								  'slug'
+							 )
+						)
+				  )
 			 ),
 			 'order' => array(
 				  'TournamentWinner.place = 1' => 'desc',
@@ -313,7 +312,7 @@ class Tournament extends AppModel {
 	}
 
 	public function isUserInTournament() {
-		
+
 		$db = $this->getDataSource();
 		$total = $db->fetchAll("
 			SELECT 
@@ -322,23 +321,23 @@ class Tournament extends AppModel {
 						INNER JOIN `teams` AS Team
 							ON TeamUser.team_id = Team.id
 				WHERE Team.tournament_id = ? AND TeamUser.user_id = ?", array($this->id, $this->Team->TeamUser->User->id));
-		
+
 		return $total[0][0]['CountUsers'] == 1;
-		
+
 		return $this->Team->find('count', array(
-			 'conditions' => array(
-				  'Team.tournament_id' => $this->id,
-			 ),
-			 'contain' => array(
-				  'TeamUser' => array(
 						'conditions' => array(
-							 'TeamUser.user_id' => $this->Team->TeamUser->User->id
+							 'Team.tournament_id' => $this->id,
 						),
-						'fields' => array(
-							 'id'
+						'contain' => array(
+							 'TeamUser' => array(
+								  'conditions' => array(
+										'TeamUser.user_id' => $this->Team->TeamUser->User->id
+								  ),
+								  'fields' => array(
+										'id'
+								  )
+							 )
 						)
-				  )
-			 )
 				  )) == 1;
 	}
 

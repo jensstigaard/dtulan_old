@@ -39,6 +39,14 @@ class Team extends AppModel {
 						)
 				  )) == 0;
 	}
+	
+	public function beforeValidate($options = array()) {
+		parent::beforeValidate($options);
+		
+		if(isset($this->data['Team']['name'])){
+			$this->data['Team']['slug'] = $this->stringToSlug($this->data['Team']['name']);
+		}
+	}
 
 	public function countMembers() {
 		return $this->TeamUser->find('count', array(
@@ -48,9 +56,27 @@ class Team extends AppModel {
 				  ));
 	}
 
+	public function getIdByLanSlugAndTournamentSlugAndTeamSlug($lan_slug, $tournament_slug, $team_slug) {
+
+		$result = $this->find('first', array(
+			 'conditions' => array(
+				  'Team.slug' => $team_slug,
+				  'Team.tournament_id' => $this->Tournament->getIdByLanSlugAndTournamentSlug($lan_slug, $tournament_slug)
+			 ),
+			 'fields' => array(
+				  'id',
+			 )
+				  ));
+
+		if (!isset($result['Team']['id'])) {
+			throw new NotFoundException('Team not found with slug: ' . $team_slug);
+		}
+
+		return $result['Team']['id'];
+	}
+
 	// Refactor!!!
-	public function getInviteableUsers($team_id = null) {
-		$this->id = $team_id;
+	public function getInviteableUsers() {
 
 		if (!$this->exists()) {
 			throw new NotFoundException('Team not found');
