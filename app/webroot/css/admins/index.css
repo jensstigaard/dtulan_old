@@ -1,0 +1,42 @@
+/* 
+    Document   : index
+    Created on : 26-02-2013, 21:42:49
+    Author     : Jens
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+#admin-list .item{
+	padding: 0;
+	position: relative;
+	width: 120px;
+	height: 120px;
+	text-align: center;
+	background-repeat: no-repeat;
+	background-position: top left;
+}
+
+#admin-list > .item > small{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right:0;
+
+	height: 42px;
+
+	display: block;
+	vertical-align: middle;
+
+	background: rgba(255, 255, 255, .5);
+	padding:3px 5px 0;
+
+	color: #222;
+	font-weight: bold;
+	text-align: center;
+	
+	line-height: 110%;
+}
+
+#admin-list > a.item:hover > small{
+	background: rgba(255, 255, 255, .8);
+}

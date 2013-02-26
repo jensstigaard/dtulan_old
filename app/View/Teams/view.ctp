@@ -22,25 +22,33 @@ echo $this->Html->link($team['Tournament']['title'], array(
 				  )
 		);
 		?>
-<?php endif; ?>
+	<?php endif; ?>
 </div>
 
-	<?php if ($is_leader && count($users)): ?>
+<?php if ($is_leader && count($users)): ?>
 	<div>
 		<h2>Invite to team</h2>
-	<?php echo $this->Form->create('TeamInvite', array('controller' => 'team_invites', 'action' => 'add')); ?>
-	<?php echo $this->Form->input('user_id'); ?>
-	<?php echo $this->Form->hidden('team_id', array('value' => $team['Team']['id'])); ?>
-	<?php echo $this->Form->end(__('Invite')); ?>
+		<?php
+		echo $this->Form->create('TeamInvite', array('controller' => 'team_invites', 'action' => 'add'));
+
+		echo $this->Chosen->select(
+				  'user_id', $users, array(
+			 'data-placeholder' => 'Pick user..',
+				  )
+		);
+
+		echo $this->Form->hidden('team_id', array('value' => $team['Team']['id']));
+		echo $this->Form->end(__('Invite'));
+		?>
 	</div>
-	<?php endif; ?>
+<?php endif; ?>
 
 
 <div>
 	<h3>Members of team</h3>
-<?php if (!count($team['TeamUser'])): ?>
+	<?php if (!count($team['TeamUser'])): ?>
 		<p>No members in team</p>
-<?php else: ?>
+	<?php else: ?>
 		<table>
 			<thead>
 				<tr>
@@ -51,7 +59,7 @@ echo $this->Html->link($team['Tournament']['title'], array(
 			</thead>
 
 			<tbody>
-						<?php foreach ($team['TeamUser'] as $user): ?>
+				<?php foreach ($team['TeamUser'] as $user): ?>
 					<tr>
 						<td>
 							<?php
@@ -76,12 +84,12 @@ echo $this->Html->link($team['Tournament']['title'], array(
 							?>
 						</td>
 					</tr>
-		<?php endforeach; ?>
+				<?php endforeach; ?>
 			</tbody>
 		</table>
-<?php endif; ?>
+	<?php endif; ?>
 
-<?php if (count($team['TeamInvite'])): ?>
+	<?php if (count($team['TeamInvite'])): ?>
 		<h3>Invited to team</h3>
 		<table>
 			<thead>
@@ -92,7 +100,7 @@ echo $this->Html->link($team['Tournament']['title'], array(
 			</thead>
 
 			<tbody>
-						<?php foreach ($team['TeamInvite'] as $invite): ?>
+				<?php foreach ($team['TeamInvite'] as $invite): ?>
 					<tr>
 						<td><?php echo $invite['User']['name']; ?></td>
 						<td>
@@ -110,8 +118,8 @@ echo $this->Html->link($team['Tournament']['title'], array(
 							}
 							?></td>
 					</tr>
-	<?php endforeach; ?>
+				<?php endforeach; ?>
 			</tbody>
 		</table>
-<?php endif; ?>
+	<?php endif; ?>
 </div>

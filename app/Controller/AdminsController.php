@@ -24,9 +24,20 @@ class AdminsController extends AppController {
 		}
 		return false;
 	}
-	
-	public function admin_index(){
-		
+
+	public function admin_index() {
+		$this->set('admins', $this->Admin->find('all', array(
+						'contain' => array(
+							 'User' => array(
+								  'fields' => array(
+										'id',
+										'name',
+										'email_gravatar',
+										'phonenumber'
+								  )
+							 )
+						)
+				  )));
 	}
 
 	public function admin_add() {
