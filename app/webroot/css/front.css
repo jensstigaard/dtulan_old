@@ -1,13 +1,6 @@
-/* 
-    Document   : front
-    Created on : 23-02-2013, 13:38:17
-    Author     : Jens
-    Description:
-        Purpose of the stylesheet follows.
-*/
 
-root { 
-	display: block;
+#upcoming-tournaments{
+	margin-right: 14px !important;
 }
 
 #tournaments-carousel img{
@@ -18,3 +11,4 @@ root {
 #tournaments-carousel img:hover{
 	opacity: 1;
 }
+

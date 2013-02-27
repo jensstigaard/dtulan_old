@@ -94,21 +94,6 @@
 				?>
 			</li>
 
-
-			<li>
-				<?php
-				echo $this->Html->link(
-						  '<i class="icon-large icon-quote-right"></i> News database', array(
-					 'controller' => 'news_items',
-					 'action' => 'index',
-					 'crew' => true,
-						  ), array(
-					 'escape' => false
-						  )
-				);
-				?>
-			</li>
-
 			<li>
 				<?php
 				echo $this->Html->link(

@@ -4,7 +4,7 @@ class PagesController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('view');
+		$this->Auth->allow(array('front', 'view'));
 	}
 
 	public function isAuthorized($user) {
@@ -15,6 +15,17 @@ class PagesController extends AppController {
 		}
 
 		return false;
+	}
+	
+	public function front(){
+		
+		$this->set('title_for_layout', 'Home');
+		
+
+		$this->set('page', $this->Page->getFrontPage());
+
+		$this->loadModel('Tournament');
+		$this->set('tournaments', $this->Tournament->getFrontTournaments());
 	}
 
 	public function index() {
