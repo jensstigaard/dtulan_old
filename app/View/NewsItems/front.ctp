@@ -63,9 +63,10 @@
 				</div>
 			</div>
 		<?php endif; ?>
-		<div>
-			<a class="twitter-timeline" href="https://twitter.com/dtu_lan" data-widget-id="306801364892254208" width="300" height="200">Tweets af @dtu_lan</a>
-			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+		<div style="padding-left: 15px">
+			<a class="twitter-timeline" href="https://twitter.com/dtu_lan" data-widget-id="306801364892254208" width="325">Tweets af @dtu_lan</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
 		</div>
 	</div>
 
