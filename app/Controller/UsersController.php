@@ -85,12 +85,10 @@ class UsersController extends AppController {
 							 'title_for_layout', 'is_you', 'is_auth', 'user'
 				  )
 		);
-		
-		if($is_auth){
+
+		if ($is_auth) {
 			$this->set('tournaments_won', $this->User->getCountTournamentsWon());
 		}
-		
-		
 	}
 
 	public function view_tournaments($id) {
@@ -457,7 +455,8 @@ class UsersController extends AppController {
 
 			$user = $this->User->find('first', array(
 				 'conditions' => array(
-					  'email' => $this->request->data['User']['email']
+					  'email' => $this->request->data['User']['email'],
+					  'activated' => 1
 				 ),
 				 'fields' => array(
 					  'id'
@@ -469,14 +468,10 @@ class UsersController extends AppController {
 			} else {
 				$this->User->id = $user['User']['id'];
 
-				if (!$this->User->exists()) {
-					$this->Session->setFlash(__('No user with this email. '), 'default', array(), 'bad');
+				if ($this->User->createForgotPassword()) {
+					$this->Session->setFlash(__('Email sent!'), 'default', array('class' => 'message success'), 'good');
 				} else {
-					if ($this->User->createForgotPassword()) {
-						$this->Session->setFlash(__('Email sent!'), 'default', array('class' => 'message success'), 'good');
-					} else {
-						$this->Session->setFlash(__('Fatal error'), 'default', array(), 'bad');
-					}
+					$this->Session->setFlash(__('Fatal error'), 'default', array(), 'bad');
 				}
 			}
 		}
