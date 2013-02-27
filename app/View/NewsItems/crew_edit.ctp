@@ -5,4 +5,6 @@
  * and open the template in the editor.
  */
 ?>
-Edit news
+<div class="box">
+<h1>Edit crew?</h1>
+</div>

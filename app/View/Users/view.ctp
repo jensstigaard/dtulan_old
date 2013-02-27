@@ -1,5 +1,5 @@
 <?php echo $this->Html->css(array('user_profile', null, array('inline' => false))); ?>
-<div>
+<div class="box">
 	<h1>
 		<?php
 		if (!empty($user['User']['email_gravatar'])) {
@@ -103,7 +103,7 @@
 	<div style="clear:both"></div>
 </div>
 
-<div>
+<div class="box">
 	<div class="tabs">
 		<ul>
 			<?php if ($is_auth): ?>

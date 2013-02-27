@@ -1,6 +1,6 @@
 <?php echo $this->Html->script(array('pageEdit', 'ckeditor/ckeditor'), array('inline' => false)); ?>
 
-<div>
+<div class="box">
 	<?php
 	echo $this->Form->create('NewsItem');
 	echo $this->Form->inputs(array(

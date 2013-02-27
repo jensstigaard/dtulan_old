@@ -1,5 +1,5 @@
 <?php echo $this->Html->script(array('ckeditor/ckeditor'), FALSE); ?>
-<div>
+<div class="box">
 	<div style="float:right">
 		<?php echo $this->Html->link('Back to pizza menus', array('action' => 'index')); ?>
 	</div>

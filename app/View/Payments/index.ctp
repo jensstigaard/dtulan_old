@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<h2>Payments</h2>
 
 	<?php if (!count($payments)): ?>
@@ -42,4 +42,3 @@
 	<?php endif; ?>
 
 </div>
-<?php // pr($payments); ?>

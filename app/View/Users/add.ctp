@@ -1,5 +1,5 @@
 <?php echo $this->Html->script(array('user_register'), FALSE); ?>
-<div>
+<div class="box">
 	<?php echo $this->Form->create(); ?>
 	<fieldset>
 		<legend><?php echo __('Register user'); ?></legend>

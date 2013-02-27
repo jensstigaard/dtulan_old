@@ -1,6 +1,6 @@
 <?php echo $this->Html->script(array('ckeditor/ckeditor'), FALSE); ?>
 
-<div>
+<div class="box">
 	<?php
 	echo $this->Form->create();
 

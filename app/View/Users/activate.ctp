@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<?php echo $this->Form->create(); ?>
     <fieldset>
         <legend><?php echo __('Enter password'); ?></legend>

@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<h1><?php echo __('Pizza wave'); ?></h1>
 	<table>
 		<tbody>

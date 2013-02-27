@@ -6,8 +6,7 @@ echo $this->Html->css(array(
 	 'inline' => false
 ));
 ?>
-<div>
-
+<div class="box">
 	<?php if ($is_admin): ?>
 		<?php
 		$admin_links_new = array(
@@ -175,10 +174,10 @@ echo $this->Html->css(array(
 <?php if ($lan['Lan']['time_start'] > date('Y-m-d H:i:s')): ?>
 	<?php echo $this->Html->css(array('jquery/jquery.countdown'), null, array('inline' => false)); ?>
 	<?php echo $this->Html->script(array('jquery/jquery.countdown', 'lans/countdown'), array('inline' => false)); ?>
-	<div>
+	<div class="box">
 		<h2 style="text-align: center;">Countdown</h2>
 		<div id="countdown-lan" style="border:none;background:none;" data-time-start="<?php echo $lan['Lan']['time_start']; ?>">
-			
+
 		</div>
 
 		<div style="clear:both;"></div>
@@ -186,7 +185,7 @@ echo $this->Html->css(array(
 <?php endif; ?>
 
 <?php if ($is_cancelable): ?>
-	<div>
+	<div class="box">
 		<h2>Cancel your signup</h2>
 		<?php
 		echo $this->Form->postLink(
@@ -205,7 +204,7 @@ echo $this->Html->css(array(
 <?php endif; ?>
 
 <?php if ($is_admin): ?>
-	<div>
+	<div class="box">
 		<div class="tabs">
 			<ul>
 				<?php foreach ($tabs_admin as $tab): ?>
@@ -225,7 +224,7 @@ echo $this->Html->css(array(
 <?php endif; ?>
 
 
-<div>
+<div class="box">
 	<div class="tabs">
 		<ul>
 			<?php foreach ($tabs as $tab): ?>

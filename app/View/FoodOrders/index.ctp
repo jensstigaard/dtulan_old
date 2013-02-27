@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<h1>Food orders</h1>
 
 	<?php if (!count($orders)): ?>
@@ -9,15 +9,15 @@
 
 		<table class="order_list">
 			<tbody>
-				
+
 				<?php foreach ($orders as $order): ?>
-				<?php	if(isset($order['header'])): ?>
+					<?php if (isset($order['header'])): ?>
 						<tr>
 							<td colspan="4">
 								<h3 style="font-weight: normal;"><?php echo $order['header']; ?></h3>
 							</td>
 						</tr>
-						<?php endif; ?>
+					<?php endif; ?>
 					<tr>
 						<td rowspan="2" class="order_status <?php
 			switch ($order['FoodOrder']['status']) {

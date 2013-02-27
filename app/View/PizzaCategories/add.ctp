@@ -1,4 +1,4 @@
-<div class="form">
+<div class="box">
 	<?php echo $this->Form->create(); ?>
     <fieldset>
         <legend><?php echo __('Add pizza category'); ?></legend>

@@ -1,6 +1,6 @@
 <?php echo $this->Html->css(array('tournament_page'), null, array('inline' => false)); ?>
 
-<div>
+<div class="box">
 	<div id="tournament-info" style="background-image: url('<?php echo $this->Html->url('/img/uploads/' . $tournament['Game']['Image']['id'] . '.' . $tournament['Game']['Image']['ext']); ?>')">
 
 		<table>
@@ -62,7 +62,7 @@
 </div>
 
 <?php if (count($winner_teams)) : ?>
-	<div>
+	<div class="box">
 		<h2>Tournament-winners</h2>
 		<div class="floated-list" id="tournament-winners">
 			<?php foreach ($winner_teams as $team): ?>
@@ -111,7 +111,7 @@
 <?php endif; ?>
 
 
-<div>
+<div class="box">
 	<div class="tabs">
 		<ul>
 			<li>

@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<h1>Pizza types known</h1>
 	<table>
 		<thead>
@@ -18,7 +18,8 @@
 		</tbody>
 	</table>
 </div>
-<div>
+
+<div class="box">
 	<?php echo $this->Form->create(); ?>
 	<fieldset>
 		<legend><?php echo __('New pizza type'); ?></legend>

@@ -1,4 +1,4 @@
-<div class="form">
+<div class="box">
 	<h2>Pages</h2>
 	<p><?php echo $this->Html->link('Add Page', array('action' => 'add')); ?></p>
 	<table class="">

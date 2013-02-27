@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<h2>Food orders in <?php echo $lan_food_menu['FoodMenu']['title']; ?> at <?php echo $lan_food_menu['Lan']['title']; ?></h2>
 
 	<?php if (!count($orders)): ?>

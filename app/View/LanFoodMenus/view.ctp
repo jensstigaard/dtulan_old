@@ -5,7 +5,7 @@ if ($is_orderable_food) {
 	echo $this->Html->script(array('order/food'), FALSE);
 }
 ?>
-<div>
+<div class="box">
 
 	<h1><?php echo $food_menu['FoodMenu']['title']; ?></h1>
 	<div>
@@ -13,7 +13,7 @@ if ($is_orderable_food) {
 	</div>
 </div>
 
-<div>
+<div class="box">
 	<h2>Products</h2>
 	<?php if (!count($categories)): ?>
 		<p>No items at this menu yet</p>

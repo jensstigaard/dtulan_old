@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<?php if ($is_admin): ?>
 		<div style="float:right;">
 			<?php

@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<div style="float:right;">
 		<?php echo $this->Html->link('New user', array('action' => 'add')); ?>
 	</div>

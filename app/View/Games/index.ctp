@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<div style="float:right;">
 		<?php echo $this->Html->link('<i class="icon-plus-sign"></i> New game', array('controller' => 'games', 'action' => 'add'), array('escape' => false, 'class' => 'btn btn-inverse')); ?>
 	</div>

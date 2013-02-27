@@ -1,6 +1,6 @@
 <?php echo $this->Html->script(array('pageEdit', 'ckeditor/ckeditor'), FALSE); ?>
 
-<div class="form">
+<div class="box">
 	<h1>Edit Page</h1>
 	<?php
 	echo $this->Form->create();

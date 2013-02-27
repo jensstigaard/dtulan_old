@@ -1,4 +1,4 @@
-<div>
+<div class="box">
     <fieldset>
         <legend>Your signup for <?php echo $this->Html->link($lan_signup['Lan']['title'], array('controller' => 'lans', 'action' => 'view', $lan_signup['Lan']['id'])); ?></legend>
 		<table>

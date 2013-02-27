@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<div style="float:right;">
 		<?php echo $this->Html->link($this->Html->image('16x16_GIF/reply.gif') . ' Edit food menu', array('action' => 'edit', $food_menu['FoodMenu']['id']), array('escape' => false)); ?>
 	</div>
@@ -7,7 +7,7 @@
 	<p><?php echo $food_menu['FoodMenu']['description']; ?></p>
 
 </div>
-<div>
+<div class="box">
 	<h2>Used in LANS</h2>
 	<table>
 		<thead>
@@ -33,7 +33,7 @@
 	</table>
 </div>
 
-<div>
+<div class="box">
 	<div style="float:right">
 	<?php echo $this->Html->link('Add category', array('controller' => 'food_categories', 'action' => 'add', $food_menu['FoodMenu']['id'])); ?>
 	</div>

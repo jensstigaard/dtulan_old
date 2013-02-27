@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<h1><?php echo $team['Team']['name']; ?></h1>
 	<p>In tournament: <?php
 echo $this->Html->link($team['Tournament']['title'], array(
@@ -26,7 +26,7 @@ echo $this->Html->link($team['Tournament']['title'], array(
 </div>
 
 <?php if ($is_leader && count($users)): ?>
-	<div>
+	<div class="box">
 		<h2>Invite to team</h2>
 		<?php
 		echo $this->Form->create('TeamInvite', array('controller' => 'team_invites', 'action' => 'add'));
@@ -44,7 +44,7 @@ echo $this->Html->link($team['Tournament']['title'], array(
 <?php endif; ?>
 
 
-<div>
+<div class="box">
 	<h3>Members of team</h3>
 	<?php if (!count($team['TeamUser'])): ?>
 		<p>No members in team</p>

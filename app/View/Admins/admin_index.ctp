@@ -1,5 +1,5 @@
 <?php echo $this->Html->css(array('admins/index'), null, array('inline' => false)); ?>
-<div>
+<div class="box">
 	<div style="float:right;">
 		<?php
 		echo $this->Html->link(

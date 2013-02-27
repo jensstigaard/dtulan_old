@@ -7,7 +7,7 @@ if ($is_orderable) {
 }
 ?>
 
-<div>
+<div class="box">
 	<h1><?php echo $pizza_menu['PizzaMenu']['title']; ?></h1>
 	<p><?php echo $pizza_menu['PizzaMenu']['description']; ?></p>
 	<div id="pizza_list" class="accordion">

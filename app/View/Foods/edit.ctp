@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<div style="float:right">
 		<?php echo $this->Html->link('Back to Food Menus', array('controller' => 'food_menus', 'action' => 'index')); ?>
 	</div>

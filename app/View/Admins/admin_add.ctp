@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<h1>Give admin permissions</h1>
 
 	<?php

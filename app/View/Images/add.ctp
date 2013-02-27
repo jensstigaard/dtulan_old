@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<?php
 	echo $this->Form->create('Image', array('type' => 'file'));
 

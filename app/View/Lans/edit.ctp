@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<div style="float:right">
 		<?php
 		echo $this->Html->link('<i class="icon-remove icon-large"></i> Click here to delete this LAN', array(

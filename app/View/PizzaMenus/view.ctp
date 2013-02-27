@@ -3,7 +3,7 @@ echo $this->Html->css('pizzas', null, array('inline' => false));
 echo $this->Html->script(array('pizzas'), FALSE);
 ?>
 
-<div>
+<div class="box">
 	<div style="float:right;">
 		<?php echo $this->Html->link('Edit pizza menu', array('action' => 'edit', $pizza_menu['PizzaMenu']['id'])); ?>
 	</div>
@@ -14,7 +14,8 @@ echo $this->Html->script(array('pizzas'), FALSE);
 	<p><?php echo $pizza_menu['PizzaMenu']['description']; ?></p>
 
 </div>
-<div>
+
+<div class="box">
 	<h2>Used in LANS</h2>
 	<table>
 		<thead>
@@ -39,7 +40,8 @@ echo $this->Html->script(array('pizzas'), FALSE);
 		</tbody>
 	</table>
 </div>
-<div>
+
+<div class="box">
 	<h2>Menu card</h2>
 	<div class="pizza_list">
 <?php foreach ($pizza_categories as $pizza_category): ?>

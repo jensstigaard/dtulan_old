@@ -1,4 +1,4 @@
-<div>
+<div class="box">
 	<h1>Edit personal data</h1>
 	<p>You are able to change some of your personal data.</p>
 
