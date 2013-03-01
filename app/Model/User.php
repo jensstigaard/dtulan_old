@@ -573,6 +573,29 @@ class User extends AppModel {
 
 		return $total[0][0]['TeamUser'];
 	}
+	
+	public function getStatisticsTimeCreation(){
+		$db = $this->getDataSource();
+
+		$total = $db->fetchAll("
+			SELECT 
+				COUNT(id) AS count,
+				CONCAT(YEAR(time_created), '-', MONTH(time_created)) AS dato
+			FROM users
+			GROUP BY
+				YEAR(time_created),
+				MONTH(time_created);
+			", array());
+		
+		
+		$return = array();
+		foreach($total as $line){
+			
+			$return[] = $line[0];
+		}
+		
+		return $return;
+	}
 
 }
 

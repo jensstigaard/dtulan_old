@@ -560,4 +560,11 @@ class UsersController extends AppController {
 		}
 	}
 
+	public function api_index() {
+
+		$this->set('users', $this->User->getStatisticsTimeCreation());
+
+		$this->set('_serialize', 'users');
+	}
+
 }

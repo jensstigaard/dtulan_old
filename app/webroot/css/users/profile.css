@@ -1,0 +1,27 @@
+/* 
+    Document   : user_profile
+    Created on : 27-01-2013, 19:18:49
+    Author     : Jens
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.teams-list > .item{
+	width: 210px;
+	height: 120px;
+	padding: 0;
+}
+
+
+#user-tournaments-won{
+	width: 100%;
+}
+
+#user-tournaments-won td{
+	width:33%;
+	text-align:center;
+}
+
+#user-tournaments-won .count td{
+	font-size: 16pt;
+}

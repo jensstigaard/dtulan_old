@@ -92,6 +92,7 @@
 		echo $this->Html->script(array(
 			 'jquery/jquery',
 			 'jquery/jquery-ui',
+			 'd3/d3.v3.min',
 //			 'jquery/jquery.fancybox.pack',
 			 'bootstrap/bootstrap.min',
 			 'general',

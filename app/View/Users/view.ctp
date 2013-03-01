@@ -1,4 +1,4 @@
-<?php echo $this->Html->css(array('user_profile', null, array('inline' => false))); ?>
+<?php echo $this->Html->css(array('users/profile', null, array('inline' => false))); ?>
 <div class="box">
 	<h1>
 		<?php

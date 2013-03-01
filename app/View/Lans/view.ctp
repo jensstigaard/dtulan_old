@@ -177,10 +177,16 @@ echo $this->Html->css(array(
 	<div class="box">
 		<h2 style="text-align: center;">Countdown</h2>
 		<div id="countdown-lan" style="border:none;background:none;" data-time-start="<?php echo $lan['Lan']['time_start']; ?>">
-
 		</div>
 
 		<div style="clear:both;"></div>
+
+	</div>
+	<div class="box">
+		<h2 style="text-align: center;">Fill rate</h2>
+		<div class="progress">
+			<div class="bar" style="width: <?php echo $data['fill_rate']; ?>%;"></div>
+		</div>
 	</div>
 <?php endif; ?>
 

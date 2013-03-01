@@ -1,3 +1,8 @@
+<?php
+echo $this->Html->script(array('users/index'), array('inline' => false));
+echo $this->Html->css(array('admin/users/index'), null, array('inline' => false));
+?>
+
 <div class="box">
 	<div style="float:right;">
 		<?php echo $this->Html->link('New user', array('action' => 'add')); ?>
@@ -27,7 +32,13 @@
 	<?php echo $this->Paginator->numbers(); ?>
 </div>
 
-<!--Users:
-	<pre>
-<?php // print_r($users); ?>
-	</pre>-->
+<div id="chart-user-register" class="box" data-source-url="<?php
+	echo $this->Html->url(array(
+		 'controller' => 'users',
+		 'action' => 'index',
+		 'api' => true,
+		 'ext' => 'json'
+	));
+	?>">
+
+</div>
