@@ -1,7 +1,7 @@
 <?php
 echo $this->Html->css(array(
-	 'lan',
-	 'lan.participants'
+	 'lans/view',
+	 'lans/participants'
 		  ), null, array(
 	 'inline' => false
 ));
