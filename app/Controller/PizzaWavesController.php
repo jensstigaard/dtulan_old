@@ -1,7 +1,7 @@
 <?php
 
 class PizzaWavesController extends AppController {
-	
+
 	public $uses = 'PizzaWave';
 
 	public function beforeFilter() {
@@ -51,13 +51,50 @@ class PizzaWavesController extends AppController {
 		$this->PizzaWave->recursive = 0;
 		$this->set('pizza_wave', $this->PizzaWave->read());
 
-		if ($this->PizzaWave->data['PizzaWave']['status'] == 3) {
-			$pizza_wave_orders = $this->PizzaWave->getOrderList($id);
-			$this->PizzaWave->dateToNiceArray($pizza_wave_orders, 'PizzaOrder');
-			$this->set(compact('pizza_wave_orders'));
-		} else {
+		if ($this->PizzaWave->data['PizzaWave']['status'] != 3) {
 			$this->set('pizza_wave_items', $this->PizzaWave->getItemList($id));
 		}
+	}
+
+	public function edit($id) {
+
+		$this->PizzaWave->id = $id;
+
+		if (!$this->PizzaWave->exists()) {
+			throw new NotFoundException(__('Pizza wave not found'));
+		}
+
+		if ($this->request->is('put')) {
+			if ($this->PizzaWave->save($this->request->data)) {
+				$this->Session->setFlash('Pizza-wave has been edited!', 'default', array('class' => 'message success'), 'good');
+			} else {
+				$this->Session->setFlash('Unable to edit this pizza-wave', 'default', array(), 'bad');
+			}
+			$this->redirect($this->referer());
+		}
+		else{
+			$this->request->data = $this->PizzaWave->read();
+		}
+
+		$this->set('pizza_wave', $this->PizzaWave->find('first', array(
+						'conditions' => array(
+							 'PizzaWave.id' => $this->PizzaWave->id
+						),
+						'contain' => array(
+							 'LanPizzaMenu' => array(
+								  'Lan' => array(
+										'fields' => array(
+											 'title'
+										)
+								  ),
+								  'PizzaMenu' => array(
+										'fields' => array(
+											 'title'
+										)
+								  )
+							 )
+						)
+				  )));
 	}
 
 	public function send_email($id) {

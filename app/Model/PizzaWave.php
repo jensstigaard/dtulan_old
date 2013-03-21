@@ -19,7 +19,7 @@ class PizzaWave extends AppModel {
 	public $validate = array(
 		 'time_close' => array(
 			  'validTime' => array(
-					'rule' => 'validTime',
+					'rule' => 'validateTime',
 					'message' => 'There already exist a pizza wave in this time'
 			  )
 		 ),
@@ -131,36 +131,6 @@ class PizzaWave extends AppModel {
 		usort($pizza_wave_items, "compare");
 
 		return $pizza_wave_items;
-	}
-
-	public function getOrderList($id) {
-		$this->id = $id;
-
-		if (!$this->exists()) {
-			throw new NotFoundException(__('Pizza wave not found with ID: ' . $id));
-		}
-
-		$pizza_orders = $this->PizzaOrder->find('all', array(
-			 'conditions' => array(
-				  'PizzaOrder.pizza_wave_id' => $id
-			 ),
-			 'order' => array(
-				  'status' => 'asc',
-				  'time' => 'asc'
-			 ),
-			 'contain' => array(
-				  'User',
-				  'PizzaOrderItem' => array(
-						'PizzaPrice' => array(
-							 'Pizza',
-							 'PizzaType'
-						)
-				  )
-			 )
-				  )
-		);
-
-		return $pizza_orders;
 	}
 
 	public function getOrdersSum() {

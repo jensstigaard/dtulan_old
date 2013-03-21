@@ -35,16 +35,26 @@ class PizzaMenu extends AppModel {
 	}
 
 	public function getPizzaList() {
-		$this->PizzaCategory->Pizza->unbindModel(array('belongsTo' => array('PizzaCategory')));
-		$this->PizzaCategory->Pizza->PizzaPrice->unbindModel(array('belongsTo' => array('Pizza'), 'hasMany' => array('PizzaOrderItem')));
 
 		$conditions = array();
+
+		$conditions['PizzaCategory.pizza_menu_id'] = $this->id;
+
 		if (!$this->isYouAdmin()) {
 			$conditions['PizzaCategory.available'] = 1;
 		}
-		$conditions =
-				  $data_category = $this->PizzaCategory->find('all', array('conditions' => $conditions,
-			 'recursive' => 3)
+
+		$data_category = $this->PizzaCategory->find('all', array(
+			 'conditions' => $conditions,
+			 'contain' => array(
+				  'PizzaType',
+				  'Pizza' => array(
+						'PizzaPrice' => array(
+							 'PizzaType'
+						)
+				  ),
+			 )
+				  )
 		);
 
 		$data_prices = array();

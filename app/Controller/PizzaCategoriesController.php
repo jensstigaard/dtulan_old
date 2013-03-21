@@ -1,4 +1,4 @@
-c<?php
+<?php
 
 class PizzaCategoriesController extends AppController {
 
@@ -15,7 +15,7 @@ class PizzaCategoriesController extends AppController {
 		return false;
 	}
 
-	public function add() {
+	public function add($pizza_menu_id) {
 		if ($this->request->is('post')) {
 
 			foreach ($this->request->data['PizzaType'] as $type_id => $type_data) {
@@ -24,11 +24,13 @@ class PizzaCategoriesController extends AppController {
 				}
 			}
 
+			$this->request->data['PizzaCategory']['pizza_menu_id'] = $pizza_menu_id;
+
 			if ($this->PizzaCategory->saveAssociated($this->request->data)) {
-				$this->Session->setFlash('Your category has been created.', 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash('Your category has been created', 'default', array('class' => 'message success'), 'good');
+				$this->redirect($this->referer());
 			} else {
-				$this->Session->setFlash('Unable to create category.', 'default', array(), 'bad');
+				$this->Session->setFlash('Unable to create category', 'default', array(), 'bad');
 			}
 		}
 
@@ -44,7 +46,14 @@ class PizzaCategoriesController extends AppController {
 		}
 
 		if ($this->request->is('get')) {
-			$this->request->data = $this->PizzaCategory->read(null, $id);
+			$this->request->data = $this->PizzaCategory->find('first', array(
+				 'conditions' => array(
+					  'PizzaCategory.id' => $this->PizzaCategory->id
+				 ),
+				 'contain' => array(
+					  'PizzaType'
+				 )
+					  ));
 		} else {
 			$this->request->data['PizzaCategory']['id'] = $id;
 
@@ -69,8 +78,9 @@ class PizzaCategoriesController extends AppController {
 		$this->set('types', $this->PizzaCategory->PizzaType->find('list'));
 
 		$types_selected = array();
+
 		foreach ($this->request->data['PizzaType'] as $type) {
-			$types_selected[$type['PizzaCategoryType']['pizza_type_id']] = true;
+			$types_selected[$type['id']] = true;
 		}
 
 		$this->set(compact('types_selected'));

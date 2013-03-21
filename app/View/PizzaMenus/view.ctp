@@ -33,33 +33,48 @@ echo $this->Html->script(array('pizzas'), FALSE);
 				 'action' => 'view',
 				 'slug' => $lan_pizza_menu['Lan']['slug']
 			));
-			?></td>
+				?></td>
 					<td></td>
 				</tr>
-<?php endforeach; ?>
+			<?php endforeach; ?>
 		</tbody>
 	</table>
 </div>
 
 <div class="box">
+
+	<div style="float:right">
+		<?php
+		echo $this->Html->link('<i class="icon-large icon-plus-sign"></i> New category', array(
+			 'controller' => 'pizza_categories',
+			 'action' => 'add',
+			 $pizza_menu['PizzaMenu']['id']
+				  ), array(
+			 'class' => 'btn btn-small btn-success',
+			 'escape' => false
+		));
+		?>
+	</div>
+
 	<h2>Menu card</h2>
+
 	<div class="pizza_list">
-<?php foreach ($pizza_categories as $pizza_category): ?>
-	<?php if (count($pizza_category['Pizza']) || $is_admin): ?>
-				<h3 style="padding:2px 2px 2px 26px;"><?php echo $pizza_category['PizzaCategory']['title']; ?></h3>
+		<?php foreach ($pizza_categories as $pizza_category): ?>
+			<?php if (count($pizza_category['Pizza']) || $is_admin): ?>
+				<h3><?php echo $pizza_category['PizzaCategory']['title']; ?></h3>
 				<div>
 					<table class="pizza_list">
 						<thead>
 							<tr class="pizza_category">
 								<th colspan="2" style="font-weight:normal;">
-								<?php echo nl2br($pizza_category['PizzaCategory']['description']); ?>
+									<?php echo nl2br($pizza_category['PizzaCategory']['description']); ?>
 								</th>
-		<?php foreach ($pizza_category['PizzaType'] as $type): ?>
+								<?php foreach ($pizza_category['PizzaType'] as $type): ?>
 									<th style="vertical-align: bottom; text-align: center;">
 										<span title="<?php echo $type['title']; ?>"><?php echo $type['title_short']; ?></span>
 									</th>
-									<?php endforeach; ?>
-									<?php if ($is_admin): ?>
+								<?php endforeach; ?>
+								<?php if ($is_admin): ?>
 									<th>
 										<?php
 										echo $this->Html->image('16x16_GIF/reply.gif', array(
@@ -80,13 +95,13 @@ echo $this->Html->script(array('pizzas'), FALSE);
 										);
 										?>
 									</th>
-						<?php endif; ?>
+								<?php endif; ?>
 							</tr>
 						</thead>
-								<?php if (!count($pizza_category['Pizza'])): ?>
+						<?php if (!count($pizza_category['Pizza'])): ?>
 							<tr>
 								<td colspan="7">
-			<?php echo $this->Html->image('24x24_PNG/001_11.png', array('style' => 'vertical-align:middle')); ?>
+									<?php echo $this->Html->image('24x24_PNG/001_11.png', array('style' => 'vertical-align:middle')); ?>
 									<strong>
 										No pizzas in this category.
 									</strong>
@@ -94,7 +109,7 @@ echo $this->Html->script(array('pizzas'), FALSE);
 
 								</td>
 							</tr>
-							<?php else: ?>
+						<?php else: ?>
 							<tbody>
 								<?php
 								foreach ($pizza_category['Pizza'] as $pizza):
@@ -118,29 +133,29 @@ echo $this->Html->script(array('pizzas'), FALSE);
 													<td class="price">
 														<?php if ($price_info['price'] != 0): ?>
 															<span><?php echo $price_info['price']; ?></span>,-
-													<?php endif; ?>
+														<?php endif; ?>
 													</td>
 													<?php
 												endforeach;
 											}
 											?>
-												<?php if ($is_admin): ?>
+											<?php if ($is_admin): ?>
 												<td><?php
-							echo $this->Html->image('16x16_GIF/reply.gif', array(
-								 'alt' => 'Edit pizza',
-								 'title' => 'Edit pizza',
-								 'url' => array('controller' => 'pizzas', 'action' => 'edit', $pizza['id'])));
-							?></td>
-										<?php endif; ?>
+						echo $this->Html->image('16x16_GIF/reply.gif', array(
+							 'alt' => 'Edit pizza',
+							 'title' => 'Edit pizza',
+							 'url' => array('controller' => 'pizzas', 'action' => 'edit', $pizza['id'])));
+												?></td>
+											<?php endif; ?>
 										</tr>
-								<?php endif; ?>
-							<?php endforeach; ?>
+									<?php endif; ?>
+								<?php endforeach; ?>
 							</tbody>
-				<?php endif; ?>
+						<?php endif; ?>
 					</table>
 				</div>
-	<?php endif; ?>
-<?php endforeach; ?>
+			<?php endif; ?>
+		<?php endforeach; ?>
 	</div>
 	<div style="clear:both;"></div>
 </div>

@@ -1,7 +1,7 @@
 <div class="box">
 	<?php echo $this->Form->create(); ?>
     <fieldset>
-        <legend><?php echo __('Add pizza category'); ?></legend>
+        <legend><?php echo __('Add pizza category to menu'); ?></legend>
 		<?php echo $this->Html->link('Back to pizzas', array('controller' => 'pizza_categories', 'action' => 'index')); ?>
 		<div>
 			<?php

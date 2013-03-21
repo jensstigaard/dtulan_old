@@ -452,7 +452,7 @@ class Lan extends AppModel {
 				  'PizzaMenu',
 				  'PizzaWave' => array(
 						'order' => array(
-							 'time_close' => 'DESC'
+							 'time_close' => 'ASC'
 						)
 				  )
 			 )

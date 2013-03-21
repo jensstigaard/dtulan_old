@@ -2,7 +2,7 @@
 	<?php echo $this->Form->create(); ?>
     <fieldset>
         <legend><?php echo __('Edit pizza category'); ?></legend>
-		<?php echo $this->Html->link('Back to pizzas', array('controller' => 'pizza_categories', 'action' => 'index')); ?>
+		<?php echo $this->Html->link('Back to pizza menu', array('controller' => 'pizza_menus', 'action' => 'view', $pizza_category['PizzaCategory']['pizza_menu_id'])); ?>
 		<div>
 			<?php
 			echo $this->Form->input('PizzaCategory.title');

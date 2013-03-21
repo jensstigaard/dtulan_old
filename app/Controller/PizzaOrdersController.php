@@ -28,6 +28,41 @@ class PizzaOrdersController extends AppController {
 		return false;
 	}
 
+	public function index() {
+
+		$conditions['PizzaOrder.pizza_wave_id'] = $this->request->query['pizza_wave_id'];
+
+		if (isset($this->request->query['only_not_delivered']) && $this->request->query['only_not_delivered'] == 'true') {
+			$conditions['PizzaOrder.status'] = '0';
+		}
+		
+		if (!empty($this->request->query['user'])) {
+			$conditions['PizzaOrder.user_id'] = $this->PizzaOrder->User->getUserIdsByLike($this->request->query['user']);
+		}
+
+		$pizza_orders = $this->PizzaOrder->find('all', array(
+			 'conditions' => $conditions,
+			 'order' => array(
+				  'status' => 'asc',
+				  'time' => 'asc'
+			 ),
+			 'contain' => array(
+				  'User',
+				  'PizzaOrderItem' => array(
+						'PizzaPrice' => array(
+							 'Pizza',
+							 'PizzaType'
+						)
+				  )
+			 )
+				  ));
+		
+		$this->PizzaOrder->dateToNiceArray($pizza_orders, 'PizzaOrder');
+
+		$this->set(compact('pizza_orders'));
+		$this->set('_serialize', array('pizza_orders'));
+	}
+
 	public function add() {
 		if (!$this->request->is('ajax')) {
 			throw new BadRequestException('Bad request from client');

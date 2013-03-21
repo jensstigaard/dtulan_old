@@ -19,7 +19,7 @@ class PizzasController extends AppController {
 	public function isAuthorized($user) {
 		parent::isAuthorized($user);
 
-		if ($this->isAdmin($user)) {
+		if ($this->Pizza->isYouAdmin()) {
 			return true;
 		}
 		return false;
@@ -56,7 +56,7 @@ class PizzasController extends AppController {
 
 			if ($this->Pizza->saveAssociated($this->request->data)) {
 				$this->Session->setFlash('Your pizza has been saved.', 'default', array('class' => 'message success'), 'good');
-				$this->redirect(array('controller' => 'pizza_categories', 'action' => 'index'));
+				$this->redirect($this->referer());
 			} else {
 				$this->Session->setFlash('Unable to add your pizza.', 'default', array(), 'bad');
 			}
@@ -87,18 +87,18 @@ class PizzasController extends AppController {
 			foreach ($this->request->data['PizzaPrice'] as $price_type_id => $price_value) {
 				if ($price_value['price'] > 0) {
 					$this->request->data['PizzaPrice'][$price_type_id] = array(
-						'pizza_type_id' => $price_type_id,
-						'pizza_id' => $id,
-						'price' => $price_value['price']
+						 'pizza_type_id' => $price_type_id,
+						 'pizza_id' => $id,
+						 'price' => $price_value['price']
 					);
 
 					$this->Pizza->PizzaPrice->unbindModel(array('belongsTo' => array('Pizza', 'PizzaType'), 'hasMany' => array('PizzaOrderItem')));
 					$pizza_price = $this->Pizza->PizzaPrice->find('first', array(
-						'conditions' => array(
-							'pizza_id' => $id,
-							'pizza_type_id' => $price_type_id
-						)
-							)
+						 'conditions' => array(
+							  'pizza_id' => $id,
+							  'pizza_type_id' => $price_type_id
+						 )
+							  )
 					);
 					if (count($pizza_price) == 1) {
 						$this->request->data['PizzaPrice'][$price_type_id]['id'] = $pizza_price['PizzaPrice']['id'];

@@ -551,7 +551,7 @@ class User extends AppModel {
 		for ($i = 1; $i < 4; $i++) {
 			$count_total += $tournaments_won[$i] = $this->getCountTournamentsWonAtPlace($i);
 		}
-		
+
 		$tournaments_won['all'] = $count_total;
 
 		return $tournaments_won;
@@ -573,8 +573,8 @@ class User extends AppModel {
 
 		return $total[0][0]['TeamUser'];
 	}
-	
-	public function getStatisticsTimeCreation(){
+
+	public function getStatisticsTimeCreation() {
 		$db = $this->getDataSource();
 
 		$total = $db->fetchAll("
@@ -586,15 +586,42 @@ class User extends AppModel {
 				YEAR(time_created),
 				MONTH(time_created);
 			", array());
-		
-		
+
+
 		$return = array();
-		foreach($total as $line){
-			
+		foreach ($total as $line) {
+
 			$return[] = $line[0];
 		}
-		
+
 		return $return;
+	}
+
+	public function getUserIdsByLike($string) {
+
+		$users = $this->find('list', array(
+			 'recursive' => -1,
+			 'fields' => array(
+				  'id',
+			 ),
+			 'conditions' => array(
+				  'OR' => array(
+						array(
+							 'name LIKE' => '%' . $string . '%'
+						),
+						array(
+							 'email LIKE' => '%' . $string . '%'
+						),
+						array(
+							 'id_number LIKE' => '%' . $string . '%'
+						),
+				  )
+			 ),
+			 'limit' => 5
+				  )
+		);
+
+		return $users;
 	}
 
 }

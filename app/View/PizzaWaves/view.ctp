@@ -1,4 +1,21 @@
+<?php echo $this->Html->script(array('admin/pizza/waves/view'), array('inline' => false)); ?>
+
 <div class="box">
+
+	<div style="float:right;">
+		<?php
+		echo $this->Html->link('<i class="icon-large icon-pencil"></i> Edit', array(
+			 'controller' => 'pizza_waves',
+			 'action' => 'edit',
+			 $pizza_wave['PizzaWave']['id']
+				  ), array(
+			 'class' => 'btn btn-small btn-warning',
+			 'escape' => false
+				  )
+		);
+		?>
+	</div>
+
 	<h1><?php echo __('Pizza wave'); ?></h1>
 	<table>
 		<tbody>
@@ -45,111 +62,66 @@
 
 	</table>
 </div>
-<?php if ($pizza_wave['PizzaWave']['status'] == 3): ?>
-	<div>
+<div class="box">
+	<?php if ($pizza_wave['PizzaWave']['status'] == 3): ?>
+
 		<h1><?php echo __('Orders in wave'); ?></h1>
 
-		<?php if (!count($pizza_wave_orders)): ?>
-			<p>No orders in wave</p>
-		<?php else: ?>
-			<table class="pizza_order_list">
+		<form action="<?php
+	echo $this->Html->url(array(
+		 'controller' => 'pizza_orders',
+		 'action' => 'index',
+		 'ext' => 'json'
+	));
+		?>" data-pizza-wave-id="<?php echo $pizza_wave['PizzaWave']['id']; ?>" id="search_pizza_orders">
+			<table>
 				<thead>
 					<tr>
-						<th colspan="4">Orders</th>
+						<th colspan="2">Search in pizza orders</th>
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($pizza_wave_orders as $order): ?>
-						<?php
-						switch ($order['PizzaOrder']['status']) {
-							case 1:
-								$class_status = 'order_status_green';
-								break;
-
-							case 2:
-								$class_status = 'order_status_red';
-								break;
-
-							default:
-								$class_status = 'order_status_yellow';
-								break;
-						}
-						?>
-						<tr>
-							<td class="order_status <?php echo $class_status; ?>"></td>
-
-							<td>
-								<?php
-								echo $this->Html->link($order['User']['name'], array(
-									 'controller' => 'users',
-									 'action' => 'view',
-									 $order['User']['id']
-										  )
-								);
-								?><br />
-
-								<?php echo $order['PizzaOrder']['time_nice']; ?>
-							</td>
-							<td>
-								<ul>
-									<?php foreach ($order['PizzaOrderItem'] as $item): ?>
-										<li>
-											<?php echo $item['quantity']; ?> x
-											<?php echo $item['PizzaPrice']['Pizza']['title']; ?>
-											(<?php echo $item['PizzaPrice']['PizzaType']['title']; ?>) (<?php echo $item['PizzaPrice']['Pizza']['number']; ?>)
-										</li>
-									<?php endforeach; ?>
-								</ul>
-							</td>
-							<td>
-								<?php
-								switch ($order['PizzaOrder']['status']) {
-									case 0:
-										echo'<div class="btn-group">';
-										echo $this->Html->link('<i class="icon-large icon-ok-sign"></i> Mark delivered', array(
-											 'controller' => 'pizza_orders',
-											 'action' => 'mark_delivered',
-											 $order['PizzaOrder']['id']
-												  ), array(
-											 'escape' => false,
-											 'class' => 'btn btn-mini btn-success'
-												  )
-										);
-										echo $this->Html->link('<i class="icon-large icon-exclamation-sign"></i> With errors', array(
-											 'controller' => 'pizza_orders',
-											 'action' => 'mark_errors',
-											 $order['PizzaOrder']['id']
-												  ), array(
-											 'escape' => false,
-											 'class' => 'btn btn-mini btn-danger'
-												  )
-										);
-										echo'</div>';
-										break;
-									case 1:
-
-										break;
-									case 2:
-										echo'Marked as delivered with errors';
-										break;
-									default:
-										echo'?';
-										break;
-								}
-								?>
-							</td>
-						</tr>
-					<?php endforeach; ?>
+					<tr>
+						<td><input type="text" name="pizza_orders_search_user" placeholder="Users name" /></td>
+						<td><label><input type="checkbox" name="pizza_orders_only_not_delivered" /> Show only "not delivered"</label></td>
+					</tr>
 				</tbody>
 			</table>
-		<?php endif; ?>
-	</div>
-<?php else: ?>
-	<div>
+		</form>
+
+		<table class="pizza_order_list" id="pizza_order_list" data-link-mark-delivered="<?php
+			echo $this->Html->url(array(
+				 'controller' => 'pizza_orders',
+				 'action' => 'mark_delivered',
+			));
+			?>" data-link-mark-errors="<?php
+			echo $this->Html->url(array(
+				 'controller' => 'pizza_orders',
+				 'action' => 'mark_errors',
+			));
+			?>" data-link-user="<?php
+			echo $this->Html->url(array(
+				 'controller' => 'users',
+				 'action' => 'view'
+			));
+			?>">
+			<thead>
+				<tr>
+					<th colspan="4">Orders</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="color:grey;">Loading orders...</td>
+				</tr>
+			</tbody>
+		</table>
+
+	<?php else: ?>
 		<h2><?php echo __('Items in wave'); ?></h2>
 		<?php if (!count($pizza_wave_items)): ?>
 			<p>No items in wave</p>
-		<?php else: ?>
+	<?php else: ?>
 			<table>
 				<thead>
 					<tr>
@@ -161,16 +133,16 @@
 				</thead>
 
 				<tbody>
-					<?php foreach ($pizza_wave_items as $item): ?>
+		<?php foreach ($pizza_wave_items as $item): ?>
 						<tr>
 							<td><?php echo $item['quantity']; ?></td>
 							<td><?php echo $item['pizza_number']; ?></td>
 							<td><?php echo $item['pizza_title']; ?></td>
 							<td><?php echo $item['pizza_type']; ?></td>
 						</tr>
-					<?php endforeach; ?>
+			<?php endforeach; ?>
 				</tbody>
 			</table>
-		<?php endif; ?>
-	</div>
+	<?php endif; ?>
 <?php endif; ?>
+</div>

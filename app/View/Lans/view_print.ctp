@@ -6,8 +6,9 @@
 			<tr>
 				<td>Lokation:</td>
 				<td>
+					Oticon salen + S-huset<br />
 					Danmarks Tekniske Universitet<br />
-					Oticon salen, Anker Engelundsvej 1, 101E<br />
+					Anker Engelundsvej 1, 101E<br />
 					2800 Kgs. Lyngby
 				</td>
 			</tr>
@@ -79,7 +80,7 @@
 
 <div>
 	<h2><?php echo $this->Html->image('32x32_PNG/users_two.png'); ?> Deltagerliste</h2>
-	<p>Herunder ses en liste over deltagere. Folk har meldt sig til specifikke dage, men der er ingen garanti for at folk dukker op alle dage.</p>
+	<p>Herunder ses en liste over deltagere.</p>
 	<table>
 		<thead>
 			<tr>
