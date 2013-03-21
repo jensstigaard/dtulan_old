@@ -48,6 +48,38 @@ class UsersController extends AppController {
 		$this->set('users', $this->paginate('User'));
 	}
 
+	public function api_index($lan_slug) {
+		$this->Lan->id = $this->Lan->getIdBySlug($lan_slug);
+
+		$lan_signups = $this->User->LanSignup->find('all', array(
+			 'conditions' => array(
+				  'lan_id' => $this->Lan->id,
+			 ),
+			 'contain' => array(
+				  'User' => array(
+						'fields' => array(
+							 'id',
+							 'name',
+							 'id_number',
+							 'type',
+							 'email',
+							 'email_gravatar',
+							 'balance',
+							 'gamertag'
+						)
+				  )
+			 )
+				  ));
+
+		$users = array();
+		foreach ($lan_signups as $index => $user) {
+			$users[$index]['User'] = $user['User'];
+		}
+
+		$this->set(compact('users'));
+		$this->set('_serialize', array('users'));
+	}
+
 	public function view($id = null) {
 
 		$is_you = false;
@@ -560,7 +592,7 @@ class UsersController extends AppController {
 		}
 	}
 
-	public function api_index() {
+	public function api_statistics() {
 
 		$this->set('users', $this->User->getStatisticsTimeCreation());
 

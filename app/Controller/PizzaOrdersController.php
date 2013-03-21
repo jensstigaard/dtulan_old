@@ -62,6 +62,13 @@ class PizzaOrdersController extends AppController {
 		$this->set(compact('pizza_orders'));
 		$this->set('_serialize', array('pizza_orders'));
 	}
+	
+	public function api_index($user_id, $lan_slug){
+		$this->PizzaOrder->User->id = $user_id;
+		$this->PizzaOrder->PizzaWave->LanPizzaMenu->Lan->id = $this->PizzaOrder->PizzaWave->LanPizzaMenu->Lan->getIdBySlug($lan_slug);
+		
+		
+	}
 
 	public function add() {
 		if (!$this->request->is('ajax')) {

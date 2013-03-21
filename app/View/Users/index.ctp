@@ -35,7 +35,7 @@ echo $this->Html->css(array('admin/users/index'), null, array('inline' => false)
 <div id="chart-user-register" class="box" data-source-url="<?php
 	echo $this->Html->url(array(
 		 'controller' => 'users',
-		 'action' => 'index',
+		 'action' => 'statistics',
 		 'api' => true,
 		 'ext' => 'json'
 	));

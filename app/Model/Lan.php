@@ -162,7 +162,7 @@ class Lan extends AppModel {
 
 	public function countPizzaOrders() {
 		$db = $this->getDataSource();
-		
+
 		$total = $db->fetchAll("
 			SELECT COUNT(PizzaOrder.id) AS PizzaOrders
 				FROM `lan_pizza_menus` AS LanPizzaMenu
@@ -171,7 +171,7 @@ class Lan extends AppModel {
 							INNER JOIN `pizza_orders` AS PizzaOrder
 								ON PizzaOrder.pizza_wave_id = PizzaWave.id
 				WHERE LanPizzaMenu.lan_id = ?", array($this->id));
-		
+
 		return $total[0][0]['PizzaOrders'];
 	}
 
@@ -738,6 +738,18 @@ class Lan extends AppModel {
 		}
 
 		return $lans;
+	}
+
+	public function getIndexListAPI() {
+
+		return $this->find('all', array(
+						'fields' => array(
+							 'id',
+							 'slug',
+							 'title'
+						),
+						'recursive' => -1
+				  ));
 	}
 
 	/*

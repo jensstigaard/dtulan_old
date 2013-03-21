@@ -20,6 +20,10 @@ class LansController extends AppController {
 		}
 		return false;
 	}
+	
+	public function api_index(){
+		$this->set('lans', $this->Lan->getIndexListAPI());
+	}
 
 	public function index() {
 		$this->set('lans', $this->Lan->getIndexList());
