@@ -35,7 +35,7 @@ class PizzaOrdersController extends AppController {
 		if (isset($this->request->query['only_not_delivered']) && $this->request->query['only_not_delivered'] == 'true') {
 			$conditions['PizzaOrder.status'] = '0';
 		}
-		
+
 		if (!empty($this->request->query['user'])) {
 			$conditions['PizzaOrder.user_id'] = $this->PizzaOrder->User->getUserIdsByLike($this->request->query['user']);
 		}
@@ -56,18 +56,64 @@ class PizzaOrdersController extends AppController {
 				  )
 			 )
 				  ));
-		
+
 		$this->PizzaOrder->dateToNiceArray($pizza_orders, 'PizzaOrder');
 
 		$this->set(compact('pizza_orders'));
 		$this->set('_serialize', array('pizza_orders'));
 	}
-	
-	public function api_index($user_id, $lan_slug){
+
+	public function api_index($user_id, $lan_slug) {
 		$this->PizzaOrder->User->id = $user_id;
+
+		if (!$this->PizzaOrder->User->exists()) {
+			throw new NotFoundException('User not found');
+		}
+
 		$this->PizzaOrder->PizzaWave->LanPizzaMenu->Lan->id = $this->PizzaOrder->PizzaWave->LanPizzaMenu->Lan->getIdBySlug($lan_slug);
-		
-		
+
+		$pizza_wave_ids = array();
+
+		$pizza_orders = $this->PizzaOrder->find('all', array(
+			 'conditions' => array(
+				  'user_id' => $this->PizzaOrder->User->id,
+//				 'pizza_wave_id' => $pizza_wave_ids
+			 ),
+			 'contain' => array(
+				  'PizzaWave' => array(
+						'fields' => array(
+							 'id',
+							 'time_close'
+						)
+				  ),
+				  'PizzaOrderItem' => array(
+						'fields' => array(
+							 'price',
+							 'quantity'
+						),
+						'PizzaPrice' => array(
+							 'Pizza' => array(
+								  'fields' => array(
+										'title',
+										'number',
+										'description',
+								  ),
+								  'PizzaCategory' => array(
+										'fields' => array(
+											 'title'
+										)
+								  )
+							 ),
+							 'PizzaType'
+						)
+				  )
+			 )
+				  ));
+
+//		$this->PizzaOrder->
+		$this->set(compact('pizza_orders'));
+		$this->set('success', true);
+		$this->set('_serialize', array('success', 'pizza_orders'));
 	}
 
 	public function add() {

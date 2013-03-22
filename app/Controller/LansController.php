@@ -23,6 +23,8 @@ class LansController extends AppController {
 	
 	public function api_index(){
 		$this->set('lans', $this->Lan->getIndexListAPI());
+		$this->set('success', true);
+		$this->set('_serialize', array('success', 'lans'));
 	}
 
 	public function index() {
