@@ -65,7 +65,8 @@ class UsersController extends AppController {
 							 'email',
 							 'email_gravatar',
 							 'balance',
-							 'gamertag'
+							 'gamertag',
+							 'phonenumber'
 						)
 				  )
 			 )
@@ -77,7 +78,8 @@ class UsersController extends AppController {
 		}
 
 		$this->set(compact('users'));
-		$this->set('_serialize', array('users'));
+		$this->set('success', true);
+		$this->set('_serialize', array('success', 'users'));
 	}
 
 	public function view($id = null) {
@@ -95,7 +97,14 @@ class UsersController extends AppController {
 		}
 
 		$this->User->unbindModel(array('hasMany' => array('PizzaOrder', 'FoodOrder', 'LanSignup')));
-		$user = $this->User->read();
+		$user = $this->User->find('first', array(
+			 'conditions' => array(
+				  'User.id' => $this->User->id
+			 ),
+			 'contain' => array(
+				  'QrCode'
+			 )
+				  ));
 
 		$title_for_layout = 'Profile &bull; ' . $user['User']['name'];
 
