@@ -11,8 +11,15 @@ class UsersController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow(
-				  'login', 'add', 'activate', 'forgot_password', 'reset_password', 'api_view'
+		$this->Auth->allow(array(
+			 'login',
+			 'add',
+			 'activate',
+			 'forgot_password',
+			 'reset_password',
+			 'api_view',
+			 'api_index'
+				  )
 		);
 	}
 

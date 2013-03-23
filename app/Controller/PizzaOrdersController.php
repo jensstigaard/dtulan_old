@@ -14,6 +14,10 @@ class PizzaOrdersController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
+		$this->Auth->allow(array(
+			 'api_index'
+				  )
+		);
 	}
 
 	public function isAuthorized($user) {

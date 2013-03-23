@@ -7,8 +7,14 @@ class LansController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 
-		$this->Auth->allow(
-				  'view', 'view_general', 'view_participants', 'view_crew', 'view_tournaments'
+		$this->Auth->allow(array(
+			 'api_index',
+			 'view',
+			 'view_general',
+			 'view_participants',
+			 'view_crew',
+			 'view_tournaments'
+				  )
 		);
 	}
 
@@ -20,8 +26,8 @@ class LansController extends AppController {
 		}
 		return false;
 	}
-	
-	public function api_index(){
+
+	public function api_index() {
 		$this->set('lans', $this->Lan->getIndexListAPI());
 		$this->set('success', true);
 		$this->set('_serialize', array('success', 'lans'));
