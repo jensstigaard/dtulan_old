@@ -193,7 +193,10 @@ class PizzaOrdersController extends AppController {
 		}
 
 		$this->PizzaOrder->id = $id;
-		$this->PizzaOrder->User->id = $this->PizzaOrder->getLoggedInId();
+		
+		if(!$this->PizzaOrder->isCancelable()){
+			throw new BadRequestException('Pizza order could not be cancelled');
+		}
 
 		if ($this->PizzaOrder->deleteOrder()) {
 			$this->Session->setFlash('Pizza order cancelled', 'default', array('class' => 'message success'), 'good');

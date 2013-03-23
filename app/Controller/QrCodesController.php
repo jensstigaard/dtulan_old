@@ -14,7 +14,11 @@ class QrCodesController extends AppController {
 
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('api_add', 'generate', 'api_view');
+		$this->Auth->allow(array(
+			 'api_add',
+			 'api_view',
+			 'generate',
+		));
 	}
 
 	public function isAuthorized($user) {
@@ -24,80 +28,36 @@ class QrCodesController extends AppController {
 	}
 
 	public function api_add() {
-		if ($this->request->is('post')) {
-			if ($this->isJsonRequest()) {
-				if (!isset($this->request->data['qr_code'])) {
-					throw new BadFunctionCallException('Please supply a valid qr code');
-				}
-
-				$conditions = array();
-				if (isset($this->request->data['email'])) {
-					$conditions['conditions']['email'] = $this->request->data['QrCode']['email'];
-				} else if (isset($this->request->data['user_id'])) {
-					$conditions['conditions']['id'] = $this->request->data['user_id'];
-				} else {
-					throw new BadFunctionCallException('Please supply either a E-mail or ID number');
-				}
-
-				$conditions['fields'] = array('User.id');
-				$user = $this->QrCode->User->find('first', $conditions);
-				if (count($user)) {
-					$data = array();
-					$data['QrCode']['id'] = $this->request->data['qr_code'];
-					$data['QrCode']['user_id'] = $user['User']['id'];
-					try {
-						if (isset($user['User']['id']) && $this->QrCode->save($data)) {
-							$this->set('success', true);
-							$this->set('data', array('message' => 'QR code is connected to user'));
-						} else {
-							$user = $this->QrCode->User->find('first', array(
-								 'conditions' => array('user_id' => $user['User']['id'])
-									  )
-							);
-							if (count($user)) {
-								$this->set('success', false);
-								$this->set('data', array('message' => 'User already registered'));
-							} else {
-								$qr_code = $this->QrCode->find('first', array('conditions' => array('id' => $this->request->data['qr_code'])));
-								if (count($qr_code)) {
-									$this->set('success', false);
-									$this->set('data', array('message' => 'QR code already in use'));
-								} else {
-									$this->set('success', false);
-									$this->set('data', array('message' => 'Something went seriously wrong'));
-								}
-							}
-						}
-					} catch (PDOException $e) {
-						$user = $this->QrCode->User->find('first', array(
-							 'conditions' => array('User.id' => $user['User']['id'])
-								  )
-						);
-						if (count($user)) {
-							$this->set('success', false);
-							$this->set('data', array('message' => 'User already registered'));
-						} else {
-							$qr_code = $this->QrCode->find('first', array('conditions' => array('QrCode.id' => $this->request->data['qr_code'])));
-							if (count($qr_code)) {
-								$this->set('success', false);
-								$this->set('data', array('message' => 'QR code already in use'));
-							} else {
-								$this->set('success', false);
-								$this->set('data', array('message' => 'Something went seriously wrong'));
-							}
-						}
-					}
-				} else {
-					$this->set('success', false);
-					$this->set('data', array('message' => 'Unable to find user with given information'));
-				}
-				$this->set('_serialize', array('data', 'success'));
-			} else {
-				throw new BadRequestException('Invalid request from client');
-			}
-		} else {
-			throw new MethodNotAllowedException('Not allowed');
+		if (!$this->request->is('post')) {
+			throw new BadRequestException('Bad request');
 		}
+
+		if (!isset($this->request->data['qr_code'])) {
+			throw new BadFunctionCallException('Please supply a valid qr code');
+		}
+
+		if (!isset($this->request->data['user_id'])) {
+			throw new BadFunctionCallException('Please supply a valid qr code');
+		}
+
+		$this->QrCode->User->id = $this->request->data['user_id'];
+
+		if (!$this->QrCode->User->exists()) {
+			throw new NotFoundException('User not found');
+		}
+
+		$data['QrCode']['id'] = $this->request->data['qr_code'];
+		$data['QrCode']['user_id'] = $this->QrCode->User->id;
+
+		if ($this->QrCode->save($data)) {
+			$this->set('success', true);
+			$this->set('data', array('message' => 'QR code is connected to user'));
+		} else {
+			$this->set('success', false);
+			$this->set('data', array('message' => 'Something went seriously wrong'));
+		}
+
+		$this->set('_serialize', array('data', 'success'));
 	}
 
 	public function api_view($id) {
@@ -145,12 +105,12 @@ class QrCodesController extends AppController {
 
 		$this->set(compact('qr_codes'));
 
-		$this->set('offset', 10);
+		$this->set('offset', 150);
 		$this->set('per_page', 10);
 		$this->set('per_line', 2);
 	}
-	
-	public function admin_index(){
+
+	public function admin_index() {
 		
 	}
 

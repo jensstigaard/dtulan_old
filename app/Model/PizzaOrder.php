@@ -70,7 +70,7 @@ class PizzaOrder extends AppModel {
 
 		$this->PizzaWave->id = $this->data['PizzaOrder']['pizza_wave_id'];
 
-		return $this->PizzaWave->isOrderable();
+		return $this->PizzaWave->isOrderable() && $this->data['PizzaOrder']['status'] == 0;
 	}
 
 	// Refactor function ??
@@ -194,7 +194,11 @@ class PizzaOrder extends AppModel {
 			throw new NotFoundException(__('Pizza order not found'));
 		}
 
-		$this->read(array('pizza_wave_id'));
+		if (!$this->isNotTreated()) {
+			throw new UnauthorizedException(__('Pizza order already delivered'));
+		}
+
+		$this->read(array('pizza_wave_id', 'user_id'));
 
 		$this->PizzaWave->id = $this->data['PizzaOrder']['pizza_wave_id'];
 
@@ -202,14 +206,12 @@ class PizzaOrder extends AppModel {
 			throw new UnauthorizedException(__('It is not possible to delete pizza order anymore in this wave'));
 		}
 
-		if (!$this->isNotTreated()) {
-			throw new UnauthorizedException(__('Pizza order already delivered'));
-		}
+		$this->User->id = $this->data['PizzaOrder']['user_id'];
 
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
 
-		if ($this->delete() && $this->User->balanceIncrease($this->getItemsSum())) {
+		if ($this->User->balanceIncrease($this->getItemsSum()) && $this->delete()) {
 			$dataSource->commit();
 			return true;
 		} else {
