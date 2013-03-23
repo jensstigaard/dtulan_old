@@ -26,15 +26,15 @@ class QrCodesController extends AppController {
 	public function api_add() {
 		if ($this->request->is('post')) {
 			if ($this->isJsonRequest()) {
-				if (!isset($this->request->data['QrCode']) || !isset($this->request->data['QrCode']['qr_code'])) {
+				if (!isset($this->request->data['qr_code'])) {
 					throw new BadFunctionCallException('Please supply a valid qr code');
 				}
 
 				$conditions = array();
-				if (isset($this->request->data['QrCode']['email'])) {
+				if (isset($this->request->data['email'])) {
 					$conditions['conditions']['email'] = $this->request->data['QrCode']['email'];
-				} else if (isset($this->request->data['QrCode']['id_number'])) {
-					$conditions['conditions']['id_number'] = $this->request->data['QrCode']['id_number'];
+				} else if (isset($this->request->data['user_id'])) {
+					$conditions['conditions']['id'] = $this->request->data['user_id'];
 				} else {
 					throw new BadFunctionCallException('Please supply either a E-mail or ID number');
 				}
@@ -43,7 +43,7 @@ class QrCodesController extends AppController {
 				$user = $this->QrCode->User->find('first', $conditions);
 				if (count($user)) {
 					$data = array();
-					$data['QrCode']['id'] = $this->request->data['QrCode']['qr_code'];
+					$data['QrCode']['id'] = $this->request->data['qr_code'];
 					$data['QrCode']['user_id'] = $user['User']['id'];
 					try {
 						if (isset($user['User']['id']) && $this->QrCode->save($data)) {
@@ -58,7 +58,7 @@ class QrCodesController extends AppController {
 								$this->set('success', false);
 								$this->set('data', array('message' => 'User already registered'));
 							} else {
-								$qr_code = $this->QrCode->find('first', array('conditions' => array('id' => $this->request->data['QrCode']['qr_code'])));
+								$qr_code = $this->QrCode->find('first', array('conditions' => array('id' => $this->request->data['qr_code'])));
 								if (count($qr_code)) {
 									$this->set('success', false);
 									$this->set('data', array('message' => 'QR code already in use'));
@@ -77,7 +77,7 @@ class QrCodesController extends AppController {
 							$this->set('success', false);
 							$this->set('data', array('message' => 'User already registered'));
 						} else {
-							$qr_code = $this->QrCode->find('first', array('conditions' => array('QrCode.id' => $this->request->data['QrCode']['qr_code'])));
+							$qr_code = $this->QrCode->find('first', array('conditions' => array('QrCode.id' => $this->request->data['qr_code'])));
 							if (count($qr_code)) {
 								$this->set('success', false);
 								$this->set('data', array('message' => 'QR code already in use'));
