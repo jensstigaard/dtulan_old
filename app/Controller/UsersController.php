@@ -74,8 +74,9 @@ class UsersController extends AppController {
 							 'balance',
 							 'gamertag',
 							 'phonenumber'
-						)
-				  )
+						),
+						'QrCode'
+				  ),
 			 )
 				  ));
 
