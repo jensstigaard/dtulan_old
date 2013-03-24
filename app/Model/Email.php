@@ -21,7 +21,7 @@ class Email extends AppModel implements CakeEventListener {
 			 'Model.User.activationEmail' => 'sendActivationEmail',
 			 'Model.User.forgotPasswordEmail' => 'sendForgotPasswordEmail',
 			 'Model.Lan.sendSubscriptionEmail' => 'sendSubscriptionEmail',
-			 'Model.PizzaWave.pizzaWaveEmail' => 'sendPizzaWaveEmail'
+			 'Model.PizzaWave.sendPizzaWaveEmail' => 'sendPizzaWaveEmail'
 		);
 	}
 
@@ -125,7 +125,7 @@ class Email extends AppModel implements CakeEventListener {
 				  ->emailFormat('html')
 				  ->template('pizza_wave_to_pizzaria')
 				  ->from(array('no-reply@dtu-lan.dk' => 'DTU LAN site - No reply'))
-				  ->to(array($event->data['email_to'], 'pizza@dtu-lan.dk')) // 'mahir.yasar1973@gmail.com'
+				  ->to($event->data['email_to'])
 				  ->viewVars(array(
 						'pizza_wave_items' => $event->data['pizza_wave_items'],
 						'title_for_layout' => 'Pizza bestilling'
