@@ -40,8 +40,10 @@ class PizzaMenu extends AppModel {
 
 		$conditions['PizzaCategory.pizza_menu_id'] = $this->id;
 
+		$pizza_cond = array();
 		if (!$this->isYouAdmin()) {
 			$conditions['PizzaCategory.available'] = 1;
+			$pizza_cond['Pizza.available'] = 1;
 		}
 
 		$data_category = $this->PizzaCategory->find('all', array(
@@ -49,6 +51,7 @@ class PizzaMenu extends AppModel {
 			 'contain' => array(
 				  'PizzaType',
 				  'Pizza' => array(
+						'conditions' => $pizza_cond,
 						'PizzaPrice' => array(
 							 'PizzaType'
 						)

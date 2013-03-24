@@ -49,21 +49,16 @@ if ($is_orderable) {
 									<tbody>
 										<?php
 										foreach ($pizza_category['Pizza'] as $pizza):
-											$if_admin_and_unavailable = '';
-
-											if ($pizza['available'] || $is_admin):
-												if (!$pizza['available']) {
-													$if_admin_and_unavailable = ' gray';
-												}
+											if ($pizza['available']):
 												?>
-												<tr class="pizza_item<?php echo $if_admin_and_unavailable; ?>">
+												<tr class="pizza_item">
 													<td class="number"><?php echo $pizza['number']; ?></td>
 													<td>
 														<span class="title"><?php echo $pizza['title']; ?></span><br />
 														<small class="desc"><?php echo $pizza['description']; ?></small>
 													</td>
 													<?php
-													if (isset($pizza['Prices'])) {
+													if (isset($pizza['Prices'])) :
 														foreach ($pizza['Prices'] as $price_type_id => $price_info):
 															?>
 															<td class="price">
@@ -72,10 +67,8 @@ if ($is_orderable) {
 																	<span class="hidden price_id"><?php echo $price_info['id']; ?></span>
 																<?php endif; ?>
 															</td>
-															<?php
-														endforeach;
-													}
-													?>
+														<?php endforeach; ?>
+													<?php endif; ?>
 												</tr>
 											<?php endif; ?>
 										<?php endforeach; ?>

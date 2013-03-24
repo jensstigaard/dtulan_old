@@ -218,7 +218,7 @@ class PizzaWave extends AppModel {
 
 		$lan_pizza_menu = $this->LanPizzaMenu->read('pizza_menu_id');
 
-		$this->LanPizzaMenu->PizzaMenu->id = $lan_pizza_menu['LanPizzaMenu'];
+		$this->LanPizzaMenu->PizzaMenu->id = $lan_pizza_menu['LanPizzaMenu']['pizza_menu_id'];
 		if (!$this->LanPizzaMenu->PizzaMenu->exists()) {
 			throw new NotFoundException(__('PizzaMenu not found with ID: ' . $this->LanPizzaMenu->PizzaMenu->id));
 		}
@@ -245,7 +245,6 @@ class PizzaWave extends AppModel {
 						'pizza_wave_items' => $pizza_wave_items
 				  ));
 		$this->getEventManager()->dispatch($event);
-
 
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();

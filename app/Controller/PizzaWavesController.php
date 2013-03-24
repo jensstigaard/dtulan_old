@@ -1,5 +1,7 @@
 <?php
 
+App::uses('Email', 'Model');
+
 class PizzaWavesController extends AppController {
 
 	public $uses = 'PizzaWave';
@@ -71,8 +73,7 @@ class PizzaWavesController extends AppController {
 				$this->Session->setFlash('Unable to edit this pizza-wave', 'default', array(), 'bad');
 			}
 			$this->redirect($this->referer());
-		}
-		else{
+		} else {
 			$this->request->data = $this->PizzaWave->read();
 		}
 
