@@ -63,6 +63,9 @@ class LanPizzaMenu extends AppModel {
 
 		return $this->PizzaWave->find('first', array(
 						'conditions' => $cond,
+						'order' => array(
+							 'time_close' => 'asc'
+						)
 							 )
 		);
 	}
