@@ -35,7 +35,6 @@ class AppModel extends Model {
 	public $actsAs = array(
 		 'Containable'
 	);
-	
 	public $recursive = 0;
 
 	public function dateToNiceArray(&$array, $model_name = null, $field_name_time = 'time', $with_time = true) {
@@ -124,8 +123,40 @@ class AppModel extends Model {
 		return $string;
 	}
 
-	function floordec($value, $decimals = 2) {
+	public function floordec($value, $decimals = 2) {
 		return floor($value * pow(10, $decimals)) / pow(10, $decimals);
+	}
+
+	public function multi_implode($array, $glue) {
+		$ret = '';
+
+		foreach ($array as $item) {
+			if (is_array($item)) {
+				$ret .= $this->multi_implode($item, $glue) . $glue;
+			} else {
+				$ret .= $item . $glue;
+			}
+		}
+
+		$ret = substr($ret, 0, 0 - strlen($glue));
+
+		return $ret;
+	}
+
+	public function multiImplode($array, $glue) {
+		$ret = '';
+
+		foreach ($array as $item) {
+			if (is_array($item)) {
+				$ret .= $this->multiImplode($item, $glue) . $glue;
+			} else {
+				$ret .= $item . $glue;
+			}
+		}
+
+		$ret = substr($ret, 0, 0 - strlen($glue));
+
+		return $ret;
 	}
 
 }

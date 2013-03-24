@@ -103,6 +103,9 @@ $(document).ready(
 						'wave_id': wave_id
 					}, 
 					function(data) {
+						
+						console.log(data);
+						
 						var json = $.parseJSON(data);
 						var data = json.data;
 						
@@ -117,6 +120,7 @@ $(document).ready(
 						// showLatestActivities();
 						}
 						else{
+							console.log(data);
 							$pizza_order.find(".pizza_order_errors").text(data.message).show();
 						}
 					});

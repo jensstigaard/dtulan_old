@@ -389,6 +389,10 @@ class User extends AppModel {
 
 	public function balanceDecrease($amount) {
 
+		if (!$this->exists()) {
+			throw new NotFoundException('User not found');
+		}
+
 		$this->read(array('balance'));
 
 		$new_balance = $this->data['User']['balance'] - $amount;

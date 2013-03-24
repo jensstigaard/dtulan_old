@@ -125,8 +125,6 @@ class PizzaOrdersController extends AppController {
 			throw new BadRequestException('Bad request from client');
 		}
 
-		$this->PizzaOrder->User->id = $this->PizzaOrder->getLoggedInId();
-
 		$this->set('data', $this->PizzaOrder->saveOrder($this->request->data));
 		$this->set('_serialize', array('data'));
 	}
@@ -193,8 +191,8 @@ class PizzaOrdersController extends AppController {
 		}
 
 		$this->PizzaOrder->id = $id;
-		
-		if(!$this->PizzaOrder->isCancelable()){
+
+		if (!$this->PizzaOrder->isCancelable()) {
 			throw new BadRequestException('Pizza order could not be cancelled');
 		}
 

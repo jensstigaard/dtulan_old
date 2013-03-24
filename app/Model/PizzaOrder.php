@@ -119,23 +119,26 @@ class PizzaOrder extends AppModel {
 	public function saveOrder($data_input) {
 
 		$success = false;
-		$message = false;
+		$message = '';
 
 		$data = $this->manipulateInputData($data_input);
+
+		$this->User->id = $this->getLoggedInId();
 
 		$dataSource = $this->getDataSource();
 		$dataSource->begin();
 
-		if ($this->saveAssociated($data['DataSave']) && $this->User->balanceDecrease($data['PizzaOrderItemSum'])) {
+		if ($this->User->balanceDecrease($data['PizzaOrderItemSum']) && $this->saveAssociated($data['DataSave'])) {
 			$dataSource->commit();
 			$success = true;
 		} else {
 			$dataSource->rollback();
 
-			if (isset($this->validationErrors['User']['balance'][0])) {
-				$message = $this->validationErrors['User']['balance'][0];
-			} else {
-				$message = $this->validationErrors;
+			if (is_array($this->validationErrors)) {
+				$message .= $this->multiImplode($this->validationErrors, '<br />');
+			}
+			if (is_array($this->User->validationErrors)) {
+				$message .= $this->multiImplode($this->User->validationErrors, '<br />');
 			}
 		}
 
