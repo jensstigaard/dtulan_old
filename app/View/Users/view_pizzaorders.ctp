@@ -7,7 +7,7 @@
 		<table>
 			<thead>
 				<tr>
-					<th>Time</th>
+					<th>PizzaWave</th>
 					<th>Items</th>
 					<th>Price</th>
 					<?php if ($is_you): ?>
@@ -16,14 +16,13 @@
 				</tr>
 			</thead>
 			<tbody>
-
-				<?php $total_balance = 0; ?>
 				<?php foreach ($pizza_orders as $pizza_order): ?>
 					<?php $order_balance = 0; ?>
 					<tr>
 						<td>
-
-							<?php echo $pizza_order['PizzaOrder']['time_nice']; ?>
+							<div><strong><?php echo $pizza_order['PizzaWave']['LanPizzaMenu']['Lan']['title']; ?></strong></div>
+							<div><?php echo $pizza_order['PizzaWave']['time_close_nice']; ?></div>
+							<?php // echo $pizza_order['PizzaOrder']['time_nice']; ?>
 
 						</td>
 						<td><?php foreach ($pizza_order['PizzaOrderItem'] as $item): ?>
@@ -47,17 +46,9 @@
 							</td>
 						<?php endif; ?>
 					</tr>
-					<?php $total_balance += $order_balance; ?>
 				<?php endforeach; ?>
-				<tr>
-					<td>Orders: <?php echo count($pizza_orders); ?></td>
-					<td style="text-align:right;">Total amount spend on pizzas:</td>
-					<td style="text-decoration: underline"><?php echo $total_balance; ?> DKK</td>
-					<?php if ($is_you): ?>
-						<td></td>
-					<?php endif; ?>
-				</tr>
 			</tbody>
 		</table>
 	<?php endif; ?>
 </div>
+<?php pr($pizza_orders); ?>

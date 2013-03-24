@@ -276,6 +276,15 @@ class UsersController extends AppController {
 							 'Pizza',
 							 'PizzaType'
 						)
+				  ),
+				  'PizzaWave' => array(
+						'LanPizzaMenu' => array(
+							 'Lan' => array(
+								  'fields' => array(
+										'title'
+								  )
+							 )
+						)
 				  )
 			 ),
 			 'limit' => 10
@@ -287,7 +296,8 @@ class UsersController extends AppController {
 			$pizza_orders[$pizza_order_nr]['PizzaOrder']['is_cancelable'] = $this->User->PizzaOrder->isCancelable();
 		}
 
-		$this->User->PizzaOrder->dateToNiceArray($pizza_orders, 'PizzaOrder');
+		$this->User->dateToNiceArray($pizza_orders, 'PizzaOrder');
+		$this->User->dateToNiceArray($pizza_orders, 'PizzaWave', 'time_close');
 
 		$is_you = false;
 		if ($id == $this->Auth->user('id')) {
