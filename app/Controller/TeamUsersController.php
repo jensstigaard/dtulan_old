@@ -45,13 +45,13 @@ class TeamUsersController extends AppController {
 		$tournament_id = $this->TeamUser->Team->TeamInvite->data['Team']['Tournament']['id'];
 
 		$this->request->data = array(
-			'TeamUser' => array(
-				'team_id' => $team_id,
-				'user_id' => $this->TeamUser->Team->TeamInvite->data['TeamInvite']['user_id'],
-			),
-			'Team' => array(
-				'tournament_id' => $tournament_id
-			)
+			 'TeamUser' => array(
+				  'team_id' => $team_id,
+				  'user_id' => $this->TeamUser->Team->TeamInvite->data['TeamInvite']['user_id'],
+			 ),
+			 'Team' => array(
+				  'tournament_id' => $tournament_id
+			 )
 		);
 
 		if ($this->TeamUser->save($this->request->data) && $this->TeamUser->Team->TeamInvite->delete()) {
@@ -60,7 +60,34 @@ class TeamUsersController extends AppController {
 			$this->Session->setFlash('FAILED to accept team invite', 'default', array(), 'bad');
 		}
 
-		$this->redirect(array('controller' => 'teams', 'action' => 'view', $team_id));
+		$team = $this->TeamUser->Team->find('first', array(
+			 'conditions' => array(
+				  'id' => $team_id
+			 ),
+			 'fields' => array(
+				  'slug'
+			 ),
+			 'contain' => array(
+				  'Tournament' => array(
+						'fields' => array(
+							 'slug'
+						),
+						'Lan' => array(
+							 'fields' => array(
+								  'slug'
+							 )
+						)
+				  )
+			 )
+				  ));
+
+		$this->redirect(array(
+			 'controller' => 'teams',
+			 'action' => 'view',
+			 'lan_slug' => $team['Tournament']['Lan']['slug'],
+			 'tournament_slug' => $team['Tournament']['slug'],
+			 'team_slug' => $team['Team']['slug']
+		));
 	}
 
 }
