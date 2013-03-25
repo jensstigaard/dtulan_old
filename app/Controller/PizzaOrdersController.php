@@ -54,7 +54,9 @@ class PizzaOrdersController extends AppController {
 				  'User',
 				  'PizzaOrderItem' => array(
 						'PizzaPrice' => array(
-							 'Pizza',
+							 'Pizza' => array(
+								  'PizzaCategory'
+							 ),
 							 'PizzaType'
 						)
 				  )
