@@ -51,4 +51,3 @@
 		</table>
 	<?php endif; ?>
 </div>
-<?php pr($pizza_orders); ?>

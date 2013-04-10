@@ -1,4 +1,4 @@
-<?php echo $this->Html->css(array('users/profile', null, array('inline' => false))); ?>
+<?php echo $this->Html->css(array('users/profile'), null, array('inline' => false)); ?>
 <div class="box">
 	<h1>
 		<?php
@@ -68,20 +68,32 @@
 					</tr>
 					<tr style="font-size:13pt;">
 						<td>Balance:</td>
-						<td><?php echo $user['User']['balance']; ?></td>
+						<td>
+							<?php echo $user['User']['balance']; ?>
+							<!--
+							<?php if ($user['User']['balance'] > 0): ?>
+								<?php
+								echo $this->Html->link(
+										  'Pay out', '#', array(
+									 'class' => 'btn btn-mini btn-primary',
+									 'style' => 'float:right;'
+								));
+								?>
+							<?php endif; ?>
+							-->
+						</td>
 					</tr>
 				<?php endif; ?>
-					<?php if($is_admin && isset($user['QrCode']['id'])): ?>
+				<?php if ($is_admin && isset($user['QrCode']['id'])): ?>
 					<tr>
 						<td>Qr-code attached:</td>
 						<td><img src="http://qrfree.kaywa.com/?l=1&s=4&d=<?php echo $user['QrCode']['id']; ?>" alt="QRCode"/></td>
 					</tr>
-					<?php endif; ?>
+				<?php endif; ?>
 			</tbody>
 		</table>
 
-		<?php if (isset($tournaments_won['all'])): ?>
-
+		<?php if (isset($tournaments_won['all']) && $tournaments_won['all']): ?>
 			<h3>Tournament-wins</h3>
 			<table id="user-tournaments-won">
 				<tbody>

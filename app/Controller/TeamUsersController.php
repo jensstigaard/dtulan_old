@@ -62,19 +62,19 @@ class TeamUsersController extends AppController {
 
 		$team = $this->TeamUser->Team->find('first', array(
 			 'conditions' => array(
-				  'id' => $team_id
+				  'Team.id' => $team_id
 			 ),
 			 'fields' => array(
-				  'slug'
+				  'Team.slug'
 			 ),
 			 'contain' => array(
 				  'Tournament' => array(
 						'fields' => array(
-							 'slug'
+							 'Tournament.slug'
 						),
 						'Lan' => array(
 							 'fields' => array(
-								  'slug'
+								  'Lan.slug'
 							 )
 						)
 				  )
