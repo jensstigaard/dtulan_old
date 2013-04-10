@@ -151,7 +151,8 @@
 				echo $this->Html->link(
 						  '<i class="icon-large icon-group"></i> Users', array(
 					 'controller' => 'users',
-					 'action' => 'index'
+					 'action' => 'index',
+					 'admin' => true,
 						  ), array(
 					 'escape' => false
 						  )
