@@ -176,6 +176,3 @@
 		This user is not activated!
 	</div>
 <?php endif; ?>
-
-
-<?php pr($user); ?>
