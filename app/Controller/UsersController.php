@@ -52,6 +52,9 @@ class UsersController extends AppController {
 				  'contain' => array(
 						'LanSignup' => array(
 							 'Lan'
+						),
+						'Crew' => array(
+							 'Lan'
 						)
 				  )
 			 )

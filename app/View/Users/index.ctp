@@ -29,6 +29,9 @@ echo $this->Html->css(array('admin/users/index'), null, array('inline' => false)
 					<?php foreach ($user['LanSignup'] as $lan_signup): ?>
 						<?php echo $lan_signup['Lan']['title']; ?>
 					<?php endforeach; ?>
+					<?php foreach ($user['Crew'] as $lan_signup): ?>
+						<?php echo $lan_signup['Lan']['title']; ?>
+					<?php endforeach; ?>
 				</td>
 			</tr>
 		<?php endforeach; ?>
