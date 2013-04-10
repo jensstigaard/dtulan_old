@@ -43,7 +43,7 @@ class UsersController extends AppController {
 		return false;
 	}
 
-	public function index() {
+	public function admin_index() {
 
 		$this->paginate = array(
 			 'User' => array(
