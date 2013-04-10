@@ -49,6 +49,11 @@ class UsersController extends AppController {
 			 'User' => array(
 				  'limit' => 10,
 				  'order' => 'time_created ASC',
+				  'contain' => array(
+						'LanSignup' => array(
+							 'Lan'
+						)
+				  )
 			 )
 		);
 

@@ -12,18 +12,24 @@ echo $this->Html->css(array('admin/users/index'), null, array('inline' => false)
 
 	<table>
 		<tr>
+			<th><small>Act.</small></th>
 			<th><?php echo $this->Paginator->sort('name', 'Name'); ?></th>
 			<th><?php echo $this->Paginator->sort('id_number', 'ID-number'); ?></th>
 			<th><?php echo $this->Paginator->sort('balance', 'Balance'); ?></th>
-			<th><?php echo $this->Paginator->sort('activated', 'Activated'); ?></th>
+			<th>Participating in</th>
 		</tr>
 
 		<?php foreach ($users as $user): ?>
 			<tr>
+				<td><?php echo $user['User']['activated'] ? '<i class="icon-ok" style="color:green"></i>' : '<i class="icon-minus-sign" style="color:red;"></i>'; ?></td>
 				<td><?php echo $this->Html->link($user['User']['name'], array('action' => 'view', $user['User']['id'])); ?></td>
 				<td><?php echo $user['User']['id_number']; ?></td>
 				<td><?php echo $user['User']['balance']; ?></td>
-				<td><?php echo (!$user['User']['activated']) ? 'Not activated' : '<span style="color:green">Activated</span>'; ?></td>
+				<td>
+					<?php foreach ($user['LanSignup'] as $lan_signup): ?>
+						<?php echo $lan_signup['Lan']['title']; ?>
+					<?php endforeach; ?>
+				</td>
 			</tr>
 		<?php endforeach; ?>
 
