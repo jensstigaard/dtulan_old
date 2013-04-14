@@ -87,7 +87,7 @@
 				<?php if ($is_admin && isset($user['QrCode']['id'])): ?>
 					<tr>
 						<td>Qr-code attached:</td>
-						<td><img src="http://qrfree.kaywa.com/?l=1&s=4&d=<?php echo $user['QrCode']['id']; ?>" alt="QRCode"/></td>
+						<td><img src="http://qrfree.kaywa.com/?l=1&s=4&d=<?php echo $user['QrCode']['id']; ?>" alt="QRCode" /></td>
 					</tr>
 				<?php endif; ?>
 			</tbody>
