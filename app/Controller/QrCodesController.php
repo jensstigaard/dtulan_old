@@ -111,7 +111,17 @@ class QrCodesController extends AppController {
 	}
 
 	public function admin_index() {
-		
+		$this->paginate = array(
+			 'QrCode' => array(
+				  'limit' => 12,
+//				  'order' => 'time_created ASC',
+				  'contain' => array(
+						'User'
+				  )
+			 )
+		);
+
+		$this->set('qr_codes', $this->paginate('QrCode'));
 	}
 
 }

@@ -1,7 +1,11 @@
 <div class="box">
 	<?php echo $this->Form->create(); ?>
-    <fieldset>
-        <legend><?php echo __('Signup for ' . $lan['Lan']['title']); ?></legend>
+	<fieldset>
+		<legend><?php echo __('Signup for ' . $lan['Lan']['title']); ?></legend>
+
+		<div>
+			<?php echo $lan['Lan']['description']; ?>
+		</div>
 		<table>
 			<tbody>
 				<tr>

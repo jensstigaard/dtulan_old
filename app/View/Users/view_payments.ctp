@@ -8,8 +8,10 @@
 	<?php else: ?>
 		<table>
 			<tr>
-				<th>Time</th>
+				<th>Latest payments</th>
+				<th>Type</th>
 				<th>Amount</th>
+				
 			</tr>
 
 			<?php $total_balance = 0; ?>
@@ -19,18 +21,17 @@
 						<?php echo $payment['Payment']['time_nice']; ?>
 
 					</td>
-					<td><?php echo $payment['Payment']['amount']; ?> DKK</td>
+					<td><?php echo $payment['Payment']['type']; ?></td>
+					<td>DKK <?php echo $payment['Payment']['amount']; ?></td>
 				</tr>
 				<?php $total_balance += $payment['Payment']['amount'];
 				?>
 
 			<?php endforeach; ?>
 			<tr>
-				<td>
-					<div style="float:right">Total payments:</div>
-					Payments made: <?php echo count($payments); ?>
+				<td colspan="3">
+					Payments made: <?php echo $count_payments; ?>
 				</td>
-				<td><?php echo $total_balance; ?> DKK</td>
 			</tr>
 		</table>
 	<?php endif; ?>

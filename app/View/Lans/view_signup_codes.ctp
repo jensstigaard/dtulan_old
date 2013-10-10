@@ -14,14 +14,14 @@ echo $this->Html->css('signup_codes', null, array('inline' => false));
 				<table>
 					<tr>
 						<td>							
-							<?php echo $this->Html->image('logo_f2013_black.png'); ?>
+							<?php echo $this->Html->image('logo_e2013_black.png'); ?>
 						</td>
 
 						<td>
 							<div class="price">
 								<?php echo $lan['Lan']['price']; ?> DKK
 							</div>
-							<p>March 23rd - 27th 2013</p>
+							<p>October 12<sup>th</sup> - 16<sup>th</sup> 2013</p>
 							<p class="text">Code for sign-up: (one-time use)</p>
 							<h1 class="code"><?php echo $code['LanSignupCode']['code']; ?></h1>
 						</td>

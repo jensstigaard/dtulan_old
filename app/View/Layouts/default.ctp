@@ -8,11 +8,11 @@
 		</title>
 		<?php
 		echo $this->Html->meta(
-				  'keywords', 'DTU LAN, DTU, LAN, Net-party, Net, Party, E2012, F2013, event, Tournament, League of Legends, Counter-Strike, Pizza, StarCraft 2, NetCompany, RedBull, SteelSeries, S/M-rådet'
+				  'keywords', 'DTU LAN, DTU, LAN, Net-party, Net, Party, E2012, F2013, E2013, event, Tournament, tournaments, League of Legends, Counter-Strike, Pizza, StarCraft 2, Føniks, Føniks Computer, RedBull, SteelSeries, S/M-rådet, Dota, Dota 2'
 		);
 
 		echo $this->Html->meta(
-				  'description', 'DTU LAN | Two events every year | Next event: F2013 | March 23rd - 27th 2013'
+				  'description', 'DTU LAN | Two events every year | Next event: E2013 | October 12th - 16th 2013'
 		);
 
 		echo $this->Html->meta(

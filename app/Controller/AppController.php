@@ -77,6 +77,7 @@ class AppController extends Controller {
 
 	public function beforeFilter() {
 		// Variables used all over the site - can be accessed in any view
+		
 		$is_loggedin = $this->Auth->loggedIn();
 
 		$current_user = $this->Auth->user();

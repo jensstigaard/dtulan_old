@@ -36,6 +36,7 @@ class LanSignupsController extends AppController {
 
 		$lan = $this->LanSignup->Lan->read(array(
 			 'title',
+			 'description',
 			 'need_physical_code',
 			 'price',
 			 'time_start',

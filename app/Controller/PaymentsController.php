@@ -37,6 +37,19 @@ class PaymentsController extends AppController {
 		if (!$this->request->is('post')) {
 			throw new BadRequestException('Invalid request');
 		} else {
+
+			$types = array(
+				'c' => 'cash',
+				'k' => 'creditcard',
+				'm' => 'mobilepay',
+			);
+
+			if (preg_match('/^(c|m|k)(-)?[0-9]{1,3}$/', strtolower($this->request->data['Payment']['amount']))) {
+				$this_type = substr($this->request->data['Payment']['amount'], 0, 1);
+				$this->request->data['Payment']['type'] = $types[$this_type];
+				$this->request->data['Payment']['amount'] = substr($this->request->data['Payment']['amount'], 1);
+			}
+
 			$this->Payment->User->read(array('balance'), $this->request->data['Payment']['user_id']);
 
 			$this->request->data['User']['id'] = $this->request->data['Payment']['user_id'];

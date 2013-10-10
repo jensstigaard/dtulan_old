@@ -17,7 +17,7 @@
 			echo $this->Form->create('Payment', array('controller' => 'payments', 'action' => 'add'));
 			echo $this->Form->inputs(array(
 				 'fieldset' => false,
-				 'amount',
+				 'amount' => array('type' => 'text'),
 				 'user_id' => array(
 					  'value' => $user['User']['id'],
 					  'type' => 'hidden'

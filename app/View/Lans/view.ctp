@@ -1,54 +1,54 @@
 <?php
 echo $this->Html->css(array(
-	 'lans/view',
-	 'lans/participants'
-		  ), null, array(
-	 'inline' => false
+	'lans/view',
+	'lans/participants'
+		), null, array(
+	'inline' => false
 ));
 ?>
 <div class="box">
 	<?php if ($is_admin): ?>
 		<?php
 		$admin_links_new = array(
-			 array(
-				  'title' => 'Crew',
-				  'icon' => 'icon-user-md',
-				  'url' => array(
-						'controller' => 'crew',
-						'action' => 'add',
-						$lan['Lan']['slug'],
-						'admin' => true
-				  )
-			 ),
-			 array(
-				  'title' => 'Tournament',
-				  'icon' => 'icon-trophy',
-				  'url' => array(
-						'controller' => 'tournaments',
-						'action' => 'add',
-						$lan['Lan']['id']
-				  )
-			 ),
+			array(
+				'title' => 'Crew',
+				'icon' => 'icon-user-md',
+				'url' => array(
+					'controller' => 'crew',
+					'action' => 'add',
+					$lan['Lan']['slug'],
+					'admin' => true
+				)
+			),
+			array(
+				'title' => 'Tournament',
+				'icon' => 'icon-trophy',
+				'url' => array(
+					'controller' => 'tournaments',
+					'action' => 'add',
+					$lan['Lan']['id']
+				)
+			),
 		);
 		$admin_links_connect = array(
-			 array(
-				  'title' => 'Food-menu',
-				  'icon' => 'icon-coffee',
-				  'url' => array(
-						'controller' => 'lan_food_menus',
-						'action' => 'add',
-						$lan['Lan']['id']
-				  )
-			 ),
-			 array(
-				  'title' => 'Pizza-menu',
-				  'icon' => 'icon-food',
-				  'url' => array(
-						'controller' => 'lan_pizza_menus',
-						'action' => 'add',
-						$lan['Lan']['id']
-				  )
-			 ),
+			array(
+				'title' => 'Food-menu',
+				'icon' => 'icon-coffee',
+				'url' => array(
+					'controller' => 'lan_food_menus',
+					'action' => 'add',
+					$lan['Lan']['id']
+				)
+			),
+			array(
+				'title' => 'Pizza-menu',
+				'icon' => 'icon-food',
+				'url' => array(
+					'controller' => 'lan_pizza_menus',
+					'action' => 'add',
+					$lan['Lan']['id']
+				)
+			),
 //				 array(
 //					  'title' => '',
 //					  'icon' => '',
@@ -71,7 +71,7 @@ echo $this->Html->css(array(
 						<li>
 							<?php
 							echo $this->Html->link('<i class="icon-large ' . $link['icon'] . '"></i> ' . $link['title'], $link['url'], array(
-								 'escape' => false,
+								'escape' => false,
 							));
 							?>
 						</li>
@@ -88,7 +88,7 @@ echo $this->Html->css(array(
 						<li>
 							<?php
 							echo $this->Html->link('<i class="icon-large ' . $link['icon'] . '"></i> ' . $link['title'], $link['url'], array(
-								 'escape' => false,
+								'escape' => false,
 							));
 							?>
 						</li>
@@ -171,7 +171,13 @@ echo $this->Html->css(array(
 
 </div>
 
-<?php if ($lan['Lan']['time_start'] > date('Y-m-d H:i:s')): ?>
+<?php if (!empty($lan['Lan']['description'])): ?>
+	<div class="box">
+		<?php echo $lan['Lan']['description']; ?>
+	</div>
+<?php endif; ?>
+
+<?php if ($lan['Lan']['time_start'] > date('Y-m-d H:i:s') && strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== false): ?>
 	<?php echo $this->Html->css(array('jquery/jquery.countdown'), null, array('inline' => false)); ?>
 	<?php echo $this->Html->script(array('jquery/jquery.countdown', 'lans/countdown'), array('inline' => false)); ?>
 	<div class="box">
@@ -195,15 +201,15 @@ echo $this->Html->css(array(
 		<h2>Cancel your signup</h2>
 		<?php
 		echo $this->Form->postLink(
-				  '<i class="icon-large icon-remove"></i> Cancel your signup', array(
-			 'controller' => 'lan_signups',
-			 'action' => 'delete',
-			 $lan['Lan']['slug']
-				  ), array(
-			 'confirm' => 'Are You sure you will cancel this signup?',
-			 'escape' => false,
-			 'class' => 'btn btn-danger'
-				  )
+				'<i class="icon-large icon-remove"></i> Cancel your signup', array(
+			'controller' => 'lan_signups',
+			'action' => 'delete',
+			$lan['Lan']['slug']
+				), array(
+			'confirm' => 'Are You sure you will cancel this signup?',
+			'escape' => false,
+			'class' => 'btn btn-danger'
+				)
 		);
 		?>
 	</div>

@@ -606,6 +606,83 @@ class User extends AppModel {
 		return $return;
 	}
 
+	public function getMoneyActivities() {
+		$total = array(
+			 'payments' => $this->getPaymentsTotal(),
+			 'pizzas' => $this->getMoneyUsedPizzas(),
+			 'sweets' => $this->getMoneyUsedSweets(),
+			 'lans' => $this->getMoneyUsedLans()
+		);
+		
+		$total['balance'] = $total['payments']
+			- $total['pizzas']
+			- $total['sweets']
+			- $total['lans'];
+		
+		return $total;
+	}
+
+	public function getMoneyUsedPizzas() {
+		$db = $this->getDataSource();
+
+		$total = $db->fetchAll("
+			SELECT 
+				sum(PizzaOrderItem.quantity * PizzaOrderItem.price) AS total
+			FROM `pizza_order_items` AS PizzaOrderItem
+				INNER JOIN
+					`pizza_orders` AS PizzaOrder
+						ON PizzaOrder.id = PizzaOrderItem.pizza_order_id
+				WHERE PizzaOrder.user_id = ?
+			", array($this->id));
+
+		return $total[0][0]['total'];
+	}
+
+	public function getMoneyUsedSweets() {
+		$db = $this->getDataSource();
+
+		$total = $db->fetchAll("
+			SELECT 
+				sum(FoodOrderItem.quantity * FoodOrderItem.price) AS total
+			FROM `food_order_items` AS FoodOrderItem
+				INNER JOIN
+					`food_orders` AS FoodOrder
+						ON FoodOrder.id = FoodOrderItem.food_order_id
+				WHERE FoodOrder.user_id = ?
+			", array($this->id));
+
+		return $total[0][0]['total'];
+	}
+
+	public function getMoneyUsedLans() {
+		$db = $this->getDataSource();
+
+		$total = $db->fetchAll("
+			SELECT 
+				sum(Lan.price) AS total
+			FROM `lans` AS Lan
+				INNER JOIN
+					`lan_signups` AS LanSignup
+						ON LanSignup.lan_id = Lan.id
+				WHERE Lan.need_physical_code = 0 AND LanSignup.user_id = ?
+			", array($this->id));
+
+		return $total[0][0]['total'];
+	}
+
+	public function getPaymentsTotal() {
+		$db = $this->getDataSource();
+
+		$total = $db->fetchAll("
+			SELECT 
+				sum(Payment.amount) AS total
+			FROM `payments` AS Payment
+				WHERE Payment.user_id = ?
+			", array($this->id));
+
+		return $total[0][0]['total'];
+	}
+
 	public function getUserIdsByLike($string) {
 
 		$users = $this->find('list', array(

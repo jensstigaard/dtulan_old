@@ -51,16 +51,35 @@ class UsersController extends AppController {
 				  'order' => 'time_created ASC',
 				  'contain' => array(
 						'LanSignup' => array(
-							 'Lan'
+							 'Lan' => array(
+								  'fields' => array(
+										'title'
+								  )
+							 )
 						),
 						'Crew' => array(
-							 'Lan'
+							 'Lan' => array(
+								  'fields' => array(
+										'title'
+								  )
+							 )
 						)
 				  )
 			 )
 		);
 
-		$this->set('users', $this->paginate('User'));
+		$users = $this->paginate('User');
+
+		foreach ($users as $index => $user) {
+			$this->User->id = $user['User']['id'];
+			$users[$index]['MoneyActivities'] = $this->User->getMoneyActivities();
+
+			if ($user['User']['balance'] == $users[$index]['MoneyActivities']['balance']) {
+				unset($users[$index]);
+			}
+		}
+
+		$this->set(compact('users'));
 	}
 
 	public function api_index($lan_slug) {
@@ -247,14 +266,18 @@ class UsersController extends AppController {
 				  'limit' => 10,
 			 ),
 		);
+		
+		$count_payments = $this->User->Payment->find('count', array(
+			'conditions' => array(
+						'Payment.user_id' => $id,
+				  ),
+		));
 
 		$payments = $this->paginate('Payment');
 
 		$this->User->dateToNiceArray($payments, 'Payment');
 
-//		debug($payments);
-
-		$this->set(compact('payments'));
+		$this->set(compact('payments', 'count_payments'));
 	}
 
 	public function view_pizzaorders($id) {
@@ -339,7 +362,9 @@ class UsersController extends AppController {
 				  'recursive' => 3,
 				  'limit' => 10,
 				  'order' => array(
-						array('FoodOrder.time' => 'desc')
+						array(
+							 'FoodOrder.time' => 'desc'
+						)
 				  )
 			 ),
 		);

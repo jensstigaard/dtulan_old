@@ -1,3 +1,5 @@
+<?php echo $this->Html->script(array('ckeditor/ckeditor'), FALSE); ?>
+
 <div class="box">
 	<div style="float:right">
 		<?php
@@ -7,7 +9,7 @@
 				  ), array(
 			 'confirm' => 'Are you sure you want to delete this LAN and all its data?',
 			 'class' => 'btn btn-small btn-danger',
-						'escape' => false
+			 'escape' => false
 				  )
 		);
 		?>
@@ -23,6 +25,10 @@
 //		 'max_guests_per_student',
 		 'published',
 		 'highlighted',
+	));
+
+	echo $this->Form->input('description', array(
+		 'class' => 'ckeditor'
 	));
 
 	echo $this->Form->end(__('Submit'));
