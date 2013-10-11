@@ -34,41 +34,42 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
 
 	public $helpers = array(
-		 'Html',
-		 'Form',
-		 'Js',
-		 'Chosen.Chosen',
+		'Html',
+		'Form',
+		'Js',
+		'Chosen.Chosen',
 	);
 	public $components = array(
-		 'RequestHandler',
-		 'Session',
-		 'Auth' => array(
-			  'loginRedirect' => '/',
-			  'logoutRedirect' => '/',
-			  'authError' => 'Access denied',
-			  'authorize' => array('Controller'), // What does this do??
-			  'authenticate' => array(
-					// Allow authentication by user / password
-					'Form' => array(
-						 'userModel' => 'User',
-						 'fields' => array(
-							  'username' => 'email',
-							  'password' => 'password'
-						 ),
-						 'scope' => array(
-							  'User.activated' => 1,
-//							  'Admin.id >' => 0 // Only admin possible to log in
-						 )
+		'RequestHandler',
+		'Session',
+		'Cookie',
+		'Auth' => array(
+			'loginRedirect' => '/',
+			'logoutRedirect' => '/',
+			'authError' => 'Access denied',
+			'authorize' => array('Controller'), // What does this do??
+			'authenticate' => array(
+				// Allow authentication by user / password
+				'Form' => array(
+					'userModel' => 'User',
+					'fields' => array(
+						'username' => 'email',
+						'password' => 'password'
 					),
-			  // Allow authentication by access token
+					'scope' => array(
+						'User.activated' => 1,
+//							  'Admin.id >' => 0 // Only admin possible to log in
+					)
+				),
+			// Allow authentication by access token
 //					'Api' => array(
 //						 'userModel' => 'AccessToken',
 //						 'fields' => array(
 //							  'username' => 'id',
 //						 ),
 //					),
-			  )
-		 )
+			)
+		)
 	);
 
 	public function isAuthorized($user) {
@@ -77,7 +78,7 @@ class AppController extends Controller {
 
 	public function beforeFilter() {
 		// Variables used all over the site - can be accessed in any view
-		
+
 		$is_loggedin = $this->Auth->loggedIn();
 
 		$current_user = $this->Auth->user();
@@ -96,6 +97,29 @@ class AppController extends Controller {
 			$this->set('current_user_balance', $this->Lan->LanSignup->User->data['User']['balance']);
 			$this->set('sidebar_new_lan', $this->Lan->LanSignup->User->getNewLans());
 			$this->set('sidebar_team_invites', $this->Lan->LanSignup->User->getTournamentTeamInvites());
+		} else {
+			// set cookie options
+			$this->Cookie->key = 'RANDOM_DTULANqSI232qs*&sXOw!adre@34SAv!@*(XSL#$%)asGb$@11~_+!@#HKis~#^';
+			$this->Cookie->httpOnly = true;
+
+			if ($this->Cookie->read('remember_me_cookie')) {
+				$cookie = $this->Cookie->read('remember_me_cookie');
+
+				$user = $this->User->find('first', array(
+					'conditions' => array(
+						'User.email' => $cookie['email'],
+						'User.password' => $cookie['password']
+					),
+//					'contain' => array(
+//						'Admin'
+//					)
+				));
+
+				// If it fails in some way
+				if ($user && !$this->Auth->login($user)) {
+					$this->redirect('/users/logout'); // destroy session & cookie
+				}
+			}
 		}
 	}
 
