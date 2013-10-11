@@ -526,6 +526,7 @@ class UsersController extends AppController {
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
 
+//
 				// did they select the remember me checkbox?
 				if ($this->request->data['User']['remember_me'] == 1) {
 					// remove "remember me checkbox"
@@ -535,9 +536,8 @@ class UsersController extends AppController {
 					$this->request->data['User']['password'] = $this->Auth->password($this->request->data['User']['password']);
 
 					// write the cookie
-					$this->Cookie->write('remember_me_cookie', $this->request->data['User'], true, '4 weeks');
+					$this->Cookie->write('remember_me_cookie', $this->request->data['User'], true, '2 weeks');
 				}
-
 
 				$this->Session->setFlash(__('You are now logged in'), 'default', array('class' => 'message success'), 'good');
 

@@ -77,6 +77,42 @@ class AppController extends Controller {
 	}
 
 	public function beforeFilter() {
+
+		// set cookie options
+		$this->Cookie->key = 'RANDOM_DTULANqSI232qs*&sXOw!adre@34SAv!@*(XSL#$%)asGb$@11~_+!@#HKis~#^';
+		$this->Cookie->httpOnly = true;
+
+		if (!$this->Auth->loggedIn() && $this->Cookie->read('remember_me_cookie')) {
+
+			$cookie = $this->Cookie->read('remember_me_cookie');
+
+			$this->loadModel('User');
+			$user = $this->User->find('first', array(
+				'conditions' => array(
+					'User.email' => $cookie['email'],
+					'User.password' => $cookie['password']
+				),
+//					'contain' => array(
+//						'Admin'
+//					)
+			));
+
+			// If it fails in some way
+			if ($user) {
+
+				$user = array(
+					$user['User'],
+					'Admin' => $user['Admin']
+				);
+
+				if (!$this->Auth->login($user)) {
+					$this->redirect(array('controller' => 'users', 'action' => 'logout')); // destroy session & cookie
+				}
+			}
+
+			debug('Loggede ind via cookie!');
+		}
+
 		// Variables used all over the site - can be accessed in any view
 
 		$is_loggedin = $this->Auth->loggedIn();
@@ -97,29 +133,6 @@ class AppController extends Controller {
 			$this->set('current_user_balance', $this->Lan->LanSignup->User->data['User']['balance']);
 			$this->set('sidebar_new_lan', $this->Lan->LanSignup->User->getNewLans());
 			$this->set('sidebar_team_invites', $this->Lan->LanSignup->User->getTournamentTeamInvites());
-		} else {
-			// set cookie options
-			$this->Cookie->key = 'RANDOM_DTULANqSI232qs*&sXOw!adre@34SAv!@*(XSL#$%)asGb$@11~_+!@#HKis~#^';
-			$this->Cookie->httpOnly = true;
-
-			if ($this->Cookie->read('remember_me_cookie')) {
-				$cookie = $this->Cookie->read('remember_me_cookie');
-
-				$user = $this->User->find('first', array(
-					'conditions' => array(
-						'User.email' => $cookie['email'],
-						'User.password' => $cookie['password']
-					),
-//					'contain' => array(
-//						'Admin'
-//					)
-				));
-
-				// If it fails in some way
-				if ($user && !$this->Auth->login($user)) {
-					$this->redirect('/users/logout'); // destroy session & cookie
-				}
-			}
 		}
 	}
 
@@ -128,3 +141,4 @@ class AppController extends Controller {
 	}
 
 }
+
