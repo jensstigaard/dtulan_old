@@ -4,7 +4,7 @@
 		<?php
 		if (!empty($user['User']['email_gravatar'])) {
 			echo $this->Html->image(
-					  'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=64&amp;r=r', array('style' => 'width:64px;height:64px;margin-right:10px;'));
+					'http://www.gravatar.com/avatar/' . md5(strtolower($user['User']['email_gravatar'])) . '?s=64&amp;r=r', array('style' => 'width:64px;height:64px;margin-right:10px;'));
 		}
 		echo $user['User']['name'];
 		?>
@@ -16,27 +16,35 @@
 			<?php
 			echo $this->Form->create('Payment', array('controller' => 'payments', 'action' => 'add'));
 			echo $this->Form->inputs(array(
-				 'fieldset' => false,
-				 'amount' => array('type' => 'text'),
-				 'user_id' => array(
-					  'value' => $user['User']['id'],
-					  'type' => 'hidden'
-				 ),
-				 'crew_id' => array(
-					  'value' => $make_payment_crew_id,
-					  'type' => 'hidden'
-				 )
-					  )
+				'fieldset' => false,
+				'amount' => array('type' => 'text'),
+				'user_id' => array(
+					'value' => $user['User']['id'],
+					'type' => 'hidden'
+				),
+				'crew_id' => array(
+					'value' => $make_payment_crew_id,
+					'type' => 'hidden'
+				)
+					)
 			);
 			?>
 
+			<small style="display: block; margin: -15px 0 10px;">
+				prefix: <br />
+				c = cash (default)<br />
+				k = creditcards<br />
+				m = mobilepay
+			</small>
+
 			<p>Payment in: <strong><?php echo $make_payment_lan_title; ?></strong></p>
+
 			<?php
 			echo $this->Form->end(array(
-				 'label' => __('Submit'),
-				 'div' => array(
-					  'style' => 'margin:0;padding:0 0 5px'
-				 )
+				'label' => __('Submit'),
+				'div' => array(
+					'style' => 'margin:0;padding:0 0 5px'
+				)
 			));
 			?>
 		</div>
@@ -74,9 +82,9 @@
 							<?php if ($user['User']['balance'] > 0): ?>
 								<?php
 								echo $this->Html->link(
-										  'Pay out', '#', array(
-									 'class' => 'btn btn-mini btn-primary',
-									 'style' => 'float:right;'
+										'Pay out', '#', array(
+									'class' => 'btn btn-mini btn-primary',
+									'style' => 'float:right;'
 								));
 								?>
 							<?php endif; ?>
@@ -126,41 +134,41 @@
 		<ul>
 			<?php if ($is_auth): ?>
 				<li><a href="<?php
-			echo $this->Html->url(array(
-				 'action' => 'view_pizzaorders',
-				 $user['User']['id']
-			));
-				?>"><i class="icon-food"></i></a></li>
+					echo $this->Html->url(array(
+						'action' => 'view_pizzaorders',
+						$user['User']['id']
+					));
+					?>"><i class="icon-food"></i></a></li>
 
 				<li><a href="<?php
-					 echo $this->Html->url(array(
-						  'action' => 'view_foodorders',
-						  $user['User']['id']
-					 ));
-				?>"><i class="icon-coffee"></i></a></li>
+					echo $this->Html->url(array(
+						'action' => 'view_foodorders',
+						$user['User']['id']
+					));
+					?>"><i class="icon-coffee"></i></a></li>
 
 				<li><a href="<?php
-					 echo $this->Html->url(array(
-						  'action' => 'view_payments',
-						  $user['User']['id']
-					 ));
-				?>"><i class="icon-money"></i></a></li>
+					echo $this->Html->url(array(
+						'action' => 'view_payments',
+						$user['User']['id']
+					));
+					?>"><i class="icon-money"></i></a></li>
 
 			<?php endif; ?>
 
 			<li><a href="<?php
-			echo $this->Html->url(array(
-				 'action' => 'view_tournaments',
-				 $user['User']['id']
-			));
-			?>"><i class="icon-trophy"></i></a></li>
+				echo $this->Html->url(array(
+					'action' => 'view_tournaments',
+					$user['User']['id']
+				));
+				?>"><i class="icon-trophy"></i></a></li>
 
 			<li><a href="<?php
-					 echo $this->Html->url(array(
-						  'action' => 'view_lans',
-						  $user['User']['id']
-					 ));
-			?>"><i class="icon-sitemap"></i></a></li>
+				echo $this->Html->url(array(
+					'action' => 'view_lans',
+					$user['User']['id']
+				));
+				?>"><i class="icon-sitemap"></i></a></li>
 
 		</ul>
 
