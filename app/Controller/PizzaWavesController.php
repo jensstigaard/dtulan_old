@@ -78,24 +78,24 @@ class PizzaWavesController extends AppController {
 		}
 
 		$this->set('pizza_wave', $this->PizzaWave->find('first', array(
-						'conditions' => array(
-							 'PizzaWave.id' => $this->PizzaWave->id
-						),
-						'contain' => array(
-							 'LanPizzaMenu' => array(
-								  'Lan' => array(
-										'fields' => array(
-											 'title'
-										)
-								  ),
-								  'PizzaMenu' => array(
-										'fields' => array(
-											 'title'
-										)
-								  )
-							 )
+					'conditions' => array(
+						'PizzaWave.id' => $this->PizzaWave->id
+					),
+					'contain' => array(
+						'LanPizzaMenu' => array(
+							'Lan' => array(
+								'fields' => array(
+									'title'
+								)
+							),
+							'PizzaMenu' => array(
+								'fields' => array(
+									'title'
+								)
+							)
 						)
-				  )));
+					)
+		)));
 	}
 
 	public function send_email($id) {

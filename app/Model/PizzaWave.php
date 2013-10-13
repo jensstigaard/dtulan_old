@@ -6,23 +6,23 @@ class PizzaWave extends AppModel {
 
 	public $useTable = 'pizza_waves';
 	public $hasMany = array(
-		 'PizzaOrder' => array(
-			  'foreignKey' => 'pizza_wave_id'
-		 )
+		'PizzaOrder' => array(
+			'foreignKey' => 'pizza_wave_id'
+		)
 	);
 	public $belongsTo = array(
-		 'LanPizzaMenu'
+		'LanPizzaMenu'
 	);
 	public $order = array(
-		 'PizzaWave.time_close' => 'desc'
+		'PizzaWave.time_close' => 'desc'
 	);
 	public $validate = array(
-		 'time_close' => array(
-			  'validTime' => array(
-					'rule' => 'validateTime',
-					'message' => 'There already exist a pizza wave in this time'
-			  )
-		 ),
+		'time_close' => array(
+			'validTime' => array(
+				'rule' => 'validateTime',
+				'message' => 'There already exist a pizza wave in this time'
+			)
+		),
 	);
 
 	// Remember to refactor!!!
@@ -36,11 +36,11 @@ class PizzaWave extends AppModel {
 		$current_time = date('Y-m-d H:i:s');
 
 		$current_wave = $this->Lan->PizzaWave->find('count', array(
-			 'conditions' => array(
-				  'PizzaWave.time_close >' => $current_time,
-				  'PizzaWave.status' => 1
-			 )
-				  )
+			'conditions' => array(
+				'PizzaWave.time_close >' => $current_time,
+				'PizzaWave.status' => 1
+			)
+				)
 		);
 
 		return $current_wave;
@@ -84,18 +84,20 @@ class PizzaWave extends AppModel {
 		}
 
 		$pizza_orders = $this->PizzaOrder->find('all', array(
-			 'conditions' => array(
-				  'PizzaOrder.pizza_wave_id' => $this->id
-			 ),
-			 'contain' => array(
-				  'PizzaOrderItem' => array(
-						'PizzaPrice' => array(
-							 'Pizza',
-							 'PizzaType'
-						)
-				  )
-			 )
-				  ));
+			'conditions' => array(
+				'PizzaOrder.pizza_wave_id' => $this->id
+			),
+			'contain' => array(
+				'PizzaOrderItem' => array(
+					'PizzaPrice' => array(
+						'Pizza' => array(
+							'PizzaCategory'
+						),
+						'PizzaType'
+					)
+				)
+			)
+		));
 
 		$pizza_wave_items = array();
 
@@ -104,10 +106,11 @@ class PizzaWave extends AppModel {
 
 				if (!isset($pizza_wave_items[$pizza_order_item['PizzaPrice']['id']])) {
 					$pizza_wave_items[$pizza_order_item['PizzaPrice']['id']] = array(
-						 'quantity' => 0,
-						 'pizza_title' => $pizza_order_item['PizzaPrice']['Pizza']['title'],
-						 'pizza_number' => $pizza_order_item['PizzaPrice']['Pizza']['number'],
-						 'pizza_type' => $pizza_order_item['PizzaPrice']['PizzaType']['title']
+						'quantity' => 0,
+						'pizza_title' => $pizza_order_item['PizzaPrice']['Pizza']['title'],
+						'pizza_number' => $pizza_order_item['PizzaPrice']['Pizza']['number'],
+						'pizza_type' => $pizza_order_item['PizzaPrice']['PizzaType']['title'],
+						'pizza_category' => $pizza_order_item['PizzaPrice']['Pizza']['PizzaCategory']['title']
 					);
 				}
 				$pizza_wave_items[$pizza_order_item['PizzaPrice']['id']]['quantity'] += $pizza_order_item['quantity'];
@@ -140,13 +143,13 @@ class PizzaWave extends AppModel {
 		}
 
 		$pizza_orders = $this->PizzaOrder->find('all', array(
-			 'conditions' => array(
-				  'PizzaOrder.pizza_wave_id' => $this->id
-			 ),
-			 'fields' => array(
-				  'PizzaOrder.id'
-			 )
-				  )
+			'conditions' => array(
+				'PizzaOrder.pizza_wave_id' => $this->id
+			),
+			'fields' => array(
+				'PizzaOrder.id'
+			)
+				)
 		);
 
 		$pizza_order_ids = array();
@@ -156,13 +159,13 @@ class PizzaWave extends AppModel {
 		}
 
 		$sum = $this->PizzaOrder->PizzaOrderItem->find('all', array(
-			 'fields' => array(
-				  'sum(PizzaOrderItem.quantity * PizzaOrderItem.price) AS ctotal'
-			 ),
-			 'conditions' => array(
-				  'PizzaOrderItem.pizza_order_id' => $pizza_order_ids
-			 )
-				  )
+			'fields' => array(
+				'sum(PizzaOrderItem.quantity * PizzaOrderItem.price) AS ctotal'
+			),
+			'conditions' => array(
+				'PizzaOrderItem.pizza_order_id' => $pizza_order_ids
+			)
+				)
 		);
 
 		return $sum[0][0]['ctotal'];
@@ -195,20 +198,29 @@ class PizzaWave extends AppModel {
 		}
 
 		$pizza_wave = $this->find('first', array(
-			 'conditions' => array(
-				  'PizzaWave.id' => $this->id
-			 ),
-			 'fields' => array(
-				  'status'
-			 ),
-			 'contain' => array(
-				  'LanPizzaMenu' => array(
-						'fields' => array(
-							 'id'
-						)
-				  )
-			 )
-				  ));
+			'conditions' => array(
+				'PizzaWave.id' => $this->id
+			),
+			'fields' => array(
+				'PizzaWave.status'
+			),
+			'contain' => array(
+				'LanPizzaMenu' => array(
+					'fields' => array(
+						'id'
+					)
+				)
+			)
+		));
+
+		$this->log($pizza_wave, 'email');
+
+		if ($pizza_wave['PizzaWave']['status'] < 1) {
+			throw new MethodNotAllowedException(__('Wave not open yet'));
+		}
+		if ($pizza_wave['PizzaWave']['status'] > 1) {
+			throw new MethodNotAllowedException(__('Email for pizza wave already sent'));
+		}
 
 		$this->LanPizzaMenu->id = $pizza_wave['LanPizzaMenu']['id'];
 
@@ -225,12 +237,7 @@ class PizzaWave extends AppModel {
 
 		$pizza_menu = $this->LanPizzaMenu->PizzaMenu->read(array('email'));
 
-		if ($pizza_wave['PizzaWave']['status'] < 1) {
-			throw new MethodNotAllowedException(__('Wave not open yet'));
-		}
-		if ($pizza_wave['PizzaWave']['status'] > 1) {
-			throw new MethodNotAllowedException(__('Email for pizza wave already sent'));
-		}
+		$this->log($pizza_menu, 'email');
 
 		$pizza_wave_items = $this->getItemList();
 
@@ -238,12 +245,14 @@ class PizzaWave extends AppModel {
 			throw new NotFoundException(__('No items found in pizza wave'));
 		}
 
-		$this->set(array('status' => 2));
+		$this->set('status', 2);
+
+		$this->getEventManager()->attach(new Email());
 
 		$event = new CakeEvent('Model.PizzaWave.sendPizzaWaveEmail', $this, array(
-						'email_to' => $pizza_menu['PizzaMenu']['email'],
-						'pizza_wave_items' => $pizza_wave_items
-				  ));
+			'email_to' => $pizza_menu['PizzaMenu']['email'],
+			'pizza_wave_items' => $pizza_wave_items
+		));
 		$this->getEventManager()->dispatch($event);
 
 		$dataSource = $this->getDataSource();

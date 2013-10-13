@@ -9,9 +9,9 @@
 		<table>
 			<tr>
 				<th>Latest payments</th>
-				<th>Type</th>
+				<th style="text-align:right;">Type</th>
 				<th>Amount</th>
-				
+
 			</tr>
 
 			<?php $total_balance = 0; ?>
@@ -21,7 +21,22 @@
 						<?php echo $payment['Payment']['time_nice']; ?>
 
 					</td>
-					<td><?php echo $payment['Payment']['type']; ?></td>
+					<td style="text-align:right;">
+						<?php
+						switch ($payment['Payment']['type']) {
+							case'mobilepay':
+								$icon = 'icon-mobile-phone icon-2x';
+								break;
+							case 'creditcard':
+								$icon = 'icon-credit-card icon-large';
+								break;
+							default:
+								$icon = 'icon-money icon-large';
+						}
+
+						echo '<i class="' . $icon . '"></i>';
+						?>
+					</td>
 					<td>DKK <?php echo $payment['Payment']['amount']; ?></td>
 				</tr>
 				<?php $total_balance += $payment['Payment']['amount'];

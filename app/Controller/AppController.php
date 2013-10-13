@@ -79,14 +79,19 @@ class AppController extends Controller {
 	public function beforeFilter() {
 
 		// set cookie options
-		$this->Cookie->key = 'RANDOM_DTULANqSI232qs*&sXOw!adre@34SAv!@*(XSL#$%)asGb$@11~_+!@#HKis~#^';
+		$this->Cookie->key = 'RANDOM_DTULANqSI232qs*&sXOw!XSL#$%)asGb$@11~_+!@#HKis~#^';
 		$this->Cookie->httpOnly = true;
 
-		if (!$this->Auth->loggedIn() && $this->Cookie->read('remember_me_cookie')) {
+		$this->loadModel('User');
+		$this->loadModel('Lan');
+
+		if (0 && !$this->Auth->loggedIn() && $this->Cookie->read('remember_me_cookie')) {
 
 			$cookie = $this->Cookie->read('remember_me_cookie');
 
-			$this->loadModel('User');
+			$this->log('Cookie: ' . $cookie);
+
+
 			$user = $this->User->find('first', array(
 				'conditions' => array(
 					'User.email' => $cookie['email'],
@@ -114,7 +119,6 @@ class AppController extends Controller {
 		}
 
 		// Variables used all over the site - can be accessed in any view
-
 		$is_loggedin = $this->Auth->loggedIn();
 
 		$current_user = $this->Auth->user();
@@ -123,16 +127,15 @@ class AppController extends Controller {
 
 		$this->set(compact('current_user', 'is_loggedin', 'is_admin'));
 
-		$this->loadModel('Lan');
 
 		$this->set('lans_highlighted', $this->Lan->getHighlighted());
 
 		if ($is_loggedin) {
-			$this->Lan->LanSignup->User->id = $current_user['id'];
-			$this->Lan->LanSignup->User->read(array('balance'));
-			$this->set('current_user_balance', $this->Lan->LanSignup->User->data['User']['balance']);
-			$this->set('sidebar_new_lan', $this->Lan->LanSignup->User->getNewLans());
-			$this->set('sidebar_team_invites', $this->Lan->LanSignup->User->getTournamentTeamInvites());
+			$this->User->id = $current_user['id'];
+			$this->User->read(array('balance'));
+			$this->set('current_user_balance', $this->User->data['User']['balance']);
+			$this->set('sidebar_new_lan', $this->User->getNewLans());
+			$this->set('sidebar_team_invites', $this->User->getTournamentTeamInvites());
 		}
 	}
 

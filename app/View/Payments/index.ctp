@@ -8,6 +8,7 @@
 			<tr>
 				<th>User</th>
 				<th>Payment occurred</th>
+				<th>Type</th>
 				<th>Amount</th>
 				<th>Made by</th>
 			</tr>
@@ -19,6 +20,22 @@
 					</td>
 					<td>
 						<?php echo $payment['Payment']['time_nice']; ?>
+					</td>
+					<td style="text-align:center;">
+						<?php
+						switch ($payment['Payment']['type']) {
+							case'mobilepay':
+								$icon = 'icon-mobile-phone icon-2x';
+								break;
+							case 'creditcard':
+								$icon = 'icon-credit-card icon-large';
+								break;
+							default:
+								$icon = 'icon-money icon-large';
+						}
+
+						echo '<i class="' . $icon . '"></i>';
+						?>
 					</td>
 					<td>
 						<?php echo $payment['Payment']['amount']; ?> DKK
