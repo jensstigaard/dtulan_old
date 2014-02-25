@@ -6,37 +6,38 @@
 			DTU LAN &bull;
 			<?php echo $title_for_layout; ?>
 		</title>
+		<meta name="google-site-verification" content="bZNxIYUMRV9zhBDWooobLzN4UhqM0E2NDrIAqeJ6EzU" />
 		<?php
 		echo $this->Html->meta(
-				'keywords', 'DTU LAN, DTU, LAN, Net-party, Net, Party, E2012, F2013, E2013, event, Tournament, tournaments, League of Legends, Counter-Strike, Pizza, StarCraft 2, Føniks, Føniks Computer, RedBull, SteelSeries, S/M-rådet, Dota, Dota 2'
+				  'keywords', 'DTU LAN, DTU, LAN, Net-party, Net, Party, E2012, F2013, E2013, event, Tournament, tournaments, League of Legends, Counter-Strike, Pizza, StarCraft 2, Føniks, Føniks Computer, RedBull, SteelSeries, S/M-rådet, Dota, Dota 2'
 		);
 
 		echo $this->Html->meta(
-				'description', 'DTU LAN | Two events every year | Next event: E2013 | October 12th - 16th 2013'
+				  'description', 'DTU LAN | Two events every year | Next event: E2013 | October 12th - 16th 2013'
 		);
 
 		echo $this->Html->meta(
-				'favicon.ico', '/favicon.ico', array('type' => 'icon')
+				  'favicon.ico', '/favicon.ico', array('type' => 'icon')
 		);
 
 		echo $this->Html->css(array(
-			'bootstrap/bootstrap.min',
-			'bootstrap/bootstrap-modification',
-			'font-awesome/font-awesome.min',
-			'ui-darkness/jquery-ui-1.10.0.custom',
+			 'bootstrap/bootstrap.min',
+			 'bootstrap/bootstrap-modification',
+			 'font-awesome/font-awesome.min',
+			 'ui-darkness/jquery-ui-1.10.0.custom',
 //			 'jquery/jquery.fancybox',
-			'normalize',
-			'layout.general',
-			'layout.tables',
-			'layout.navigation',
-			'sidebar',
-			'cake.errors',
-				)
+			 'normalize',
+			 'layout.general',
+			 'layout.tables',
+			 'layout.navigation',
+			 'sidebar',
+			 'cake.errors',
+				  )
 		);
 
 		if ($is_admin) {
 			echo $this->Html->css(array(
-				'admin',
+				 'admin',
 			));
 		}
 
@@ -90,41 +91,32 @@
 
 		<?php
 		echo $this->Html->script(array(
-			'jquery/jquery',
-			'jquery/jquery-ui',
-			'd3/d3.v3.min',
+			 'jquery/jquery',
+			 'jquery/jquery-ui',
+			 'd3/d3.v3.min',
 //			 'jquery/jquery.fancybox.pack',
-			'bootstrap/bootstrap.min',
-			'general',
-				), true);
+			 'bootstrap/bootstrap.min',
+			 'general',
+				  ), true);
 		echo $this->fetch('script');
 
 		echo $this->Js->writeBuffer(array('cache' => TRUE));
 		?>
 
 		<script type='text/javascript'>
-			window.Muscula = {settings: {
-					logId: "1b705fe3-263d-4809-919c-86fb44df5125", suppressErrors: false, branding: 'none'
+			window.Muscula = { settings:{
+					logId:"1b705fe3-263d-4809-919c-86fb44df5125", suppressErrors: false, branding: 'none'
 				}};
-			(function() {
-				var m = document.createElement('script');
-				m.type = 'text/javascript';
-				m.async = true;
+			(function () {
+				var m = document.createElement('script'); m.type = 'text/javascript'; m.async = true;
 				m.src = (window.location.protocol == 'https:' ? 'https:' : 'http:') +
-						'//musculahq.appspot.com/Muscula.js';
-				var s = document.getElementsByTagName('script')[0];
-				s.parentNode.insertBefore(m, s);
-				window.Muscula.run = function(c) {
-					eval(c);
-					window.Muscula.run = function() {
-					};
-				};
-				window.Muscula.errors = [];
-				window.onerror = function() {
-					window.Muscula.errors.push(arguments);
-					return window.Muscula.settings.suppressErrors === undefined;
-				}
+					'//musculahq.appspot.com/Muscula.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(m, s);
+				window.Muscula.run=function(c){eval(c);window.Muscula.run=function(){};};
+				window.Muscula.errors=[];window.onerror=function(){window.Muscula.errors.push(arguments);
+					return window.Muscula.settings.suppressErrors===undefined;}
 			})();
 		</script>
+
 	</body>
 </html>

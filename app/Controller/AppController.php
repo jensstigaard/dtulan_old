@@ -58,16 +58,8 @@ class AppController extends Controller {
 					),
 					'scope' => array(
 						'User.activated' => 1,
-//							  'Admin.id >' => 0 // Only admin possible to log in
 					)
 				),
-			// Allow authentication by access token
-//					'Api' => array(
-//						 'userModel' => 'AccessToken',
-//						 'fields' => array(
-//							  'username' => 'id',
-//						 ),
-//					),
 			)
 		)
 	);

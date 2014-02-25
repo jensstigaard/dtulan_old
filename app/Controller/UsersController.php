@@ -525,8 +525,6 @@ class UsersController extends AppController {
 //		} else
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
-
-//
 				// did they select the remember me checkbox?
 				if ($this->request->data['User']['remember_me'] == 1) {
 					// remove "remember me checkbox"
